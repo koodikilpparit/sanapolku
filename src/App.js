@@ -5,6 +5,9 @@ import Start from './pages/Start';
 import Settings from './pages/Settings';
 import Instructions from './pages/Instructions';
 import GameMenu from './pages/GameMenu';
+import PathSelection from './pages/PathSelection';
+import ManagePath from './pages/ManagePath';
+import NewWord from './pages/NewWord';
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
           <Route path="/asetukset" element={<Settings />} />
           <Route path="/ohjeet" element={<Instructions />} />
           <Route path="/polut" element={<GameMenu />} />
+          <Route path="/omatpolut" element={<PathSelection />} />
+          <Route path="/muokaapolkua/:pathName" element={<ManagePath />} />
+          <Route path="/uusisana/:pathName" element={<NewWord />} />
         </Routes>
       </div>
     </Router>
