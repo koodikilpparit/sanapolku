@@ -4,7 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 const WordEntry = () => {
   const { pathName } = useParams();
   const navigate = useNavigate();
-  const [words, setWords] = useState([{ word: 'Koira', icon: '🐕' }]);
+  
+  // Initial words array with local images from the public folder
+  const [words] = useState([
+    { word: 'Koira', img: '/mrBean.png' }, // Image stored locally
+  ]);
 
   return (
     <div>
@@ -13,13 +17,16 @@ const WordEntry = () => {
       <h2>{pathName}</h2>
       <h3>Lisää sanoja</h3>
 
-
       {/* List of words */}
       <div>
         {words.map((wordEntry, index) => (
           <div key={index}>
             <span>{wordEntry.word}</span>
-            <span>{wordEntry.icon}</span>
+            <img
+              src={wordEntry.img || '/mrBean.png'} // Use local placeholder image if no img
+              alt={wordEntry.word}
+              style={{ width: '50px', height: '50px' }}
+            />
           </div>
         ))}
       </div>
