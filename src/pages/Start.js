@@ -10,6 +10,7 @@ function Start() {
         <div className="start-page">
             <div className="top-bar">
             <SettingsButton/>
+            <h2>Sanapolku</h2>
             </div>
             <div className="center-area">
                 <div className="logo">
