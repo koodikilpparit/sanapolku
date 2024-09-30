@@ -1,18 +1,11 @@
 /* src/components/pages/Start.css */
 
 .start-page {
-    display: grid;
-    grid-template-areas: 
-        "top-bar"
-        "center-area";
     background-color: #06705B;
     height: 100vh;
 }
 
 .top-bar {
-    display: grid;
-    grid-template-areas: 
-        "settings";
     display: flex;
     justify-content: flex-start;
     height: 48px;
@@ -21,10 +14,6 @@
 
 .center-area {
     display: grid;
-    grid-template-areas: 
-        "logo"
-        "start"
-        "help";
     justify-items: center;
     margin-bottom: 32px;
 }
@@ -32,7 +21,6 @@
 .settings-button {
     background: none;
     border: none;
-    grid-area: settings;
     margin-left: 16px;
     margin-top: 32px;
 }
