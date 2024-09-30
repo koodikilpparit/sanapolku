@@ -9,7 +9,7 @@ function HelpButton() {
 
     return (
         <button className="help-button" onClick={() => navigate('/ohjeet')}>
-            <FontAwesomeIcon icon={faCircleQuestion} className="help-icon" />
+            <FontAwesomeIcon icon={faCircleQuestion} className="help-icon"/>
             Miten pelaan?
         </button>
     );
