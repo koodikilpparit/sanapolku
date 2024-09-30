@@ -1,0 +1,125 @@
+/* src/components/pages/Start.css */
+
+.start-page {
+    display: grid;
+    grid-template-areas: 
+        "top-bar"
+        "center-area";
+    background-color: #06705B;
+    height: 100vh;
+}
+
+.top-bar {
+    display: grid;
+    grid-template-areas: 
+        "settings";
+    display: flex;
+    justify-content: flex-start;
+    height: 48px;
+    padding: 20px;
+}
+
+.center-area {
+    display: grid;
+    grid-template-areas: 
+        "logo"
+        "start"
+        "help";
+    justify-items: center;
+    margin-bottom: 32px;
+}
+
+.settings-button {
+    background: none;
+    border: none;
+    grid-area: settings;
+    margin-left: 16px;
+    margin-top: 32px;
+}
+
+.settings-icon {
+    color: white;
+    width: 72px;
+    height: 72px;
+}
+
+.start-button {
+    background-color: white;
+    color: var(--Dark-Blue, #293642);
+    border: none;
+    border-radius: 10px;
+    box-shadow: none;
+    text-align: center;
+    width: 540px;
+    height: 60px;
+    /* Mobile/Headline large */
+    font-family: Verdana;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+    margin-bottom: 10px;
+}
+
+.start-icon {
+    margin-right: 16px;
+}
+
+.help-button {
+    background-color: white;
+    color: var(--Dark-Blue, #293642);
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    width: 540px;
+    height: 60px;
+    /* Mobile/Headline large */
+    font-family: Verdana;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+}
+
+.help-icon {
+    margin-right: 16px;
+}
+
+.logo {
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: Verdana;
+    font-size: 46.286px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.logo-upper {
+    display: flex;                 
+    gap: 5px;      
+    margin-bottom: 5px;                 
+}
+
+.logo-lower {
+    display: flex;
+    margin-left: 185.428px;                  
+    gap: 5px;     
+    margin-bottom: 35px;                    
+}
+
+.letter-tile {
+    border-radius: 8.571px;
+    border: 0.857px solid #000;
+    background-color: white;
+    width: 85.714px;
+    height: 85.714px;
+    color: var(--Black, #232323);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invisible-text {
+    visibility: hidden;
+}

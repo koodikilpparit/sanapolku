@@ -3,6 +3,7 @@ import SettingsButton from "../components/start/SettingsButton";
 import StartButton from "../components/start/StartButton";
 import HelpButton from "../components/start/HelpButton";
 import LetterTile from "../components/start/LetterTile";
+import "./Start.css"
 
 function Start() {
 
@@ -10,7 +11,7 @@ function Start() {
         <div className="start-page">
             <div className="top-bar">
             <SettingsButton/>
-            <h2>Sanapolku</h2>
+            <h2 className="invisible-text"> Sanapolku</h2>
             </div>
             <div className="center-area">
                 <div className="logo">
