@@ -1,41 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAllPolut, addPolku } from '../db/db';
 
 const PathSelection = () => {
   const navigate = useNavigate();
-
-  // State for paths
-  const [paths, setPaths] = useState(['Juha', 'Eläimet', 'Peli']);
+  const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
 
-  // Function to handle adding a new path
+  useEffect(() => {
+    getAllPolut()
+      .then((polut) => setPaths(Array.isArray(polut) ? polut.map((polku) => polku.name) : []))
+      .catch(() => console.error("Virhe polkujen haussa"));
+  }, []);
+
   const handleAddPath = () => {
     if (newPath.trim()) {
-      // Check if a path with the same name already exists
-      const pathExists = paths.some((path) => path.toLowerCase() === newPath.toLowerCase());
-  
-      if (!pathExists) {
-        setPaths([...paths, newPath]);
-        setNewPath('');
-        console.log('Path added:', newPath);
-      } else {
-        console.log('Path with this name already exists');
-        alert('Path with this name already exists');
-      }
+      addPolku(newPath)
+        .then(() => {
+          setPaths([...paths, newPath]); // Päivitetään polkulista
+          setNewPath(''); // Tyhjennetään tekstikenttä
+          console.log('Polku lisätty:', newPath);
+        })
+        .catch((error) => {
+          console.error(error.message);
+          alert(error.message); // Näytetään virheilmoitus, jos polku on jo olemassa
+        });
+    } else {
+      alert('Syötä polun nimi');
     }
   };
 
-    // Function to handle clicking a path
   const handlePathClick = (path) => {
-    navigate(`/muokaapolkua/${path}`); // Navigate to the word entry page with the path as a parameter
+    navigate(`/muokaapolkua/${path}`); // Navigointi muokkausnäkymään valitun polun kanssa
   };
 
   return (
     <div>
-      {/* Back button */}
+      {/* Takaisin-nappi */}
       <button onClick={() => navigate(-1)}>Takaisin</button>
 
-      {/* Input field to add a new path */}
+      {/* Syötekenttä uuden polun lisäämiseksi */}
       <div>
         <input
           type="text"
@@ -46,13 +50,17 @@ const PathSelection = () => {
         <button onClick={handleAddPath}>Lisää polku</button>
       </div>
 
-      {/* List of paths */}
+      {/* Polkulista */}
       <div>
-        {paths.map((path, index) => (
-          <button key={index} onClick={() => handlePathClick(path)}>
-            <span>{path}</span>
-          </button>
-        ))}
+        {paths.length > 0 ? (
+          paths.map((path, index) => (
+            <button key={index} onClick={() => handlePathClick(path)}>
+              <span>{path}</span>
+            </button>
+          ))
+        ) : (
+          <p>Ei polkuja löytynyt</p>
+        )}
       </div>
     </div>
   );

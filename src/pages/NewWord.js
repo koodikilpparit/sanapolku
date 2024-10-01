@@ -1,54 +1,61 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addSana, getPolkuByName } from '../db/db';
 
 const NewWord = () => {
   const navigate = useNavigate();
+  const { pathName } = useParams();
   const [newWord, setNewWord] = useState('');
-  const [imageAdded, setImageAdded] = useState(false); // Track if image is added
+  const [pathId, setPathId] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Function to handle saving the word
+  // Placeholder image URL (can be any placeholder image)
+  const placeholderImage = '/mrBean.png'; // Replace this with the path to your placeholder image
+
+  // Fetch the path ID when the component loads
+  useEffect(() => {
+    getPolkuByName(pathName)
+      .then((polku) => {
+        if (polku) {
+          setPathId(polku.id);
+        } else {
+          setError(`Polkua nimellä "${pathName}" ei löytynyt.`);
+        }
+      })
+      .catch(() => setError('Virhe polun haussa'));
+  }, [pathName]);
+
+  // Function to save the word and the placeholder image to the database
   const handleSave = () => {
-    // Logic to save the word and image, if added
-    console.log('Word saved:', newWord, imageAdded ? 'with image' : 'no image');
-    navigate(-1); // Go back after saving
+    if (!newWord.trim()) {
+      alert("Syötä sana.");
+      return;
+    }
+
+    if (pathId) {
+      addSana(newWord, pathId, placeholderImage) // Use the placeholder image
+        .then(() => navigate(-1)) // Navigate back on success
+        .catch(() => alert("Virhe sanan tallentamisessa."));
+    } else {
+      alert("Polun ID:tä ei löytynyt.");
+    }
   };
 
   return (
     <div>
-      {/* Back button */}
       <button onClick={() => navigate(-1)}>Takaisin</button>
+      <h2>Uusi sana polkuun: {pathName}</h2>
 
-      {/* Title */}
-      <h2>Uusi sana</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Input for new word */}
       <label>Kirjoita uusi sana:</label>
       <input
         type="text"
         value={newWord}
         onChange={(e) => setNewWord(e.target.value)}
-        placeholder=""
+        placeholder="Kirjoita sana"
       />
 
-      {/* Checkbox for adding an image */}
-      <div>
-        <input
-          type="checkbox"
-          checked={imageAdded}
-          onChange={(e) => setImageAdded(e.target.checked)}
-        />
-        <label>Lisää kuva</label>
-      </div>
-
-      {/* Image placeholder */}
-      {imageAdded && (
-        <div>
-          <img src="/mrBean.png" alt="Placeholder" width="100" height="100" />
-        </div>
-      )}
-
-      {/* Buttons for Cancel and Save */}
-      <button onClick={() => navigate(-1)}>Peruuta</button>
       <button onClick={handleSave}>Valmis</button>
     </div>
   );
