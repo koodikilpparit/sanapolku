@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPolut, addPolku } from '../db/db';
+import '../styles/PathSelection.css';
+import BackButton from '../components/universal/BackButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const PathSelection = () => {
   const navigate = useNavigate();
@@ -17,13 +21,13 @@ const PathSelection = () => {
     if (newPath.trim()) {
       addPolku(newPath)
         .then(() => {
-          setPaths([...paths, newPath]); // Päivitetään polkulista
-          setNewPath(''); // Tyhjennetään tekstikenttä
+          setPaths([...paths, newPath]);
+          setNewPath('');
           console.log('Polku lisätty:', newPath);
         })
         .catch((error) => {
           console.error(error.message);
-          alert(error.message); // Näytetään virheilmoitus, jos polku on jo olemassa
+          alert(error.message);
         });
     } else {
       alert('Syötä polun nimi');
@@ -31,35 +35,41 @@ const PathSelection = () => {
   };
 
   const handlePathClick = (path) => {
-    navigate(`/muokaapolkua/${path}`); // Navigointi muokkausnäkymään valitun polun kanssa
+    navigate(`/muokaapolkua/${path}`);
   };
 
   return (
-    <div>
-      {/* Takaisin-nappi */}
-      <button onClick={() => navigate(-1)}>Takaisin</button>
+    <div className="paths-page">
 
-      {/* Syötekenttä uuden polun lisäämiseksi */}
-      <div>
+      {/* Header */}
+      <div className="header">
+        <BackButton />
+        <h2 className="title">Omat polut</h2>
+        <FontAwesomeIcon icon={faPlus} className="add-path-icon"/>
+      </div>
+
+      {/* Input field to add new path */}
+      <div className="input-section">
         <input
           type="text"
           value={newPath}
           onChange={(e) => setNewPath(e.target.value)}
           placeholder="Syötä uusi polku"
+          className="path-input"
         />
-        <button onClick={handleAddPath}>Lisää polku</button>
+        <button className="add-path-button" onClick={handleAddPath}>Lisää polku</button>
       </div>
 
-      {/* Polkulista */}
-      <div>
+      {/* List of paths */}
+      <div className="path-list">
         {paths.length > 0 ? (
           paths.map((path, index) => (
-            <button key={index} onClick={() => handlePathClick(path)}>
+            <button key={index} className="path-item" onClick={() => handlePathClick(path)}>
               <span>{path}</span>
             </button>
           ))
         ) : (
-          <p>Ei polkuja löytynyt</p>
+          <p className="no-paths">Ei polkuja.</p>
         )}
       </div>
     </div>

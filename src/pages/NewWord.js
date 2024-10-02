@@ -65,7 +65,6 @@ const NewWord = () => {
           onChange={(e) => setNewWord(e.target.value)}
           placeholder="Kirjoita sana"
         />
-        
       </div>
 
       {/* Image upload and placeholder */}

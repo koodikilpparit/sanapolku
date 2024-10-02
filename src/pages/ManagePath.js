@@ -63,7 +63,7 @@ const ManagePath = () => {
               />
             ))
           ) : (
-            <p className="no-words">Ei sanoja vielä.</p>
+            <p className="no-words">Ei lisättyjä sanoja.</p>
           )}
         </div>
 

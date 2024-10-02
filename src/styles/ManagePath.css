@@ -75,3 +75,9 @@
     color: black;
     font-weight: bold;
   }
+
+  .no-words {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+  }
