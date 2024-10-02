@@ -13,10 +13,10 @@ const NewWord = () => {
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
 
-  // Placeholder image URL (can be any placeholder image)
-  const placeholderImage = '/mrBean.png'; // Replace this with the path to your placeholder image
+  // Placeholder kuvan URL
+  const placeholderImage = '/mrBean.png';
 
-  // Fetch the path ID when the component loads
+  // Funktio joka hakee polun ID:n kun komponentti latautuu
   useEffect(() => {
     getPolkuByName(pathName)
       .then((polku) => {
@@ -29,7 +29,7 @@ const NewWord = () => {
       .catch(() => setError('Virhe polun haussa'));
   }, [pathName]);
 
-  // Function to save the word and the placeholder image to the database
+  // Funktio joka tallentaa sanan ja placeholder kuvan tietokantaan
   const handleSave = () => {
     if (!newWord.trim()) {
       alert("Syötä sana.");
@@ -37,8 +37,8 @@ const NewWord = () => {
     }
 
     if (pathId) {
-      addSana(newWord, pathId, placeholderImage) // Use the placeholder image
-        .then(() => navigate(-1)) // Navigate back on success
+      addSana(newWord, pathId, placeholderImage)
+        .then(() => navigate(-1))
         .catch(() => alert("Virhe sanan tallentamisessa."));
     } else {
       alert("Polun ID:tä ei löytynyt.");

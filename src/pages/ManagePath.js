@@ -12,6 +12,7 @@ const ManagePath = () => {
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
 
+  // Funktio joka hakee sanat polulle kun komponentti latautuu
   useEffect(() => {
     getPolkuByName(pathName)
       .then((polku) => {
@@ -27,10 +28,10 @@ const ManagePath = () => {
       .catch(() => setError("Virhe sanojen haussa"));
   }, [pathName]);
 
+  // Funktio joka poistaa sanan tietokannasta ja päivittää sanalistan
   const handleDelete = (wordId) => {
-    deleteSana(wordId) // Call the deleteSana function to delete the word from IndexedDB
+    deleteSana(wordId)
       .then(() => {
-        // Remove the deleted word from the state
         setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
         console.log(`Deleted word with id: ${wordId}`);
       })
@@ -49,7 +50,7 @@ const ManagePath = () => {
         <h2 className="title">Lisää sanoja</h2>
       </div>
 
-      {/* Word list */}
+      {/* Sanalista */}
       <div className="word-entry-container">
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div className="word-list">
@@ -67,7 +68,7 @@ const ManagePath = () => {
           )}
         </div>
 
-        {/* Add new word button */}
+        {/* Lisää uusi sana */}
         <div className="add-word" onClick={() => navigate(`/uusisana/${pathName}`)}>
           <span className="add-icon">+</span>
           <span className="add-text">LISÄÄ UUSI SANA</span>

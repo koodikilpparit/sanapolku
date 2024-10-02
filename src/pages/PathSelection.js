@@ -11,12 +11,15 @@ const PathSelection = () => {
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
 
+  // Hakee kaikki polut tietokannasta kun komponentti latautuu
   useEffect(() => {
     getAllPolut()
       .then((polut) => setPaths(Array.isArray(polut) ? polut.map((polku) => polku.name) : []))
       .catch(() => console.error("Virhe polkujen haussa"));
   }, []);
 
+
+  // Funktio joka lisää uuden polun tietokantaan
   const handleAddPath = () => {
     if (newPath.trim()) {
       addPolku(newPath)
@@ -34,6 +37,7 @@ const PathSelection = () => {
     }
   };
 
+  // Funktio joka navigoi polun hallintasivulle
   const handlePathClick = (path) => {
     navigate(`/muokaapolkua/${path}`);
   };
@@ -48,7 +52,7 @@ const PathSelection = () => {
         <FontAwesomeIcon icon={faPlus} className="add-path-icon"/>
       </div>
 
-      {/* Input field to add new path */}
+      {/* Input uuden polun lisäämistä varten */}
       <div className="input-section">
         <input
           type="text"
@@ -60,7 +64,7 @@ const PathSelection = () => {
         <button className="add-path-button" onClick={handleAddPath}>Lisää polku</button>
       </div>
 
-      {/* List of paths */}
+      {/* Lista poluista */}
       <div className="path-list">
         {paths.length > 0 ? (
           paths.map((path, index) => (

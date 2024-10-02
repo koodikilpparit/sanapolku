@@ -86,9 +86,8 @@ export function getPolkuByName(name) {
     });
 }
 
-// Lisää sana polkuun
+// Lisää sana tietokantaan
 export function addSana(word, pathId, img) {
-    // Check if img is provided
     if (!img) {
         return Promise.reject(new Error("Kuva (img) on pakollinen."));
     }
@@ -98,7 +97,6 @@ export function addSana(word, pathId, img) {
             const transaction = db.transaction("sanat", "readwrite");
             const store = transaction.objectStore("sanat");
             
-            // Add the word, pathId, and img into the object store
             const request = store.add({ word, pathId, img });
 
             request.onsuccess = () => {
@@ -142,7 +140,7 @@ export function deleteSana(wordId) {
         return new Promise((resolve, reject) => {
             const transaction = db.transaction("sanat", "readwrite");
             const store = transaction.objectStore("sanat");
-            const request = store.delete(wordId); // Delete the word with the given ID
+            const request = store.delete(wordId);
 
             request.onsuccess = () => {
                 resolve();
