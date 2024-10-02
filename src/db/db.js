@@ -135,3 +135,22 @@ export function getSanatForPolku(pathId) {
         });
     });
 }
+
+// Poista sana tietokannasta ID:n perusteella
+export function deleteSana(wordId) {
+    return openDB(DB_NAME_SANAT).then((db) => {
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction("sanat", "readwrite");
+            const store = transaction.objectStore("sanat");
+            const request = store.delete(wordId); // Delete the word with the given ID
+
+            request.onsuccess = () => {
+                resolve();
+            };
+
+            request.onerror = (event) => {
+                reject("Virhe sanan poistamisessa");
+            };
+        });
+    });
+}
