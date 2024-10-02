@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPolut, addPolku } from '../db/db';
+import { getAllPaths, addPath } from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,33 +11,32 @@ const PathSelection = () => {
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
 
-  // Hakee kaikki polut tietokannasta kun komponentti latautuu
+  // Fetch all paths from the database when the component loads
   useEffect(() => {
-    getAllPolut()
-      .then((polut) => setPaths(Array.isArray(polut) ? polut.map((polku) => polku.name) : []))
-      .catch(() => console.error("Virhe polkujen haussa"));
+    getAllPaths()
+      .then((paths) => setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : []))
+      .catch(() => console.error("Error fetching paths"));
   }, []);
 
-
-  // Funktio joka lisää uuden polun tietokantaan
+  // Function to add a new path to the database
   const handleAddPath = () => {
     if (newPath.trim()) {
-      addPolku(newPath)
+      addPath(newPath)
         .then(() => {
           setPaths([...paths, newPath]);
           setNewPath('');
-          console.log('Polku lisätty:', newPath);
+          console.log('Path added:', newPath);
         })
         .catch((error) => {
           console.error(error.message);
           alert(error.message);
         });
     } else {
-      alert('Syötä polun nimi');
+      alert('Please enter a path name');
     }
   };
 
-  // Funktio joka navigoi polun hallintasivulle
+  // Function to navigate to the path management page
   const handlePathClick = (path) => {
     navigate(`/muokaapolkua/${path}`);
   };
@@ -48,23 +47,23 @@ const PathSelection = () => {
       {/* Header */}
       <div className="header">
         <BackButton />
-        <h2 className="title">Omat polut</h2>
-        <FontAwesomeIcon icon={faPlus} className="add-path-icon"/>
+        <h2 className="title">Polut</h2>
+        <FontAwesomeIcon icon={faPlus} className="add-path-icon" />
       </div>
 
-      {/* Input uuden polun lisäämistä varten */}
+      {/* Input for adding a new path */}
       <div className="input-section">
         <input
           type="text"
           value={newPath}
           onChange={(e) => setNewPath(e.target.value)}
-          placeholder="Syötä uusi polku"
+          placeholder="Anna polun nimi"
           className="path-input"
         />
         <button className="add-path-button" onClick={handleAddPath}>Lisää polku</button>
       </div>
 
-      {/* Lista poluista */}
+      {/* List of paths */}
       <div className="path-list">
         {paths.length > 0 ? (
           paths.map((path, index) => (

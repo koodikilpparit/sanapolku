@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSanatForPolku, getPolkuByName, deleteSana } from '../db/db';
+import { getWordsForPath, getPathByName, deleteWord } from '../db/db';
 import WordRow from '../components/create/WordRow';
 import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
@@ -12,32 +12,32 @@ const ManagePath = () => {
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
 
-  // Funktio joka hakee sanat polulle kun komponentti latautuu
+  // Function to fetch words for the path when the component loads
   useEffect(() => {
-    getPolkuByName(pathName)
-      .then((polku) => {
-        if (polku) {
-          setPathId(polku.id);
-          return getSanatForPolku(polku.id);
+    getPathByName(pathName)
+      .then((path) => {
+        if (path) {
+          setPathId(path.id);
+          return getWordsForPath(path.id);
         } else {
-          setError(`Polkua nimellä "${pathName}" ei löytynyt.`);
+          setError(`Path with the name "${pathName}" was not found.`);
           return [];
         }
       })
-      .then((sanat) => setWords(sanat))
-      .catch(() => setError("Virhe sanojen haussa"));
+      .then((words) => setWords(words))
+      .catch(() => setError("Error fetching words"));
   }, [pathName]);
 
-  // Funktio joka poistaa sanan tietokannasta ja päivittää sanalistan
+  // Function to delete a word from the database and update the word list
   const handleDelete = (wordId) => {
-    deleteSana(wordId)
+    deleteWord(wordId)
       .then(() => {
         setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
         console.log(`Deleted word with id: ${wordId}`);
       })
       .catch((error) => {
         console.error("Error deleting word:", error);
-        alert("Virhe sanan poistamisessa.");
+        alert("Error deleting the word.");
       });
   };
 
@@ -50,7 +50,7 @@ const ManagePath = () => {
         <h2 className="title">Lisää sanoja</h2>
       </div>
 
-      {/* Sanalista */}
+      {/* Word List */}
       <div className="word-entry-container">
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div className="word-list">
@@ -68,7 +68,7 @@ const ManagePath = () => {
           )}
         </div>
 
-        {/* Lisää uusi sana */}
+        {/* Add new word */}
         <div className="add-word" onClick={() => navigate(`/uusisana/${pathName}`)}>
           <span className="add-icon">+</span>
           <span className="add-text">LISÄÄ UUSI SANA</span>

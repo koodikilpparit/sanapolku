@@ -1,8 +1,8 @@
-const DB_NAME_POLUT = "polutDB";
-const DB_NAME_SANAT = "sanatDB";
+const DB_NAME_PATHS = "pathsDB";
+const DB_NAME_WORDS = "wordsDB";
 const DB_VERSION = 1;
 
-// Avaa tietokanta
+// Open database
 export function openDB(name) {
     return new Promise((resolve, reject) => {
         const request = window.indexedDB.open(name, DB_VERSION);
@@ -10,15 +10,15 @@ export function openDB(name) {
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
 
-            if (name === DB_NAME_POLUT && !db.objectStoreNames.contains("polut")) {
-                db.createObjectStore("polut", { keyPath: "id", autoIncrement: true })
+            if (name === DB_NAME_PATHS && !db.objectStoreNames.contains("paths")) {
+                db.createObjectStore("paths", { keyPath: "id", autoIncrement: true })
                   .createIndex("name", "name", { unique: true });
             }
 
-            if (name === DB_NAME_SANAT && !db.objectStoreNames.contains("sanat")) {
-                const sanatStore = db.createObjectStore("sanat", { keyPath: "id", autoIncrement: true });
-                sanatStore.createIndex("word", "word", { unique: false });
-                sanatStore.createIndex("pathId", "pathId", { unique: false });
+            if (name === DB_NAME_WORDS && !db.objectStoreNames.contains("words")) {
+                const wordsStore = db.createObjectStore("words", { keyPath: "id", autoIncrement: true });
+                wordsStore.createIndex("word", "word", { unique: false });
+                wordsStore.createIndex("pathId", "pathId", { unique: false });
             }
         };
 
@@ -27,32 +27,32 @@ export function openDB(name) {
         };
 
         request.onerror = (event) => {
-            reject("Tietokannan avaaminen epäonnistui");
+            reject("Failed to open the database");
         };
     });
 }
 
-// Lisää polku
-export function addPolku(polkuName) {
-    return getPolkuByName(polkuName).then((existingPolku) => {
-        if (existingPolku) {
-            return Promise.reject(new Error('Polku tällä nimellä on jo olemassa'));
+// Add path
+export function addPath(pathName) {
+    return getPathByName(pathName).then((existingPath) => {
+        if (existingPath) {
+            return Promise.reject(new Error('Path with this name already exists'));
         } else {
-            return openDB(DB_NAME_POLUT).then((db) => {
-                const transaction = db.transaction("polut", "readwrite");
-                const store = transaction.objectStore("polut");
-                return store.add({ name: polkuName });
+            return openDB(DB_NAME_PATHS).then((db) => {
+                const transaction = db.transaction("paths", "readwrite");
+                const store = transaction.objectStore("paths");
+                return store.add({ name: pathName });
             });
         }
     });
 }
 
-// Hae kaikki polut
-export function getAllPolut() {
-    return openDB(DB_NAME_POLUT).then((db) => {
+// Get all paths
+export function getAllPaths() {
+    return openDB(DB_NAME_PATHS).then((db) => {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction("polut", "readonly");
-            const store = transaction.objectStore("polut");
+            const transaction = db.transaction("paths", "readonly");
+            const store = transaction.objectStore("paths");
             const request = store.getAll();
 
             request.onsuccess = (event) => {
@@ -60,18 +60,18 @@ export function getAllPolut() {
             };
 
             request.onerror = (event) => {
-                reject("Polkujen haku epäonnistui");
+                reject("Failed to retrieve paths");
             };
         });
     });
 }
 
-// Hae polku nimen perusteella
-export function getPolkuByName(name) {
-    return openDB(DB_NAME_POLUT).then((db) => {
+// Get path by name
+export function getPathByName(name) {
+    return openDB(DB_NAME_PATHS).then((db) => {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction("polut", "readonly");
-            const store = transaction.objectStore("polut");
+            const transaction = db.transaction("paths", "readonly");
+            const store = transaction.objectStore("paths");
             const index = store.index("name");
             const request = index.get(name);
 
@@ -80,22 +80,22 @@ export function getPolkuByName(name) {
             };
 
             request.onerror = (event) => {
-                reject('Virhe polun hakemisessa');
+                reject('Error retrieving the path');
             };
         });
     });
 }
 
-// Lisää sana tietokantaan
-export function addSana(word, pathId, img) {
+// Add word to the database
+export function addWord(word, pathId, img) {
     if (!img) {
-        return Promise.reject(new Error("Kuva (img) on pakollinen."));
+        return Promise.reject(new Error("Image (img) is required."));
     }
 
-    return openDB(DB_NAME_SANAT).then((db) => {
+    return openDB(DB_NAME_WORDS).then((db) => {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction("sanat", "readwrite");
-            const store = transaction.objectStore("sanat");
+            const transaction = db.transaction("words", "readwrite");
+            const store = transaction.objectStore("words");
             
             const request = store.add({ word, pathId, img });
 
@@ -104,22 +104,22 @@ export function addSana(word, pathId, img) {
             };
 
             request.onerror = (event) => {
-                reject("Virhe sanan tallentamisessa");
+                reject("Error saving the word");
             };
         });
     });
 }
 
-// Hae kaikki sanat tietylle polulle
-export function getSanatForPolku(pathId) {
-    return openDB(DB_NAME_SANAT).then((db) => {
+// Get all words for a specific path
+export function getWordsForPath(pathId) {
+    return openDB(DB_NAME_WORDS).then((db) => {
         return new Promise((resolve, reject) => {
             if (typeof pathId === 'undefined' || pathId === null) {
-                reject("Virhe: Polun ID on kelvoton");
+                reject("Error: Invalid path ID");
                 return;
             }
-            const transaction = db.transaction("sanat", "readonly");
-            const store = transaction.objectStore("sanat");
+            const transaction = db.transaction("words", "readonly");
+            const store = transaction.objectStore("words");
             const index = store.index("pathId");
             const request = index.getAll(pathId);
 
@@ -128,18 +128,18 @@ export function getSanatForPolku(pathId) {
             };
 
             request.onerror = (event) => {
-                reject("Virhe sanojen haussa");
+                reject("Error retrieving words");
             };
         });
     });
 }
 
-// Poista sana tietokannasta ID:n perusteella
-export function deleteSana(wordId) {
-    return openDB(DB_NAME_SANAT).then((db) => {
+// Delete word by ID
+export function deleteWord(wordId) {
+    return openDB(DB_NAME_WORDS).then((db) => {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction("sanat", "readwrite");
-            const store = transaction.objectStore("sanat");
+            const transaction = db.transaction("words", "readwrite");
+            const store = transaction.objectStore("words");
             const request = store.delete(wordId);
 
             request.onsuccess = () => {
@@ -147,7 +147,7 @@ export function deleteSana(wordId) {
             };
 
             request.onerror = (event) => {
-                reject("Virhe sanan poistamisessa");
+                reject("Error deleting the word");
             };
         });
     });

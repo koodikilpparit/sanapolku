@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addSana, getPolkuByName } from '../db/db';
+import { addWord, getPathByName } from '../db/db';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import '../styles/NewWord.css';
@@ -13,35 +13,35 @@ const NewWord = () => {
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
 
-  // Placeholder kuvan URL
+  // Placeholder image URL
   const placeholderImage = 'https://placehold.co/150x150';
 
-  // Funktio joka hakee polun ID:n kun komponentti latautuu
+  // Function to fetch path ID when the component loads
   useEffect(() => {
-    getPolkuByName(pathName)
-      .then((polku) => {
-        if (polku) {
-          setPathId(polku.id);
+    getPathByName(pathName)
+      .then((path) => {
+        if (path) {
+          setPathId(path.id);
         } else {
-          setError(`Polkua nimellä "${pathName}" ei löytynyt.`);
+          setError(`Path with the name "${pathName}" was not found.`);
         }
       })
-      .catch(() => setError('Virhe polun haussa'));
+      .catch(() => setError('Error fetching path'));
   }, [pathName]);
 
-  // Funktio joka tallentaa sanan ja placeholder kuvan tietokantaan
+  // Function to save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
-      alert("Syötä sana.");
+      alert("Please enter a word.");
       return;
     }
 
     if (pathId) {
-      addSana(newWord, pathId, placeholderImage)
+      addWord(newWord, pathId, placeholderImage)
         .then(() => navigate(-1))
-        .catch(() => alert("Virhe sanan tallentamisessa."));
+        .catch(() => alert("Error saving the word."));
     } else {
-      alert("Polun ID:tä ei löytynyt.");
+      alert("Path ID not found.");
     }
   };
 
@@ -56,18 +56,18 @@ const NewWord = () => {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Sanan lisäys */}
-      <div className="input-container"><
-        label>Kirjoita uusi sana:</label>
+      {/* Add word */}
+      <div className="input-container">
+        <label>Kirjoita uusi sana:</label>
         <input
           type="text"
           value={newWord}
           onChange={(e) => setNewWord(e.target.value)}
-          placeholder="Kirjoita sana"
+          placeholder="Uusi sana"
         />
       </div>
 
-      {/* Kuvan lisäys */}
+      {/* Add image */}
       <div className="image-upload-container">
         <button className="image-upload-button">
           <FontAwesomeIcon icon={faImage} className="image-icon" />
@@ -76,10 +76,10 @@ const NewWord = () => {
         <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
       </div>
 
-      {/* Napit */}
+      {/* Buttons */}
       <div className="button-container">
         <button className="cancel-button" onClick={() => navigate(-1)}>PERUUTA</button>
-        <button className="save-button" onClick={handleSave}>VALMIS</button>
+        <button className="save-button" onClick={handleSave}>TALLENNA</button>
       </div>
     </div>
   );
