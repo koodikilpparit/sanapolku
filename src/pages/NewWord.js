@@ -14,7 +14,7 @@ const NewWord = () => {
   const [error, setError] = useState(null);
 
   // Placeholder kuvan URL
-  const placeholderImage = '/mrBean.png';
+  const placeholderImage = 'https://placehold.co/150x150';
 
   // Funktio joka hakee polun ID:n kun komponentti latautuu
   useEffect(() => {
@@ -56,7 +56,7 @@ const NewWord = () => {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Input field for the new word */}
+      {/* Sanan lisäys */}
       <div className="input-container"><
         label>Kirjoita uusi sana:</label>
         <input
@@ -67,7 +67,7 @@ const NewWord = () => {
         />
       </div>
 
-      {/* Image upload and placeholder */}
+      {/* Kuvan lisäys */}
       <div className="image-upload-container">
         <button className="image-upload-button">
           <FontAwesomeIcon icon={faImage} className="image-icon" />
@@ -76,7 +76,7 @@ const NewWord = () => {
         <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
       </div>
 
-      {/* Buttons */}
+      {/* Napit */}
       <div className="button-container">
         <button className="cancel-button" onClick={() => navigate(-1)}>PERUUTA</button>
         <button className="save-button" onClick={handleSave}>VALMIS</button>
