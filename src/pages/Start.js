@@ -9,8 +9,8 @@ function Start() {
 
     return (
         <div className="start-page">
-            <div className="top-bar">
-            <SettingsButton/>
+            <div className="settings-button">
+                <SettingsButton/>
             </div>
             <div className="center-area">
                 <div className="logo">
