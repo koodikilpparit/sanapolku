@@ -32,7 +32,7 @@ const PathSelection = () => {
           alert(error.message);
         });
     } else {
-      alert('Please enter a path name');
+      alert('Anna polulle nimi');
     }
   };
 

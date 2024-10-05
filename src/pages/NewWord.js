@@ -32,7 +32,7 @@ const NewWord = () => {
   // Function to save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
-      alert("Please enter a word.");
+      alert("Syötä sana");
       return;
     }
 
