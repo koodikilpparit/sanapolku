@@ -9,7 +9,7 @@ function GameMenu() {
     <div>
         <h2>Valitse polku</h2>
         <button onClick={() => navigate('/')}>Takaisin</button>
-        <button>Omat polut</button>
+        <button onClick={() => navigate('/omatpolut')}>Omat polut</button>
         <ImageUploader/>
     </div>
   );
