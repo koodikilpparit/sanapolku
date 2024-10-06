@@ -1,13 +1,22 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import BackButton from "../components/instructions/BackButton";
+import InstructionsText from "../components/instructions/InstructionsText";
 
 function Instructions() {
-  const navigate = useNavigate();
   
   return (
     <div>
-      <h2>Pelin ohjeet</h2>
-      <button onClick={() => navigate('/')}>Takaisin</button>
+      <div className="back-button">
+        <BackButton/>
+      </div>
+      <div className="center-area">
+        <div className="header">
+          <h2>Pelin ohjeet</h2>
+        </div>
+          <div className="instructions-text">
+            <InstructionsText/>
+        </div>
+      </div>
     </div>
   );
 }
