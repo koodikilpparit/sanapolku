@@ -1,12 +1,13 @@
 import React from 'react';
 import BackButton from "../components/instructions/BackButton";
 import InstructionsText from "../components/instructions/InstructionsText";
+import "./Instructions.css"
 
 function Instructions() {
   
   return (
-    <div>
-      <div className="back-button">
+    <div className="instructions-page">
+      <div className="top-bar">
         <BackButton/>
       </div>
       <div className="center-area">
