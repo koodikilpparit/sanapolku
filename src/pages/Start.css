@@ -1,23 +1,26 @@
 /* src/components/pages/Start.css */
 
 .start-page {
+    display: grid;
+    grid-template-areas: 
+        "top-bar";
     background-color: #06705B;
     height: 100vh;
 }
 
-.center-area {
-    display: grid;
-    justify-items: center;
-    margin-bottom: 32px;
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    width: 50px;
+    margin-top: 40px;
+    margin-left: 16px;
 }
 
 .settings-button {
-    display: flex;
-    justify-content: flex-start;
     background: none;
     border: none;
-    margin-left: 16px;
-    margin-top: 32px;
 }
 
 .settings-icon {
@@ -26,28 +29,14 @@
     height: 72px;
 }
 
-.start-button {
-    background-color: white;
-    color: var(--Dark-Blue, #293642);
-    border: none;
-    border-radius: 10px;
-    box-shadow: none;
-    text-align: center;
-    width: 540px;
-    height: 60px;
-    /* Mobile/Headline large */
-    font-family: Verdana;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 40px;
-    margin-bottom: 10px;
+.center-area {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.start-icon {
-    margin-right: 16px;
-}
-
+.start-button,
 .help-button {
     background-color: white;
     color: var(--Dark-Blue, #293642);
@@ -56,12 +45,15 @@
     text-align: center;
     width: 540px;
     height: 60px;
-    /* Mobile/Headline large */
     font-family: Verdana;
     font-size: 28px;
-    font-style: normal;
     font-weight: 700;
     line-height: 40px;
+    margin-bottom: 10px;
+}
+
+.start-icon {
+    margin-right: 16px;
 }
 
 .help-icon {
@@ -102,3 +94,4 @@
     justify-content: center;
     align-items: center;
 }
+

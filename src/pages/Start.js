@@ -9,7 +9,7 @@ function Start() {
 
     return (
         <div className="start-page">
-            <div className="settings-button">
+            <div className="top-bar">
                 <SettingsButton/>
             </div>
             <div className="center-area">
