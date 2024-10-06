@@ -9,7 +9,6 @@ const ManagePath = () => {
   const { pathName } = useParams();
   const navigate = useNavigate();
   const [words, setWords] = useState([]);
-  const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
 
   // Function to fetch words for the path when the component loads
@@ -17,7 +16,6 @@ const ManagePath = () => {
     getPathByName(pathName)
       .then((path) => {
         if (path) {
-          setPathId(path.id);
           return getWordsForPath(path.id);
         } else {
           setError(`Path with the name "${pathName}" was not found.`);
