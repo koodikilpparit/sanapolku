@@ -1,5 +1,6 @@
 /* src/components/pages/Start.css */
 
+/* Default style */
 .start-page {
     display: grid;
     grid-template-areas: 
@@ -12,10 +13,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    height: 50px;
-    width: 50px;
-    margin-top: 40px;
-    margin-left: 16px;
+    grid-area: top-bar;
+    position: absolute;
+    top: 32px;
+    left: 32px;
 }
 
 .settings-button {
@@ -95,3 +96,198 @@
     align-items: center;
 }
 
+/* Style for Phones in Portrait mode */
+@media (max-width: 650px) {
+    .start-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-area: top-bar;
+        position: absolute;
+        top: 16px;
+        left: 8px;
+    }
+
+    .settings-button {
+        background: none;
+        border: none;
+    }
+
+    .settings-icon {
+        color: white;
+        width: 62px;
+        height: 62px;
+    }
+
+    .center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    .start-button,
+    .help-button {
+        background-color: white;
+        color: var(--Dark-Blue, #293642);
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        width: 95%;
+        height: 55px;
+        font-family: Verdana;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 40px;
+        margin-bottom: 10px;
+    }
+
+    .start-icon {
+        margin-right: 16px;
+    }
+
+    .help-icon {
+        margin-right: 16px;
+    }
+
+    .logo {
+        display: flex; 
+        flex-direction: column;
+        align-items: flex-start;
+        font-family: Verdana;
+        font-size: 30.857px;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .logo-upper {
+        display: flex;                 
+        gap: 2px;      
+        margin-bottom: 5px;                 
+    }
+
+    .logo-lower {
+        display: flex;
+        margin-left: 60px;                  
+        gap: 2px;     
+        margin-bottom: 35px;                    
+    }
+
+    .letter-tile {
+        border-radius: 8.571px;
+        border: 0.857px solid #000;
+        background-color: white;
+        width: 55.143px;
+        height: 55.143px;
+        color: var(--Black, #232323);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Style for Phones in Horizontal mode */
+@media (max-height: 450px) {
+    .start-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-area: top-bar;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+    }
+
+    .settings-button {
+        background: none;
+        border: none;
+    }
+
+    .settings-icon {
+        color: white;
+        width: 62px;
+        height: 62px;
+    }
+
+    .center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .start-button,
+    .help-button {
+        background-color: white;
+        color: var(--Dark-Blue, #293642);
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        width: 540px;
+        height: 60px;
+        font-family: Verdana;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 40px;
+        margin-bottom: 10px;
+    }
+
+    .start-icon {
+        margin-right: 16px;
+    }
+
+    .help-icon {
+        margin-right: 16px;
+    }
+
+    .logo {
+        display: flex; 
+        flex-direction: column;
+        align-items: flex-start;
+        font-family: Verdana;
+        font-size: 36.286px;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .logo-upper {
+        display: flex;                 
+        gap: 5px;      
+        margin-bottom: 5px;                 
+    }
+
+    .logo-lower {
+        display: flex;
+        margin-left: 72.65px;                  
+        gap: 5px;     
+        margin-bottom: 35px;                    
+    }
+
+    .letter-tile {
+        border-radius: 8.571px;
+        border: 0.857px solid #000;
+        background-color: white;
+        width: 65.714px;
+        height: 65.714px;
+        color: var(--Black, #232323);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
