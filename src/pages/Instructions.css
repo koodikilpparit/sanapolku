@@ -1,0 +1,66 @@
+/* src/pages/Instructions.css */
+
+.instructions-page {
+    display: grid;
+    grid-template-areas: 
+        "top-bar";
+    background-color: #06705B;
+    height: 100vh;
+}
+
+.ins-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    width: 50px;
+    grid-area: top-bar;
+    position: absolute;
+    top: 32px;
+    left: 32px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    height: 48px;
+    width: 30px;
+}
+
+.back-icon {
+    color: #FFF;
+    height: 48px;
+    width: 30px;
+}
+
+.ins-center-area {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    color: #FFF;
+    text-align: center;
+    /* Mobile/Display small */
+    font-family: Verdana;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 44px; /* 122.222% */
+    grid-column: header;
+}
+
+.instructions-text {
+    color: #FFF;
+    text-align: center;
+    /* Tablet/Body large */
+    font-family: Verdana;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; /* 155.556% */
+    width: 600px;
+    grid-column: instructions-text;
+}
