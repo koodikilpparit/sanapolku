@@ -10,6 +10,7 @@ const PathSelection = () => {
   const navigate = useNavigate();
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch all paths from the database when the component loads
   useEffect(() => {
@@ -25,6 +26,7 @@ const PathSelection = () => {
         .then(() => {
           setPaths([...paths, newPath]);
           setNewPath('');
+          setIsModalOpen(false);
           console.log('Path added:', newPath);
         })
         .catch((error) => {
@@ -41,26 +43,25 @@ const PathSelection = () => {
     navigate(`/muokaapolkua/${path}`);
   };
 
+  // Function to open the modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNewPath('');
+  };
+
   return (
     <div className="paths-page">
 
       {/* Header */}
-      <div className="header">
+      <div className="path-selection-header">
         <BackButton />
         <h2 className="title">Polut</h2>
-        <FontAwesomeIcon icon={faPlus} className="add-path-icon" />
-      </div>
-
-      {/* Input for adding a new path */}
-      <div className="input-section">
-        <input
-          type="text"
-          value={newPath}
-          onChange={(e) => setNewPath(e.target.value)}
-          placeholder="Anna polun nimi"
-          className="path-input"
-        />
-        <button className="add-path-button" onClick={handleAddPath}>Lisää polku</button>
+        <FontAwesomeIcon icon={faPlus} className="add-path-icon" onClick={openModal} />
       </div>
 
       {/* List of paths */}
@@ -75,6 +76,26 @@ const PathSelection = () => {
           <p className="no-paths">Ei polkuja.</p>
         )}
       </div>
+
+      {/* Modal for adding a new path */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Lisää Uusi Polku</h2>
+            <input
+              type="text"
+              value={newPath}
+              onChange={(e) => setNewPath(e.target.value)}
+              placeholder="Anna polun nimi"
+              className="modal-input"
+            />
+            <div className="modal-buttons">
+              <button className="cancel-button" onClick={closeModal}>Peruuta</button>
+              <button className="save-button" onClick={handleAddPath}>Tallenna</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
