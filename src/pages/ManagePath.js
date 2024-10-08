@@ -45,7 +45,7 @@ const ManagePath = () => {
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <h2 className="title">Lisää sanoja</h2>
+        <h2>Lisää sanoja</h2>
       </div>
 
       {/* Word List */}
