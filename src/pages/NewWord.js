@@ -47,39 +47,43 @@ const NewWord = () => {
 
   return (
     <div className="word-page">
-
       {/* Header */}
       <div className="new-word-header">
         <BackButton />
-        <h2 className="title">Uusi sana</h2>
+        <h2>Uusi sana</h2>
       </div>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Add word */}
-      <div className="input-container">
-        <label>Kirjoita uusi sana:</label>
-        <input
-          type="text"
-          value={newWord}
-          onChange={(e) => setNewWord(e.target.value)}
-          placeholder="Uusi sana"
-        />
-      </div>
+      {/* Container*/}
+      <div className="new-word-container">
 
-      {/* Add image */}
-      <div className="image-upload-container">
-        <button className="image-upload-button">
-          <FontAwesomeIcon icon={faImage} className="image-icon" />
-          Lisää kuva
-        </button>
-        <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
-      </div>
+        {/* Add word */}
+        <div className="input-container">
+          <label>Kirjoita uusi sana:</label>
+          <input
+            type="text"
+            value={newWord}
+            onChange={(e) => setNewWord(e.target.value)}
+            placeholder="Uusi sana"
+          />
+        </div>
 
-      {/* Buttons */}
-      <div className="button-container">
-        <button className="cancel-button" onClick={() => navigate(-1)}>PERUUTA</button>
-        <button className="save-button" onClick={handleSave}>TALLENNA</button>
+        {/* Add image */}
+        <div className="image-upload-container">
+          <button className="image-upload-button">
+            <FontAwesomeIcon icon={faImage} className="image-icon" />
+            Lisää kuva
+          </button>
+          <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
+        </div>
+
+        {/* Buttons */}
+        <div className="button-container">
+          <button className="nw-cancel-button" onClick={() => navigate(-1)}>PERUUTA</button>
+          <button className="nw-save-button" onClick={handleSave}>VALMIS</button>
+        </div>
+
       </div>
     </div>
   );
