@@ -1,16 +1,16 @@
 import React from 'react';
 import BackButton from "../components/instructions/BackButton";
 import InstructionsText from "../components/instructions/InstructionsText";
-import "./Instructions.css"
+import "./Instructions.css";
 
 function Instructions() {
   
   return (
     <div className="instructions-page">
-      <div className="top-bar">
-        <BackButton/>
+      <div className="ins-top-bar">
+        <BackButton className="back-button"/>
       </div>
-      <div className="center-area">
+      <div className="ins-center-area">
         <div className="header">
           <h2>Pelin ohjeet</h2>
         </div>
