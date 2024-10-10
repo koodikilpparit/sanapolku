@@ -1,4 +1,4 @@
-/* eslint-env node */ //This allows using global. This is text test for successful linting.
+/* eslint-env node */ //This allows using global.
 
 import { openDB, addPath, getAllPaths, getPathByName, addWord, getWordsForPath, deleteWord } from './db';
 
