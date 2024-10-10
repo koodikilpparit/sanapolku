@@ -26,7 +26,7 @@ export function openDB(name) {
             resolve(event.target.result);
         };
 
-        request.onerror = (event) => {
+        request.onerror = (_event) => {
             reject("Failed to open the database");
         };
     });
@@ -59,7 +59,7 @@ export function getAllPaths() {
                 resolve(event.target.result || []);
             };
 
-            request.onerror = (event) => {
+            request.onerror = (_event) => {
                 reject("Failed to retrieve paths");
             };
         });
@@ -79,7 +79,7 @@ export function getPathByName(name) {
                 resolve(event.target.result || null);
             };
 
-            request.onerror = (event) => {
+            request.onerror = (_event) => {
                 reject('Error retrieving the path');
             };
         });
@@ -103,7 +103,7 @@ export function addWord(word, pathId, img) {
                 resolve();
             };
 
-            request.onerror = (event) => {
+            request.onerror = (_event) => {
                 reject("Error saving the word");
             };
         });
@@ -127,7 +127,7 @@ export function getWordsForPath(pathId) {
                 resolve(event.target.result || []);
             };
 
-            request.onerror = (event) => {
+            request.onerror = (_event) => {
                 reject("Error retrieving words");
             };
         });
@@ -146,7 +146,7 @@ export function deleteWord(wordId) {
                 resolve();
             };
 
-            request.onerror = (event) => {
+            request.onerror = (_event) => {
                 reject("Error deleting the word");
             };
         });

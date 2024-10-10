@@ -1,5 +1,6 @@
 // src/components/start/LetterTile.js
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function LetterTile({letter}) {
 
@@ -9,5 +10,9 @@ function LetterTile({letter}) {
         </div>
     );
 }
+
+LetterTile.propTypes = {
+    letter: PropTypes.string.isRequired
+  };
 
 export default LetterTile;

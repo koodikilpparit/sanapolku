@@ -3,7 +3,7 @@ import SettingsButton from "../components/start/SettingsButton";
 import StartButton from "../components/start/StartButton";
 import HelpButton from "../components/start/HelpButton";
 import LetterTile from "../components/start/LetterTile";
-import "./Start.css"
+import "./Start.css";
 
 function Start() {
 
