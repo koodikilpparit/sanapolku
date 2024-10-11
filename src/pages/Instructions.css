@@ -56,11 +56,138 @@
     text-align: center;
     /* Tablet/Body large */
     font-family: Verdana;
-    font-size: 18px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 400;
-    line-height: 28px; /* 155.556% */
-    width: 600px;
+    line-height: 28px;
+    width: 70%;
+}
+
+/* Style for Phones in Portrait mode */
+@media (max-width: 650px) {
+    .instructions-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+    }
+
+    .ins-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 50px;
+        width: 50px;
+        grid-area: top-bar;
+        position: absolute;
+        top: 32px;
+        left: 18px;
+    }
+
+    .ins-back-button {
+        background: none;
+        border: none;
+        height: 48px;
+        width: 30px;
+    }
+
+    .back-icon {
+        color: #FFF;
+        height: 48px;
+        width: 30px;
+    }
+
+    .ins-center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ins-header {
+        color: #FFF;
+        text-align: center;
+        font-family: Verdana;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        height: 80px;
+    }
+
+    .instructions-text {
+        color: #FFF;
+        text-align: center;
+        font-family: Verdana;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        width: 80%;
+    }
+}
+
+/* Style for Phones in Horizontal mode */
+@media (max-height: 450px) {
+    .instructions-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+    }
+
+    .ins-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 50px;
+        width: 50px;
+        grid-area: top-bar;
+        position: absolute;
+        top: 32px;
+        left: 32px;
+    }
+
+    .ins-back-button {
+        background: none;
+        border: none;
+        height: 48px;
+        width: 30px;
+    }
+
+    .back-icon {
+        color: #FFF;
+        height: 48px;
+        width: 30px;
+    }
+
+    .ins-center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ins-header {
+        color: #FFF;
+        text-align: center;
+        font-family: Verdana;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+	height: 80px;
+    }
+
+    .instructions-text {
+        color: #FFF;
+        text-align: center;
+        font-family: Verdana;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        width: 80%;
+        margin-bottom: 60px;
+    }
 }
 
 
