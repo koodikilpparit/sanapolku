@@ -8,10 +8,10 @@ function Instructions() {
   return (
     <div className="instructions-page">
       <div className="ins-top-bar">
-        <BackButton className="back-button"/>
+        <BackButton className="ins-back-button"/>
       </div>
       <div className="ins-center-area">
-        <div className="header">
+        <div className="ins-header">
           <h2>Pelin ohjeet</h2>
         </div>
           <div className="instructions-text">
