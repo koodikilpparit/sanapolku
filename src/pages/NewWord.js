@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addWord, getPathByName } from '../db/db';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../ImageUploader';
