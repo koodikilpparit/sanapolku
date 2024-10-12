@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
+import ImageUploader from '../ImageUploader';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const NewWord = () => {
   const [newWord, setNewWord] = useState('');
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
+  const [imageData, setImageData] = useState(null);
 
   // Placeholder image URL
   const placeholderImage = 'https://placehold.co/150x150';
@@ -36,8 +38,10 @@ const NewWord = () => {
       return;
     }
 
+    const imageToSave = imageData || placeholderImage;
+
     if (pathId) {
-      addWord(newWord, pathId, placeholderImage)
+      addWord(newWord, pathId, imageToSave)
         .then(() => navigate(-1))
         .catch(() => alert("Error saving the word."));
     } else {
@@ -75,6 +79,9 @@ const NewWord = () => {
         </button>
         <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
       </div>
+
+      {/* Upload image */}
+      <ImageUploader setImageData={setImageData} />
 
       {/* Buttons */}
       <div className="button-container">
