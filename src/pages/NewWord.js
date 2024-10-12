@@ -71,15 +71,6 @@ const NewWord = () => {
         />
       </div>
 
-      {/* Add image */}
-      <div className="image-upload-container">
-        <button className="image-upload-button">
-          <FontAwesomeIcon icon={faImage} className="image-icon" />
-          Lisää kuva
-        </button>
-        <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
-      </div>
-
       {/* Upload image */}
       <ImageUploader setImageData={setImageData} />
 
