@@ -26,8 +26,8 @@ const PathSelection = () => {
         .then(() => {
           setPaths([...paths, newPath]);
           setNewPath('');
-          setIsModalOpen(false);
           console.log('Path added:', newPath);
+          setIsModalOpen(false);
         })
         .catch((error) => {
           console.error(error.message);
@@ -61,7 +61,7 @@ const PathSelection = () => {
       <div className="path-selection-header">
         <BackButton />
         <h2 className="title">Polut</h2>
-        <FontAwesomeIcon icon={faPlus} className="add-path-icon" onClick={openModal} />
+        <FontAwesomeIcon icon={faPlus} className="add-path-icon" onClick={openModal} aria-label='Lisää uusi polku' />
       </div>
 
       {/* List of paths */}

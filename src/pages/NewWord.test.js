@@ -43,7 +43,7 @@ describe('NewWord Component UI Tests', () => {
         expect(input.value).toBe('test word');
     });
 
-    it('should trigger the handleSave function when "TALLENNA" button is clicked', () => {
+    it('should trigger the handleSave function when "VALMIS" button is clicked', () => {
         render(
             <BrowserRouter>
                 <NewWord />
@@ -54,7 +54,7 @@ describe('NewWord Component UI Tests', () => {
         window.alert = jest.fn();
 
         // Get the save button and simulate a click
-        const saveButton = screen.getByText('TALLENNA');
+        const saveButton = screen.getByText('VALMIS');
         expect(saveButton).toBeInTheDocument();
         fireEvent.click(saveButton);
 
