@@ -1,15 +1,11 @@
 /* src/components/pages/Start.css */
 
-html, body {
-    height: 100%;
-    background-color: #06705B;
-}
-
 /* Default style */
 .start-page {
     display: grid;
     grid-template-areas: 
         "top-bar";
+    background-color: #06705B;
     height: 100vh;
 }
 
@@ -19,8 +15,8 @@ html, body {
     justify-content: flex-start;
     grid-area: top-bar;
     position: absolute;
-    top: 32px;
-    left: 32px;
+    top: 24px;
+    left: 24px;
 }
 
 .settings-button {
@@ -32,6 +28,7 @@ html, body {
     color: white;
     width: 72px;
     height: 72px;
+    margin-right: 2vw;
 }
 
 .center-area {
@@ -83,7 +80,7 @@ html, body {
 
 .logo-lower {
     display: flex;
-    margin-left: 185.428px;                  
+    margin-left: calc(2 * 85.714px + 2 * 5px + 4 * 0.857px);                  
     gap: 5px;     
     margin-bottom: 35px;                    
 }
@@ -145,12 +142,12 @@ html, body {
         border: none;
         border-radius: 10px;
         text-align: center;
-        width: 95%;
-        height: 55px;
+        width: 90vw;
+        height: max(6vh, 40px);
+        max-height: 48px;
         font-family: Verdana;
-        font-size: 28px;
+        font-size: min(6vw, 24px);
         font-weight: 700;
-        line-height: 40px;
         margin-bottom: 10px;
     }
 
@@ -180,7 +177,7 @@ html, body {
 
     .logo-lower {
         display: flex;
-        margin-left: 60px;                  
+        margin-left: calc(2 * 12vw + 2 * 2px + 4 * 0.857px);                  
         gap: 2px;     
         margin-bottom: 35px;                    
     }
@@ -189,8 +186,8 @@ html, body {
         border-radius: 8.571px;
         border: 0.857px solid #000;
         background-color: white;
-        width: 55.143px;
-        height: 55.143px;
+        width: 12vw;
+        height: 12vw;
         color: var(--Black, #232323);
         display: flex;
         justify-content: center;
@@ -199,7 +196,7 @@ html, body {
 }
 
 /* Style for Phones in Horizontal mode */
-@media (max-height: 450px) {
+@media (max-height: 420px) {
     .start-page {
         display: grid;
         grid-template-areas: 
@@ -215,7 +212,7 @@ html, body {
         grid-area: top-bar;
         position: absolute;
         top: 16px;
-        left: 16px;
+        left: 8px;
     }
 
     .settings-button {
@@ -225,8 +222,8 @@ html, body {
 
     .settings-icon {
         color: white;
-        width: 62px;
-        height: 62px;
+        width: 52px;
+        height: 52px;
     }
 
     .center-area {
@@ -278,7 +275,7 @@ html, body {
 
     .logo-lower {
         display: flex;
-        margin-left: 72.65px;                  
+        margin-left: calc(2 * 65.714px + 2 * 5px + 4 * 0.867px);                  
         gap: 5px;     
         margin-bottom: 35px;                    
     }
@@ -289,6 +286,302 @@ html, body {
         background-color: white;
         width: 65.714px;
         height: 65.714px;
+        color: var(--Black, #232323);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Style for extremely narrow screens in portrait mode */
+@media (max-width: 360px) {
+    .start-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-area: top-bar;
+        position: absolute;
+        top: 3vw;
+        left: 2vw;
+    }
+
+    .settings-button {
+        background: none;
+        border: none;
+    }
+
+    .settings-icon {
+        color: white;
+        width: 18vw;
+        height: 18vw;
+    }
+
+    .center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    .start-button,
+    .help-button {
+        background-color: white;
+        color: var(--Dark-Blue, #293642);
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        width: 95vw;
+        height: 12vw;
+        font-family: Verdana;
+        font-size: 6vw;
+        font-weight: 700;
+        margin-bottom: 2vw;
+        line-height: normal;
+    }
+
+    .start-icon {
+        margin-right: 4vw;
+    }
+
+    .help-icon {
+        margin-right: 4vw;
+    }
+
+    .logo {
+        display: flex; 
+        flex-direction: column;
+        align-items: flex-start;
+        font-family: Verdana;
+        font-size: 7vw;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .logo-upper {
+        display: flex;                 
+        gap: 0.5vw;      
+        margin-bottom: 1vw;                 
+    }
+
+    .logo-lower {
+        display: flex;                 
+        gap: 0.5vw;     
+        margin-bottom: 10vw; 
+        margin-left: calc(2 * 12vw + 2 * 0.5vw + 4 * min(0.5vw, 0.0085px));                
+    }
+
+    .letter-tile {
+        border-radius: 2vw;
+        border: min(0.5vw, 0.0085px) solid #000;
+        background-color: white;
+        width: 12vw;
+        height: 12vw;
+        color: var(--Black, #232323);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+/* Style for the narrowest possible screens in portrait mode */
+@media (max-width: 200px) {
+    .start-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-area: top-bar;
+        position: absolute;
+        top: 3vw;
+        left: 2vw;
+    }
+
+    .settings-button {
+        background: none;
+        border: none;
+    }
+
+    .settings-icon {
+        color: white;
+        width: 18vw;
+        height: 18vw;
+    }
+
+    .center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    .start-button,
+    .help-button {
+        background-color: white;
+        color: var(--Dark-Blue, #293642);
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        width: 95vw;
+        height: 15vw;
+        font-family: Verdana;
+        font-size: 6vw;
+        font-weight: 700;
+        margin-bottom: 5vw;
+        line-height: normal;
+    }
+
+    .start-icon {
+        margin-right: 4vw;
+    }
+
+    .help-icon {
+        margin-right: 4vw;
+    }
+
+    .logo {
+        display: flex; 
+        flex-direction: column;
+        align-items: flex-start;
+        font-family: Verdana;
+        font-size: 7vw;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .logo-upper {
+        display: flex;                 
+        gap: 0.5vw;      
+        margin-bottom: 1vw;                 
+    }
+
+    .logo-lower {
+        display: flex;
+        margin-left: max(calc(2 * 12vw + 2 * 0.5vw + 4 * min(0.5vw, 0.0085px)), 0vw);                  
+        gap: 0.5vw;     
+        margin-bottom: 10vw;                    
+    }
+
+    .letter-tile {
+        border-radius: 2vw;
+        border: min(0.5vw, 0.0085px) solid #000;
+        background-color: white;
+        width: 10vw;
+        height: 10vw;
+        color: var(--Black, #232323);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Style for extremely narrow screens in Horizontal mode */
+@media (max-height: 320px) {
+    .start-page {
+        display: grid;
+        grid-template-areas: 
+            "top-bar";
+        background-color: #06705B;
+        height: 100vh;
+        overflow-y: hidden;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-area: top-bar;
+        position: absolute;
+        top: 2vh;
+        left: 2vh;
+    }
+
+    .settings-button {
+        background: none;
+        border: none;
+    }
+
+    .settings-icon {
+        color: white;
+        width: 20vh;
+        height: 20vh;
+    }
+
+    .center-area {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .start-button,
+    .help-button {
+        background-color: white;
+        color: var(--Dark-Blue, #293642);
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        width: 60vw;
+        height: 20vh;
+        font-family: Verdana;
+        font-size: 10vh;
+        font-weight: 700;
+        margin-bottom: 2vh;
+        line-height: normal;
+    }
+
+    .start-icon {
+        margin-right: 2vw;
+    }
+
+    .help-icon {
+        margin-right: 2vw;
+    }
+
+    .logo {
+        display: flex; 
+        flex-direction: column;
+        align-items: flex-start;
+        font-family: Verdana;
+        font-size: 12vh;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .logo-upper {
+        display: flex;                 
+        gap: 1vh;      
+        margin-bottom: 1vh;                 
+    }
+
+    .logo-lower {
+        display: flex;
+        margin-left: calc(2 * 22vh + 2 * 1vh + 4 * 0.857px);                  
+        gap: 1vh;     
+        margin-bottom: 5vh;                    
+    }
+
+    .letter-tile {
+        border-radius: 8.571px;
+        border: 0.857px solid #000;
+        background-color: white;
+        width: 22vh;
+        height: 22vh;
         color: var(--Black, #232323);
         display: flex;
         justify-content: center;
