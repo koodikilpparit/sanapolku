@@ -1,0 +1,120 @@
+.word-page {
+    background-color: #06705B;
+    height: 100vh;
+}
+
+.new-word-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 10px;
+    width: 100%;
+}
+
+.title {
+    flex-grow: 1;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.back-button {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 20px auto; /* Center the input */
+}
+
+.input-container label {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.image-upload-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.image-upload-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #06705B;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.image-upload-button img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.image-placeholder {
+    width: 150px;
+    height: 150px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.cancel-button, .save-button {
+    padding: 15px 15px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    width: 40%;
+    text-align: center;
+}
+
+.cancel-button {
+    background-color: #8A0A2A;
+    color: white;
+}
+
+.save-button {
+    background-color: #72A895;
+    color: white;
+}
+
+.image-icon {
+    color:white;
+    font-size: 60px;
+    margin-right: 10px;
+}
