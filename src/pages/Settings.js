@@ -41,16 +41,18 @@ const Settings = () => {
         <div className="settings">
           <h3> Asetukset </h3>
           <div className="setting-item">
-            <span>Äänet</span>
+            <label htmlFor="sounds-checkbox">Äänet</label>
             <input
+              id="sounds-checkbox"
               type="checkbox"
               checked={sounds}
               onChange={() => setSounds(!sounds)}
             />
           </div>
           <div className="setting-item">
-            <span>Musiikki</span>
+            <label htmlFor="music-checkbox">Musiikki</label>
             <input
+              id="music-checkbox"
               type="checkbox"
               checked={music}
               onChange={() => setMusic(!music)}

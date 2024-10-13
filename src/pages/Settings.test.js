@@ -1,45 +1,48 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import { BrowserRouter as Router } from "react-router-dom";
 import Settings from "./Settings";
 import { SettingsContext } from "../contexts/SettingsContext";
 
 describe("Settings Component", () => {
-  const mockSetSounds = jest.fn();
-  const mockSetMusic = jest.fn();
+    const mockSetSounds = jest.fn();
+    const mockSetMusic = jest.fn();
 
-  const renderSettings = (sounds = true, music = true) => {
-    render(
-      <SettingsContext.Provider
-        value={{
-          sounds,
-          setSounds: mockSetSounds,
-          music,
-          setMusic: mockSetMusic,
-        }}
-      >
-        <Settings />
-      </SettingsContext.Provider>
-    );
-  };
+    const renderComponent = (sounds = true, music = true) => {
+        render(
+            <Router>
+                <SettingsContext.Provider
+                    value={{ sounds, setSounds: mockSetSounds, music, setMusic: mockSetMusic }}
+                >
+                    <Settings />
+                </SettingsContext.Provider>
+            </Router>
+        );
+    };
 
-  test("renders settings toggles correctly", () => {
-    renderSettings();
-    expect(screen.getByText("Äänet")).toBeInTheDocument();
-    expect(screen.getByText("Musiikki")).toBeInTheDocument();
-  });
+    test("renders Logout component", () => {
+        renderComponent();
+        expect(screen.getByText("Kirjaudu ulos")).toBeInTheDocument();
+    });
 
-  test("toggles sounds setting", () => {
-    renderSettings();
-    const soundsCheckbox = screen.getByLabelText("Äänet");
-    fireEvent.click(soundsCheckbox);
-    expect(mockSetSounds).toHaveBeenCalledWith(false);
-  });
+    test("renders sound and music settings", () => {
+        renderComponent();
+        expect(screen.getByText("Äänet")).toBeInTheDocument();
+        expect(screen.getByText("Musiikki")).toBeInTheDocument();
+    });
 
-  test("toggles music setting", () => {
-    renderSettings();
-    const musicCheckbox = screen.getByLabelText("Musiikki");
-    fireEvent.click(musicCheckbox);
-    expect(mockSetMusic).toHaveBeenCalledWith(false);
-  });
+    test("toggles sound setting", () => {
+        renderComponent();
+        const soundCheckbox = screen.getByLabelText("Äänet");
+        fireEvent.click(soundCheckbox);
+        expect(mockSetSounds).toHaveBeenCalledWith(false);
+    });
+
+    test("toggles music setting", () => {
+        renderComponent();
+        const musicCheckbox = screen.getByLabelText("Musiikki");
+        fireEvent.click(musicCheckbox);
+        expect(mockSetMusic).toHaveBeenCalledWith(false);
+    });
+
 });
