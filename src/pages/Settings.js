@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import BackButton from '../components/universal/BackButton';
-import '../styles/Settings.css';
-import { SettingsContext } from '../contexts/SettingsContext';
+import React, { useState } from "react";
+import BackButton from "../components/universal/BackButton";
+import "../styles/Settings.css";
+import { SettingsContext } from "../contexts/SettingsContext";
 
 /**
  * Settings component renders the settings page of the application.
@@ -16,10 +16,11 @@ import { SettingsContext } from '../contexts/SettingsContext';
  * @returns {JSX.Element} The rendered settings page.
  */
 const Settings = () => {
-  const { sounds, setSounds, music, setMusic } = React.useContext(SettingsContext);
-  const avatar = 'https://placehold.co/150x150';
-  const name = 'Matti Meikäläinen';
-  const id = '12345';
+  const { sounds, setSounds, music, setMusic } =
+    React.useContext(SettingsContext);
+  const avatar = "https://placehold.co/150x150";
+  const name = "Matti Meikäläinen";
+  const id = "12345";
 
   return (
     <div className="settings-container">
@@ -59,14 +60,16 @@ const Settings = () => {
 
         <div className="about-info">
           <h3>Tietoa sovelluksesta</h3>
+          <p>Kuvat: Papunetin kuvapankki,</p>
           <p>
-            Kuvat: Papunetin kuvapankki,
+            Sovelluksen kehittäjät: Anni Nieminen, Eveliina Sundberg, Neera
+            Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto "Reine"
+            Majakangas{" "}
           </p>
-          <p>Sovelluksen kehittäjät: Anni Nieminen, Eveliina Sundberg, Neera Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto "Reine" Majakangas </p>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Settings;

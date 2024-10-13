@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from "react";
 
 export const SettingsContext = createContext();
 
@@ -13,21 +13,21 @@ export const SettingsContext = createContext();
  */
 export const SettingsProvider = ({ children }) => {
   const [sounds, setSounds] = useState(() => {
-    const savedSounds = localStorage.getItem('sounds');
+    const savedSounds = localStorage.getItem("sounds");
     return savedSounds !== null ? JSON.parse(savedSounds) : true;
   });
 
   const [music, setMusic] = useState(() => {
-    const savedMusic = localStorage.getItem('music');
+    const savedMusic = localStorage.getItem("music");
     return savedMusic !== null ? JSON.parse(savedMusic) : true;
   });
 
   useEffect(() => {
-    localStorage.setItem('sounds', JSON.stringify(sounds));
+    localStorage.setItem("sounds", JSON.stringify(sounds));
   }, [sounds]);
 
   useEffect(() => {
-    localStorage.setItem('music', JSON.stringify(music));
+    localStorage.setItem("music", JSON.stringify(music));
   }, [music]);
 
   return (
