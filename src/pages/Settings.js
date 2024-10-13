@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import BackButton from '../components/universal/BackButton';
 import '../styles/Settings.css';
+import { SettingsContext } from '../contexts/SettingsContext';
 
+/**
+ * Settings component renders the settings page of the application.
+ * It allows users to toggle sound and music settings, and displays user information.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Settings />
+ * )
+ *
+ * @returns {JSX.Element} The rendered settings page.
+ */
 const Settings = () => {
-  const navigate = useNavigate();
-  const [sounds, setSounds] = useState(true);
-  const [music, setMusic] = useState(false);
+  const { sounds, setSounds, music, setMusic } = React.useContext(SettingsContext);
   const avatar = 'https://placehold.co/150x150';
   const name = 'Matti Meikäläinen';
   const id = '12345';
