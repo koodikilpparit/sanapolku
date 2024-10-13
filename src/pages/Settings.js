@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import BackButton from "../components/universal/BackButton";
 import "../styles/Settings.css";
 import { SettingsContext } from "../contexts/SettingsContext";
@@ -18,7 +17,7 @@ import { SettingsContext } from "../contexts/SettingsContext";
 const Settings = () => {
   const { sounds, setSounds, music, setMusic } =
     React.useContext(SettingsContext);
-  const avatar = "https://placehold.co/150x150";
+  // const avatar = "https://placehold.co/150x150";
   const name = "Matti Meikäläinen";
   const id = "12345";
 
