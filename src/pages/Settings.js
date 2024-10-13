@@ -29,7 +29,7 @@ const Settings = () => {
       </header>
 
       <div className="user-info">
-        <img src={avatar} alt="avatar" className="avatar" />
+        {/* <img src={avatar} alt="avatar" className="avatar" /> */}
         <div className="user-details">
           <h3>{name}</h3>
           <p>{id}</p>
@@ -60,10 +60,9 @@ const Settings = () => {
         <div className="about-info">
           <h3>Tietoa sovelluksesta</h3>
           <p>
-            Kuvat: Papunetin kuvapankki, papunet.net, Elina Vanninen, Sergio
-            Palao / ARASAAC ja Sclera.
+            Kuvat: Papunetin kuvapankki,
           </p>
-          <p>Tekijät: Matti, Teppo ja Pekka</p>
+          <p>Sovelluksen kehittäjät: Anni Nieminen, Eveliina Sundberg, Neera Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto "Reine" Majakangas </p>
         </div>
       </div>
     </div>
