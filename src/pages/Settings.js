@@ -1,3 +1,4 @@
+import React from "react";
 import BackButton from "../components/universal/BackButton";
 import "../styles/Settings.css";
 import { SettingsContext } from "../contexts/SettingsContext";
