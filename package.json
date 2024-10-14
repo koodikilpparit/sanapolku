@@ -36,8 +36,8 @@
     "build-localhost": "cross-env PUBLIC_URL=/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "prepare": "husky install"
   },
   "lint-staged": {
