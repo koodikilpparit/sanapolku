@@ -1,50 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import './styles/NewWord.css'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 
-// Component that allows uploading images to IndexeDB
-const ImageUploader = () => {
-    // State to store uploaded images for future need
-    //const [images, setImages] = useState([]);
-    // State for status messages
-    const [message, setMessage] = useState('');
+// Component that allows uploading images
+const ImageUploader = ({ setImageData }) => {
+    // State for uploaded images
+    const [uploadedImage, setUploadedImage] = useState(null); // Store uploaded image for preview
 
-    // Initializes the IndexedDB database
-    useEffect(() => {
-        initDB();
-    }, []);
-
-
-    const initDB = () => {
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open("ImageDatabase", 1); // Opens or creates a new database
-
-            // Event that fires when the database is created or upgraded
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-                // If object stores do not exist, create a new one
-                if (!db.objectStoreNames.contains("images")) {
-                    db.createObjectStore("images", { keyPath: "id", autoIncrement: true });
-                }
-            };
-
-            // Event that fires when the database opening is successful
-            request.onsuccess = (event) => {
-                resolve(event.target.result);
-            };
-
-            // Event that fires if the database opening fails
-            request.onerror = (event) => {
-                console.error("IndexedDB error:", event.target.errorCode);
-                reject(event.target.errorCode);
-            };
-        });
-    };
-
-    // Function that handles file upload
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Checks the filetype
+        // Checks the file type
         const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         if (!validFileTypes.includes(file.type)) {
             alert('Vain JPEG, JPG tai PNG tiedostot hyväksytään.');
@@ -53,40 +22,36 @@ const ImageUploader = () => {
 
         const reader = new FileReader();
         reader.onload = async (e) => {
-            const db = await initDB();
-            const transaction = db.transaction("images", "readwrite");
-            const store = transaction.objectStore("images");
-
-            // Creates an object for the uploaded image
-            const imageRecord = {
-                fileName: file.name,
-                imageData: e.target.result, // Stores in base64 format
-                date: new Date(),
-            };
-
-            store.add(imageRecord); // Adds the image record to the object store
-
-            transaction.oncomplete = () => {
-                console.log("Image saved succesfully!");
-                setMessage("Image uploaded succesfully!");
-            };
-
-            transaction.onerror = (event) => {
-                console.error("Error saving image:", event.target.errorCode);
-                setMessage("Error uploading image.");
-            };
+            setUploadedImage(e.target.result); // Set the uploaded image for preview
+            setImageData(e.target.result); // Pass the image data back to NewWord component
         };
         reader.readAsDataURL(file);
     };
 
-    // Render function for the component
     return (
-        <div>
-            <h3>Lataa omavalintainen kuva laitteeltasi</h3>
-            <input type="file" accept="image/*" onChange={handleFileUpload} />
-            {message && <p>{message}</p>}
+        <div className="image-upload-container">
+            <label className="image-upload-button">
+                <FontAwesomeIcon icon={faImage} className="image-icon" />
+                Lataa kuva
+                <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleFileUpload} 
+                    style={{ display: 'none' }}
+                />
+            </label> 
+            {/* Preview uploaded image */}
+            {uploadedImage ? (
+                <img src={uploadedImage} alt="Esikatselu" className="image-placeholder" />
+            ) : (
+                <img src="https://placehold.co/150x150" alt="Placeholder" className="image-placeholder" />
+            )}
         </div>
     );
+};
+
+ImageUploader.propTypes = {
+    setImageData: PropTypes.func.isRequired,
 };
 
 export default ImageUploader;

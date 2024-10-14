@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addWord, getPathByName } from '../db/db';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
+import ImageUploader from '../ImageUploader';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -12,6 +11,7 @@ const NewWord = () => {
   const [newWord, setNewWord] = useState('');
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
+  const [imageData, setImageData] = useState(null);
 
   // Placeholder image URL
   const placeholderImage = 'https://placehold.co/150x150';
@@ -36,8 +36,10 @@ const NewWord = () => {
       return;
     }
 
+    const imageToSave = imageData || placeholderImage;
+
     if (pathId) {
-      addWord(newWord, pathId, placeholderImage)
+      addWord(newWord, pathId, imageToSave)
         .then(() => navigate(-1))
         .catch(() => alert("Error saving the word."));
     } else {
@@ -69,14 +71,8 @@ const NewWord = () => {
           />
         </div>
 
-        {/* Add image */}
-        <div className="image-upload-container">
-          <button className="image-upload-button">
-            <FontAwesomeIcon icon={faImage} className="image-icon" />
-            Lisää kuva
-          </button>
-          <img src={placeholderImage} alt="Placeholder" className="image-placeholder" />
-        </div>
+      {/* Upload image */}
+      <ImageUploader setImageData={setImageData} />
 
         {/* Buttons */}
         <div className="button-container">
