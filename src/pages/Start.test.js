@@ -5,6 +5,7 @@ import Start from './Start';
 import Settings from './Settings';
 import Instructions from './Instructions';
 import GameMenu from './GameMenu';
+import { SettingsProvider } from '../contexts/SettingsContext';
 
 describe("StartPage", () => {
     // Rendering the start page
@@ -20,10 +21,12 @@ describe("StartPage", () => {
     it('checks if settings-button brings you to /asetukset', () => {
         // Rendering the required pages
         const { container } = render(
-            <BrowserRouter>
-                <Start />
-                <Settings />
-            </BrowserRouter>
+            <SettingsProvider>
+                <BrowserRouter>
+                    <Start />
+                    <Settings />
+                </BrowserRouter>
+            </SettingsProvider>
         );
         
         // Checking that the settings-button is on the start page
