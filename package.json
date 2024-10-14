@@ -33,6 +33,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-localhost": "cross-env PUBLIC_URL=/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
@@ -42,7 +43,8 @@
   "lint-staged": {
     "src/**/*.{js,jsx}": [
       "eslint"
-    ]
+    ],
+    "serve": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
@@ -69,6 +71,7 @@
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "cross-env": "^7.0.3",
     "fake-indexeddb": "^6.0.0",
     "globals": "^15.11.0",
     "husky": "^8.0.0",
