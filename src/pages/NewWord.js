@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addWord, getPathByName } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
-import ImageUploader from '../ImageUploader';
+import ImageUploader from '../components/ImageUploader';
 
 const NewWord = () => {
   const navigate = useNavigate();
