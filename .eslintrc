@@ -2,7 +2,8 @@
     "env": {
       "browser": true,
       "es2021": true,
-      "jest": true
+      "jest": true,
+      "node": true
     },
     "extends": [
       "eslint:recommended",
@@ -12,7 +13,7 @@
       "ecmaFeatures": {
         "jsx": true
       },
-      "ecmaVersion": 12,
+      "ecmaVersion": 2022,
       "sourceType": "module"
     },
     "plugins": [
@@ -24,8 +25,6 @@
       "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       "consistent-return": "error",
       "semi": ["error", "always"],
-      "react/jsx-uses-react": "error",
-      "react/react-in-jsx-scope": "error",
       "react/prop-types": "warn",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",

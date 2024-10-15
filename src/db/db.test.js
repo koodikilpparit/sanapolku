@@ -1,5 +1,3 @@
-/* eslint-env node */ //This allows using global.
-
 import { openDB, addPath, getAllPaths, getPathByName, addWord, getWordsForPath, deleteWord } from './db';
 
 if (typeof structuredClone === 'undefined') {
