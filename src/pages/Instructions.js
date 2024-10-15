@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Instructions() {
   const navigate = useNavigate();
-  
+
   return (
     <div>
       <h2>Pelin ohjeet</h2>

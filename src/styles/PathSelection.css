@@ -1,75 +1,74 @@
 .paths-page {
-    background-color: #06705B;
-    height: 100vh;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .input-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 60%;
-    margin: 0 auto;
-  }
-  
-  .path-input {
-    padding: 10px;
-    font-size: 18px;
-    border-radius: 10px;
-    border: none;
-    width: 300px;
-    margin-right: 10px;
-  }
-  
-  .add-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #5CB85C;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  
-  .path-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .path-item {
-    background-color: #fff;
-    color: #000000;
-    padding: 15px 20px;
-    margin: 10px 0;
-    border-radius: 10px;
-    width: 40%;
-    font-size: 32px;
-    font-weight: bold;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    text-transform: capitalize;
-  }
-  
-  
-  .no-paths {
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-  }
+  background-color: #06705b;
+  height: 100vh;
+}
 
-  .add-path-icon {
-    font-size: 65px;
-    color: white;
-    margin-right: 30px;
-  }
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.path-input {
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  width: 300px;
+  margin-right: 10px;
+}
+
+.add-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.path-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.path-item {
+  background-color: #fff;
+  color: #000000;
+  padding: 15px 20px;
+  margin: 10px 0;
+  border-radius: 10px;
+  width: 40%;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.no-paths {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.add-path-icon {
+  font-size: 65px;
+  color: white;
+  margin-right: 30px;
+}

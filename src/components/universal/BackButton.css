@@ -1,16 +1,16 @@
 .back-button {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 10px;
-  }
-  
-  .chevron-icon {
-    margin-right: 8px;
-    font-size: 80px;
-    color: white;
-  }
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.chevron-icon {
+  margin-right: 8px;
+  font-size: 80px;
+  color: white;
+}
