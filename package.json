@@ -38,7 +38,8 @@
     "eject": "react-scripts eject",
     "serve": "serve -s build",
     "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix"
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\""
   },
   "eslintConfig": {
     "extends": [
@@ -64,10 +65,13 @@
     "@testing-library/react": "^16.0.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "fake-indexeddb": "^6.0.0",
     "globals": "^15.11.0",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "prettier": "^3.3.3"
   }
 }

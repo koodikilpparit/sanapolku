@@ -7,7 +7,8 @@
     },
     "extends": [
       "eslint:recommended",
-      "plugin:react/recommended"
+      "plugin:react/recommended",
+      "plugin:prettier/recommended"
     ],
     "parserOptions": {
       "ecmaFeatures": {
@@ -28,7 +29,8 @@
       "react/prop-types": "warn",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      "react/default-props-match-prop-types": "warn"
+      "react/default-props-match-prop-types": "warn",
+      "prettier/prettier": "error"
     },
     "settings": {
       "react": {
