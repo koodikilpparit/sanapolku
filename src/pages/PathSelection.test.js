@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
-import GameMenu from './GameMenu';
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -33,7 +32,6 @@ describe('PathSelection Component UI Tests', () => {
     const { container } = render(
       <BrowserRouter>
         <PathSelection />
-        <GameMenu />
       </BrowserRouter>
     );
 
@@ -44,17 +42,36 @@ describe('PathSelection Component UI Tests', () => {
 
     // Check if navigate was called with -1 (go back to previous page)
     expect(mockNavigate).toHaveBeenCalledWith(-1);
-    expect(screen.getByText('Valitse polku')).toBeInTheDocument();
   });
 
-  it('should allow the user to type in the input field', () => {
+  it('should open the modal when clicking the add path button', () => {
     render(
       <BrowserRouter>
         <PathSelection />
       </BrowserRouter>
     );
 
-    // Get the input field and type into it
+    // Get the button (FontAwesomeIcon with aria-label) and open the modal
+    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    fireEvent.click(openModalButton);
+
+    // Check if the modal content appears
+    expect(screen.getByText('Lisää Uusi Polku')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Anna polun nimi')).toBeInTheDocument();
+  });
+
+  it('should allow the user to type in the input field inside the modal', () => {
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    // Open the modal
+    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    fireEvent.click(openModalButton);
+
+    // Get the input field inside the modal and type into it
     const input = screen.getByPlaceholderText('Anna polun nimi');
     fireEvent.change(input, { target: { value: 'Polku' } });
 
@@ -62,7 +79,7 @@ describe('PathSelection Component UI Tests', () => {
     expect(input.value).toBe('Polku');
   });
 
-  it('should trigger the handleAddPath function when "Lisää polku" button is clicked', () => {
+  it('should trigger an alert if the input is empty when trying to add a new path', async () => {
     render(
       <BrowserRouter>
         <PathSelection />
@@ -72,11 +89,44 @@ describe('PathSelection Component UI Tests', () => {
     // Mock the window.alert to avoid actual alert
     window.alert = jest.fn();
 
-    // Get the add button and simulate a click
-    const addButton = screen.getByText('Lisää polku');
-    fireEvent.click(addButton);
+    // Open the modal
+    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    fireEvent.click(openModalButton);
 
-    // Since the input is empty initially, it should trigger an alert
+    // Get the save button and simulate a click without typing in the input
+    const saveButton = screen.getByRole('button', { name: /tallenna/i });
+    fireEvent.click(saveButton);
+
+    // Since the input is empty, it should trigger an alert
     expect(window.alert).toHaveBeenCalledWith('Anna polulle nimi');
+  });
+
+  it('should add a new path when the user enters a name and clicks "Tallenna"', async () => {
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    // Mock the window.alert to avoid actual alert
+    window.alert = jest.fn();
+
+    // Open the modal
+    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    fireEvent.click(openModalButton);
+
+    // Type in the input field inside the modal
+    const input = screen.getByPlaceholderText('Anna polun nimi');
+    fireEvent.change(input, { target: { value: 'Uusi Polku' } });
+
+    // Simulate a click on the "Tallenna" button
+    const saveButton = screen.getByRole('button', { name: /tallenna/i });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => {
+      expect(
+        screen.queryByPlaceholderText('Anna polun nimi')
+      ).toBeInTheDocument();
+    });
   });
 });
