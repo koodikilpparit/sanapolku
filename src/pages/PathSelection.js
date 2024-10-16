@@ -14,8 +14,10 @@ const PathSelection = () => {
   // Fetch all paths from the database when the component loads
   useEffect(() => {
     getAllPaths()
-      .then((paths) => setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : []))
-      .catch(() => console.error("Error fetching paths"));
+      .then((paths) =>
+        setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : [])
+      )
+      .catch(() => console.error('Error fetching paths'));
   }, []);
 
   // Function to add a new path to the database
@@ -43,7 +45,6 @@ const PathSelection = () => {
 
   return (
     <div className="paths-page">
-
       {/* Header */}
       <div className="header">
         <BackButton />
@@ -60,14 +61,20 @@ const PathSelection = () => {
           placeholder="Anna polun nimi"
           className="path-input"
         />
-        <button className="add-path-button" onClick={handleAddPath}>Lisää polku</button>
+        <button className="add-path-button" onClick={handleAddPath}>
+          Lisää polku
+        </button>
       </div>
 
       {/* List of paths */}
       <div className="path-list">
         {paths.length > 0 ? (
           paths.map((path, index) => (
-            <button key={index} className="path-item" onClick={() => handlePathClick(path)}>
+            <button
+              key={index}
+              className="path-item"
+              onClick={() => handlePathClick(path)}
+            >
               <span>{path}</span>
             </button>
           ))

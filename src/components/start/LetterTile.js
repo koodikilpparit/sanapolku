@@ -2,17 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LetterTile({letter}) {
-
-    return (
-        <div className="letter-tile">
-            {letter}
-        </div>
-    );
+function LetterTile({ letter }) {
+  return <div className="letter-tile">{letter}</div>;
 }
 
 LetterTile.propTypes = {
-    letter: PropTypes.string.isRequired
-  };
+  letter: PropTypes.string.isRequired,
+};
 
 export default LetterTile;

@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 function SettingsButton() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <button className="settings-button" onClick={() => navigate('/asetukset')}>
-            <FontAwesomeIcon icon={faCog} className="settings-icon" />
-        </button>
-    );
+  return (
+    <button className="settings-button" onClick={() => navigate('/asetukset')}>
+      <FontAwesomeIcon icon={faCog} className="settings-icon" />
+    </button>
+  );
 }
 
 export default SettingsButton;
