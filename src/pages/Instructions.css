@@ -40,6 +40,7 @@
 }
 
 .ins-header {
+    display:flex;
     color: #FFF;
     text-align: center;
     /* Mobile/Display small */
@@ -48,6 +49,15 @@
     font-style: normal;
     font-weight: 700;
     line-height: 44px; /* 122.222% */
+    height: 44px;
+    margin-bottom: 12px;
+    margin-top: 44.82px;
+    align-items: center;
+    justify-content: center;
+}
+
+.ins-header h2 {
+   word-wrap: break-word;
 }
 
 .instructions-text {
@@ -60,6 +70,7 @@
     font-weight: 400;
     line-height: 28px;
     width: 70%;
+    word-wrap: break-word;
 }
 
 /* Style for Phones in Portrait mode */
@@ -104,12 +115,19 @@
     }
 
     .ins-header {
+        display: flex;
         color: #FFF;
         text-align: center;
         font-family: Verdana;
         font-size: 6vw;
         font-style: normal;
         font-weight: 700;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ins-header h2 {
+        word-wrap: break-word;
     }
 
     .instructions-text {
@@ -121,6 +139,7 @@
         font-weight: 400;
         width: 80vw;
         line-height: 1.5;
+        word-wrap: break-word;
     }
 }
 
@@ -166,12 +185,23 @@
     }
 
     .ins-header {
+        display: flex;
         color: #FFF;
         text-align: center;
         font-family: Verdana;
         font-size: 4vw;
         font-style: normal;
         font-weight: 700;
+        justify-content: center;
+        align-items: center;
+        margin-top: 4vh;
+	margin-bottom: 2vh;
+	height: 6vh;
+    }
+
+    .ins-header h2 {
+        margin-top: 4vh;
+        margin-bottom: 2vh;
     }
 
     .instructions-text {
@@ -187,68 +217,6 @@
 }
 
 /* Style for Phones in Horizontal mode */
-@media (max-height: 600px) {
-    .instructions-page {
-        display: grid;
-        grid-template-areas: 
-            "top-bar";
-        background-color: #06705B;
-        height: 100vh;
-    }
-
-    .ins-top-bar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        height: 50px;
-        width: 50px;
-        grid-area: top-bar;
-        position: absolute;
-        top: 32px;
-        left: 32px;
-    }
-
-    .ins-back-button {
-        background: none;
-        border: none;
-        height: 48px;
-        width: 30px;
-    }
-
-    .back-icon {
-        color: #FFF;
-        height: 48px;
-        width: 30px;
-    }
-
-    .ins-center-area {
-        display: flex; 
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .ins-header {
-        color: #FFF;
-        font-family: Verdana;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-    }
-
-    .instructions-text {
-        color: #FFF;
-        text-align: center;
-        font-family: Verdana;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 400;
-        width: 80%;
-        margin-bottom: 60px;
-    }
-}
-
-/* Style for extremely narrow screens in Horizontal mode */
 @media (max-height: 420px) {
     .instructions-page {
         display: grid;
@@ -256,32 +224,34 @@
             "top-bar";
         background-color: #06705B;
         height: 100vh;
-        overflow-y: hidden;
     }
 
     .ins-top-bar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        height: 12vh;
+        width: 6vh;
         grid-area: top-bar;
-        height: auto;
-        width: auto;
         position: absolute;
-        top: 2vh;
-        left: 2vh;
+        top: 8vh;
+        left: 8vh;
+        align-items: center;
+        justify-content: center;
     }
 
     .ins-back-button {
+        display: flex;
         background: none;
         border: none;
-        height: 18vh;
-        width: 9vh;
+        height: 12vh;
+        width: 6vh;
     }
 
     .back-icon {
         color: #FFF;
-        height: 18vh;
-        width: 9vh;
+        height: 12vh;
+        width: 6vh;
     }
 
     .ins-center-area {
@@ -289,20 +259,25 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 80vh;
     }
 
     .ins-header {
+	display: flex;
         color: #FFF;
-        text-align: center;
-	justify-content: center;
-        align-items: center;
         font-family: Verdana;
         font-size: 6vh;
         font-style: normal;
         font-weight: 700;
-        margin-bottom: 0px;
-        line-height: 1;
+        justify-content: center;
+        align-items: center;
+        margin-top: 4vh;
+	margin-bottom: 2vh;
+	height: 6vh;
+    }
+
+    .ins-header h2 {
+        margin-top: 4vh;
+        margin-bottom: 2vh;
     }
 
     .instructions-text {
@@ -312,9 +287,9 @@
         font-size: 4vh;
         font-style: normal;
         font-weight: 400;
-        width: 70vw;
-        line-height: 1;
-        margin-bottom: 5vh;
+        width: 80%;
+        margin-bottom: 2vh;
+	line-height: 1;
     }
 }
 
