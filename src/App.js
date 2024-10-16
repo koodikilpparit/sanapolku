@@ -8,6 +8,7 @@ import GameMenu from './pages/GameMenu';
 import PathSelection from './pages/PathSelection';
 import ManagePath from './pages/ManagePath';
 import NewWord from './pages/NewWord';
+import GamePage from './pages/GamePage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/omatpolut" element={<PathSelection />} />
           <Route path="/muokaapolkua/:pathName" element={<ManagePath />} />
           <Route path="/uusisana/:pathName" element={<NewWord />} />
+          <Route path="/peli/:pathName" element={<GamePage />} />
         </Routes>
       </div>
     </Router>
