@@ -107,24 +107,26 @@ describe('PathSelection Component UI Tests', () => {
         <PathSelection />
       </BrowserRouter>
     );
-  
+
     // Mock the window.alert to avoid actual alert
     window.alert = jest.fn();
-  
+
     // Open the modal
     const openModalButton = screen.getByLabelText('Lisää uusi polku');
     fireEvent.click(openModalButton);
-  
+
     // Type in the input field inside the modal
     const input = screen.getByPlaceholderText('Anna polun nimi');
     fireEvent.change(input, { target: { value: 'Uusi Polku' } });
-  
+
     // Simulate a click on the "Tallenna" button
     const saveButton = screen.getByRole('button', { name: /tallenna/i });
     fireEvent.click(saveButton);
-  
+
     await waitFor(() => {
-      expect(screen.queryByPlaceholderText('Anna polun nimi')).toBeInTheDocument();
+      expect(
+        screen.queryByPlaceholderText('Anna polun nimi')
+      ).toBeInTheDocument();
     });
   });
 });

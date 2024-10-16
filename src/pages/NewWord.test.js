@@ -43,20 +43,20 @@ describe('NewWord Component UI Tests', () => {
     expect(input.value).toBe('test word');
   });
 
-    it('should trigger the handleSave function when "VALMIS" button is clicked', () => {
-        render(
-            <BrowserRouter>
-                <NewWord />
-            </BrowserRouter>
-        );
+  it('should trigger the handleSave function when "VALMIS" button is clicked', () => {
+    render(
+      <BrowserRouter>
+        <NewWord />
+      </BrowserRouter>
+    );
 
     // Mock the window.alert to avoid actual alert
     window.alert = jest.fn();
 
-        // Get the save button and simulate a click
-        const saveButton = screen.getByText('VALMIS');
-        expect(saveButton).toBeInTheDocument();
-        fireEvent.click(saveButton);
+    // Get the save button and simulate a click
+    const saveButton = screen.getByText('VALMIS');
+    expect(saveButton).toBeInTheDocument();
+    fireEvent.click(saveButton);
 
     // Since the word input is empty initially, it should trigger an alert
     expect(window.alert).toHaveBeenCalledWith('Syötä sana');

@@ -59,7 +59,6 @@ const NewWord = () => {
 
       {/* Container*/}
       <div className="new-word-container">
-
         {/* Add word */}
         <div className="input-container">
           <label>Kirjoita uusi sana:</label>
@@ -71,15 +70,18 @@ const NewWord = () => {
           />
         </div>
 
-      {/* Upload image */}
-      <ImageUploader setImageData={setImageData} />
+        {/* Upload image */}
+        <ImageUploader setImageData={setImageData} />
 
         {/* Buttons */}
         <div className="button-container">
-          <button className="nw-cancel-button" onClick={() => navigate(-1)}>PERUUTA</button>
-          <button className="nw-save-button" onClick={handleSave}>VALMIS</button>
+          <button className="nw-cancel-button" onClick={() => navigate(-1)}>
+            PERUUTA
+          </button>
+          <button className="nw-save-button" onClick={handleSave}>
+            VALMIS
+          </button>
         </div>
-
       </div>
     </div>
   );

@@ -62,7 +62,12 @@ const PathSelection = () => {
       <div className="path-selection-header">
         <BackButton />
         <h2 className="title">Polut</h2>
-        <FontAwesomeIcon icon={faPlus} className="add-path-icon" onClick={openModal} aria-label='Lisää uusi polku' />
+        <FontAwesomeIcon
+          icon={faPlus}
+          className="add-path-icon"
+          onClick={openModal}
+          aria-label="Lisää uusi polku"
+        />
       </div>
 
       {/* List of paths */}
@@ -95,8 +100,12 @@ const PathSelection = () => {
               className="modal-input"
             />
             <div className="modal-buttons">
-              <button className="cancel-button" onClick={closeModal}>Peruuta</button>
-              <button className="save-button" onClick={handleAddPath}>Tallenna</button>
+              <button className="cancel-button" onClick={closeModal}>
+                Peruuta
+              </button>
+              <button className="save-button" onClick={handleAddPath}>
+                Tallenna
+              </button>
             </div>
           </div>
         </div>
