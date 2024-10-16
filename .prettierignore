@@ -1,0 +1,14 @@
+build/
+node_modules/
+.github/
+public/
+*.yml
+*.yaml
+*.json
+package-lock.json
+.prettierignore
+.prettierrc
+.eslintrc
+.gitignore
+lighthouserc.js
+README.md

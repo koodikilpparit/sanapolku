@@ -32,7 +32,7 @@ const NewWord = () => {
   // Function to save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
-      alert("Syötä sana");
+      alert('Syötä sana');
       return;
     }
 
@@ -41,9 +41,9 @@ const NewWord = () => {
     if (pathId) {
       addWord(newWord, pathId, imageToSave)
         .then(() => navigate(-1))
-        .catch(() => alert("Error saving the word."));
+        .catch(() => alert('Error saving the word.'));
     } else {
-      alert("Path ID not found.");
+      alert('Path ID not found.');
     }
   };
 
