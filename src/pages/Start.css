@@ -1,4 +1,4 @@
-/* src/components/pages/Start.css */
+/* src/pages/Start.css */
 
 /* Default style */
 .start-page {
@@ -9,7 +9,7 @@
     height: 100vh;
 }
 
-.top-bar {
+.str-top-bar {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -31,7 +31,7 @@
     margin-right: 2vw;
 }
 
-.center-area {
+.str-center-area {
     display: flex; 
     flex-direction: column;
     justify-content: center;
@@ -107,7 +107,7 @@
         height: 100vh;
     }
 
-    .top-bar {
+    .str-top-bar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -128,7 +128,7 @@
         height: 62px;
     }
 
-    .center-area {
+    .str-center-area {
         display: flex; 
         flex-direction: column;
         justify-content: center;
@@ -205,7 +205,7 @@
         height: 100vh;
     }
 
-    .top-bar {
+    .str-top-bar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -226,7 +226,7 @@
         height: 52px;
     }
 
-    .center-area {
+    .str-center-area {
         display: flex; 
         flex-direction: column;
         justify-content: center;
@@ -303,7 +303,7 @@
         height: 100vh;
     }
 
-    .top-bar {
+    .str-top-bar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -324,7 +324,7 @@
         height: 18vw;
     }
 
-    .center-area {
+    .str-center-area {
         display: flex; 
         flex-direction: column;
         justify-content: center;
@@ -402,7 +402,7 @@
         height: 100vh;
     }
 
-    .top-bar {
+    .str-top-bar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -423,7 +423,7 @@
         height: 18vw;
     }
 
-    .center-area {
+    .str-center-area {
         display: flex; 
         flex-direction: column;
         justify-content: center;
@@ -501,7 +501,7 @@
         overflow-y: hidden;
     }
 
-    .top-bar {
+    .str-top-bar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -522,7 +522,7 @@
         height: 20vh;
     }
 
-    .center-area {
+    .str-center-area {
         display: flex; 
         flex-direction: column;
         justify-content: center;
