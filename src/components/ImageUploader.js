@@ -1,16 +1,8 @@
-<<<<<<< HEAD:src/components/ImageUploader.js
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import '../styles/NewWord.css'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-=======
-import './styles/NewWord.css';
-
->>>>>>> main:src/ImageUploader.js
+import '../styles/NewWord.css';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 
 // Component that allows uploading images
 const ImageUploader = ({ setImageData }) => {

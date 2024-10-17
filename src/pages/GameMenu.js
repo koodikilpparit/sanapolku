@@ -7,8 +7,7 @@ function GameMenu() {
   const navigate = useNavigate();
 
   return (
-<<<<<<< HEAD
-    <div className='game-menu-container'>
+    <div className="game-menu-container">
       {/* Header */}
       <div className="header">
         <BackButton />
@@ -16,29 +15,25 @@ function GameMenu() {
       </div>
 
       {/* Buttons for paths */}
-      <div className='button-container'>
-        <button className='path-button' 
-        // onClick={() => navigate('/aikuistenpolku')}
+      <div className="button-container">
+        <button
+          className="path-button"
+          // onClick={() => navigate('/aikuistenpolku')}
         >
           Aikuisten polku
         </button>
 
-        <button className='path-button' 
-        // onClick={() => navigate('/lastenpolku')}
+        <button
+          className="path-button"
+          // onClick={() => navigate('/lastenpolku')}
         >
           Lasten polku
         </button>
 
-        <button className='path-button' onClick={() => navigate('/omatpolut')}>
+        <button className="path-button" onClick={() => navigate('/omatpolut')}>
           Omat polut
         </button>
       </div>
-=======
-    <div>
-      <h2>Valitse polku</h2>
-      <button onClick={() => navigate('/')}>Takaisin</button>
-      <button onClick={() => navigate('/omatpolut')}>Omat polut</button>
->>>>>>> main
     </div>
   );
 }
