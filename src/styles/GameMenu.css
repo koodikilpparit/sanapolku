@@ -26,22 +26,21 @@
     width: 100%;
 }
 
-/* Suuremmat näytöt */
 @media (min-width: 768px) {
     .button-container {
-        width: 60%; /* Vie 60% leveydestä keskitetyillä näytöillä */
+        width: 60%;
     }
 }
 
 @media (min-width: 1024px) {
     .button-container {
-        width: 50%; /* Vie 50% leveydestä suuremmilla näytöillä */
+        width: 50%; 
     }
 }
 
 @media (min-width: 1440px) {
     .button-container {
-        width: 40%; /* Vie 40% leveydestä vielä suuremmilla näytöillä */
+        width: 40%; 
     }
 }
 
