@@ -18,24 +18,11 @@ import { SettingsContext } from "../contexts/SettingsContext";
 const Settings = () => {
   const { sounds, setSounds, music, setMusic } =
     React.useContext(SettingsContext);
-  // const avatar = "https://placehold.co/150x150";
-  const name = "Matti Meikäläinen";
-  const id = "12345";
-
   return (
     <div className="settings-container">
       <header className="settings-header">
         <BackButton />
-        <span className="logout">Kirjaudu ulos</span>
       </header>
-
-      <div className="user-info">
-        {/* <img src={avatar} alt="avatar" className="avatar" /> */}
-        <div className="user-details">
-          <h3>{name}</h3>
-          <p>{id}</p>
-        </div>
-      </div>
 
       <div className="settings-about-container">
         <div className="settings">

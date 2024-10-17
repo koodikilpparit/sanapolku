@@ -20,11 +20,6 @@ describe("Settings Component", () => {
         );
     };
 
-    test("renders Logout component", () => {
-        renderComponent();
-        expect(screen.getByText("Kirjaudu ulos")).toBeInTheDocument();
-    });
-
     test("renders sound and music settings", () => {
         renderComponent();
         expect(screen.getByText("Äänet")).toBeInTheDocument();
