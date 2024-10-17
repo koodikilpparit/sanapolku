@@ -5,8 +5,9 @@ import BackButton from '../components/universal/BackButton';
 
 function GameMenu() {
   const navigate = useNavigate();
-  
+
   return (
+<<<<<<< HEAD
     <div className='game-menu-container'>
       {/* Header */}
       <div className="header">
@@ -32,6 +33,12 @@ function GameMenu() {
           Omat polut
         </button>
       </div>
+=======
+    <div>
+      <h2>Valitse polku</h2>
+      <button onClick={() => navigate('/')}>Takaisin</button>
+      <button onClick={() => navigate('/omatpolut')}>Omat polut</button>
+>>>>>>> main
     </div>
   );
 }

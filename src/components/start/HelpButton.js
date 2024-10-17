@@ -5,14 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 function HelpButton() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <button className="help-button" onClick={() => navigate('/ohjeet')}>
-            <FontAwesomeIcon icon={faCircleQuestion} className="help-icon"/>
-            Miten pelaan?
-        </button>
-    );
+  return (
+    <button className="help-button" onClick={() => navigate('/ohjeet')}>
+      <FontAwesomeIcon icon={faCircleQuestion} className="help-icon" />
+      Miten pelaan?
+    </button>
+  );
 }
 
 export default HelpButton;
