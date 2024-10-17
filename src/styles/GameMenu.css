@@ -1,0 +1,149 @@
+.game-menu-container {
+    background-color: #06705B;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  /* Jaa tilan tasaisesti */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #06705B;
+    z-index: 100;
+}
+
+.header h2 {
+    margin: 0;
+    color: white;
+    text-align: left; 
+    margin-left: 30%; 
+    font-size: 32px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%; /* Oletusarvoisesti vie 80% leveydestä */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Suuremmat näytöt */
+@media (min-width: 768px) {
+    .button-container {
+        width: 60%; /* Vie 60% leveydestä keskitetyillä näytöillä */
+    }
+}
+
+@media (min-width: 1024px) {
+    .button-container {
+        width: 50%; /* Vie 50% leveydestä suuremmilla näytöillä */
+    }
+}
+
+@media (min-width: 1440px) {
+    .button-container {
+        width: 40%; /* Vie 40% leveydestä vielä suuremmilla näytöillä */
+    }
+}
+
+.path-button {
+    background-color: #fff;
+    color: #000000;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+    width: 40%;
+    font-size: 32px;
+    font-weight: bold;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Style for larger screens (e.g. desktop) */
+@media (min-width: 1024px) {
+    .path-button {
+        width: 50%;
+        font-size: 28px;
+    }
+}
+
+/* Style for tablets (e.g. iPads) */
+@media (max-width: 1024px) {
+    .path-button {
+        width: 50%;
+        font-size: 24px;
+    }
+
+    .header h2 {
+        margin-left: 25%; 
+    }
+}
+
+/* Style for phones in portrait mode */
+@media (max-width: 768px) {
+    .game-menu-container {
+        padding: 20px;
+    }
+
+    .path-button {
+        width: 70%;
+        font-size: 20px;
+        padding: 12px 18px;
+    }
+
+    .header {
+        margin-bottom: 15px;
+    }
+
+    .header h2 {
+        margin-left: 17%; 
+        font-size: 24px; 
+    }
+}
+
+/* Style for smaller phones (e.g. iPhone SE) */
+@media (max-width: 480px) {
+    .path-button {
+        width: 85%;
+        font-size: 18px;
+        padding: 10px 15px;
+    }
+
+    .header {
+        margin-bottom: 10px;
+    }
+
+    .header h2 {
+        margin-left: 8%; 
+        font-size: 24px;
+    }
+}
+
+/* Style for the smallest screens (very narrow) */
+@media (max-width: 360px) {
+    .path-button {
+        width: 90%;
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    .header {
+        margin-bottom: 8px;
+    }
+
+    .header h2 {
+        margin-left: 2%; 
+        font-size: 24px;
+    }
+}
