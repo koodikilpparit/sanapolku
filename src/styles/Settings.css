@@ -3,9 +3,7 @@
   font-family: 'Verdana', sans-serif;
   background-color: #1a7a68;
   color: white;
-  padding: 10px;
   height: 100vh;
-  display: flex;
   flex-direction: column;
 }
 
@@ -14,12 +12,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
 }
 
 .back-button {
-  background: none;
-  border: none;
   color: white;
   font-size: 24px;
   cursor: pointer;
@@ -29,14 +24,12 @@
 .settings-about-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   flex: 1;
 }
 
 /* Settings section styling */
 .settings,
 .about-info {
-  margin: 20px 0;
   padding: 20px;
   flex: 1;
   min-width: 300px;
@@ -52,7 +45,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
   max-width: 300px;
   margin: 0 auto;
 }
