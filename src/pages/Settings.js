@@ -59,8 +59,9 @@ const Settings = () => {
         </div>
       </div>
       <div className="reset-button">
-          <button onClick={() => {
-            resetDB()
+      <button onClick={() => {
+        if (window.confirm('Haluatko varmasti palauttaa sovelluksen oletusasetuksiin? Tämä poistaa kaikki omat polut ja sanat!')) {
+          resetDB()
             .then(() => {
               localStorage.clear();
               window.location.reload();
@@ -68,7 +69,8 @@ const Settings = () => {
             .catch((error) => {
               console.error('Failed to reset the database:', error);
             });
-          }}>Palauta sovellus oletusasetuksiin
+        }
+      }}>Palauta sovellus oletusasetuksiin
           </button>
       </div>
     </div>
