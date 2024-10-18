@@ -44,7 +44,6 @@ describe('StartPage', () => {
     // Checking that by clicking the settings-button you can navigate to /asetukset
     fireEvent.click(settingsButton);
     expect(screen.getByText(/Asetukset/i)).toBeInTheDocument();
-  });
 
   it('checks if help-button brings you to /ohjeet', () => {
     // Rendering the required pages
