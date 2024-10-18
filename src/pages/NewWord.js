@@ -52,33 +52,36 @@ const NewWord = () => {
       {/* Header */}
       <div className="new-word-header">
         <BackButton />
-        <h2 className="title">Uusi sana</h2>
+        <h2>Uusi sana</h2>
       </div>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Add word */}
-      <div className="input-container">
-        <label>Kirjoita uusi sana:</label>
-        <input
-          type="text"
-          value={newWord}
-          onChange={(e) => setNewWord(e.target.value)}
-          placeholder="Uusi sana"
-        />
-      </div>
+      {/* Container*/}
+      <div className="new-word-container">
+        {/* Add word */}
+        <div className="input-container">
+          <label>Kirjoita uusi sana:</label>
+          <input
+            type="text"
+            value={newWord}
+            onChange={(e) => setNewWord(e.target.value)}
+            placeholder="Uusi sana"
+          />
+        </div>
 
-      {/* Upload image */}
-      <ImageUploader setImageData={setImageData} />
+        {/* Upload image */}
+        <ImageUploader setImageData={setImageData} />
 
-      {/* Buttons */}
-      <div className="button-container">
-        <button className="cancel-button" onClick={() => navigate(-1)}>
-          PERUUTA
-        </button>
-        <button className="save-button" onClick={handleSave}>
-          TALLENNA
-        </button>
+        {/* Buttons */}
+        <div className="button-container">
+          <button className="nw-cancel-button" onClick={() => navigate(-1)}>
+            PERUUTA
+          </button>
+          <button className="nw-save-button" onClick={handleSave}>
+            VALMIS
+          </button>
+        </div>
       </div>
     </div>
   );

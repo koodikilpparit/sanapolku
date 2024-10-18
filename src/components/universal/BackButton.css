@@ -1,16 +1,30 @@
 .back-button {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--sp-white);
+    cursor: pointer;
+    padding: none;
+  }
+  
+.chevron-icon {
+  font-size: var(--sp-icon-size-large);
   color: white;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 10px;
 }
 
-.chevron-icon {
-  margin-right: 8px;
-  font-size: 80px;
-  color: white;
+.chevron-icon:hover{
+  color: var(--sp-light-yellow);
+}
+
+@media (max-width: 767px) {
+  .chevron-icon {
+    font-size: var(--sp-icon-size-small);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .chevron-icon {
+    font-size: var(--sp-icon-size-medium);
+  }
 }
