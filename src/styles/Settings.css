@@ -4,7 +4,6 @@
   background-color: #1a7a68;
   color: white;
   height: 100vh;
-
 }
 
 /* Header styling */
@@ -55,7 +54,7 @@
   font-size: 16px;
 }
 
-.setting-item input[type="checkbox"] {
+.setting-item input[type='checkbox'] {
   transform: scale(1.5);
   cursor: pointer;
 }

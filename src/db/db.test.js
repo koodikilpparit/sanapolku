@@ -1,4 +1,4 @@
-import { 
+import {
   openDB,
   addPath,
   getAllPaths,
@@ -112,12 +112,12 @@ describe('resetDB Function', () => {
   it('should reset the paths in database', async () => {
     await addPath('Path to be reset 1');
     await addPath('Path to be reset 2');
-    
+
     await resetDB();
-    
+
     const paths = await getAllPaths();
-    const pathNames = paths.map(path => path.name);
-    
+    const pathNames = paths.map((path) => path.name);
+
     expect(pathNames).not.toContain('Path to be reset 1');
     expect(pathNames).not.toContain('Path to be reset 2');
   });
@@ -126,15 +126,15 @@ describe('resetDB Function', () => {
   it('should reset the words in database', async () => {
     await addPath('Path for words reset');
     const path = await getPathByName('Path for words reset');
-    
+
     await addWord('Word to be reset 1', path.id, 'img-url-1');
     await addWord('Word to be reset 2', path.id, 'img-url-2');
-    
+
     await resetDB();
-    
+
     const words = await getWordsForPath(path.id);
-    const wordNames = words.map(word => word.word);
-    
+    const wordNames = words.map((word) => word.word);
+
     expect(wordNames).not.toContain('Word to be reset 1');
     expect(wordNames).not.toContain('Word to be reset 2');
   });

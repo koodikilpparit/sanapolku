@@ -17,25 +17,16 @@ describe('StartPage', () => {
     );
   });
 
-    it('checks if settings-button brings you to /asetukset', () => {
-        // Rendering the required pages
-        const { container } = render(
-            <SettingsProvider>
-                <BrowserRouter>
-                    <Start />
-                    <Settings />
-                </BrowserRouter>
-            </SettingsProvider>
-        );
-        
-        // Checking that the settings-button is on the start page
-        const settingsButton = container.querySelector(".settings-button");
-        expect(settingsButton).toBeInTheDocument();
-        
-        // Checking that by clicking the settings-button you can navigate to /asetukset
-        fireEvent.click(settingsButton);
-        expect(screen.getByText(/Asetukset/i)).toBeInTheDocument();
-    });
+  it('checks if settings-button brings you to /asetukset', () => {
+    // Rendering the required pages
+    const { container } = render(
+      <SettingsProvider>
+        <BrowserRouter>
+          <Start />
+          <Settings />
+        </BrowserRouter>
+      </SettingsProvider>
+    );
 
     // Checking that the settings-button is on the start page
     const settingsButton = container.querySelector('.settings-button');
@@ -44,6 +35,15 @@ describe('StartPage', () => {
     // Checking that by clicking the settings-button you can navigate to /asetukset
     fireEvent.click(settingsButton);
     expect(screen.getByText(/Asetukset/i)).toBeInTheDocument();
+  });
+
+  // Checking that the settings-button is on the start page
+  const settingsButton = container.querySelector('.settings-button');
+  expect(settingsButton).toBeInTheDocument();
+
+  // Checking that by clicking the settings-button you can navigate to /asetukset
+  fireEvent.click(settingsButton);
+  expect(screen.getByText(/Asetukset/i)).toBeInTheDocument();
 
   it('checks if help-button brings you to /ohjeet', () => {
     // Rendering the required pages

@@ -1,13 +1,13 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { SettingsProvider, SettingsContext } from "./SettingsContext";
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { SettingsProvider, SettingsContext } from './SettingsContext';
 
-describe("SettingsContext", () => {
+describe('SettingsContext', () => {
   beforeEach(() => {
     localStorage.clear();
   });
 
-  it("provides default values for sounds and music", () => {
+  it('provides default values for sounds and music', () => {
     render(
       <SettingsProvider>
         <SettingsContext.Consumer>
@@ -21,11 +21,11 @@ describe("SettingsContext", () => {
       </SettingsProvider>
     );
 
-    expect(screen.getByTestId("sounds")).toHaveTextContent("true");
-    expect(screen.getByTestId("music")).toHaveTextContent("true");
+    expect(screen.getByTestId('sounds')).toHaveTextContent('true');
+    expect(screen.getByTestId('music')).toHaveTextContent('true');
   });
 
-  it("persists sounds setting to localStorage", () => {
+  it('persists sounds setting to localStorage', () => {
     render(
       <SettingsProvider>
         <SettingsContext.Consumer>
@@ -39,12 +39,12 @@ describe("SettingsContext", () => {
       </SettingsProvider>
     );
 
-    fireEvent.click(screen.getByText("Toggle Sounds"));
-    expect(screen.getByTestId("sounds")).toHaveTextContent("false");
-    expect(localStorage.getItem("sounds")).toBe("false");
+    fireEvent.click(screen.getByText('Toggle Sounds'));
+    expect(screen.getByTestId('sounds')).toHaveTextContent('false');
+    expect(localStorage.getItem('sounds')).toBe('false');
   });
 
-  it("persists music setting to localStorage", () => {
+  it('persists music setting to localStorage', () => {
     render(
       <SettingsProvider>
         <SettingsContext.Consumer>
@@ -58,13 +58,13 @@ describe("SettingsContext", () => {
       </SettingsProvider>
     );
 
-    fireEvent.click(screen.getByText("Toggle Music"));
-    expect(screen.getByTestId("music")).toHaveTextContent("false");
-    expect(localStorage.getItem("music")).toBe("false");
+    fireEvent.click(screen.getByText('Toggle Music'));
+    expect(screen.getByTestId('music')).toHaveTextContent('false');
+    expect(localStorage.getItem('music')).toBe('false');
   });
 
-  it("loads sounds setting from localStorage", () => {
-    localStorage.setItem("sounds", "false");
+  it('loads sounds setting from localStorage', () => {
+    localStorage.setItem('sounds', 'false');
 
     render(
       <SettingsProvider>
@@ -74,11 +74,11 @@ describe("SettingsContext", () => {
       </SettingsProvider>
     );
 
-    expect(screen.getByTestId("sounds")).toHaveTextContent("false");
+    expect(screen.getByTestId('sounds')).toHaveTextContent('false');
   });
 
-  it("loads music setting from localStorage", () => {
-    localStorage.setItem("music", "false");
+  it('loads music setting from localStorage', () => {
+    localStorage.setItem('music', 'false');
 
     render(
       <SettingsProvider>
@@ -88,6 +88,6 @@ describe("SettingsContext", () => {
       </SettingsProvider>
     );
 
-    expect(screen.getByTestId("music")).toHaveTextContent("false");
+    expect(screen.getByTestId('music')).toHaveTextContent('false');
   });
 });

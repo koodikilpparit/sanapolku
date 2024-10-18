@@ -1,8 +1,8 @@
-import React from "react";
-import BackButton from "../components/universal/BackButton";
-import "../styles/Settings.css";
-import { SettingsContext } from "../contexts/SettingsContext";
-import { resetDB } from "../db/db";
+import React from 'react';
+import BackButton from '../components/universal/BackButton';
+import '../styles/Settings.css';
+import { SettingsContext } from '../contexts/SettingsContext';
+import { resetDB } from '../db/db';
 
 /**
  * Settings component renders the settings page of the application.
@@ -54,24 +54,31 @@ const Settings = () => {
           <p>
             Sovelluksen kehittäjät: Anni Nieminen, Eveliina Sundberg, Neera
             Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto "Reine"
-            Majakangas{" "}
+            Majakangas{' '}
           </p>
         </div>
       </div>
       <div className="reset-button">
-      <button onClick={() => {
-        if (window.confirm('Haluatko varmasti palauttaa sovelluksen oletusasetuksiin? Tämä poistaa kaikki omat polut ja sanat!')) {
-          resetDB()
-            .then(() => {
-              localStorage.clear();
-              window.location.reload();
-            })
-            .catch((error) => {
-              console.error('Failed to reset the database:', error);
-            });
-        }
-      }}>Palauta sovellus oletusasetuksiin
-          </button>
+        <button
+          onClick={() => {
+            if (
+              window.confirm(
+                'Haluatko varmasti palauttaa sovelluksen oletusasetuksiin? Tämä poistaa kaikki omat polut ja sanat!'
+              )
+            ) {
+              resetDB()
+                .then(() => {
+                  localStorage.clear();
+                  window.location.reload();
+                })
+                .catch((error) => {
+                  console.error('Failed to reset the database:', error);
+                });
+            }
+          }}
+        >
+          Palauta sovellus oletusasetuksiin
+        </button>
       </div>
     </div>
   );
