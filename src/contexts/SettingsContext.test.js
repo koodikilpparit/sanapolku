@@ -7,7 +7,7 @@ describe("SettingsContext", () => {
     localStorage.clear();
   });
 
-  test("provides default values for sounds and music", () => {
+  it("provides default values for sounds and music", () => {
     render(
       <SettingsProvider>
         <SettingsContext.Consumer>
@@ -25,7 +25,7 @@ describe("SettingsContext", () => {
     expect(screen.getByTestId("music")).toHaveTextContent("true");
   });
 
-  test("persists sounds setting to localStorage", () => {
+  it("persists sounds setting to localStorage", () => {
     render(
       <SettingsProvider>
         <SettingsContext.Consumer>
@@ -44,7 +44,7 @@ describe("SettingsContext", () => {
     expect(localStorage.getItem("sounds")).toBe("false");
   });
 
-  test("persists music setting to localStorage", () => {
+  it("persists music setting to localStorage", () => {
     render(
       <SettingsProvider>
         <SettingsContext.Consumer>
@@ -63,7 +63,7 @@ describe("SettingsContext", () => {
     expect(localStorage.getItem("music")).toBe("false");
   });
 
-  test("loads sounds setting from localStorage", () => {
+  it("loads sounds setting from localStorage", () => {
     localStorage.setItem("sounds", "false");
 
     render(
@@ -77,7 +77,7 @@ describe("SettingsContext", () => {
     expect(screen.getByTestId("sounds")).toHaveTextContent("false");
   });
 
-  test("loads music setting from localStorage", () => {
+  it("loads music setting from localStorage", () => {
     localStorage.setItem("music", "false");
 
     render(

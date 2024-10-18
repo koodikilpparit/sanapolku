@@ -20,20 +20,20 @@ describe("Settings Component", () => {
         );
     };
 
-    test("renders sound and music settings", () => {
+    it("renders sound and music settings", () => {
         renderComponent();
         expect(screen.getByText("Äänet")).toBeInTheDocument();
         expect(screen.getByText("Musiikki")).toBeInTheDocument();
     });
 
-    test("toggles sound setting", () => {
+    it("toggles sound setting", () => {
         renderComponent();
         const soundCheckbox = screen.getByLabelText("Äänet");
         fireEvent.click(soundCheckbox);
         expect(mockSetSounds).toHaveBeenCalledWith(false);
     });
 
-    test("toggles music setting", () => {
+    it("toggles music setting", () => {
         renderComponent();
         const musicCheckbox = screen.getByLabelText("Musiikki");
         fireEvent.click(musicCheckbox);
