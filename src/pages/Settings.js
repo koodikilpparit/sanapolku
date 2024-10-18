@@ -57,28 +57,29 @@ const Settings = () => {
             Majakangas{' '}
           </p>
         </div>
-      </div>
-      <div className="reset-button">
-        <button
-          onClick={() => {
-            if (
-              window.confirm(
-                'Haluatko varmasti palauttaa sovelluksen oletusasetuksiin? Tämä poistaa kaikki omat polut ja sanat!'
-              )
-            ) {
-              resetDB()
-                .then(() => {
-                  localStorage.clear();
-                  window.location.reload();
-                })
-                .catch((error) => {
-                  console.error('Failed to reset the database:', error);
-                });
-            }
-          }}
-        >
-          Palauta sovellus oletusasetuksiin
-        </button>
+
+        <div className="reset-button">
+          <button
+            onClick={() => {
+              if (
+                window.confirm(
+                  'Haluatko varmasti palauttaa sovelluksen oletusasetuksiin? Tämä poistaa kaikki omat polut ja sanat!'
+                )
+              ) {
+                resetDB()
+                  .then(() => {
+                    localStorage.clear();
+                    window.location.reload();
+                  })
+                  .catch((error) => {
+                    console.error('Failed to reset the database:', error);
+                  });
+              }
+            }}
+          >
+            Palauta sovellus oletusasetuksiin
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,14 +1,17 @@
-/* Overall page layout */
+html,
+body {
+  height: 100%;
+  background-color: #06705b;
+}
+
 .settings-container {
+  display: flex;
   font-family: 'Verdana', sans-serif;
-  background-color: #1a7a68;
   color: white;
   height: 100vh;
 }
 
-/* Header styling */
 .settings-header {
-  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -19,21 +22,23 @@
   cursor: pointer;
 }
 
-/* Settings and About Info container styling */
 .settings-about-container {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
   align-items: center;
-  justify-content: space-around;
 }
 
-/* Settings section styling */
 .settings,
 .about-info {
   padding: 20px;
   flex: 1;
   min-width: 300px;
+  box-sizing: border-box;
+}
+
+.reset-button {
+  flex: 1 1 100%;
 }
 
 .settings h3,
@@ -62,12 +67,4 @@
 .about-info {
   font-size: 14px;
   line-height: 1.5;
-}
-
-.reset-button {
-  color: f44336;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
 }
