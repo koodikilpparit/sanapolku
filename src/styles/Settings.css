@@ -4,7 +4,7 @@
   background-color: #1a7a68;
   color: white;
   height: 100vh;
-  flex-direction: column;
+
 }
 
 /* Header styling */
@@ -25,6 +25,8 @@
   display: flex;
   flex-wrap: wrap;
   flex: 1;
+  align-items: center;
+  justify-content: space-around;
 }
 
 /* Settings section styling */
@@ -58,8 +60,15 @@
   cursor: pointer;
 }
 
-/* About Info section styling */
 .about-info {
   font-size: 14px;
   line-height: 1.5;
+}
+
+.reset-button {
+  color: f44336;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }

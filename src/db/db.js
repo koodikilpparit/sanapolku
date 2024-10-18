@@ -157,3 +157,39 @@ export function deleteWord(wordId) {
     });
   });
 }
+
+// Reset the database to its initial state
+export function resetDB() {
+  return Promise.all([
+    openDB(DB_NAME_PATHS).then((db) => {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction('paths', 'readwrite');
+        const store = transaction.objectStore('paths');
+        const request = store.clear();
+
+        request.onsuccess = () => {
+          resolve();
+        };
+
+        request.onerror = (_event) => {
+          reject('Error clearing paths');
+        };
+      });
+    }),
+    openDB(DB_NAME_WORDS).then((db) => {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction('words', 'readwrite');
+        const store = transaction.objectStore('words');
+        const request = store.clear();
+
+        request.onsuccess = () => {
+          resolve();
+        };
+
+        request.onerror = (_event) => {
+          reject('Error clearing words');
+        };
+      });
+    }),
+  ]);
+}

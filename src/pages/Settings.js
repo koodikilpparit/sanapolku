@@ -2,6 +2,7 @@ import React from "react";
 import BackButton from "../components/universal/BackButton";
 import "../styles/Settings.css";
 import { SettingsContext } from "../contexts/SettingsContext";
+import { resetDB } from "../db/db";
 
 /**
  * Settings component renders the settings page of the application.
@@ -56,6 +57,19 @@ const Settings = () => {
             Majakangas{" "}
           </p>
         </div>
+      </div>
+      <div className="reset-button">
+          <button onClick={() => {
+            resetDB()
+            .then(() => {
+              localStorage.clear();
+              window.location.reload();
+            })
+            .catch((error) => {
+              console.error('Failed to reset the database:', error);
+            });
+          }}>Palauta sovellus oletusasetuksiin
+          </button>
       </div>
     </div>
   );
