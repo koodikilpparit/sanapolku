@@ -53,8 +53,8 @@ const Settings = () => {
           <p>Kuvat: Papunetin kuvapankki,</p>
           <p>
             Sovelluksen kehittäjät: Anni Nieminen, Eveliina Sundberg, Neera
-            Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto "Reine"
-            Majakangas{' '}
+            Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto
+            &quot;Reine&quot; Majakangas
           </p>
         </div>
 
