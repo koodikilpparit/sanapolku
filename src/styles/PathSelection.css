@@ -1,75 +1,180 @@
 .paths-page {
-    background-color: #06705B;
-    height: 100vh;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .input-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 60%;
-    margin: 0 auto;
-  }
-  
-  .path-input {
-    padding: 10px;
-    font-size: 18px;
-    border-radius: 10px;
-    border: none;
-    width: 300px;
-    margin-right: 10px;
-  }
-  
-  .add-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #5CB85C;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  
-  .path-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .path-item {
-    background-color: #fff;
-    color: #000000;
-    padding: 15px 20px;
-    margin: 10px 0;
-    border-radius: 10px;
-    width: 40%;
-    font-size: 32px;
-    font-weight: bold;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    text-transform: capitalize;
-  }
-  
-  
-  .no-paths {
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
+  background-color: var(--sp-dark-green);
+  height: 100vh;
+  padding: 0 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.path-selection-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 25px;
+  margin-bottom: 25px;
+}
+
+.path-selection-header h2 {
+  font-size: var(--sp-heading-1);
+  color: var(--sp-white);
+}
+
+.path-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 800px;
+  height: 60vh;
+  row-gap: 20px;
+  padding: 20px;
+  margin-top: 50px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 40vh;
+}
+
+.path-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.path-list::-webkit-scrollbar-thumb {
+  background-color: var(--sp-light-green);
+  border-radius: var(--sp-button-border-radius);
+}
+
+.path-item {
+  background-color: var(--sp-white);
+  color: var(--sp-black);
+  padding: 20px 25px;
+  border-radius: var(--sp-button-border-radius);
+  border: none;
+  width: 100%;
+  font-size: var(--sp-heading-2);
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.path-item:hover {
+  background-color: var(--sp-light-yellow);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.no-paths {
+  color: var(--sp-white);
+  font-size: var(--sp-heading-2);
+  font-weight: bold;
+}
+
+.add-path-icon {
+  font-size: var(--sp-icon-size-large);
+  color: var(--sp-white);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.add-path-icon:hover {
+  color: var(--sp-light-yellow);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.modal-content {
+  background-color: var(--sp-white);
+  padding: 30px;
+  border-radius: var(--sp-button-border-radius);
+  width: 80%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.modal-input {
+  width: 90%;
+  padding: 15px;
+  font-size: var(--sp-body-large);
+  margin: 20px 0;
+  border-radius: var(--sp-button-border-radius);
+  border: 2px solid var(--sp-black);
+}
+
+.modal-input:focus {
+  border-color: var(--sp-light-green);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  column-gap: 20px;
+  margin-top: 25px;
+}
+
+.cancel-button, .save-button {
+  padding: 15px 20px;
+  font-size: var(--sp-body-large);
+  font-weight: bold;
+  border-radius: var(--sp-button-border-radius);
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cancel-button {
+  background-color: #8A0A2A;
+  color: white;
+}
+
+.save-button {
+  background-color: var(--sp-light-green);
+  color: white;
+}
+
+@media (max-width: 767px) {
+  .add-path-icon {
+    font-size: var(--sp-icon-size-small);
   }
 
-  .add-path-icon {
-    font-size: 65px;
-    color: white;
-    margin-right: 30px;
+  .modal-content {
+    margin-bottom: 300px;
   }
+
+  .path-list {
+    height: 50vh;
+    margin-top: 25px;
+  }
+  
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .add-path-icon {
+    font-size: var(--sp-icon-size-medium);
+  }
+
+  .path-list {
+    height: 60vh;
+  }
+}

@@ -1,0 +1,44 @@
+{
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react",
+      "react-hooks"
+    ],
+    "rules": {
+      "prefer-const": "error",
+      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "consistent-return": "error",
+      "semi": ["error", "always"],
+      "react/prop-types": "warn",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "react/default-props-match-prop-types": "warn",
+      "prettier/prettier": "error"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+    "globals": {
+        "process": "readonly"
+    }
+  }
+  

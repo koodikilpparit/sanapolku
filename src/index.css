@@ -1,10 +1,45 @@
+:root {
+  /* Colors */
+  --sp-dark-green: #06705B;
+  --sp-light-green: #72A895;
+  --sp-gray-sp: #4D4D4D;
+  --sp-white: #FFFFFF;
+  --sp-black: #232323;
+  --sp-light-yellow: #F0D784;
+  --sp-red: #8A0A2A;
+
+  /* Fonts */
+  --sp-global-font: 'Verdana', sans-serif;
+  
+  /* Headings */
+  --sp-heading-1: clamp(36px, 4vw, 59px);
+  --sp-heading-2: clamp(32px, 3.5vw, 54px);
+  --sp-heading-3: clamp(24px, 3vw, 38px);
+  --sp-heading-4: clamp(20px, 2.5vw, 34px);
+  --sp-heading-5: clamp(18px, 2vw, 30px);
+  --sp-heading-6: clamp(16px, 1.5vw, 26px);
+
+  /* Body */
+  --sp-body-large: clamp(18px, 1.2vw, 20px);
+
+  /* Font sizes */
+  --sp-icon-size-large: 100px;
+  --sp-icon-size-medium: 80px;
+  --sp-icon-size-small: 40px;
+  --sp-icon-size-extra-small: 25px;
+
+  --sp-button-border-radius: 10px;
+}
+
+body {
+  font-family: var(--sp-global-font);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  font-family: var(--sp-global-font);
+  overflow: hidden;
 }
 
 code {

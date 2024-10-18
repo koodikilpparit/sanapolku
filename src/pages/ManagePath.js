@@ -23,7 +23,7 @@ const ManagePath = () => {
         }
       })
       .then((words) => setWords(words))
-      .catch(() => setError("Error fetching words"));
+      .catch(() => setError('Error fetching words'));
   }, [pathName]);
 
   // Function to delete a word from the database and update the word list
@@ -34,18 +34,17 @@ const ManagePath = () => {
         console.log(`Deleted word with id: ${wordId}`);
       })
       .catch((error) => {
-        console.error("Error deleting word:", error);
-        alert("Error deleting the word.");
+        console.error('Error deleting word:', error);
+        alert('Error deleting the word.');
       });
   };
 
   return (
     <div className="manage-page">
-
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <h2 className="title">Lisää sanoja</h2>
+        <h2>Lisää sanoja</h2>
       </div>
 
       {/* Word List */}
@@ -67,7 +66,10 @@ const ManagePath = () => {
         </div>
 
         {/* Add new word */}
-        <div className="add-word" onClick={() => navigate(`/uusisana/${pathName}`)}>
+        <div
+          className="add-word"
+          onClick={() => navigate(`/uusisana/${pathName}`)}
+        >
           <span className="add-icon">+</span>
           <span className="add-text">LISÄÄ UUSI SANA</span>
         </div>
