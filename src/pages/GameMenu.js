@@ -10,7 +10,7 @@ function GameMenu() {
     <div className="game-menu-container">
       {/* Header */}
       <div className="header">
-        <BackButton />
+        <BackButton className="gm-back-button" />
         <h2 className="title">Valitse polku</h2>
       </div>
 

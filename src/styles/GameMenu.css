@@ -23,18 +23,21 @@ html, body {
 
 .header {
   display: flex;
-  align-items: center; 
-  justify-content: center; 
-  position: relative; 
-  padding: 10px;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 7px;
+  margin-bottom: 25px;
+  padding-left: 25px;
 }
 
-
 .title {
+  font-size: var(--sp-heading-1);
   margin: 0; 
   position: absolute; 
   left: 50%; 
   transform: translateX(-50%); 
+  color: white;
 }
 
 .button-container {
