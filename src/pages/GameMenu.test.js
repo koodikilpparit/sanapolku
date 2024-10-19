@@ -4,7 +4,6 @@ import { BrowserRouter, MemoryRouter, Routes, Route } from 'react-router-dom';
 import GameMenu from './GameMenu';
 
 describe('GameMenu Component', () => {
-
   it('renders the title', () => {
     render(
       <BrowserRouter>
@@ -17,7 +16,6 @@ describe('GameMenu Component', () => {
   });
 
   it('renders the path buttons', () => {
-
     render(
       <BrowserRouter>
         <GameMenu />
@@ -79,7 +77,6 @@ describe('GameMenu Component', () => {
   }); */
 
   it('navigates to "Omat polut" when the button is clicked', async () => {
-
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
