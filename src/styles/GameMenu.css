@@ -1,0 +1,156 @@
+html, body {
+  height: 100%; 
+  margin: 0; 
+  padding: 0;
+  background-color: #06705b;
+  overflow-x: hidden;
+  box-sizing: border-box; 
+}
+  
+*, *::before, *::after {
+  box-sizing: inherit; 
+}
+  
+.game-menu-container {
+  background-color: #06705b;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px; 
+  box-sizing: border-box; 
+}
+
+.header {
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  position: relative; 
+  padding: 10px;
+}
+
+
+.title {
+  margin: 0; 
+  position: absolute; 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.path-button {
+  background-color: white;
+  color: var(--Dark-Blue, #293642);
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  width: 540px;
+  height: 60px;
+  font-family: Verdana;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  margin-bottom: 10px;
+}
+
+/* Style for Phones in Portrait mode */
+@media (max-width: 650px) {
+  
+    .path-button {
+      background-color: white;
+      color: var(--Dark-Blue, #293642);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      width: 90vw;
+      height: max(6vh, 40px);
+      max-height: 48px;
+      font-family: Verdana;
+      font-size: min(6vw, 24px);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Style for Phones in Horizontal mode */
+  @media (max-height: 420px) {
+
+    .path-button {
+      background-color: white;
+      color: var(--Dark-Blue, #293642);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      width: 540px;
+      height: 60px;
+      font-family: Verdana;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 40px;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Style for extremely narrow screens in portrait mode */
+  @media (max-width: 360px) {
+  
+    .path-button {
+      background-color: white;
+      color: var(--Dark-Blue, #293642);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      width: 95vw;
+      height: 12vw;
+      font-family: Verdana;
+      font-size: 6vw;
+      font-weight: 700;
+      margin-bottom: 2vw;
+      line-height: normal;
+    }
+  }
+  
+  /* Style for the narrowest possible screens in portrait mode */
+  @media (max-width: 200px) {
+  
+    .path-button {
+      background-color: white;
+      color: var(--Dark-Blue, #293642);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      width: 95vw;
+      height: 15vw;
+      font-family: Verdana;
+      font-size: 6vw;
+      font-weight: 700;
+      margin-bottom: 5vw;
+      line-height: normal;
+    }
+  }
+  
+  /* Style for extremely narrow screens in Horizontal mode */
+  @media (max-height: 320px) {
+    
+    .path-button {
+      background-color: white;
+      color: var(--Dark-Blue, #293642);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      width: 60vw;
+      height: 20vh;
+      font-family: Verdana;
+      font-size: 10vh;
+      font-weight: 700;
+      margin-bottom: 2vh;
+      line-height: normal;
+    }
+  }
+  

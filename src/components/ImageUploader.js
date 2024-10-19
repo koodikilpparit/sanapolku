@@ -1,9 +1,8 @@
-import './styles/NewWord.css';
-
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import '../styles/NewWord.css';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 
 // Component that allows uploading images
 const ImageUploader = ({ setImageData }) => {
