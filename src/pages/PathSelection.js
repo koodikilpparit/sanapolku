@@ -42,7 +42,8 @@ const PathSelection = () => {
 
   // Function to navigate to the path management page
   const handlePathClick = (path) => {
-    navigate(`/muokaapolkua/${path}`);
+    navigate(`/peli/${path}`);
+    //navigate(`/muokaapolkua/${path}`);
   };
 
   // Function to open the modal
