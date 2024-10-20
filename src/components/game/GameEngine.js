@@ -20,7 +20,7 @@ const GameEngine = ({ pathName }) => {
           setPathId(path.id);
           return getWordsForPath(path.id);
         } else {
-          console.error('Path not found', pathId);
+          console.error('Path not found');
           return null;
         }
       })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import GameEngine from '../../components/game/GameEngine';
-import { openDB, getPathByName, getWordsForPath } from '../../db/db';
+import { openDB } from '../../db/db';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
