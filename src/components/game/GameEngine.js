@@ -33,7 +33,7 @@ const GameEngine = ({ pathName }) => {
         }
       })
       .catch((error) => console.error('Error fetching path/words:', error));
-  }, [pathName]);
+  }, [pathName, pathId]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -49,6 +49,7 @@ const GameEngine = ({ pathName }) => {
         moveToNextWord();
       } else {
         setCurrentPhase(2);
+        setPlayerInput('');
         setShuffledWord(shuffleWord(currentWord.word));
       }
     } else if (currentPhase === 2) {
@@ -56,6 +57,7 @@ const GameEngine = ({ pathName }) => {
         moveToNextWord();
       } else {
         setCurrentPhase(3);
+        setPlayerInput('');
       }
     } else if (currentPhase === 3) {
       if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
