@@ -29,7 +29,7 @@ const GameEngine = ({ pathName }) => {
           setWords(fetchedWords);
           setCurrentWord(fetchedWords[0]);
         } else {
-          console.error('No words found for this path');
+          console.error('No words found for this path', pathId);
         }
       })
       .catch((error) => console.error('Error fetching path/words:', error));
