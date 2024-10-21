@@ -5,7 +5,7 @@ import GamePage from './GamePage';
 
 describe('GamePage', () => {
   // Rendering the instructions page
-  it('checks if Instructions-page renders', () => {
+  it('checks if Game-page renders', () => {
     render(
       <BrowserRouter>
         <GamePage />
