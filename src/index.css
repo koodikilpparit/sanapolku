@@ -1,16 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Colors */
-  --sp-dark-green: #06705B;
-  --sp-light-green: #72A895;
-  --sp-gray-sp: #4D4D4D;
-  --sp-white: #FFFFFF;
+  --sp-dark-green: #06705b;
+  --sp-light-green: #72a895;
+  --sp-gray-sp: #4d4d4d;
+  --sp-white: #ffffff;
   --sp-black: #232323;
-  --sp-light-yellow: #F0D784;
-  --sp-red: #8A0A2A;
+  --sp-light-yellow: #f0d784;
+  --sp-red: #8a0a2a;
 
   /* Fonts */
   --sp-global-font: 'Verdana', sans-serif;
-  
+
   /* Headings */
   --sp-heading-1: clamp(36px, 4vw, 59px);
   --sp-heading-2: clamp(32px, 3.5vw, 54px);
