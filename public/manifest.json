@@ -2,6 +2,22 @@
   "short_name": "Sanapolku",
   "name": "Sanapolku",
   "icons": [],
+  "screenshots": [
+    {
+      "src": "/screen-shots/wide-start.png",
+      "sizes": "1275x710",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Sanapolku aloitussivu"
+    },
+    {
+      "src": "/screen-shots/portrait-start.png",
+      "sizes": "729x1280",
+      "type": "image/png",
+      "form_factor": "portrait",
+      "label": "Sanapolku aloitussivu"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#06705B",
