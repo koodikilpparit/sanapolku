@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import shuffleArray from 'lodash.shuffle';
 import { getPathByName, getWordsForPath } from '../../db/db';
 import './GameEngine.css';
 
@@ -92,18 +93,7 @@ const GameEngine = ({ pathName }) => {
 
   // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
   const shuffleWord = (word) => {
-    const array = [...word];
-    let shuffledWord = '';
-
-    while (shuffledWord === '' || shuffledWord === word) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      shuffledWord = array.join('');
-    }
-
-    return shuffledWord;
+    return shuffleArray([...word]).join('');
   };
 
   return (
