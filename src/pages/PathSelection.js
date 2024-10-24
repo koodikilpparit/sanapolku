@@ -45,7 +45,7 @@ const PathSelection = () => {
   // Function to navigate to the path management page
   const handlePathClick = (path) => {
     navigate(`/peli/${path}`);
-    //navigate(`/muokaapolkua/${path}`);
+    //navigate(`/muokkaapolkua/${path}`);
   };
 
   // Handle path deletion

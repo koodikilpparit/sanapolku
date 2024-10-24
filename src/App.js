@@ -20,7 +20,7 @@ function App() {
           <Route path="/ohjeet" element={<Instructions />} />
           <Route path="/polut" element={<GameMenu />} />
           <Route path="/omatpolut" element={<PathSelection />} />
-          <Route path="/muokaapolkua/:pathName" element={<ManagePath />} />
+          <Route path="/muokkaapolkua/:pathName" element={<ManagePath />} />
           <Route path="/uusisana/:pathName" element={<NewWord />} />
           <Route path="/peli/:pathName" element={<GamePage />} />
         </Routes>
