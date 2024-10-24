@@ -15,6 +15,10 @@ describe('GameEngine Component with IndexedDB', () => {
   const mockWords = [
     { id: 1, word: 'apple', img: 'apple.jpg', pathId: 1 },
     { id: 2, word: 'banana', img: 'banana.jpg', pathId: 1 },
+    { id: 3, word: 'orange', img: 'orange.jpg', pathId: 1 },
+    { id: 4, word: 'mango', img: 'mango.jpg', pathId: 1 },
+    { id: 5, word: 'cherry', img: 'cherry.jpg', pathId: 1 },
+    { id: 6, word: 'plum', img: 'plum.jpg', pathId: 1 },
   ];
 
   // Utility function to set up the test DB
@@ -28,8 +32,9 @@ describe('GameEngine Component with IndexedDB', () => {
     const wordsDB = await openDB('wordsDB');
     const wordsTransaction = wordsDB.transaction(['words'], 'readwrite');
     const wordsStore = wordsTransaction.objectStore('words');
-    await wordsStore.add(mockWords[0]);
-    await wordsStore.add(mockWords[1]);
+    for (const mockWord of mockWords) {
+      await wordsStore.add(mockWord);
+    }
     await wordsTransaction.done;
   };
 
@@ -90,10 +95,10 @@ describe('GameEngine Component with IndexedDB', () => {
 
     // Check that it moves to the next word and displays the correct image
     const nextImgElement = screen.getByRole('img');
-    expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
+    expect(nextImgElement).toHaveAttribute('src', 'plum.jpg');
   });
 
-  it('displays game over when all words are completed', async () => {
+  it('moves to the next level after words in the current level are completed', async () => {
     render(<GameEngine pathName="test-path" />);
 
     // Complete the first word
@@ -103,15 +108,59 @@ describe('GameEngine Component with IndexedDB', () => {
     });
     fireEvent.click(screen.getByText('Valmis'));
 
-    // Check the second word (banana) is displayed by its image source
-    await waitFor(() => {
-      const imgElement = screen.getByRole('img');
-      expect(imgElement).toHaveAttribute('src', 'banana.jpg');
-    });
-
     // Complete the second word
     fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'plum' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    // Check if the game proceeds correctly and the next level starts
+    const nextImgElement = screen.getByRole('img');
+    expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
+  });
+
+  it('displays game over when all levels are completed', async () => {
+    render(<GameEngine pathName="test-path" />);
+
+    // Complete the first word
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'apple' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    // Complete the second word
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'plum' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    // Complete the third word
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
       target: { value: 'banana' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    // Complete the fourth word
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'orange' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    // Complete the fifth word
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'mango' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    // Complete the sixth word
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'cherry' },
     });
     fireEvent.click(screen.getByText('Valmis'));
 
