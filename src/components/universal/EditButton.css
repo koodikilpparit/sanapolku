@@ -1,0 +1,18 @@
+.edit-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto; 
+    padding: 0;
+  }
+  
+.edit-icon {
+    font-size: var(--sp-icon-size-small);
+    transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
+    color: gray; 
+}

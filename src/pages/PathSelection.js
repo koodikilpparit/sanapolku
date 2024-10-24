@@ -5,6 +5,7 @@ import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import EditButton from '../components/universal/EditButton';
 
 const PathSelection = () => {
   const navigate = useNavigate();
@@ -75,13 +76,12 @@ const PathSelection = () => {
       <div className="path-list">
         {paths.length > 0 ? (
           paths.map((path, index) => (
-            <button
-              key={index}
-              className="path-item"
-              onClick={() => handlePathClick(path)}
-            >
-              <span>{path}</span>
-            </button>
+            <div key={index} className="path-item-container">
+              <span className="path-item" onClick={() => handlePathClick(path)}>
+                {path}
+              </span>
+              <EditButton path={path} />
+            </div>
           ))
         ) : (
           <p className="no-paths">Ei polkuja.</p>
