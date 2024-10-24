@@ -51,7 +51,6 @@
   display: flex; 
   justify-content: space-between; 
   align-items: center;
-  padding: 2px 3px;
   background-color: var(--sp-white);
   border-radius: var(--sp-button-border-radius);
   border: none;
@@ -67,6 +66,7 @@
   font-weight: bold;
   cursor: pointer;
   text-transform: capitalize;
+  border-radius: var(--sp-button-border-radius) 0 0 var(--sp-button-border-radius);  
 }
 
 .path-item:hover {
