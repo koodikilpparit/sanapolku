@@ -14,6 +14,47 @@ const GameEngine = ({ pathName }) => {
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [levels, setLevels] = useState([]);
+  const [levelIndex, setLevelIndex] = useState(0);
+  const [currentLevel, setCurrentLevel] = useState([]);
+
+  const wordsIntoLevels = (words) => {
+    const totalWords = words.length;
+    let levelCount = 0;
+    
+    // Determine the number of levels (min: 1, max: -)
+    if (totalWords <= 5) {
+      levelCount = totalWords;
+    }
+    else {
+      levelCount = Math.ceil(totalWords / 50) * 5;
+    }
+    
+    // Base number of words per level
+    const baseWordsPerLevel = Math.floor(totalWords / levelCount);
+    
+    // Extra words that need to be added
+    const extraWords = totalWords % levelCount;
+    
+    // Initialize levels
+    const levels = Array.from({ length: levelCount }, () => []);
+  
+    let wordIndex = 0;
+  
+    // Distribute the base number of words to each level
+    for (let i = 0; i < levelCount; i++) {
+      levels[i] = words.slice(wordIndex, wordIndex + baseWordsPerLevel);
+      wordIndex += baseWordsPerLevel;
+    }
+  
+    // Distribute the extra words starting from the first level towards the end
+    for (let i = 0; i < extraWords; i++) {
+      levels[i].push(words[wordIndex]);
+      wordIndex++;
+    }
+  
+    return levels;
+  };  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,11 +71,15 @@ const GameEngine = ({ pathName }) => {
           return;
         }
 
-        setWords(fetchedWords);
-        setCurrentWord(fetchedWords[0]);
+        const levels = wordsIntoLevels(fetchedWords);
+        console.log(levels)
+
+        setLevels(levels);
+        setCurrentLevel(levels[0]);
+        setCurrentWord(levels[0][0]);
         setLoading(false);
       } catch (error) {
-        setError('Error fetching path or words');
+        setError('Error fetching path, level or words');
         console.error(error);
         setLoading(false);
       }
@@ -43,11 +88,19 @@ const GameEngine = ({ pathName }) => {
     fetchData();
   }, [pathName]);
 
+  // Sets current level
   useEffect(() => {
-    if (words.length > 0) {
-      setCurrentWord(words[wordIndex]);
+    if (levels.length > 0) {
+      setCurrentLevel(levels[levelIndex]);
     }
-  }, [wordIndex, words]);
+  }, [levelIndex, levels]);
+
+  // Sets current word
+  useEffect(() => {
+    if (currentLevel.length > 0) {
+      setCurrentWord(currentLevel[wordIndex]);
+    }
+  }, [wordIndex, currentLevel]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -84,8 +137,12 @@ const GameEngine = ({ pathName }) => {
     setCurrentPhase(1);
     setPlayerInput('');
 
-    if (wordIndex + 1 < words.length) {
+    if (wordIndex + 1 < currentLevel.length) {
       setWordIndex(wordIndex + 1);
+    } else if (levelIndex + 1 < levels.length) {
+      setLevelIndex(levelIndex + 1);
+      setCurrentLevel(levels[levelIndex]);
+      setWordIndex(0);
     } else {
       setGameOver(true);
     }
