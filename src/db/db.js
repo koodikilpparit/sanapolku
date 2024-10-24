@@ -158,6 +158,74 @@ export function deleteWord(wordId) {
   });
 }
 
+// Delete path and it's words
+export function deletePath(pathId) {
+  return openDB(DB_NAME_PATHS).then((db) => {
+    return new Promise((resolve, reject) => {
+      const pathTransaction = db.transaction('paths', 'readwrite');
+      const pathsStore = pathTransaction.objectStore('paths');
+      const request = pathsStore.delete(pathId);
+
+      request.onsuccess = () => {
+        // After successfully deleting the path, proceed to delete associated words
+        openDB(DB_NAME_WORDS).then((db) => {
+          const wordTransaction = db.transaction('words', 'readwrite'); // Correctly specify the store here
+          const wordsStore = wordTransaction.objectStore('words');
+          const wordsIndex = wordsStore.index('pathId');
+          const getWordsRequest = wordsIndex.getAllKeys(pathId);
+
+          getWordsRequest.onsuccess = (event) => {
+            const wordKeys = event.target.result;
+            if (wordKeys.length > 0) {
+              // Use a batch delete for better performance (optional)
+              const deleteRequests = wordKeys.map((wordKey) =>
+                wordsStore.delete(wordKey)
+              );
+
+              // Wait for all delete requests to complete
+              Promise.all(deleteRequests)
+                .then(() => {
+                  wordTransaction.oncomplete = () => {
+                    resolve(
+                      `Path and associated words deleted for pathId: ${pathId}`
+                    );
+                  };
+                })
+                .catch((error) => {
+                  reject(`Error deleting words: ${error}`);
+                });
+            } else {
+              // If no words found, complete the word transaction
+              wordTransaction.oncomplete = () => {
+                resolve(
+                  `Path deleted, no associated words found for pathId: ${pathId}`
+                );
+              };
+
+              wordTransaction.onerror = (error) => {
+                reject('Error deleting words: ' + error);
+              };
+            }
+          };
+
+          getWordsRequest.onerror = () => {
+            reject('Error fetching words for the pathId');
+          };
+        });
+      };
+
+      request.onerror = (_event) => {
+        reject('Error deleting the path');
+      };
+
+      // Handle transaction errors
+      pathTransaction.onerror = (error) => {
+        reject('Error deleting path: ' + error);
+      };
+    });
+  });
+}
+
 // Reset the database to its initial state
 export function resetDB() {
   return Promise.all([

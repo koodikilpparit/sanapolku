@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPaths, addPath } from '../db/db';
+import { getAllPaths, addPath, deletePath, getPathByName } from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
+import DeleteButton from '../components/universal/DeleteButton';
 
 const PathSelection = () => {
   const navigate = useNavigate();
@@ -47,6 +48,25 @@ const PathSelection = () => {
     //navigate(`/muokaapolkua/${path}`);
   };
 
+  // Handle path deletion
+  const handlePathDelete = async (path) => {
+    try {
+      const pathData = await getPathByName(path); // Wait for getPathByName to resolve
+      if (!pathData || !pathData.id) {
+        console.error('Path not found:', path);
+        alert('Path not found.');
+        return;
+      }
+
+      await deletePath(pathData.id);
+      setPaths((prevPaths) => prevPaths.filter((p) => p !== path));
+      console.log(`Deleted path with name: ${path}`);
+    } catch (error) {
+      console.error('Error deleting path:', error);
+      alert('Error deleting the path.');
+    }
+  };
+
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -81,6 +101,7 @@ const PathSelection = () => {
                 {path}
               </span>
               <EditButton path={path} />
+              <DeleteButton onClick={() => handlePathDelete(path)} />
             </div>
           ))
         ) : (
