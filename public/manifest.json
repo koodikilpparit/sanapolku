@@ -14,7 +14,7 @@
       "src": "/screen-shots/portrait-start.png",
       "sizes": "729x1280",
       "type": "image/png",
-      "form_factor": "portrait",
+      "form_factor": "narrow",
       "label": "Sanapolku aloitussivu"
     }
   ],
