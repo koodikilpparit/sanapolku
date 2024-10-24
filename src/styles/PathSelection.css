@@ -47,24 +47,31 @@
   border-radius: var(--sp-button-border-radius);
 }
 
-.path-item {
+.path-item-container {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
   background-color: var(--sp-white);
-  color: var(--sp-black);
   padding: 20px 25px;
   border-radius: var(--sp-button-border-radius);
   border: none;
   width: 100%;
-  font-size: var(--sp-heading-2);
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  text-transform: capitalize;
   transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.path-item:hover {
+.path-item {
+  color: var(--sp-w);
+  width: 100%;
+  height: 100%;
+  font-size: var(--sp-heading-2);
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: capitalize;
+  border-radius: var(--sp-button-border-radius) 0 0 var(--sp-button-border-radius);  
+}
+
+.path-item-container:hover {
   background-color: var(--sp-light-yellow);
-  transform: translateY(-5px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
