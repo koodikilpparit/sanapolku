@@ -6,6 +6,7 @@ import {
   addWord,
   getWordsForPath,
   deleteWord,
+  deletePath,
   resetDB,
 } from './db';
 
@@ -105,6 +106,59 @@ describe('IndexedDB Operations', () => {
     const remainingWords = await getWordsForPath(path.id);
     expect(remainingWords.length).toBe(0);
   });
+});
+
+// Test deleting a path and it's words
+it('should delete a path and its associated words', async () => {
+  await addPath('Path with Associated Words');
+  const path = await getPathByName('Path with Associated Words');
+
+  // Add words associated with the path
+  await addWord('Word 1', path.id, 'image-url-1');
+  await addWord('Word 2', path.id, 'image-url-2');
+
+  // Ensure words were added
+  let words = await getWordsForPath(path.id);
+  expect(words.length).toBe(2);
+
+  // Delete the path (this should also delete the associated words)
+  await deletePath(path.id);
+
+  // Check if path is deleted
+  const paths = await getAllPaths();
+  expect(paths.find((p) => p.id === path.id)).toBeUndefined();
+
+  // Check if associated words are also deleted
+  words = await getWordsForPath(path.id);
+  expect(words.length).toBe(0);
+});
+
+// Test deleting a path with no words
+it('should delete a path with no associated words', async () => {
+  await addPath('Path without Words');
+  const path = await getPathByName('Path without Words');
+
+  // Ensure no words exist for the path
+  let words = await getWordsForPath(path.id);
+  expect(words.length).toBe(0);
+
+  // Delete the path
+  await deletePath(path.id);
+
+  // Check if path is deleted
+  const paths = await getAllPaths();
+  expect(paths.find((p) => p.id === path.id)).toBeUndefined();
+
+  // Check if no words are present
+  words = await getWordsForPath(path.id);
+  expect(words.length).toBe(0);
+});
+
+// Test that deleting a non-existent path returns an error
+it('should return an error when trying to delete a non-existent path', async () => {
+  await expect(deletePath('nonExistentPathId')).rejects.toThrow(
+    'Error deleting the path'
+  );
 });
 
 describe('resetDB Function', () => {
