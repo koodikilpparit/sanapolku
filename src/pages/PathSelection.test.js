@@ -136,7 +136,7 @@ describe('PathSelection Component UI Tests', () => {
     });
   });
 
-  it('should retrieve all paths from the database', async () => {
+  it('should navigate to edit path page when using edit button', async () => {
     const { container } = render(
       <BrowserRouter>
         <PathSelection />
