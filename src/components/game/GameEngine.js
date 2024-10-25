@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import shuffleArray from 'lodash.shuffle';
 import { getPathByName, getWordsForPath } from '../../db/db';
+import { useNavigate } from 'react-router-dom';
 import './GameEngine.css';
 
-const GameEngine = ({ pathName }) => {
-  const [words, setWords] = useState([]);
-  const [currentWord, setCurrentWord] = useState(null);
+const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [playerInput, setPlayerInput] = useState('');
   const [shuffledWord, setShuffledWord] = useState('');
-  const [wordIndex, setWordIndex] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [levels, setLevels] = useState([]);
+  const [currentLevel, setCurrentLevel] = useState([]);
+  const [currentWord, setCurrentWord] = useState(null);
+  const [wordIndex, setWordIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [levels, setLevels] = useState([]);
-  const [levelIndex, setLevelIndex] = useState(0);
-  const [currentLevel, setCurrentLevel] = useState([]);
+  const [levelIndex, setLevelIndex] = useState(initialLevelIndex - 1);
+
+  const navigate = useNavigate();
 
   const wordsIntoLevels = (words) => {
     const totalWords = words.length;
@@ -75,8 +77,8 @@ const GameEngine = ({ pathName }) => {
         console.log(levels)
 
         setLevels(levels);
-        setCurrentLevel(levels[0]);
-        setCurrentWord(levels[0][0]);
+        setCurrentLevel(levels[levelIndex]);
+        setCurrentWord(levels[levelIndex][0]);
         setLoading(false);
       } catch (error) {
         setError('Error fetching path, level or words');
@@ -139,10 +141,16 @@ const GameEngine = ({ pathName }) => {
 
     if (wordIndex + 1 < currentLevel.length) {
       setWordIndex(wordIndex + 1);
+      console.log(levelIndex);
+      console.log(wordIndex);
+      console.log("Change word");
     } else if (levelIndex + 1 < levels.length) {
       setLevelIndex(levelIndex + 1);
-      setCurrentLevel(levels[levelIndex]);
+      navigate(`/peli/${pathName}/taso/${levelIndex + 2}`);
       setWordIndex(0);
+      console.log(levelIndex);
+      console.log(wordIndex);
+      console.log("Change level");
     } else {
       setGameOver(true);
     }
@@ -194,6 +202,7 @@ const GameEngine = ({ pathName }) => {
 
 GameEngine.propTypes = {
   pathName: PropTypes.string.isRequired,
+  levelIndex: PropTypes.number.isRequired,
 };
 
 export default GameEngine;
