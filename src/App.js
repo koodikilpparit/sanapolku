@@ -9,6 +9,7 @@ import PathSelection from './pages/PathSelection';
 import ManagePath from './pages/ManagePath';
 import NewWord from './pages/NewWord';
 import GamePage from './pages/GamePage';
+import LevelsPage from './pages/LevelsPage';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
           <Route path="/omatpolut" element={<PathSelection />} />
           <Route path="/muokaapolkua/:pathName" element={<ManagePath />} />
           <Route path="/uusisana/:pathName" element={<NewWord />} />
-          <Route path="/peli/:pathName" element={<GamePage />} />
+          <Route path="/peli/:pathName" element={<LevelsPage />} />
+          <Route path="/peli/:pathName/taso/:levelIndex" element={<GamePage />} />
         </Routes>
       </div>
     </Router>
