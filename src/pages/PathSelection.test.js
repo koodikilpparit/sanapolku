@@ -2,16 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
-/*import * as db from '../db/db';*/
-
-import {
-  openDB,
-  addPath,
-  getAllPaths,
-  resetDB,
-} from '../db/db';
-
-/*jest.mock('../db/db');*/
+import { resetDB } from '../db/db';
 
 if (typeof structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -164,7 +155,5 @@ describe('PathSelection Component UI Tests', () => {
 
     // Checks that navigating works
     expect(mockNavigate).toHaveBeenCalledWith('/muokaapolkua/Uusi Polku');
-    
   });
-
 });
