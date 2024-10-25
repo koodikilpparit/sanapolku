@@ -2,6 +2,20 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
+/*import * as db from '../db/db';*/
+
+import {
+  openDB,
+  addPath,
+  getAllPaths,
+  resetDB,
+} from '../db/db';
+
+/*jest.mock('../db/db');*/
+
+if (typeof structuredClone === 'undefined') {
+  global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
+}
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -12,9 +26,10 @@ jest.mock('react-router-dom', () => ({
 describe('PathSelection Component UI Tests', () => {
   const mockNavigate = jest.fn();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+    await resetDB();
   });
 
   it('should render the PathSelection component and display the title "Polut"', () => {
@@ -129,4 +144,27 @@ describe('PathSelection Component UI Tests', () => {
       ).toBeInTheDocument();
     });
   });
+
+  it('should retrieve all paths from the database', async () => {
+    const { container } = render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Uusi Polku')).toBeInTheDocument();
+    });
+
+    // Checks that edit button is found
+    const editButtons = container.getElementsByClassName('edit-button');
+
+    // Clicks first edit button
+    fireEvent.click(editButtons[0]);
+
+    // Checks that navigating works
+    expect(mockNavigate).toHaveBeenCalledWith('/muokaapolkua/Uusi Polku');
+    
+  });
+
 });
