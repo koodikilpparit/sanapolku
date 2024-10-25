@@ -155,7 +155,9 @@ const PathSelection = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Vahvista poisto</h2>
-            <p>Haluatko varmasti poistaa polun {pathToDelete}?</p>
+            <p>
+              Haluatko varmasti poistaa polun <b>{pathToDelete}</b>?
+            </p>
             <div className="modal-buttons">
               <button className="cancel-button" onClick={closeDeleteModal}>
                 Peruuta
