@@ -2,6 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getPathByName, getWordsForPath } from '../db/db';
+import PawButton from '../components/levels/PawButton';
+import RunButton from '../components/levels/RunButton';
+import TreeButton from '../components/levels/TreeButton';
+import BriefCaseButton from '../components/levels/BriefCaseButton';
+import TrophyButton from '../components/levels/TrophyButton';
+
+const levelButtons = [PawButton, RunButton, TreeButton, BriefCaseButton];
+const finalButton = TrophyButton;
 
 const LevelsPage = () => {
   const { pathName } = useParams();
@@ -80,18 +88,25 @@ const LevelsPage = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="levels-page">
-        {levels.map((level, index) => (
-            <button
-              onClick={() =>
-                navigate(`/peli/${pathName}/taso/${index + 1}`, {
-                  state: { levels, currentLevelIndex: index },
-                })
-              }
-            >
-              Level {index + 1}
-            </button>
-        ))}
+    <div className="levels-container">
+      {levels.map((level, index) => {
+        const ButtonComponent =
+          index === levels.length - 1
+            ? finalButton
+            : levelButtons[Math.floor(Math.random() * levelButtons.length)];
+
+        return (
+          <ButtonComponent
+            key={index}
+            label={`Level ${index + 1}`}
+            onClick={() =>
+              navigate(`/peli/${pathName}/taso/${index + 1}`, {
+                state: { levels, currentLevelIndex: index },
+              })
+            }
+          />
+        );
+      })}
     </div>
   );
 };
