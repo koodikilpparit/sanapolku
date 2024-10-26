@@ -3,41 +3,41 @@
   "name": "Sanapolku",
   "icons": [
     {
-      "src": "/icons/Logo48x48.png",
+      "src": "sanapolku/icons/Logo48x48.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "/icons/Logo72x72.png",
+      "src": "sanapolku/icons/Logo72x72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "/icons/Logo96x96.png",
+      "src": "sanapolku/icons/Logo96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "/icons/Logo144x144.png",
+      "src": "sanapolku/icons/Logo144x144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "/icons/Logo512x512.png",
+      "src": "sanapolku/icons/Logo512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
   "screenshots": [
     {
-      "src": "/screen-shots/wide-start.png",
+      "src": "sanapolku/screen-shots/wide-start.png",
       "sizes": "1275x710",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Sanapolku aloitussivu"
     },
     {
-      "src": "/screen-shots/portrait-start.png",
+      "src": "sanapolku/screen-shots/portrait-start.png",
       "sizes": "729x1280",
       "type": "image/png",
       "form_factor": "narrow",
