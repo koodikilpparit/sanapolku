@@ -7,6 +7,9 @@ import RunButton from '../components/levels/RunButton';
 import TreeButton from '../components/levels/TreeButton';
 import BriefCaseButton from '../components/levels/BriefCaseButton';
 import TrophyButton from '../components/levels/TrophyButton';
+import BackButton from '../components/universal/BackButton';
+import Path from '../components/levels/Path';
+import './LevelsPage.css';
 
 const levelButtons = [PawButton, RunButton, TreeButton, BriefCaseButton];
 const finalButton = TrophyButton;
@@ -88,25 +91,33 @@ const LevelsPage = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="levels-container">
-      {levels.map((level, index) => {
-        const ButtonComponent =
-          index === levels.length - 1
-            ? finalButton
-            : levelButtons[Math.floor(Math.random() * levelButtons.length)];
+    <div className="levels-page">
+      <div className="path-container">
+        <Path className="path"/>
+      </div>
+      <div className="levels-top-bar">
+        <BackButton className="levels-back-button" />
+        </div>
+      <div className="levels-container">
+        {levels.map((level, index) => {
+          const ButtonComponent =
+            index === levels.length - 1
+              ? finalButton
+              : levelButtons[Math.floor(Math.random() * levelButtons.length)];
 
-        return (
-          <ButtonComponent
-            key={index}
-            label={`Level ${index + 1}`}
-            onClick={() =>
-              navigate(`/peli/${pathName}/taso/${index + 1}`, {
-                state: { levels, currentLevelIndex: index },
-              })
-            }
-          />
-        );
-      })}
+          return (
+            <ButtonComponent
+              key={index}
+              label={`Level ${index + 1}`}
+              onClick={() =>
+                navigate(`/peli/${pathName}/taso/${index + 1}`, {
+                  state: { levels, currentLevelIndex: index },
+                })
+              }
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };
