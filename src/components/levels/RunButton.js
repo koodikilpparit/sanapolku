@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 
-const RunButton = ({ onClick }) => (
-  <button className="run-button" onClick={onClick}>
+const RunButton = ({ onClick, style }) => (
+  <button className="run-button" onClick={onClick} style={style}>
     <FontAwesomeIcon icon={faPersonRunning} className="run-icon" />
   </button>
 );

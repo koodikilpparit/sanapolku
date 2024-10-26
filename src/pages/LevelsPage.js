@@ -13,6 +13,7 @@ import './LevelsPage.css';
 
 const levelButtons = [PawButton, RunButton, TreeButton, BriefCaseButton];
 const finalButton = TrophyButton;
+const positions = [[80, 210], [240, 420], [320, 640], [240, 880], [80, 1080]];
 
 const LevelsPage = () => {
   const { pathName } = useParams();
@@ -92,31 +93,49 @@ const LevelsPage = () => {
 
   return (
     <div className="levels-page">
-      <div className="path-container">
-        <Path className="path"/>
-      </div>
       <div className="levels-top-bar">
         <BackButton className="levels-back-button" />
-        </div>
-      <div className="levels-container">
+      </div>
+      <div className="path-container">
+        <Path className="path"/>
         {levels.map((level, index) => {
           const ButtonComponent =
             index === levels.length - 1
               ? finalButton
               : levelButtons[Math.floor(Math.random() * levelButtons.length)];
 
-          return (
-            <ButtonComponent
-              key={index}
-              label={`Level ${index + 1}`}
-              onClick={() =>
-                navigate(`/peli/${pathName}/taso/${index + 1}`, {
-                  state: { levels, currentLevelIndex: index },
-                })
-              }
-            />
-          );
-        })}
+            const position = positions[index];
+
+            return (
+              <ButtonComponent
+                key={index}
+                label={`Level ${index + 1}`}
+                onClick={() =>
+                  navigate(`/peli/${pathName}/taso/${index + 1}`)
+                }
+                style={{
+                  position: 'absolute',
+                  top: `${position[0]}px`,
+                  left: `${position[1]}px`,
+                  zIndex: '1',
+                  width: '131.579px',
+                  height: '141.228px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '60px',
+                  background: '#72A895',
+                  color: '#06705b',
+                  boxShadow: '#06705b',
+                  border: 'none',
+                  boxShadow: '0 10px 0 rgba(0, 0, 0, 0.3)',
+                  transition: 'box-shadow 0.3s ease',
+                  cursor: 'pointer',
+                }}
+              />
+            );
+          })}
       </div>
     </div>
   );

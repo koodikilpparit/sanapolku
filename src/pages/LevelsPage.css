@@ -19,36 +19,16 @@
 }
 
 .path-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 0;
-    width: 100%;
-}
-
-.levels-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
     position: relative;
-    z-index: 1;
-}
-
-.levels-container button {
-    width: 131.579px;
-    height: 141.228px;
-    border-radius: 50%;
-    display: flex;
+    width: 100%;
+    height: 100%;
     align-items: center;
     justify-content: center;
-    font-size: 60px;
-    background: #72A895;
-    color: #06705b;
-    box-shadow: #06705b;
-    border: none;
-    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.3); /* Bottom shadow */
-    transition: box-shadow 0.3s ease; /* Smooth transition */
-    cursor: pointer;
+}
+
+.path-container svg path {
+    position: relative;
+    z-index: 0;
+    height: 100%;
 }

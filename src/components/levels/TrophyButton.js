@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 
-const TrophyButton = ({ onClick }) => (
-  <button className="trophy-button" onClick={onClick}>
+const TrophyButton = ({ onClick, style }) => (
+  <button className="trophy-button" onClick={onClick} style={style}>
     <FontAwesomeIcon icon={faTrophy} className="trophy-icon" />
   </button>
 );

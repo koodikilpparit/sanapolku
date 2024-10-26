@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 
-const HouseButton = ({ onClick }) => (
-  <button className="house-button" onClick={onClick}>
+const HouseButton = ({ onClick, style }) => (
+  <button className="house-button" onClick={onClick} style={style}>
     <FontAwesomeIcon icon={faHouse} className="house-icon" />
   </button>
 );
