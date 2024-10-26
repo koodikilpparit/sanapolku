@@ -13,7 +13,7 @@ import './LevelsPage.css';
 
 const levelButtons = [PawButton, RunButton, TreeButton, BriefCaseButton];
 const finalButton = TrophyButton;
-const positions = [[80, 210], [240, 420], [320, 640], [240, 880], [80, 1080]];
+const positions = [[130, 180], [240, 360], [340, 580], [240, 780], [130, 980]];
 
 const LevelsPage = () => {
   const { pathName } = useParams();
@@ -109,7 +109,6 @@ const LevelsPage = () => {
             return (
               <ButtonComponent
                 key={index}
-                label={`Level ${index + 1}`}
                 onClick={() =>
                   navigate(`/peli/${pathName}/taso/${index + 1}`)
                 }
