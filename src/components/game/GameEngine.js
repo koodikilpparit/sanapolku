@@ -60,28 +60,27 @@ const GameEngine = ({ pathName }) => {
   const handleSubmit = () => {
     if (!currentWord) return;
 
-    if (currentPhase === 1) {
-      if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
+    const normalizedInput = playerInput.toLowerCase();
+    const targetWord = currentWord.word.toLowerCase();
+
+    if (normalizedInput === targetWord) {
+      if (currentPhase === 1) {
         moveToNextWord();
-      } else {
-        setCurrentPhase(2);
-        setPlayerInput('');
-        setShuffledWord(shuffleWord(currentWord.word));
-      }
-    } else if (currentPhase === 2) {
-      if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
+      } else if (currentPhase === 2) {
         setCurrentPhase(3);
-        setPlayerInput('');
-      } else {
-        setCurrentPhase(3);
-        setPlayerInput('');
-      }
-    } else if (currentPhase === 3) {
-      if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
+      } else if (currentPhase === 3) {
         setCurrentPhase(1);
-        setPlayerInput('');
+      }
+    } else {
+      if (currentPhase === 1) {
+        setCurrentPhase(2);
+        setShuffledWord(shuffleWord(currentWord.word));
+      } else {
+        setCurrentPhase(3);
       }
     }
+
+    setPlayerInput('');
   };
 
   const moveToNextWord = () => {
