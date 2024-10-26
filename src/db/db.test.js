@@ -157,7 +157,7 @@ it('should delete a path with no associated words', async () => {
 // Test that deleting a non-existent path returns an error
 it('should return an error when trying to delete a non-existent path', async () => {
   await expect(deletePath('nonExistentPathId')).resolves.toEqual(
-    'Path deleted, no associated words found for pathId: nonExistentPathId'
+    'Path and its words deleted successfully'
   );
 });
 

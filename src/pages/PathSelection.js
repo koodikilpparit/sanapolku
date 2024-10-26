@@ -44,10 +44,9 @@ const PathSelection = () => {
     }
   };
 
-  // Function to navigate to the path management page
+  // Function to navigate to the game
   const handlePathClick = (path) => {
     navigate(`/peli/${path}`);
-    //navigate(`/muokkaapolkua/${path}`);
   };
 
   // Handle path deletion
