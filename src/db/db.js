@@ -188,7 +188,7 @@ export async function deletePath(pathId) {
 }
 
 // Delete path's words
-export async function deletePathsWords(pathId) {
+async function deletePathsWords(pathId) {
   const db = await openDB(DB_NAME_WORDS);
   return await new Promise((resolve, reject) => {
     const wordTransaction = db.transaction('words', 'readwrite');
@@ -231,17 +231,6 @@ export async function deletePathsWords(pathId) {
     };
   });
 }
-
-/*
-async function addPathBackToStorage(path) {
-  const db = await openDB(DB_NAME_PATHS);
-  return await new Promise(() => {
-    const pathTransaction = db.transaction('paths', 'readwrite');
-    const pathsStore = pathTransaction.objectStore('paths');
-    return pathsStore.add({ id: path.id, name: path.name });
-  });
-}
-  */
 
 // Reset the database to its initial state
 export function resetDB() {
