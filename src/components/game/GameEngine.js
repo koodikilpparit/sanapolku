@@ -23,40 +23,31 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
   const wordsIntoLevels = (words) => {
     const totalWords = words.length;
     let levelCount = 0;
-    
     // Determine the number of levels (min: 1, max: -)
     if (totalWords <= 5) {
       levelCount = totalWords;
-    }
-    else {
+    } else {
       levelCount = Math.ceil(totalWords / 50) * 5;
     }
-    
     // Base number of words per level
     const baseWordsPerLevel = Math.floor(totalWords / levelCount);
-    
     // Extra words that need to be added
     const extraWords = totalWords % levelCount;
-    
     // Initialize levels
     const levels = Array.from({ length: levelCount }, () => []);
-  
     let wordIndex = 0;
-  
     // Distribute the base number of words to each level
     for (let i = 0; i < levelCount; i++) {
       levels[i] = words.slice(wordIndex, wordIndex + baseWordsPerLevel);
       wordIndex += baseWordsPerLevel;
     }
-  
     // Distribute the extra words starting from the first level towards the end
     for (let i = 0; i < extraWords; i++) {
       levels[i].push(words[wordIndex]);
       wordIndex++;
     }
-  
     return levels;
-  };  
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +65,6 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
         }
 
         const levels = wordsIntoLevels(fetchedWords);
-        console.log(levels)
 
         setLevels(levels);
         setCurrentLevel(levels[levelIndex]);
@@ -88,7 +78,7 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
     };
 
     fetchData();
-  }, [pathName]);
+  }, [levelIndex, pathName]);
 
   // Sets current level
   useEffect(() => {
@@ -141,16 +131,10 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
 
     if (wordIndex + 1 < currentLevel.length) {
       setWordIndex(wordIndex + 1);
-      console.log(levelIndex);
-      console.log(wordIndex);
-      console.log("Change word");
     } else if (levelIndex + 1 < levels.length) {
       setLevelIndex(levelIndex + 1);
       navigate(`/peli/${pathName}/taso/${levelIndex + 2}`);
       setWordIndex(0);
-      console.log(levelIndex);
-      console.log(wordIndex);
-      console.log("Change level");
     } else {
       setGameOver(true);
     }
