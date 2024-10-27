@@ -24,7 +24,10 @@ function App() {
           <Route path="/muokaapolkua/:pathName" element={<ManagePath />} />
           <Route path="/uusisana/:pathName" element={<NewWord />} />
           <Route path="/peli/:pathName" element={<LevelsPage />} />
-          <Route path="/peli/:pathName/taso/:levelIndex" element={<GamePage />} />
+          <Route
+            path="/peli/:pathName/taso/:levelIndex"
+            element={<GamePage />}
+          />
         </Routes>
       </div>
     </Router>
