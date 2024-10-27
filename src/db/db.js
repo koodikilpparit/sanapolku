@@ -158,6 +158,80 @@ export function deleteWord(wordId) {
   });
 }
 
+// Delete path and it's words
+export async function deletePath(pathId) {
+  return openDB(DB_NAME_PATHS).then((db) => {
+    return new Promise((resolve, reject) => {
+      const pathTransaction = db.transaction('paths', 'readwrite');
+      const pathsStore = pathTransaction.objectStore('paths');
+      const pathDeletionRequest = pathsStore.delete(pathId);
+
+      pathDeletionRequest.onsuccess = async () => {
+        // Attempt to delete associated words
+        const wordsDeletedSuccessfully = await deletePathsWords(pathId);
+        if (wordsDeletedSuccessfully) {
+          resolve('Path and its words deleted successfully');
+        } else {
+          reject('Error while trying to delete words of the path');
+        }
+      };
+
+      pathDeletionRequest.onerror = () => {
+        reject('Error deleting the path');
+      };
+
+      pathTransaction.onerror = (error) => {
+        reject('Error during path transaction: ' + error.message);
+      };
+    });
+  });
+}
+
+// Delete path's words
+async function deletePathsWords(pathId) {
+  const db = await openDB(DB_NAME_WORDS);
+  return await new Promise((resolve, reject) => {
+    const wordTransaction = db.transaction('words', 'readwrite');
+    const wordsStore = wordTransaction.objectStore('words');
+    const wordsIndex = wordsStore.index('pathId');
+    const getWordsRequest = wordsIndex.getAllKeys(pathId);
+
+    getWordsRequest.onsuccess = (event) => {
+      const wordKeys = event.target.result;
+      if (wordKeys.length > 0) {
+        const deleteRequests = wordKeys.map((wordKey) =>
+          wordsStore.delete(wordKey)
+        );
+
+        // Wait for all delete requests to complete
+        Promise.all(deleteRequests)
+          .then(() => {
+            wordTransaction.oncomplete = () => {
+              resolve(true);
+            };
+          })
+          .catch(() => {
+            // Reject if any delete request fails
+            reject(false);
+          });
+      } else {
+        // If no words found, resolve as successful deletion
+        wordTransaction.oncomplete = () => {
+          resolve(true);
+        };
+
+        wordTransaction.onerror = () => {
+          reject(false);
+        };
+      }
+    };
+
+    getWordsRequest.onerror = () => {
+      reject(false);
+    };
+  });
+}
+
 // Reset the database to its initial state
 export function resetDB() {
   return Promise.all([

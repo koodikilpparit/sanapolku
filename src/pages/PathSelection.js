@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPaths, addPath } from '../db/db';
+import { getAllPaths, addPath, deletePath, getPathByName } from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
+import DeleteButton from '../components/universal/DeleteButton';
 
 const PathSelection = () => {
   const navigate = useNavigate();
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [pathToDelete, setPathToDelete] = useState(null);
 
   // Fetch all paths from the database when the component loads
   useEffect(() => {
@@ -30,7 +33,7 @@ const PathSelection = () => {
           setPaths([...paths, newPath]);
           setNewPath('');
           console.log('Path added:', newPath);
-          setIsModalOpen(false);
+          setIsNewPathModalOpen(false);
         })
         .catch((error) => {
           console.error(error.message);
@@ -41,20 +44,53 @@ const PathSelection = () => {
     }
   };
 
-  // Function to navigate to the path management page
+  // Function to navigate to the game
   const handlePathClick = (path) => {
     navigate(`/peli/${path}`);
-    //navigate(`/muokaapolkua/${path}`);
   };
 
-  // Function to open the modal
-  const openModal = () => {
-    setIsModalOpen(true);
+  // Handle path deletion
+  const handlePathDelete = async () => {
+    if (!pathToDelete) return;
+
+    try {
+      const pathData = await getPathByName(pathToDelete); // Wait for getPathByName to resolve
+      if (!pathData || !pathData.id) {
+        console.error('Path not found:', pathToDelete);
+        alert('Path not found.');
+        return;
+      }
+
+      await deletePath(pathData.id);
+      setPaths((prevPaths) => prevPaths.filter((p) => p !== pathToDelete));
+      console.log(`Deleted path with name: ${pathToDelete}`);
+    } catch (error) {
+      console.error('Error deleting path:', error);
+      alert('Error deleting the path.');
+    }
+    setIsDeleteModalOpen(false);
   };
 
-  // Function to close the modal
-  const closeModal = () => {
-    setIsModalOpen(false);
+  // Function to open the modal for deleting a path
+  const openDeleteModal = (path) => {
+    setPathToDelete(path);
+    setIsDeleteModalOpen(true);
+  };
+
+  // Function to close the modal for deleting a path
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setPathToDelete(null);
+  };
+
+  // Function to open the modal for creating a new path
+  const openNewPathModal = () => {
+    setIsNewPathModalOpen(true);
+  };
+
+  // Function to close the modal for creating a new path
+  const closeNewPathModal = () => {
+    setIsNewPathModalOpen(false);
     setNewPath('');
   };
 
@@ -67,7 +103,7 @@ const PathSelection = () => {
         <FontAwesomeIcon
           icon={faPlus}
           className="add-path-icon"
-          onClick={openModal}
+          onClick={openNewPathModal}
           aria-label="Lisää uusi polku"
         />
       </div>
@@ -81,6 +117,7 @@ const PathSelection = () => {
                 {path}
               </span>
               <EditButton path={path} />
+              <DeleteButton onClick={() => openDeleteModal(path)} />
             </div>
           ))
         ) : (
@@ -89,10 +126,10 @@ const PathSelection = () => {
       </div>
 
       {/* Modal for adding a new path */}
-      {isModalOpen && (
+      {isNewPathModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Lisää Uusi Polku</h2>
+            <h2>Lisää uusi polku</h2>
             <input
               type="text"
               value={newPath}
@@ -101,11 +138,31 @@ const PathSelection = () => {
               className="modal-input"
             />
             <div className="modal-buttons">
-              <button className="cancel-button" onClick={closeModal}>
+              <button className="cancel-button" onClick={closeNewPathModal}>
                 Peruuta
               </button>
               <button className="save-button" onClick={handleAddPath}>
                 Tallenna
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for confirming deletion */}
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Vahvista poisto</h2>
+            <p>
+              Haluatko varmasti poistaa polun <b>{pathToDelete}</b>?
+            </p>
+            <div className="modal-buttons">
+              <button className="cancel-button" onClick={closeDeleteModal}>
+                Peruuta
+              </button>
+              <button className="save-button" onClick={handlePathDelete}>
+                Poista
               </button>
             </div>
           </div>

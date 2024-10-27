@@ -44,7 +44,7 @@ describe('PathSelection Component UI Tests', () => {
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
-  it('should open the modal when clicking the add path button', () => {
+  it('should open the new path modal when clicking the add path button', () => {
     render(
       <BrowserRouter>
         <PathSelection />
@@ -56,7 +56,7 @@ describe('PathSelection Component UI Tests', () => {
     fireEvent.click(openModalButton);
 
     // Check if the modal content appears
-    expect(screen.getByText('Lisää Uusi Polku')).toBeInTheDocument();
+    expect(screen.getByText('Lisää uusi polku')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Anna polun nimi')).toBeInTheDocument();
   });
 

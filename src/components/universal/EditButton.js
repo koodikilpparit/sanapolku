@@ -13,7 +13,7 @@ const EditButton = ({ path }) => {
       className="edit-button"
       onClick={(e) => {
         e.stopPropagation();
-        navigate(`/muokaapolkua/${path}`);
+        navigate(`/muokkaapolkua/${path}`);
       }}
     >
       <FontAwesomeIcon icon={faEdit} className="edit-icon" />
