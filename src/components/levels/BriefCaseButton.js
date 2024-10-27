@@ -12,6 +12,7 @@ const BriefCaseButton = ({ onClick, style }) => (
 
 BriefCaseButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default BriefCaseButton;

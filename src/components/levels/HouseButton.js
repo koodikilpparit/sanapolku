@@ -12,6 +12,7 @@ const HouseButton = ({ onClick, style }) => (
 
 HouseButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default HouseButton;

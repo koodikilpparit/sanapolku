@@ -12,6 +12,7 @@ const TrophyButton = ({ onClick, style }) => (
 
 TrophyButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default TrophyButton;

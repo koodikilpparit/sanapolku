@@ -12,6 +12,7 @@ const RunButton = ({ onClick, style }) => (
 
 RunButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default RunButton;

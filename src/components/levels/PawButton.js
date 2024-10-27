@@ -12,6 +12,7 @@ const PawButton = ({ onClick, style }) => (
 
 PawButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default PawButton;

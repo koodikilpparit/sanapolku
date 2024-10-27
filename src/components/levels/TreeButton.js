@@ -12,6 +12,7 @@ const TreeButton = ({ onClick, style }) => (
 
 TreeButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default TreeButton;
