@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
+import * as db from '../db/db';
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -127,6 +128,174 @@ describe('PathSelection Component UI Tests', () => {
       expect(
         screen.queryByPlaceholderText('Anna polun nimi')
       ).toBeInTheDocument();
+    });
+  });
+
+  it('should navigate to the game path if words are associated with the path', async () => {
+    // Mock db commands
+    const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
+    mockGetAllPaths.mockImplementation(() =>
+      Promise.resolve([{ id: 1, name: 'TestPath' }])
+    );
+
+    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
+    mockGetPathByName.mockImplementation(() =>
+      Promise.resolve({ id: 1, name: 'TestPath' })
+    );
+
+    const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
+    mockGetWordsForPath.mockImplementation(() =>
+      Promise.resolve(['word1', 'word2'])
+    );
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestPath')).toBeInTheDocument();
+    });
+
+    // Simulate clicking on a path item
+    const pathItem = screen.getByText('TestPath');
+    fireEvent.click(pathItem);
+
+    // Wait and check if navigate was called with the correct route
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/peli/TestPath');
+    });
+  });
+
+  it('should open "No Words in Path" modal if no words are associated with the path', async () => {
+    // Mock db functions
+    const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
+    mockGetAllPaths.mockImplementation(() =>
+      Promise.resolve([{ id: 1, name: 'EmptyPath' }])
+    );
+
+    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
+    mockGetPathByName.mockImplementation(() =>
+      Promise.resolve({ id: 1, name: 'EmptyPath' })
+    );
+
+    const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
+    mockGetWordsForPath.mockImplementation(() => Promise.resolve([]));
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('EmptyPath')).toBeInTheDocument();
+    });
+
+    // Simulate clicking on a path item
+    const pathItem = screen.getByText('EmptyPath');
+    fireEvent.click(pathItem);
+
+    // Check if "No Words in Path" modal is displayed
+    await waitFor(() => {
+      expect(
+        screen.getByText('Polulla ei ole vielä sanoja')
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should close the "No Words in Path" modal when clicking "Palaa takaisin"', async () => {
+    // Mock db functions
+    const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
+    mockGetAllPaths.mockImplementation(() =>
+      Promise.resolve([{ id: 1, name: 'EmptyPath' }])
+    );
+
+    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
+    mockGetPathByName.mockImplementation(() =>
+      Promise.resolve({ id: 1, name: 'EmptyPath' })
+    );
+
+    const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
+    mockGetWordsForPath.mockImplementation(() => Promise.resolve([]));
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('EmptyPath')).toBeInTheDocument();
+    });
+
+    // Simulate clicking on a path item
+    const pathItem = screen.getByText('EmptyPath');
+    fireEvent.click(pathItem);
+
+    // Wait for the modal to appear
+    await waitFor(() => {
+      expect(
+        screen.getByText('Polulla ei ole vielä sanoja')
+      ).toBeInTheDocument();
+    });
+
+    // Click on "Palaa takaisin" button to close modal
+    const backButton = screen.getByText('Palaa takaisin');
+    fireEvent.click(backButton);
+
+    // Check if modal has closed
+    await waitFor(() => {
+      expect(
+        screen.queryByText('Polulla ei ole vielä sanoja')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it('should navigate to the path edit page when "Muokkaa polkua" is clicked in the "No Words in Path" modal', async () => {
+    // Mock db functions
+    const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
+    mockGetAllPaths.mockImplementation(() =>
+      Promise.resolve([{ id: 1, name: 'EmptyPath' }])
+    );
+
+    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
+    mockGetPathByName.mockImplementation(() =>
+      Promise.resolve({ id: 1, name: 'EmptyPath' })
+    );
+
+    const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
+    mockGetWordsForPath.mockImplementation(() => Promise.resolve([]));
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('EmptyPath')).toBeInTheDocument();
+    });
+
+    // Simulate clicking on a path item
+    const pathItem = screen.getByText('EmptyPath');
+    fireEvent.click(pathItem);
+
+    // Wait for the modal to appear
+    await waitFor(() => {
+      expect(
+        screen.getByText('Polulla ei ole vielä sanoja')
+      ).toBeInTheDocument();
+    });
+
+    // Click on "Muokkaa polkua" button
+    const editButton = screen.getByText('Muokkaa polkua');
+    fireEvent.click(editButton);
+
+    // Check if navigate was called with the correct edit path route
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/EmptyPath');
     });
   });
 });
