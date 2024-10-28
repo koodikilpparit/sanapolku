@@ -42,9 +42,9 @@ describe('GameEngine Component with IndexedDB', () => {
   beforeEach(async () => {
     await initializeTestDB();
   });
-  
+
   it('renders loading message initially', () => {
-      render(<GameEngine pathName="test-path" />);
+    render(<GameEngine pathName="test-path" />);
 
     // Check if the "Ladataan sanoja..." message is displayed initially
     expect(screen.getByText('Ladataan sanoja...')).toBeInTheDocument();
