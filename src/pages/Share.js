@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import serializePath from '../utils/SerializePath';
+import {
+  connectToPeerAndReceive,
+  initializePeer,
+  sendDataOnConnection,
+} from '../utils/ShareUtils';
 
 const Share = () => {
-  const [peerID, setPeerID] = useState('');
+  const [peer, setPeer] = useState(null);
+  const [peerId, setPeerId] = useState(null);
+  const [targetPeerID, setTargetPeerID] = useState('');
   const [selectedPathName, setSelectedPathName] = useState('');
   const [selectedPath, setSelectedPath] = useState(null);
 
-  const handleShareClick = () => {
-    console.log('Share');
-  };
-
-  const handleReceiveClick = () => {
-    console.log('Receive');
+  const handleShareClick = async () => {
+    await connectToPeerAndReceive(peer, targetPeerID, (data) => {
+      console.log('Received data', data);
+    });
   };
 
   const handlePathSelectionClick = async () => {
@@ -21,34 +26,72 @@ const Share = () => {
   };
 
   useEffect(() => {
-    console.log('Peer ID', peerID);
-    console.log('Selected path', selectedPath);
-  }, [peerID, selectedPath]);
+    const initPeer = async () => {
+      const { id: newId, peer: newPeer } = await initializePeer();
+      setPeerId(newId);
+      setPeer(newPeer);
+    };
+    initPeer();
+
+    return () => {
+      if (peer) {
+        peer.destroy();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleNewConnection = async () => {
+      console.log('Setting up onConnection with', peer, selectedPath);
+      sendDataOnConnection(peer, selectedPath)
+        .then(() => console.log('Successfully sent path', selectedPath))
+        .catch((e) => {
+          console.log('Error while connecting and sending path', e);
+        });
+    };
+
+    if (!(peer && selectedPath)) {
+      return;
+    }
+
+    handleNewConnection();
+  }, [peer, selectedPath]);
 
   return (
     <div>
-      <div className="path-selection">
-        <label>
-          Jaettavan polun nimi
-          <input
-            type="text"
-            value={selectedPathName}
-            onChange={(e) => setSelectedPathName(e.target.value)}
-          />
-        </label>
-        <button onClick={handlePathSelectionClick}>Hae polku</button>
+      <div className="sender-container">
+        <div className="path-selection">
+          <label>
+            Jaettavan polun nimi
+            <input
+              type="text"
+              value={selectedPathName}
+              onChange={(e) => setSelectedPathName(e.target.value)}
+            />
+          </label>
+          <button onClick={handlePathSelectionClick}>Valitse polku</button>
+        </div>
+        {peerId ? (
+          <label>
+            Jakajan ID:
+            <span style={{ marginLeft: '10px' }}>{peerId}</span>
+          </label>
+        ) : (
+          <label>Yhdistetään...</label>
+        )}
       </div>
-      <div className="share-container">
+
+      <div style={{ marginTop: '100px' }} className="receiver-container">
         <label>
-          Toisen käyttäjän ID
+          Syötä jakajan ID
           <input
+            style={{ marginLeft: '10px' }}
             type="text"
-            value={peerID}
-            onChange={(e) => setPeerID(e.target.value)}
+            value={targetPeerID}
+            onChange={(e) => setTargetPeerID(e.target.value)}
           />
         </label>
-        <button onClick={handleShareClick}>Testaa jakamista</button>
-        <button onClick={handleReceiveClick}>Testaa vastaanottamista</button>
+        <button onClick={handleShareClick}>Hae jaettava polku</button>
       </div>
     </div>
   );
