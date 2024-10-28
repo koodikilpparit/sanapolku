@@ -63,7 +63,7 @@ const LevelsPage = () => {
     fetchLevels();
   }, [pathName]);
 
-  if (loading) return <p>Loading levels...</p>;
+  if (loading) return <p>Ladataan tasoja...</p>;
   if (error) return <p>{error}</p>;
 
   return (
