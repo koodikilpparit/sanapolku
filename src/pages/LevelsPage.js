@@ -84,7 +84,11 @@ const LevelsPage = () => {
           return (
             <ButtonComponent
               key={index}
-              onClick={() => navigate(`/peli/${pathName}/taso/${index + 1}`)}
+              onClick={() =>
+                navigate(`/peli/${pathName}`, {
+                  state: { levelIndex: index },
+                })
+              }
               style={{
                 position: 'absolute',
                 top: `${position[0]}px`,

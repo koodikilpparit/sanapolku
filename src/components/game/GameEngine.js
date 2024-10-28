@@ -2,24 +2,21 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import shuffleArray from 'lodash.shuffle';
 import { getPathByName, getWordsForPath } from '../../db/db';
-import { useNavigate } from 'react-router-dom';
 import './GameEngine.css';
 import wordsIntoLevels from './WordsIntoLevels';
 
-const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
+const GameEngine = ({ pathName, levelIndex }) => {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [playerInput, setPlayerInput] = useState('');
   const [shuffledWord, setShuffledWord] = useState('');
   const [gameOver, setGameOver] = useState(false);
   const [levels, setLevels] = useState([]);
   const [currentLevel, setCurrentLevel] = useState([]);
+  const [currentLevelIndex, setCurrentLevelIndex] = useState(levelIndex);
   const [currentWord, setCurrentWord] = useState(null);
   const [wordIndex, setWordIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [levelIndex, setLevelIndex] = useState(initialLevelIndex - 1);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,10 +34,14 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
         }
 
         const levels = wordsIntoLevels(fetchedWords);
-
         setLevels(levels);
-        setCurrentLevel(levels[levelIndex]);
-        setCurrentWord(levels[levelIndex][0]);
+
+        if (levels[currentLevelIndex]) {
+          setCurrentLevel(levels[currentLevelIndex]);
+          setCurrentWord(levels[currentLevelIndex][0]);
+        } else {
+          setError('No levels found for this path');
+        }
         setLoading(false);
       } catch (error) {
         setError('Error fetching path, level or words');
@@ -50,14 +51,14 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
     };
 
     fetchData();
-  }, [levelIndex, pathName]);
+  }, [currentLevelIndex, pathName]);
 
   // Sets current level
   useEffect(() => {
-    if (levels.length > 0) {
-      setCurrentLevel(levels[levelIndex]);
+    if (levels.length > 0 && levels[currentLevelIndex]) {
+      setCurrentLevel(levels[currentLevelIndex]);
     }
-  }, [levelIndex, levels]);
+  }, [currentLevelIndex, levels]);
 
   // Sets current word
   useEffect(() => {
@@ -103,9 +104,8 @@ const GameEngine = ({ pathName, levelIndex: initialLevelIndex }) => {
 
     if (wordIndex + 1 < currentLevel.length) {
       setWordIndex(wordIndex + 1);
-    } else if (levelIndex + 1 < levels.length) {
-      setLevelIndex(levelIndex + 1);
-      navigate(`/peli/${pathName}/taso/${levelIndex + 2}`);
+    } else if (currentLevelIndex + 1 < levels.length) {
+      setCurrentLevelIndex(currentLevelIndex + 1);
       setWordIndex(0);
     } else {
       setGameOver(true);
