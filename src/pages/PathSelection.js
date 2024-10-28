@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPaths, addPath, deletePath, getPathByName } from '../db/db';
+import {
+  getAllPaths,
+  addPath,
+  deletePath,
+  getPathByName,
+  getWordsForPath,
+} from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +20,8 @@ const PathSelection = () => {
   const [newPath, setNewPath] = useState('');
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [pathToDelete, setPathToDelete] = useState(null);
+  const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(null);
 
   // Fetch all paths from the database when the component loads
   useEffect(() => {
@@ -45,25 +52,39 @@ const PathSelection = () => {
   };
 
   // Function to navigate to the game
-  const handlePathClick = (path) => {
-    navigate(`/peli/${path}`);
+  const handlePathClick = async (path) => {
+    const pathObject = await getPathByName(path);
+    const words = await getWordsForPath(pathObject.id);
+
+    // Navigate to the game only if the path has words
+    if (words.length > 0) {
+      navigate(`/peli/${path}`);
+    } else {
+      openNoWordsInPathModal(path);
+    }
+  };
+
+  // Navigate to path management page
+  const handleEditPathClick = (path) => {
+    navigate(`/muokkaapolkua/${path}`);
+    setIsNoWordsInPathOpen(false);
   };
 
   // Handle path deletion
   const handlePathDelete = async () => {
-    if (!pathToDelete) return;
+    if (!currentPath) return;
 
     try {
-      const pathData = await getPathByName(pathToDelete); // Wait for getPathByName to resolve
+      const pathData = await getPathByName(currentPath); // Wait for getPathByName to resolve
       if (!pathData || !pathData.id) {
-        console.error('Path not found:', pathToDelete);
+        console.error('Path not found:', currentPath);
         alert('Path not found.');
         return;
       }
 
       await deletePath(pathData.id);
-      setPaths((prevPaths) => prevPaths.filter((p) => p !== pathToDelete));
-      console.log(`Deleted path with name: ${pathToDelete}`);
+      setPaths((prevPaths) => prevPaths.filter((p) => p !== currentPath));
+      console.log(`Deleted path with name: ${currentPath}`);
     } catch (error) {
       console.error('Error deleting path:', error);
       alert('Error deleting the path.');
@@ -73,14 +94,14 @@ const PathSelection = () => {
 
   // Function to open the modal for deleting a path
   const openDeleteModal = (path) => {
-    setPathToDelete(path);
+    setCurrentPath(path);
     setIsDeleteModalOpen(true);
   };
 
   // Function to close the modal for deleting a path
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
-    setPathToDelete(null);
+    setCurrentPath(null);
   };
 
   // Function to open the modal for creating a new path
@@ -92,6 +113,18 @@ const PathSelection = () => {
   const closeNewPathModal = () => {
     setIsNewPathModalOpen(false);
     setNewPath('');
+  };
+
+  // Function to open the modal for informing lack of words in path
+  const openNoWordsInPathModal = (path) => {
+    setCurrentPath(path);
+    setIsNoWordsInPathOpen(true);
+  };
+
+  // Function to close the modal for informing lack of words in path
+  const closeNoWordsInPathModal = () => {
+    setIsNoWordsInPathOpen(false);
+    setCurrentPath(null);
   };
 
   return (
@@ -155,7 +188,7 @@ const PathSelection = () => {
           <div className="modal-content">
             <h2>Vahvista poisto</h2>
             <p>
-              Haluatko varmasti poistaa polun <b>{pathToDelete}</b>?
+              Haluatko varmasti poistaa polun <b>{currentPath}</b>?
             </p>
             <div className="modal-buttons">
               <button className="cancel-button" onClick={closeDeleteModal}>
@@ -163,6 +196,26 @@ const PathSelection = () => {
               </button>
               <button className="save-button" onClick={handlePathDelete}>
                 Poista
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for informing user of lack of words in path */}
+      {isNoWordsInPathOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Polulla ei ole vielä sanoja</h2>
+            <div className="modal-buttons">
+              <button className="save-button" onClick={closeNoWordsInPathModal}>
+                Palaa takaisin
+              </button>
+              <button
+                className="save-button"
+                onClick={() => handleEditPathClick(currentPath)}
+              >
+                Muokkaa polkua
               </button>
             </div>
           </div>
