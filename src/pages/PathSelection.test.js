@@ -334,7 +334,9 @@ describe('PathSelection Component UI Tests', () => {
 
     // Check if navigate was called with the correct edit path route
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/TestEditButtonPath');
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/muokkaapolkua/TestEditButtonPath'
+      );
     });
   });
 });
