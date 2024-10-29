@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import serializePath from '../utils/SerializePath';
+import { QRCode } from 'react-qrcode-logo';
 import {
   connectToPeerAndReceive,
   initializePeer,
@@ -12,6 +13,8 @@ const Share = () => {
   const [targetPeerID, setTargetPeerID] = useState('');
   const [selectedPathName, setSelectedPathName] = useState('');
   const [selectedPath, setSelectedPath] = useState(null);
+
+  const QRCODE_PREFIX = 'sanapolku:';
 
   const handleShareClick = async () => {
     await connectToPeerAndReceive(peer, targetPeerID, (data) => {
@@ -72,10 +75,11 @@ const Share = () => {
           <button onClick={handlePathSelectionClick}>Valitse polku</button>
         </div>
         {peerId ? (
-          <label>
-            Jakajan ID:
+          <div>
+            <label>Jakajan ID:</label>
             <span style={{ marginLeft: '10px' }}>{peerId}</span>
-          </label>
+            <QRCode value={QRCODE_PREFIX + peerId} />
+          </div>
         ) : (
           <label>Yhdistetään...</label>
         )}
