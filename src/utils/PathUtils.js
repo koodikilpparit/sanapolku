@@ -1,14 +1,21 @@
-import { getPathByName, getWordsForPath } from '../db/db';
-
-export async function exportPath(pathName) {
-  return await getPathToExport(pathName);
-}
+import { getPathByName, getWordsForPath, addPath, addWord } from '../db/db';
 
 export async function importPath(path) {
   console.log('Importing path', path);
+  const pathName = path.pathName;
+  const words = path.words;
+  await addPath(pathName);
+  const pathId = await getPathByName(pathName);
+  Promise.all(
+    words.map((wordAndImage) => {
+      const word = wordAndImage.word;
+      const image = wordAndImage.img;
+      addWord(word, pathId, image);
+    })
+  );
 }
 
-async function getPathToExport(pathName) {
+export async function exportPath(pathName) {
   const path = await getPathByName(pathName);
   if (!path) {
     console.warn('Path not found', pathName);
