@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import serializePath from '../utils/SerializePath';
 import { QRCode } from 'react-qrcode-logo';
+import { Scanner } from '@yudiel/react-qr-scanner';
 import {
   connectToPeerAndReceive,
   initializePeer,
@@ -26,6 +27,21 @@ const Share = () => {
     serializePath(selectedPathName).then((serializedPath) => {
       setSelectedPath(serializedPath);
     });
+  };
+
+  const handleQRScan = (result) => {
+    console.log(result);
+    if (result.startsWith(QRCODE_PREFIX)) {
+      result.substring();
+      const id = result.slice(QRCODE_PREFIX.length);
+      setTargetPeerID(id);
+    } else {
+      console.warn('Unknown QR code');
+    }
+  };
+
+  const handleQRScanError = (error) => {
+    console.error(error);
   };
 
   useEffect(() => {
@@ -86,15 +102,16 @@ const Share = () => {
       </div>
 
       <div style={{ marginTop: '100px' }} className="receiver-container">
-        <label>
-          Syötä jakajan ID
+        <div>
+          <label>Syötä jakajan ID</label>
           <input
             style={{ marginLeft: '10px' }}
             type="text"
             value={targetPeerID}
             onChange={(e) => setTargetPeerID(e.target.value)}
           />
-        </label>
+          <Scanner onScan={handleQRScan} onError={handleQRScanError} />
+        </div>
         <button onClick={handleShareClick}>Hae jaettava polku</button>
       </div>
     </div>
