@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import shuffleArray from 'lodash.shuffle';
 import { getPathByName, getWordsForPath } from '../../db/db';
+import shuffleArray from 'lodash.shuffle';
+import Phase1 from './Phase1';
+import Phase2 from './Phase2';
+import Phase3 from './Phase3';
 import './GameEngine.css';
 
 const GameEngine = ({ pathName }) => {
@@ -35,7 +38,6 @@ const GameEngine = ({ pathName }) => {
         setLoading(false);
       } catch (error) {
         setError('Error fetching path or words');
-        console.error(error);
         setLoading(false);
       }
     };
@@ -58,26 +60,27 @@ const GameEngine = ({ pathName }) => {
   const handleSubmit = () => {
     if (!currentWord) return;
 
-    if (currentPhase === 1) {
-      if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
+    const normalizedInput = playerInput.toLowerCase();
+    const targetWord = currentWord.word.toLowerCase();
+
+    if (normalizedInput === targetWord) {
+      if (currentPhase === 1) {
         moveToNextWord();
-      } else {
-        setCurrentPhase(2);
-        setPlayerInput('');
-        setShuffledWord(shuffleWord(currentWord.word));
+      } else if (currentPhase === 2) {
+        setCurrentPhase(3);
+      } else if (currentPhase === 3) {
+        setCurrentPhase(1);
       }
-    } else if (currentPhase === 2) {
-      if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
-        moveToNextWord();
+    } else {
+      if (currentPhase === 1) {
+        setCurrentPhase(2);
+        setShuffledWord(shuffleWord(currentWord.word));
       } else {
         setCurrentPhase(3);
-        setPlayerInput('');
-      }
-    } else if (currentPhase === 3) {
-      if (playerInput.toLowerCase() === currentWord.word.toLowerCase()) {
-        moveToNextWord();
       }
     }
+
+    setPlayerInput('');
   };
 
   const moveToNextWord = () => {
@@ -107,27 +110,32 @@ const GameEngine = ({ pathName }) => {
           <h2>Peli ohi!</h2>
         </div>
       ) : currentWord ? (
-        <div>
-          {currentPhase === 1 && <h1>Kirjoita sana</h1>}
-          {currentPhase === 2 && <h1>Järjestä kirjaimet</h1>}
-          {currentPhase === 3 && <h1>Kopioi sana</h1>}
-
-          <img src={currentWord.img} alt={`Kuva sanasta ${currentWord.word}`} />
-          <div className="submit-word-div">
-            {currentPhase === 2 && <p>{shuffledWord}</p>}
-            {currentPhase === 3 && <p>{currentWord.word}</p>}
-
-            <label htmlFor="player-input">Syötä sana:</label>
-            <input
-              id="player-input"
-              type="text"
-              value={playerInput}
-              onChange={handleInputChange}
-              placeholder="Syötä sana"
+        <>
+          {currentPhase === 1 && (
+            <Phase1
+              currentWord={currentWord}
+              playerInput={playerInput}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
             />
-            <button onClick={handleSubmit}>Valmis</button>
-          </div>
-        </div>
+          )}
+          {currentPhase === 2 && (
+            <Phase2
+              currentWord={currentWord}
+              shuffledWord={shuffledWord}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+            />
+          )}
+          {currentPhase === 3 && (
+            <Phase3
+              currentWord={currentWord}
+              playerInput={playerInput}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+            />
+          )}
+        </>
       ) : (
         <p>Ladataan sanoja...</p>
       )}
