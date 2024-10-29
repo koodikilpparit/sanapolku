@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import serializePath from '../utils/SerializePath';
+import { importPath, exportPath } from '../utils/PathUtils';
 import { QRCode } from 'react-qrcode-logo';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import {
@@ -18,23 +18,22 @@ const Share = () => {
   const QRCODE_PREFIX = 'sanapolku:';
 
   const handleShareClick = async () => {
-    await connectToPeerAndReceive(peer, targetPeerID, (data) => {
-      console.log('Received data', data);
-    });
+    await connectToPeerAndReceive(peer, targetPeerID, importPath);
   };
 
   const handlePathSelectionClick = async () => {
-    serializePath(selectedPathName).then((serializedPath) => {
+    exportPath(selectedPathName).then((serializedPath) => {
       setSelectedPath(serializedPath);
     });
   };
 
-  const handleQRScan = (result) => {
+  const handleQRScan = async (result) => {
     console.log(result);
     if (result.startsWith(QRCODE_PREFIX)) {
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setTargetPeerID(id);
+      await connectToPeerAndReceive(peer, targetPeerID, importPath);
     } else {
       console.warn('Unknown QR code');
     }

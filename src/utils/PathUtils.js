@@ -1,19 +1,23 @@
 import { getPathByName, getWordsForPath } from '../db/db';
 
-export default async function serializePath(pathName) {
-  return await getPathToSerialize(pathName);
+export async function exportPath(pathName) {
+  return await getPathToExport(pathName);
 }
 
-async function getPathToSerialize(pathName) {
+export async function importPath(path) {
+  console.log('Importing path', path);
+}
+
+async function getPathToExport(pathName) {
   const path = await getPathByName(pathName);
   if (!path) {
     console.warn('Path not found', pathName);
   }
-  const words = await getWordsToSerialize(path.id);
+  const words = await getWordsToExport(path.id);
   return { pathName: pathName, words: words };
 }
 
-async function getWordsToSerialize(pathId) {
+async function getWordsToExport(pathId) {
   const words = await getWordsForPath(pathId);
 
   if (words.length < 1) {
