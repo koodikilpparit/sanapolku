@@ -16,7 +16,6 @@ describe('PathSelection Component UI Tests', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
-    await resetDB();
   });
 
   it('should render the PathSelection component and display the title "Polut"', () => {
@@ -297,6 +296,45 @@ describe('PathSelection Component UI Tests', () => {
     // Check if navigate was called with the correct edit path route
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/EmptyPath');
+    });
+  });
+
+  it('should navigate to the path edit page when edit button is clicked', async () => {
+    // Mock db functions
+    const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
+    mockGetAllPaths.mockImplementation(() =>
+      Promise.resolve([{ id: 1, name: 'TestEditButtonPath' }])
+    );
+
+    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
+    mockGetPathByName.mockImplementation(() =>
+      Promise.resolve({ id: 1, name: 'TestEditButtonPath' })
+    );
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestEditButtonPath')).toBeInTheDocument();
+    });
+
+    // Locate the specific path item container by its name
+    const pathContainer = screen
+      .getByText('TestEditButtonPath')
+      .closest('.path-item-container');
+
+    // Find edit button using querySelector within the container
+    const editButton = pathContainer.querySelector('.edit-button');
+
+    // Click edit button
+    fireEvent.click(editButton);
+
+    // Check if navigate was called with the correct edit path route
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/TestEditButtonPath');
     });
   });
 });
