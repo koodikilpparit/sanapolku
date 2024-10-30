@@ -55,7 +55,7 @@ describe('ManagePath Component UI Tests', () => {
     );
 
     // Get the add word button and simulate a click
-    const addButton = screen.getByText('LISÄÄ UUSI SANA');
+    const addButton = screen.getByLabelText('Lisää uusi sana');
     fireEvent.click(addButton);
 
     // Check if navigate was called with the correct route
