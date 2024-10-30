@@ -5,12 +5,12 @@ export async function importPath(path) {
   const pathName = path.pathName;
   const words = path.words;
   await addPath(pathName);
-  const pathId = await getPathByName(pathName);
+  const pathInDB = await getPathByName(pathName);
   Promise.all(
     words.map((wordAndImage) => {
       const word = wordAndImage.word;
       const image = wordAndImage.img;
-      addWord(word, pathId, image);
+      addWord(word, pathInDB.id, image);
     })
   );
 }
