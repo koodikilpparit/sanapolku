@@ -14,6 +14,7 @@ const Share = () => {
   const [targetPeerID, setTargetPeerID] = useState('');
   const [selectedPathName, setSelectedPathName] = useState('');
   const [selectedPath, setSelectedPath] = useState(null);
+  const [isCameraAvailable, setIsCameraAvailable] = useState(false);
 
   const QRCODE_PREFIX = 'sanapolku:';
 
@@ -44,6 +45,19 @@ const Share = () => {
   };
 
   useEffect(() => {
+    // Check for camera availability
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then(() => {
+        setIsCameraAvailable(true);
+      })
+      .catch((err) => {
+        console.error('Camera not available:', err);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Initialize WebRTC
     const initPeer = async () => {
       const { id: newId, peer: newPeer } = await initializePeer();
       setPeerId(newId);
@@ -109,7 +123,11 @@ const Share = () => {
             value={targetPeerID}
             onChange={(e) => setTargetPeerID(e.target.value)}
           />
-          <Scanner onScan={handleQRScan} onError={handleQRScanError} />
+          {isCameraAvailable ? (
+            <Scanner onScan={handleQRScan} onError={handleQRScanError} />
+          ) : (
+            <p>Kameraa ei ole saatavilla QR koodin skannaamiseen</p>
+          )}
         </div>
         <button onClick={handleShareClick}>Hae jaettava polku</button>
       </div>
