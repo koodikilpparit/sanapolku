@@ -125,13 +125,21 @@ const Share = () => {
             value={targetPeerID}
             onChange={(e) => setTargetPeerID(e.target.value)}
           />
+          <button onClick={handleShareClick}>Hae jaettava polku</button>
           {isCameraAvailable ? (
-            <Scanner onScan={handleQRScan} onError={handleQRScanError} />
+            <Scanner
+              onScan={handleQRScan}
+              onError={handleQRScanError}
+              constraints={{
+                height: { min: 480, ideal: 1080 },
+                width: { min: 600, ideal: 1080 },
+                facingMode: { ideal: 'environment' },
+              }}
+            />
           ) : (
             <p>Kameraa ei ole saatavilla QR koodin skannaamiseen</p>
           )}
         </div>
-        <button onClick={handleShareClick}>Hae jaettava polku</button>
       </div>
     </div>
   );
