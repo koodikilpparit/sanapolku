@@ -63,14 +63,16 @@ const Share = () => {
       setPeerId(newId);
       setPeer(newPeer);
     };
-    initPeer();
+    if (!peer) {
+      initPeer();
+    }
 
     return () => {
       if (peer) {
         peer.destroy();
       }
     };
-  }, []);
+  }, [peer]);
 
   useEffect(() => {
     const handleNewConnection = async () => {
