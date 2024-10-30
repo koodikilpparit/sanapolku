@@ -1,0 +1,38 @@
+.game-engine {
+    background-color: #06705b;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+h1 {
+    color: white;
+    font-size: var(--sp-heading-1);
+}
+
+.loading-msg .error-msg{
+    color: white;
+    font-size: var(--sp-heading-1);
+}
+
+h2 {
+    color: white;
+    font-size: var(--sp-heading-1);
+}
+
+.game-back-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 25px;
+    padding-left: 25px;
+}
+
+.game-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

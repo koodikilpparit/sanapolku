@@ -5,6 +5,7 @@ import shuffleArray from 'lodash.shuffle';
 import Phase1 from './Phase1';
 import Phase2 from './Phase2';
 import Phase3 from './Phase3';
+import BackButton from '../universal/BackButton';
 import './GameEngine.css';
 
 const GameEngine = ({ pathName }) => {
@@ -101,44 +102,49 @@ const GameEngine = ({ pathName }) => {
 
   return (
     <div className="game-engine">
-      {loading ? (
-        <p>Ladataan sanoja...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : gameOver ? (
-        <div>
-          <h2>Peli ohi!</h2>
-        </div>
-      ) : currentWord ? (
-        <>
-          {currentPhase === 1 && (
-            <Phase1
-              currentWord={currentWord}
-              playerInput={playerInput}
-              handleInputChange={handleInputChange}
-              handleSubmit={handleSubmit}
-            />
-          )}
-          {currentPhase === 2 && (
-            <Phase2
-              currentWord={currentWord}
-              shuffledWord={shuffledWord}
-              handleInputChange={handleInputChange}
-              handleSubmit={handleSubmit}
-            />
-          )}
-          {currentPhase === 3 && (
-            <Phase3
-              currentWord={currentWord}
-              playerInput={playerInput}
-              handleInputChange={handleInputChange}
-              handleSubmit={handleSubmit}
-            />
-          )}
-        </>
-      ) : (
-        <p>Ladataan sanoja...</p>
-      )}
+      <div className="game-back-button">
+        <BackButton />
+      </div>
+      <div className="game-content">
+        {loading ? (
+          <p className="loading-msg"> Ladataan sanoja...</p>
+        ) : error ? (
+          <p className="error-msg">{error}</p>
+        ) : gameOver ? (
+          <div>
+            <h2>Peli ohi!</h2>
+          </div>
+        ) : currentWord ? (
+          <>
+            {currentPhase === 1 && (
+              <Phase1
+                currentWord={currentWord}
+                playerInput={playerInput}
+                handleInputChange={handleInputChange}
+                handleSubmit={handleSubmit}
+              />
+            )}
+            {currentPhase === 2 && (
+              <Phase2
+                currentWord={currentWord}
+                shuffledWord={shuffledWord}
+                handleInputChange={handleInputChange}
+                handleSubmit={handleSubmit}
+              />
+            )}
+            {currentPhase === 3 && (
+              <Phase3
+                currentWord={currentWord}
+                playerInput={playerInput}
+                handleInputChange={handleInputChange}
+                handleSubmit={handleSubmit}
+              />
+            )}
+          </>
+        ) : (
+          <p className="loading-msg">Ladataan sanoja...</p>
+        )}
+      </div>
     </div>
   );
 };
