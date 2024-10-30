@@ -4,6 +4,8 @@ import { getWordsForPath, getPathByName, deleteWord } from '../db/db';
 import WordRow from '../components/create/WordRow';
 import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const ManagePath = () => {
   const { pathName } = useParams();
@@ -45,6 +47,12 @@ const ManagePath = () => {
       <div className="word-entry-header">
         <BackButton />
         <h2>Lisää sanoja</h2>
+        <FontAwesomeIcon
+          icon={faPlus}
+          className="add-path-icon"
+          onClick={() => navigate(`/uusisana/${pathName}`)}
+          aria-label="Lisää uusi sana"
+        />
       </div>
 
       {/* Word List */}
@@ -63,15 +71,6 @@ const ManagePath = () => {
           ) : (
             <p className="no-words">Ei lisättyjä sanoja.</p>
           )}
-        </div>
-
-        {/* Add new word */}
-        <div
-          className="add-word"
-          onClick={() => navigate(`/uusisana/${pathName}`)}
-        >
-          <span className="add-icon">+</span>
-          <span className="add-text">LISÄÄ UUSI SANA</span>
         </div>
       </div>
     </div>
