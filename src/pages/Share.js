@@ -11,15 +11,16 @@ import {
 const Share = () => {
   const [peer, setPeer] = useState(null);
   const [peerId, setPeerId] = useState(null);
-  const [targetPeerID, setTargetPeerID] = useState('');
+  const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
+  const [targetPeerID, setTargetPeerID] = useState(null);
   const [selectedPathName, setSelectedPathName] = useState('');
   const [selectedPath, setSelectedPath] = useState(null);
   const [isCameraAvailable, setIsCameraAvailable] = useState(false);
 
   const QRCODE_PREFIX = 'sanapolku:';
 
-  const handleShareClick = async () => {
-    await connectToPeerAndReceive(peer, targetPeerID, importPath);
+  const handleShareClick = () => {
+    setTargetPeerID(targetPeerIDInput);
   };
 
   const handlePathSelectionClick = async () => {
@@ -28,13 +29,12 @@ const Share = () => {
     });
   };
 
-  const handleQRScan = async (result) => {
-    console.log(result);
+  const handleQRScan = async (scanResult) => {
+    const result = scanResult[0].rawValue;
     if (result.startsWith(QRCODE_PREFIX)) {
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setTargetPeerID(id);
-      await connectToPeerAndReceive(peer, targetPeerID, importPath);
     } else {
       console.warn('Unknown QR code');
     }
@@ -75,6 +75,7 @@ const Share = () => {
   }, [peer]);
 
   useEffect(() => {
+    // Set up path to share
     const handleNewConnection = async () => {
       console.log('Setting up onConnection with', peer, selectedPath);
       sendDataOnConnection(peer, selectedPath)
@@ -90,6 +91,12 @@ const Share = () => {
 
     handleNewConnection();
   }, [peer, selectedPath]);
+
+  useEffect(() => {
+    // Receive path from target
+    if (!(peer && targetPeerID)) return;
+    connectToPeerAndReceive(peer, targetPeerID, importPath);
+  }, [peer, targetPeerID]);
 
   return (
     <div>
@@ -122,8 +129,8 @@ const Share = () => {
           <input
             style={{ marginLeft: '10px' }}
             type="text"
-            value={targetPeerID}
-            onChange={(e) => setTargetPeerID(e.target.value)}
+            value={targetPeerIDInput}
+            onChange={(e) => setTargetPeerIDInput(e.target.value)}
           />
           <button onClick={handleShareClick}>Hae jaettava polku</button>
           {isCameraAvailable ? (

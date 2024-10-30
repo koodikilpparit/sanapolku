@@ -17,7 +17,9 @@ export async function initializePeer() {
 
 export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
   return new Promise((resolve, reject) => {
-    if (!peer) throw new Error('Peer not initialized');
+    if (!peer) reject('Peer not initialized');
+    if (!targetPeerId) reject('Target peer ID not set');
+    if (!callback) reject('Callback not set');
 
     const connection = peer.connect(targetPeerId);
 
