@@ -37,6 +37,7 @@
   align-items: center;
 }
 
+.share-button,
 .start-button,
 .help-button {
   background-color: white;
