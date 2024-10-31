@@ -1,10 +1,8 @@
 .game-engine {
     background-color: #06705b;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-areas: 'back-button';
 }
 
 h1 {
@@ -26,13 +24,16 @@ h2 {
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: space-between;
-    padding-top: 25px;
-    padding-left: 25px;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    grid-area: back-button;
+    width: 100px;
 }
 
 .game-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }

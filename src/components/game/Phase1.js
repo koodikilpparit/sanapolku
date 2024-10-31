@@ -41,16 +41,20 @@ const Phase1 = ({
   }, [playerInput, activeIndex]);
 
   return (
-    <div>
+    <div className="phase1-container">
       <h1>Kirjoita sana</h1>
-      <img src={currentWord.img} alt={`Kuva sanasta ${currentWord.word}`} />
-      <div className="letter-tiles">
-        {currentWord.word.split('').map((_, index) => (
-          <LetterTile key={index} letter={playerInput[index] || ''} />
-        ))}
-      </div>
-      <div className="submit-word-div">
-        <button className="ph1-ready-button" onClick={handleSubmit}>VALMIS</button>
+      <div className="game-components">
+        <div className="image-container">
+          <img src={currentWord.img} alt={`Kuva sanasta ${currentWord.word}`} />
+        </div>
+        <div className="interactive-components">
+          <div className="letter-tiles">
+            {currentWord.word.split('').map((_, index) => (
+              <LetterTile key={index} letter={playerInput[index] || ''} />
+            ))}
+          </div>
+            <button className="ph1-ready-button" onClick={handleSubmit}>VALMIS</button>
+        </div>
       </div>
     </div>
   );
