@@ -74,7 +74,6 @@
   background-color: #06705b;
   border-radius: 0;
   border: none;
-  cursor: pointer;
   color: white;
   font-size: var(--sp-heading-5);
   font-weight: bold;
@@ -102,7 +101,6 @@
   font-weight: bold;
   border-radius: var(--sp-button-border-radius);
   border: none;
-  cursor: pointer;
   width: 30%;
   text-align: center;
   flex: 1; /* Allows each button to take equal space within the container */

@@ -88,7 +88,6 @@
 
 .delete-icon {
   font-size: var(--sp-icon-size-small);
-  cursor: pointer;
   color: var(--sp-black);
   margin-left: 20px;
 }
@@ -100,7 +99,6 @@
   padding: 15px;
   background-color: var(--sp-white);
   border-radius: var(--sp-button-border-radius);
-  cursor: pointer;
   width: 60%;
   margin-top: 50px;
 }
