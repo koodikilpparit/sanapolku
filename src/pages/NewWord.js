@@ -93,7 +93,7 @@ const NewWord = () => {
         </div>
       </div>
 
-      {/* Modal for PhotoFetcher */}
+      {/* Modal for PapunetView */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <PapunetView
           onSelectImage={(image) => {
