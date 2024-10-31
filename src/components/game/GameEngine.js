@@ -12,12 +12,13 @@ const GameEngine = ({ pathName }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(1);
-  const [playerInput, setPlayerInput] = useState('');
+  const [playerInput, setPlayerInput] = useState([]);
   const [shuffledWord, setShuffledWord] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +62,7 @@ const GameEngine = ({ pathName }) => {
   const handleSubmit = () => {
     if (!currentWord) return;
 
-    const normalizedInput = playerInput.toLowerCase();
+    const normalizedInput = playerInput.join('').toLowerCase();
     const targetWord = currentWord.word.toLowerCase();
 
     if (normalizedInput === targetWord) {
@@ -81,7 +82,7 @@ const GameEngine = ({ pathName }) => {
       }
     }
 
-    setPlayerInput('');
+    setPlayerInput(Array(currentWord.word.length).fill(''));
   };
 
   const moveToNextWord = () => {
@@ -118,10 +119,12 @@ const GameEngine = ({ pathName }) => {
           <>
             {currentPhase === 1 && (
               <Phase1
-                currentWord={currentWord}
-                playerInput={playerInput}
-                handleInputChange={handleInputChange}
-                handleSubmit={handleSubmit}
+              currentWord={currentWord}
+              playerInput={playerInput}
+              setPlayerInput={setPlayerInput}
+              activeIndex={activeIndex}
+              setActiveIndex={setActiveIndex}
+              handleSubmit={handleSubmit}
               />
             )}
             {currentPhase === 2 && (
