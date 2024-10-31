@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import PapunetPhotoFetcher from '../util/PapunetPhotoFetcher';
 import './Papunet.css';
 
-const PhotoFetcher = ({ onSelectImage, initialSearchTerm }) => {
+const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
@@ -59,5 +60,9 @@ const PhotoFetcher = ({ onSelectImage, initialSearchTerm }) => {
     </div>
   );
 };
+PapunetView.propTypes = {
+  onSelectImage: PropTypes.func.isRequired,
+  initialSearchTerm: PropTypes.string,
+};
 
-export default PhotoFetcher;
+export default PapunetView;

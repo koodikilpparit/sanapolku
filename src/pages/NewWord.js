@@ -5,7 +5,7 @@ import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/ImageUploader';
 import Modal from '../components/Modal';
-import PhotoFetcher from './Papunet';
+import PapunetView from './PapunetView';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const NewWord = () => {
 
       {/* Modal for PhotoFetcher */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <PhotoFetcher
+        <PapunetView
           onSelectImage={(image) => {
             setImageData(image);
             setIsModalOpen(false);
