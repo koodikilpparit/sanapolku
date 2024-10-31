@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { importPath, exportPath } from '../utils/PathUtils';
 import { QRCode } from 'react-qrcode-logo';
-import { Scanner } from '@yudiel/react-qr-scanner';
 import {
   connectToPeerAndReceive,
   initializePeer,
   sendDataOnConnection,
 } from '../utils/ShareUtils';
+import QrSCannerComponent from '../components/QRScanner';
 
 const Share = () => {
   const [peer, setPeer] = useState(null);
@@ -15,7 +15,7 @@ const Share = () => {
   const [targetPeerID, setTargetPeerID] = useState(null);
   const [selectedPathName, setSelectedPathName] = useState('');
   const [selectedPath, setSelectedPath] = useState(null);
-  const [isCameraAvailable, setIsCameraAvailable] = useState(false);
+  const [isScanning, setIsScanning] = useState(true);
 
   const QRCODE_PREFIX = 'sanapolku:';
 
@@ -30,31 +30,16 @@ const Share = () => {
   };
 
   const handleQRScan = async (scanResult) => {
-    const result = scanResult[0].rawValue;
+    const result = scanResult.data;
     if (result.startsWith(QRCODE_PREFIX)) {
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setTargetPeerID(id);
+      setIsScanning(false);
     } else {
       console.warn('Unknown QR code');
     }
   };
-
-  const handleQRScanError = (error) => {
-    console.error(error);
-  };
-
-  useEffect(() => {
-    // Check for camera availability
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then(() => {
-        setIsCameraAvailable(true);
-      })
-      .catch((err) => {
-        console.error('Camera not available:', err);
-      });
-  }, []);
 
   useEffect(() => {
     // Initialize WebRTC
@@ -133,19 +118,8 @@ const Share = () => {
             onChange={(e) => setTargetPeerIDInput(e.target.value)}
           />
           <button onClick={handleShareClick}>Hae jaettava polku</button>
-          {isCameraAvailable ? (
-            <Scanner
-              onScan={handleQRScan}
-              onError={handleQRScanError}
-              constraints={{
-                height: { min: 480, ideal: 1080 },
-                width: { min: 600, ideal: 1080 },
-                facingMode: { ideal: 'environment' },
-              }}
-            />
-          ) : (
-            <p>Kameraa ei ole saatavilla QR koodin skannaamiseen</p>
-          )}
+
+          {isScanning && <QrSCannerComponent onSuccess={handleQRScan} />}
         </div>
       </div>
     </div>
