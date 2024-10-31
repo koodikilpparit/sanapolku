@@ -1,5 +1,5 @@
 import React from 'react';
-import BackButton from '../components/instructions/BackButton';
+import BackButton from '../components/universal/BackButton';
 import InstructionsText from '../components/instructions/InstructionsText';
 import './Instructions.css';
 
