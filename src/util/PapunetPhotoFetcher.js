@@ -1,4 +1,13 @@
+/**
+ * Class representing a photo fetcher from Papunet API.
+ */
 class PapunetPhotoFetcher {
+  /**
+   * Fetches photos from the Papunet API based on the search term.
+   * @param {string} searchTerm - The term to search for photos.
+   * @returns {Promise<Object[]>} A promise that resolves to an array of photo objects.
+   * @throws Will throw an error if the fetch operation fails.
+   */
   static async fetchPhotos(searchTerm) {
     try {
       const apiBase = 'https://kuha.papunet.net/api/search/all/';
@@ -11,7 +20,11 @@ class PapunetPhotoFetcher {
       return [];
     }
   }
-
+  /**
+   * Parses the photo data from the API response.
+   * @param {Object[]} images - The array of image objects from the API response.
+   * @returns {Object[]} An array of parsed photo objects.
+   */
   static parsePhotos(images) {
     return images.map((image) => ({
       author: image.author,
