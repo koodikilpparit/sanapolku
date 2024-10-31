@@ -1,0 +1,32 @@
+.player-input {
+    color: white;
+    font-size: 32px;
+}
+
+.letter-tiles {
+    display: flex;     
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.letter-tiles .letter-tile {
+    width: 42px;
+    height: 42px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.ph1-ready-button {
+    font-size: var(--sp-heading-5);
+    font-weight: bold;
+    border-radius: var(--sp-button-border-radius);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #72A895;
+    color: white;
+    font-family: Verdana;
+    width: 200px;
+    height: 67.139px;
+}
