@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import PapunetPhotoFetcher from '../util/PapunetPhotoFetcher';
 import './PapunetView.css';
@@ -9,14 +9,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    if (initialSearchTerm) {
-      handleFetchPhotos();
-    }
-    setSearchTerm(initialSearchTerm);
-  }, [initialSearchTerm]);
-
-  const handleFetchPhotos = async () => {
+  const handleFetchPhotos = useCallback(async () => {
     try {
       const fetchedPhotos = await PapunetPhotoFetcher.fetchPhotos(searchTerm);
       setPhotos(fetchedPhotos);
@@ -25,7 +18,17 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
       setError('Error fetching photos');
       setPhotos([]);
     }
-  };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (initialSearchTerm) {
+      handleFetchPhotos();
+    }
+  }, [handleFetchPhotos, initialSearchTerm]);
+
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
 
   const handleSave = () => {
     if (selectedImage) {
