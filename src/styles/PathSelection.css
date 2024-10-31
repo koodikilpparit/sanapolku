@@ -68,7 +68,6 @@
   height: 100%;
   font-size: var(--sp-heading-2);
   font-weight: bold;
-  cursor: pointer;
   text-transform: capitalize;
   border-radius: var(--sp-button-border-radius) 0 0
     var(--sp-button-border-radius);
@@ -88,7 +87,6 @@
 .add-path-icon {
   font-size: var(--sp-icon-size-large);
   color: var(--sp-white);
-  cursor: pointer;
   transition: color 0.3s ease;
 }
 
@@ -150,7 +148,6 @@
   font-weight: bold;
   border-radius: var(--sp-button-border-radius);
   border: none;
-  cursor: pointer;
   width: 50%;
   transition:
     background-color 0.3s ease,
