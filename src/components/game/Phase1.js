@@ -15,34 +15,33 @@ const Phase1 = ({
   useEffect(() => {
     setPlayerInput(Array(currentWord.word.length).fill(''));
     setActiveIndex(0);
-  }, [currentWord]);
-
-  const handleKeyDown = (event) => {
-    const { key } = event;
-
-    if (activeIndex < playerInput.length && key.length === 1) {
-      const newInput = [...playerInput];
-      newInput[activeIndex] = key.toUpperCase();
-      setPlayerInput(newInput);
-      setActiveIndex(activeIndex + 1);
-    } else if (key === 'Backspace' && activeIndex > 0) {
-      const newInput = [...playerInput];
-      newInput[activeIndex - 1] = '';
-      setPlayerInput(newInput);
-      setActiveIndex(activeIndex - 1);
-    } else if (key === 'Enter') {
-      event.preventDefault();
-      handleSubmit();
-    }
-    
-  };
+  }, [currentWord, setActiveIndex, setPlayerInput]);
 
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      const { key } = event;
+
+      if (activeIndex < playerInput.length && key.length === 1) {
+        const newInput = [...playerInput];
+        newInput[activeIndex] = key.toUpperCase();
+        setPlayerInput(newInput);
+        setActiveIndex(activeIndex + 1);
+      } else if (key === 'Backspace' && activeIndex > 0) {
+        const newInput = [...playerInput];
+        newInput[activeIndex - 1] = '';
+        setPlayerInput(newInput);
+        setActiveIndex(activeIndex - 1);
+      } else if (key === 'Enter') {
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [playerInput, activeIndex]);
+  }, [playerInput, activeIndex, setPlayerInput, setActiveIndex, handleSubmit]);
 
   return (
     <div className="phase1-container">
@@ -57,7 +56,9 @@ const Phase1 = ({
               <LetterTile key={index} letter={playerInput[index] || ''} />
             ))}
           </div>
-            <button className="ph1-ready-button" onClick={handleSubmit}>VALMIS</button>
+          <button className="ph1-ready-button" onClick={handleSubmit}>
+            VALMIS
+          </button>
         </div>
       </div>
     </div>

@@ -119,12 +119,12 @@ const GameEngine = ({ pathName }) => {
           <>
             {currentPhase === 1 && (
               <Phase1
-              currentWord={currentWord}
-              playerInput={playerInput}
-              setPlayerInput={setPlayerInput}
-              activeIndex={activeIndex}
-              setActiveIndex={setActiveIndex}
-              handleSubmit={handleSubmit}
+                currentWord={currentWord}
+                playerInput={playerInput}
+                setPlayerInput={setPlayerInput}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+                handleSubmit={handleSubmit}
               />
             )}
             {currentPhase === 2 && (
