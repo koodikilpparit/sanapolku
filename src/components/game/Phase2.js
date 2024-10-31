@@ -17,7 +17,7 @@ const Phase2 = ({
       <input
         id="player-input"
         type="text"
-        value={playerInput}
+        value={playerInput.join('')}
         onChange={handleInputChange}
         placeholder="Syötä sana"
       />
@@ -32,7 +32,7 @@ Phase2.propTypes = {
     word: PropTypes.string.isRequired,
   }).isRequired,
   shuffledWord: PropTypes.string.isRequired,
-  playerInput: PropTypes.string.isRequired,
+  playerInput: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };

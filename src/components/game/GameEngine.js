@@ -55,7 +55,7 @@ const GameEngine = ({ pathName }) => {
 
   // Handle input change
   const handleInputChange = (e) => {
-    setPlayerInput(e.target.value);
+    setPlayerInput(e.target.value.split(''));
   };
 
   // Handle submission based on the phase
@@ -131,6 +131,7 @@ const GameEngine = ({ pathName }) => {
               <Phase2
                 currentWord={currentWord}
                 shuffledWord={shuffledWord}
+                playerInput={playerInput}
                 handleInputChange={handleInputChange}
                 handleSubmit={handleSubmit}
               />
