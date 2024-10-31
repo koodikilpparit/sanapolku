@@ -5,11 +5,6 @@
     grid-template-areas: 'back-button';
 }
 
-h1 {
-    color: white;
-    font-size: var(--sp-heading-1);
-}
-
 .loading-msg .error-msg{
     color: white;
     font-size: var(--sp-heading-1);

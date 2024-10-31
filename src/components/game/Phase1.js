@@ -10,7 +10,7 @@ const Phase1 = ({
   playerInput,
   setPlayerInput,
   activeIndex,
-  setActiveIndex
+  setActiveIndex,
 }) => {
   useEffect(() => {
     setPlayerInput(Array(currentWord.word.length).fill(''));
@@ -30,7 +30,11 @@ const Phase1 = ({
       newInput[activeIndex - 1] = '';
       setPlayerInput(newInput);
       setActiveIndex(activeIndex - 1);
+    } else if (key === 'Enter') {
+      event.preventDefault();
+      handleSubmit();
     }
+    
   };
 
   useEffect(() => {
