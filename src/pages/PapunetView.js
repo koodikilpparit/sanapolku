@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import PapunetPhotoFetcher from '../util/PapunetPhotoFetcher';
+import PapunetPhotoFetcher from '../utils/PapunetPhotoFetcher';
 import './PapunetView.css';
 
 const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
