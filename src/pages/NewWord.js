@@ -4,6 +4,8 @@ import { addWord, getPathByName } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/ImageUploader';
+import Modal from '../components/Modal';
+import PhotoFetcher from './Papunet';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const NewWord = () => {
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
   const [imageData, setImageData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Placeholder image URL
   const placeholderImage = 'https://placehold.co/150x150';
@@ -81,8 +84,19 @@ const NewWord = () => {
           <button className="nw-save-button" onClick={handleSave}>
             VALMIS
           </button>
+          <button
+            className="nw-fetch-photos-button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            HAE KUVIA
+          </button>
         </div>
       </div>
+
+      {/* Modal for PhotoFetcher */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <PhotoFetcher />
+      </Modal>
     </div>
   );
 };
