@@ -95,7 +95,13 @@ const NewWord = () => {
 
       {/* Modal for PhotoFetcher */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <PhotoFetcher />
+        <PhotoFetcher
+          onSelectImage={(image) => {
+            setImageData(image);
+            setIsModalOpen(false);
+          }}
+          initialSearchTerm={newWord}
+        />
       </Modal>
     </div>
   );

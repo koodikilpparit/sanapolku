@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PapunetPhotoFetcher from '../util/PapunetPhotoFetcher';
 import './Papunet.css';
 
-const PhotoFetcher = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+const PhotoFetcher = ({ onSelectImage, initialSearchTerm }) => {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    if (initialSearchTerm) {
+      handleFetchPhotos();
+    }
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
 
   const handleFetchPhotos = async () => {
     try {
@@ -15,6 +23,12 @@ const PhotoFetcher = () => {
     } catch (err) {
       setError('Error fetching photos');
       setPhotos([]);
+    }
+  };
+
+  const handleSave = () => {
+    if (selectedImage) {
+      onSelectImage(selectedImage);
     }
   };
 
@@ -35,9 +49,13 @@ const PhotoFetcher = () => {
             <img src={photo.thumb} alt={photo.name} />
             <p>{photo.name}</p>
             <p>Author: {photo.author}</p>
+            <button onClick={() => setSelectedImage(photo.thumb)}>
+              Select
+            </button>
           </div>
         ))}
       </div>
+      <button onClick={handleSave}>Save</button>
     </div>
   );
 };
