@@ -74,7 +74,6 @@
     background-color: #06705B;
     border-radius: 0;
     border: none;
-    cursor: pointer;
     color: white;
     font-size: var(--sp-heading-5);
     font-weight: bold;
@@ -99,7 +98,6 @@
     font-weight: bold;
     border-radius: var(--sp-button-border-radius);
     border: none;
-    cursor: pointer;
     width: 30%;
     text-align: center;
 }
