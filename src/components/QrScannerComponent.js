@@ -1,7 +1,8 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import QrScanner from 'qr-scanner';
 
-const QrSCannerComponent = ({ onSuccess }) => {
+const QrScannerComponent = ({ onSuccess }) => {
   const [isCameraAvailable, setIsCameraAvailable] = useState(false);
   const qrScannerRef = useRef(null);
   const videoRef = useRef(null);
@@ -43,4 +44,8 @@ const QrSCannerComponent = ({ onSuccess }) => {
   );
 };
 
-export default QrSCannerComponent;
+QrScannerComponent.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
+};
+
+export default QrScannerComponent;

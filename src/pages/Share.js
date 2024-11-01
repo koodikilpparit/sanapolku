@@ -6,7 +6,7 @@ import {
   initializePeer,
   sendDataOnConnection,
 } from '../utils/ShareUtils';
-import QrSCannerComponent from '../components/QRScanner';
+import QrScannerComponent from '../components/QrScannerComponent';
 
 const Share = () => {
   const [peer, setPeer] = useState(null);
@@ -119,7 +119,7 @@ const Share = () => {
           />
           <button onClick={handleShareClick}>Hae jaettava polku</button>
 
-          {isScanning && <QrSCannerComponent onSuccess={handleQRScan} />}
+          {isScanning && <QrScannerComponent onSuccess={handleQRScan} />}
         </div>
       </div>
     </div>
