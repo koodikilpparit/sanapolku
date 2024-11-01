@@ -86,12 +86,6 @@
   margin-right: 20px;
 }
 
-.delete-icon {
-  font-size: var(--sp-icon-size-small);
-  color: var(--sp-black);
-  margin-left: 20px;
-}
-
 .add-word {
   display: flex;
   align-items: center;
@@ -128,6 +122,10 @@
   }
 
   .delete-icon {
+    font-size: var(--sp-icon-size-extra-small);
+  }
+
+  .edit-icon {
     font-size: var(--sp-icon-size-extra-small);
   }
 
