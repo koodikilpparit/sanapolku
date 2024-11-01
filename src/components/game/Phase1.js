@@ -21,18 +21,18 @@ const Phase1 = ({
     const handleKeyDown = (event) => {
       const { key } = event;
 
+      // Handle typing a regular character, backspace or enter
       if (activeIndex < playerInput.length && key.length === 1) {
-        const newInput = [...playerInput];
+        const newInput = playerInput;
         newInput[activeIndex] = key.toUpperCase();
         setPlayerInput(newInput);
         setActiveIndex(activeIndex + 1);
       } else if (key === 'Backspace' && activeIndex > 0) {
-        const newInput = [...playerInput];
+        const newInput = playerInput;
         newInput[activeIndex - 1] = '';
         setPlayerInput(newInput);
         setActiveIndex(activeIndex - 1);
       } else if (key === 'Enter') {
-        event.preventDefault();
         handleSubmit();
       }
     };
