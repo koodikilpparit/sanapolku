@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import PathsPage from '../../pages/PathSelection'
+import PathsPage from '../../pages/PathSelection';
 import { openDB } from '../../db/db';
 
 if (typeof global.structuredClone === 'undefined') {
@@ -41,9 +41,10 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('renders loading message initially', () => {
-    render(<MemoryRouter>
-      <GameEngine pathName="test-path" />
-    </MemoryRouter>
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
     );
 
     // Check if the "Ladataan sanoja..." message is displayed initially
@@ -51,9 +52,10 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('renders the first word when loaded', async () => {
-    render(<MemoryRouter>
-      <GameEngine pathName="test-path" />
-    </MemoryRouter>
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
     );
 
     // Wait for the words to be fetched and rendered
@@ -67,9 +69,10 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('moves to the second phase on wrong input', async () => {
-    render(<MemoryRouter>
-      <GameEngine pathName="test-path" />
-    </MemoryRouter>
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
     );
 
     // Wait for the words to load
@@ -88,9 +91,10 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('moves to the next word on correct input', async () => {
-    render(<MemoryRouter>
-      <GameEngine pathName="test-path" />
-    </MemoryRouter>
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
     );
 
     // Wait for the words to load
@@ -108,9 +112,10 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('displays game over when all words are completed', async () => {
-    render(<MemoryRouter>
-      <GameEngine pathName="test-path" />
-    </MemoryRouter>
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
     );
 
     // Complete the first word
