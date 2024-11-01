@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
+import PathsPage from '../../pages/PathSelection'
 import { openDB } from '../../db/db';
 
 if (typeof global.structuredClone === 'undefined') {
@@ -135,5 +136,22 @@ describe('GameEngine Component with IndexedDB', () => {
     await waitFor(() =>
       expect(screen.getByText('Peli ohi!')).toBeInTheDocument()
     );
+  });
+
+  it('checks that the back-button brings you to /omatpolut', () => {
+    // Rendering the required pages
+    const { container } = render(
+      <BrowserRouter>
+        <GameEngine pathName="test-path" />
+        <PathsPage />
+      </BrowserRouter>
+    );
+
+    // Checking that the back-button is on the game page
+    const backButton = container.querySelector('.game-back-button');
+    expect(backButton).toBeInTheDocument();
+
+    fireEvent.click(backButton);
+    expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 });
