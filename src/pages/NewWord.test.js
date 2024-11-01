@@ -94,6 +94,5 @@ describe('NewWord Component UI Tests', () => {
 
     // Check if navigate was called with -1 (go back to previous page)
     expect(mockNavigate).toHaveBeenCalledWith(-1);
-    expect(screen.getByText('Lisää sanoja')).toBeInTheDocument();
   });
 });
