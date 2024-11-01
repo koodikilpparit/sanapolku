@@ -28,8 +28,18 @@ const QrScannerComponent = ({ onSuccess }) => {
   }, []);
 
   useEffect(() => {
+    const startScanning = async () => {
+      try {
+        await qrScannerRef.current.start();
+      } catch {
+        console.warn(
+          'Scanner found a camera but could not start scanning. Is camera allowed?'
+        );
+        setIsCameraAvailable(false);
+      }
+    };
     if (scannerReady) {
-      qrScannerRef.current.start();
+      startScanning();
     }
   }, [scannerReady]);
 
