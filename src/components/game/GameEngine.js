@@ -18,7 +18,6 @@ const GameEngine = ({ pathName }) => {
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,9 +52,17 @@ const GameEngine = ({ pathName }) => {
     }
   }, [wordIndex, words]);
 
-  // Handle input change
-  const handleInputChange = (e) => {
-    setPlayerInput(e.target.value.split(''));
+  // Handle input change for phase 1
+  const handleInputChange = (index, event) => {
+    const newInput = [...playerInput];
+    newInput[index] = event.target.value.toUpperCase();
+    setPlayerInput(newInput);
+  };
+
+  // Handle input change for phases 2 & 3
+  const handleInputChange2 = (e) => {
+    const value = e.target.value.toUpperCase();
+    setPlayerInput(value.split(''));
   };
 
   // Handle submission based on the phase
@@ -87,7 +94,7 @@ const GameEngine = ({ pathName }) => {
 
   const moveToNextWord = () => {
     setCurrentPhase(1);
-    setPlayerInput('');
+    setPlayerInput(Array(currentWord.word.length).fill(''));
 
     if (wordIndex + 1 < words.length) {
       setWordIndex(wordIndex + 1);
@@ -121,9 +128,7 @@ const GameEngine = ({ pathName }) => {
               <Phase1
                 currentWord={currentWord}
                 playerInput={playerInput}
-                setPlayerInput={setPlayerInput}
-                activeIndex={activeIndex}
-                setActiveIndex={setActiveIndex}
+                handleInputChange={handleInputChange}
                 handleSubmit={handleSubmit}
               />
             )}
@@ -132,7 +137,7 @@ const GameEngine = ({ pathName }) => {
                 currentWord={currentWord}
                 shuffledWord={shuffledWord}
                 playerInput={playerInput}
-                handleInputChange={handleInputChange}
+                handleInputChange2={handleInputChange2}
                 handleSubmit={handleSubmit}
               />
             )}
@@ -140,7 +145,7 @@ const GameEngine = ({ pathName }) => {
               <Phase3
                 currentWord={currentWord}
                 playerInput={playerInput}
-                handleInputChange={handleInputChange}
+                handleInputChange2={handleInputChange2}
                 handleSubmit={handleSubmit}
               />
             )}
