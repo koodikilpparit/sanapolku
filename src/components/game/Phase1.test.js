@@ -10,116 +10,63 @@ afterAll(() => {
 describe('Phase1 Component', () => {
   const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
   const mockHandleSubmit = jest.fn();
-  const mockSetPlayerInput = jest.fn();
-  const mockSetActiveIndex = jest.fn();
+  const mockHandleInputChange = jest.fn();
 
   // Clear all mocks before each test
   beforeEach(async () => {
     mockHandleSubmit.mockClear();
-    mockSetPlayerInput.mockClear();
-    mockSetActiveIndex.mockClear();
+    mockHandleInputChange.mockClear();
   });
 
-  it('verify correct setup of phase1', async () => {
+  it('Check that the correct number of letter tiles are rendered', async () => {
     render(
       <Phase1
         currentWord={mockWord}
-        handleSubmit={mockHandleSubmit}
         playerInput={[]}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={0}
-        setActiveIndex={mockSetActiveIndex}
-      />
-    );
-
-    // Check that the playerInput is set to an array of the correct length
-    // and activeIndex is set to 0 in the beginning
-    expect(mockSetPlayerInput).toHaveBeenCalledWith(['', '', '', '', '']);
-    expect(mockSetActiveIndex).toHaveBeenCalledWith(0);
-  });
-
-  it('check that the correct number of letter tiles are rendered', async () => {
-    render(
-      <Phase1
-        currentWord={mockWord}
+        handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
-        playerInput={['', '', '', '', '']}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={0}
-        setActiveIndex={mockSetActiveIndex}
       />
     );
 
     // Check that the number of letter tiles is the length of the current word
-    const letterTiles = screen.getAllByTestId('letter-tile');
-    expect(letterTiles.length).toBe(mockWord.word.length);
+    const letterTiles = screen.getAllByRole('textbox');
+    expect(letterTiles.length).toBe(mockWord.word.length)
   });
 
-  it('checks that player input, active index and letter tile are updated on key press', async () => {
+  it('Check that letter tile is updated when typing', async () => {
     render(
       <Phase1
         currentWord={mockWord}
-        handleSubmit={mockHandleSubmit}
-        playerInput={['', '', '', '', '']}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={0}
-        setActiveIndex={mockSetActiveIndex}
+        playerInput={['A', '', '', '', '']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}     
       />
     );
 
-    // Press a key
-    fireEvent.keyDown(window, { key: 'z' });
+    const firstInput = screen.getByDisplayValue('A');
+    fireEvent.change(firstInput, { target: { value: 'Z' } });
+    
+    expect(mockHandleInputChange).toHaveBeenCalledWith(0, expect.anything());
 
-    // Check that playerInput and activeIndex are updated
-    expect(mockSetPlayerInput).toHaveBeenCalledWith(['Z', '', '', '', '']);
-    expect(mockSetActiveIndex).toHaveBeenCalledWith(1);
-
-    // Re-rendex the page
     render(
       <Phase1
         currentWord={mockWord}
-        handleSubmit={mockHandleSubmit}
         playerInput={['Z', '', '', '', '']}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={1}
-        setActiveIndex={mockSetActiveIndex}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}     
       />
     );
 
-    // Check that the letter tile has been updated according to the pressed key
-    const zTiles = screen.getAllByText('Z');
-    expect(zTiles.length).toBe(1);
+    expect(screen.getByDisplayValue('Z')).toBeInTheDocument();
   });
 
-  it('checks that back-space can be used to erase text', async () => {
+  it('Check that pressing enter can be used to submit answer', () => {
     render(
       <Phase1
         currentWord={mockWord}
         handleSubmit={mockHandleSubmit}
+        handleInputChange={mockHandleInputChange}
         playerInput={['A', 'P', 'P', 'L', 'E']}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={5}
-        setActiveIndex={mockSetActiveIndex}
-      />
-    );
-
-    // Press backspace
-    fireEvent.keyDown(window, { key: 'Backspace' });
-
-    // Check that playerInput and activeIndex are updated accordingly
-    expect(mockSetPlayerInput).toHaveBeenCalledWith(['A', 'P', 'P', 'L', '']);
-    expect(mockSetActiveIndex).toHaveBeenCalledWith(4);
-  });
-
-  it('checks that pressing enter can be used to submit answer', () => {
-    render(
-      <Phase1
-        currentWord={mockWord}
-        handleSubmit={mockHandleSubmit}
-        playerInput={['a', 'p', 'p', 'l', 'e']}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={4}
-        setActiveIndex={mockSetActiveIndex}
       />
     );
 
@@ -128,15 +75,13 @@ describe('Phase1 Component', () => {
     expect(mockHandleSubmit).toHaveBeenCalled();
   });
 
-  it('checks that clicking the ready-button can be used to submit answer', () => {
+  it('Check that clicking the ready-button can be used to submit answer', () => {
     render(
       <Phase1
         currentWord={mockWord}
         handleSubmit={mockHandleSubmit}
-        playerInput={['a', 'p', 'p', 'l', 'e']}
-        setPlayerInput={mockSetPlayerInput}
-        activeIndex={4}
-        setActiveIndex={mockSetActiveIndex}
+        handleInputChange={mockHandleInputChange}
+        playerInput={['A', 'P', 'P', 'L', 'E']}
       />
     );
 

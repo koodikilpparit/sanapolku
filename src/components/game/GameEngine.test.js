@@ -79,8 +79,10 @@ describe('GameEngine Component with IndexedDB', () => {
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
     // Simulate entering wrong input and submitting
-    'wrong'.split('').forEach((letter) => {
-      fireEvent.keyDown(window, { key: letter });
+    'wrong'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
@@ -101,8 +103,10 @@ describe('GameEngine Component with IndexedDB', () => {
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
     // Simulate entering correct input and submitting
-    'apple'.split('').forEach((letter) => {
-      fireEvent.keyDown(window, { key: letter });
+    'apple'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
@@ -120,8 +124,10 @@ describe('GameEngine Component with IndexedDB', () => {
 
     // Complete the first word
     await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter) => {
-      fireEvent.keyDown(window, { key: letter });
+    'apple'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
@@ -132,8 +138,10 @@ describe('GameEngine Component with IndexedDB', () => {
     });
 
     // Complete the second word
-    'banana'.split('').forEach((letter) => {
-      fireEvent.keyDown(window, { key: letter });
+    'banana'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
