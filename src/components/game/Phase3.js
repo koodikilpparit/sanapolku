@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Phase3 = ({
   currentWord,
   playerInput,
-  handleInputChange,
+  handleInputChange2,
   handleSubmit,
 }) => (
   <div>
@@ -17,7 +17,7 @@ const Phase3 = ({
         id="player-input"
         type="text"
         value={playerInput.join('')}
-        onChange={handleInputChange}
+        onChange={handleInputChange2}
         placeholder="Syötä sana"
       />
       <button onClick={handleSubmit}>Valmis</button>
@@ -31,7 +31,7 @@ Phase3.propTypes = {
     word: PropTypes.string.isRequired,
   }).isRequired,
   playerInput: PropTypes.array.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
+  handleInputChange2: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
 
