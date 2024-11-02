@@ -30,7 +30,7 @@ describe('Phase1 Component', () => {
 
     // Check that the number of letter tiles is the length of the current word
     const letterTiles = screen.getAllByRole('textbox');
-    expect(letterTiles.length).toBe(mockWord.word.length)
+    expect(letterTiles.length).toBe(mockWord.word.length);
   });
 
   it('Check that letter tile is updated when typing', async () => {
@@ -39,13 +39,13 @@ describe('Phase1 Component', () => {
         currentWord={mockWord}
         playerInput={['A', '', '', '', '']}
         handleInputChange={mockHandleInputChange}
-        handleSubmit={mockHandleSubmit}     
+        handleSubmit={mockHandleSubmit}
       />
     );
 
     const firstInput = screen.getByDisplayValue('A');
     fireEvent.change(firstInput, { target: { value: 'Z' } });
-    
+
     expect(mockHandleInputChange).toHaveBeenCalledWith(0, expect.anything());
 
     render(
@@ -53,7 +53,7 @@ describe('Phase1 Component', () => {
         currentWord={mockWord}
         playerInput={['Z', '', '', '', '']}
         handleInputChange={mockHandleInputChange}
-        handleSubmit={mockHandleSubmit}     
+        handleSubmit={mockHandleSubmit}
       />
     );
 

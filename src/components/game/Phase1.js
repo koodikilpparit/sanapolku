@@ -12,7 +12,7 @@ const Phase1 = ({
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, currentWord.word.length);
-    
+
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
         handleSubmit();
