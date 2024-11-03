@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import PapunetView from './PapunetView';
-import PapunetPhotoFetcher from '../utils/PapunetPhotoFetcher';
+import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
 
 jest.mock('../utils/PapunetPhotoFetcher');
 
@@ -26,7 +26,7 @@ describe('PapunetView', () => {
       { uid: '1', thumb: 'thumb1.jpg', name: 'Photo 1', author: 'Author 1' },
       { uid: '2', thumb: 'thumb2.jpg', name: 'Photo 2', author: 'Author 2' },
     ];
-    PapunetPhotoFetcher.fetchPhotos.mockResolvedValue(mockPhotos);
+    fetchPhotos.mockResolvedValue(mockPhotos);
 
     const { getByText, getByAltText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
@@ -44,9 +44,7 @@ describe('PapunetView', () => {
   });
 
   test('displays error message when photo fetch fails', async () => {
-    PapunetPhotoFetcher.fetchPhotos.mockRejectedValue(
-      new Error('Error fetching photos')
-    );
+    fetchPhotos.mockRejectedValue(new Error('Error fetching photos'));
 
     const { getByText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
