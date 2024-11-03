@@ -131,6 +131,33 @@ describe('PathSelection Component UI Tests', () => {
     });
   });
 
+  it('should navigate to the path management page when the user enters a path name and clicks "Tallenna"', async () => {
+    const mockAddPath = jest.spyOn(db, 'addPath');
+    mockAddPath.mockResolvedValue(Promise.resolve({ id: 1, name: 'Polku' }));
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    // Open the modal
+    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    fireEvent.click(openModalButton);
+
+    // Type in the input field inside the modal
+    const input = screen.getByPlaceholderText('Anna polun nimi');
+    fireEvent.change(input, { target: { value: 'Polku' } });
+
+    // Simulate a click on the "Tallenna" button
+    const saveButton = screen.getByRole('button', { name: /tallenna/i });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/Polku');
+    });
+  });
+
   it('should navigate to the game path if words are associated with the path', async () => {
     // Mock db commands
     const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
