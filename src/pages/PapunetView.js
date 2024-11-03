@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import PapunetPhotoFetcher from '../utils/PapunetPhotoFetcher';
 import '../styles/PapunetView.css';
@@ -8,27 +8,30 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const initialFetchDone = useRef(false);
 
-  const handleFetchPhotos = useCallback(async () => {
+  const fetchPhotos = useCallback(async (term) => {
     try {
-      const fetchedPhotos = await PapunetPhotoFetcher.fetchPhotos(searchTerm);
+      const fetchedPhotos = await PapunetPhotoFetcher.fetchPhotos(term);
       setPhotos(fetchedPhotos);
       setError(null);
     } catch (err) {
       setError('Error fetching photos');
       setPhotos([]);
     }
-  }, [searchTerm]);
+  }, []);
 
+  // Fetch photos on initial render if initial search term is provided
   useEffect(() => {
-    if (initialSearchTerm) {
-      handleFetchPhotos();
+    if (initialSearchTerm && !initialFetchDone.current) {
+      fetchPhotos(initialSearchTerm);
+      initialFetchDone.current = true;
     }
-  }, [handleFetchPhotos, initialSearchTerm]);
+  }, [fetchPhotos, initialSearchTerm]);
 
-  useEffect(() => {
-    setSearchTerm(initialSearchTerm);
-  }, [initialSearchTerm]);
+  const handleFetchPhotos = () => {
+    fetchPhotos(searchTerm);
+  };
 
   const handleSave = () => {
     if (selectedImage) {
@@ -63,6 +66,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
     </div>
   );
 };
+
 PapunetView.propTypes = {
   onSelectImage: PropTypes.func.isRequired,
   initialSearchTerm: PropTypes.string,
