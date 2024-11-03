@@ -13,6 +13,8 @@ const Phase1 = ({
     inputRefs.current = inputRefs.current.slice(0, currentWord.word.length);
   }, [currentWord, inputRefs]);
 
+  const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
+
   return (
     <div className="phase1-container">
       <h1>Kirjoita sana</h1>
@@ -34,7 +36,15 @@ const Phase1 = ({
               />
             ))}
           </div>
-          <button className="ph1-ready-button" onClick={handleSubmit}>
+          <button
+            className="ph1-ready-button"
+            onClick={handleSubmit}
+            disabled={isReadyButtonDisabled}
+            style={{
+              backgroundColor: isReadyButtonDisabled ? 'grey' : '#72A895',
+              cursor: isReadyButtonDisabled ? 'not-allowed' : 'pointer',
+            }}
+          >
             VALMIS
           </button>
         </div>
