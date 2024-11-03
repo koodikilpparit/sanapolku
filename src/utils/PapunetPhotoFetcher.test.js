@@ -1,56 +1,118 @@
-import PapunetPhotoFetcher from './PapunetPhotoFetcher';
+import { fetchPhotos } from './PapunetPhotoFetcher';
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () =>
+beforeAll(() => {
+  global.fetch = jest.fn();
+});
+
+beforeEach(() => {
+  fetch.mockClear();
+});
+
+describe('fetchPhotos', () => {
+  it('fetches and parses photos correctly', async () => {
+    fetch.mockImplementationOnce(() =>
       Promise.resolve({
-        images: [
-          {
-            author: 'Author1',
-            height: 600,
-            keywords: ['keyword1', 'keyword2'],
-            name: 'Image1',
-            thumb: 'thumb1.jpg',
-            thumb_large: 'thumb_large1.jpg',
-            type: 'image/jpeg',
-            uid: 'uid1',
-            url: 'url1.jpg',
-            width: 800,
-            score: 10,
-          },
-          {
-            author: 'Author2',
-            height: 400,
-            keywords: ['keyword3', 'keyword4'],
-            name: 'Image2',
-            thumb: 'thumb2.jpg',
-            thumb_large: 'thumb_large2.jpg',
-            type: 'image/png',
-            uid: 'uid2',
-            url: 'url2.jpg',
-            width: 600,
-            score: 8,
-          },
-        ],
-      }),
-  })
-);
-
-describe('PapunetPhotoFetcher', () => {
-  beforeEach(() => {
-    fetch.mockClear();
-  });
-
-  it('returns an empty array if the fetch operation fails', async () => {
-    fetch.mockImplementationOnce(() => Promise.reject('API is down'));
+        json: () =>
+          Promise.resolve({
+            images: [
+              {
+                author: 'Author 1',
+                height: 600,
+                keywords: ['keyword1', 'keyword2'],
+                name: 'Image 1',
+                thumb: 'thumb1.jpg',
+                thumb_large: 'thumb_large1.jpg',
+                type: 'image/jpeg',
+                uid: '1',
+                url: 'url1.jpg',
+                width: 800,
+                score: 0.9,
+              },
+              {
+                author: 'Author 2',
+                height: 400,
+                keywords: ['keyword3', 'keyword4'],
+                name: 'Image 2',
+                thumb: 'thumb2.jpg',
+                thumb_large: 'thumb_large2.jpg',
+                type: 'image/png',
+                uid: '2',
+                url: 'url2.jpg',
+                width: 600,
+                score: 0.8,
+              },
+            ],
+          }),
+      })
+    );
 
     const searchTerm = 'test';
-    const photos = await PapunetPhotoFetcher.fetchPhotos(searchTerm);
+    const photos = await fetchPhotos(searchTerm);
 
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(photos).toEqual([
+      {
+        author: 'Author 1',
+        height: 600,
+        keywords: ['keyword1', 'keyword2'],
+        name: 'Image 1',
+        thumb: 'thumb1.jpg',
+        thumb_large: 'thumb_large1.jpg',
+        type: 'image/jpeg',
+        uid: '1',
+        url: 'url1.jpg',
+        width: 800,
+        score: 0.9,
+      },
+      {
+        author: 'Author 2',
+        height: 400,
+        keywords: ['keyword3', 'keyword4'],
+        name: 'Image 2',
+        thumb: 'thumb2.jpg',
+        thumb_large: 'thumb_large2.jpg',
+        type: 'image/png',
+        uid: '2',
+        url: 'url2.jpg',
+        width: 600,
+        score: 0.8,
+      },
+    ]);
+  });
+
+  it('calls the correct API endpoint', async () => {
+    fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ images: [] }),
+      })
+    );
+
+    const searchTerm = 'test';
+    await fetchPhotos(searchTerm);
+
     expect(fetch).toHaveBeenCalledWith(
       'https://kuha.papunet.net/api/search/all/test?lang=fi'
     );
+  });
+
+  it('handles empty array response', async () => {
+    fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ images: [] }),
+      })
+    );
+
+    const searchTerm = 'empty';
+    const photos = await fetchPhotos(searchTerm);
+
     expect(photos).toEqual([]);
+  });
+
+  it('handles fetch failure', async () => {
+    fetch.mockImplementationOnce(() =>
+      Promise.reject(new Error('Fetch failed'))
+    );
+
+    const searchTerm = 'fail';
+    await expect(fetchPhotos(searchTerm)).rejects.toThrow('Fetch failed');
   });
 });
