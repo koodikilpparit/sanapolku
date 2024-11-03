@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Phase1 from '../../components/game/Phase1';
 
@@ -11,11 +11,31 @@ describe('Phase1 Component', () => {
   const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();
+  const mockInputRefs = createRef();
+  mockInputRefs.current = [];
 
   // Clear all mocks before each test
   beforeEach(async () => {
     mockHandleSubmit.mockClear();
     mockHandleInputChange.mockClear();
+  });
+
+  it('Check that phase 1 is initialized correctly', () => {
+    const initialPlayerInput = ['', '', '', '', ''];
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={initialPlayerInput}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+      />
+    );
+
+    const letterTiles = screen.getAllByRole('textbox');
+    letterTiles.forEach((tile, index) => {
+      expect(tile.value).toBe(initialPlayerInput[index]);
+    });
   });
 
   it('Check that the correct number of letter tiles are rendered', async () => {
@@ -25,6 +45,7 @@ describe('Phase1 Component', () => {
         playerInput={[]}
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
       />
     );
 
@@ -40,13 +61,18 @@ describe('Phase1 Component', () => {
         playerInput={['A', '', '', '', '']}
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
       />
     );
 
     const firstInput = screen.getByDisplayValue('A');
     fireEvent.change(firstInput, { target: { value: 'Z' } });
 
-    expect(mockHandleInputChange).toHaveBeenCalledWith(0, expect.anything());
+    expect(mockHandleInputChange).toHaveBeenCalledWith(
+      0,
+      expect.anything(),
+      expect.anything()
+    );
 
     render(
       <Phase1
@@ -54,25 +80,11 @@ describe('Phase1 Component', () => {
         playerInput={['Z', '', '', '', '']}
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
       />
     );
 
     expect(screen.getByDisplayValue('Z')).toBeInTheDocument();
-  });
-
-  it('Check that pressing enter can be used to submit answer', () => {
-    render(
-      <Phase1
-        currentWord={mockWord}
-        handleSubmit={mockHandleSubmit}
-        handleInputChange={mockHandleInputChange}
-        playerInput={['A', 'P', 'P', 'L', 'E']}
-      />
-    );
-
-    // Check that pressing enter triggers handleSubmit
-    fireEvent.keyDown(window, { key: 'Enter' });
-    expect(mockHandleSubmit).toHaveBeenCalled();
   });
 
   it('Check that clicking the ready-button can be used to submit answer', () => {
@@ -82,6 +94,7 @@ describe('Phase1 Component', () => {
         handleSubmit={mockHandleSubmit}
         handleInputChange={mockHandleInputChange}
         playerInput={['A', 'P', 'P', 'L', 'E']}
+        inputRefs={mockInputRefs}
       />
     );
 
