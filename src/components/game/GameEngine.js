@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
 import shuffleArray from 'lodash.shuffle';
@@ -18,6 +18,7 @@ const GameEngine = ({ pathName }) => {
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +37,7 @@ const GameEngine = ({ pathName }) => {
 
         setWords(fetchedWords);
         setCurrentWord(fetchedWords[0]);
+        setPlayerInput(Array(fetchedWords[0].word.length).fill(''));
         setLoading(false);
       } catch (error) {
         setError('Error fetching path or words');
@@ -80,6 +82,16 @@ const GameEngine = ({ pathName }) => {
   const handleSubmit = () => {
     if (!currentWord) return;
 
+    // Check that all input field have been filled before proceeding
+    if (
+      playerInput.some(
+        (element) =>
+          element === '' || playerInput.length !== currentWord.word.length
+      )
+    ) {
+      return;
+    }
+
     const normalizedInput = playerInput.join('').toLowerCase();
     const targetWord = currentWord.word.toLowerCase();
 
@@ -103,21 +115,20 @@ const GameEngine = ({ pathName }) => {
     setPlayerInput(Array(currentWord.word.length).fill(''));
   };
 
-  // Handle 'Enter' key press
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
         handleSubmit();
       }
     };
-
-    // Add event listener
     window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [currentWord, playerInput, currentPhase, handleSubmit]);
 
   const moveToNextWord = () => {
     setCurrentPhase(1);
-    setPlayerInput(Array(currentWord.word.length).fill(''));
 
     if (wordIndex + 1 < words.length) {
       setWordIndex(wordIndex + 1);
@@ -125,6 +136,14 @@ const GameEngine = ({ pathName }) => {
       setGameOver(true);
     }
   };
+
+  // Initialize playerInput based on the currentWord
+  useEffect(() => {
+    if (currentWord) {
+      setPlayerInput(Array(currentWord.word.length).fill(''));
+      inputRefs.current.forEach((input) => input?.blur());
+    }
+  }, [currentWord]);
 
   // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
   const shuffleWord = (word) => {
@@ -153,6 +172,7 @@ const GameEngine = ({ pathName }) => {
                 playerInput={playerInput}
                 handleInputChange={handleInputChange}
                 handleSubmit={handleSubmit}
+                inputRefs={inputRefs}
               />
             )}
             {currentPhase === 2 && (

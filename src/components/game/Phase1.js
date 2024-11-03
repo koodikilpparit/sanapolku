@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Phase1.css';
 
@@ -7,12 +7,11 @@ const Phase1 = ({
   playerInput,
   handleInputChange,
   handleSubmit,
+  inputRefs,
 }) => {
-  const inputRefs = useRef([]);
-
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, currentWord.word.length);
-  }, [currentWord]);
+  }, [currentWord, inputRefs]);
 
   return (
     <div className="phase1-container">
@@ -52,6 +51,7 @@ Phase1.propTypes = {
   playerInput: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  inputRefs: PropTypes.object.isRequired,
 };
 
 export default Phase1;
