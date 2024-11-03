@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import PapunetPhotoFetcher from '../utils/PapunetPhotoFetcher';
+import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
 import '../styles/PapunetView.css';
 
 const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
@@ -10,9 +10,9 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const initialFetchDone = useRef(false);
 
-  const fetchPhotos = useCallback(async (term) => {
+  const getPhotos = useCallback(async (term) => {
     try {
-      const fetchedPhotos = await PapunetPhotoFetcher.fetchPhotos(term);
+      const fetchedPhotos = await fetchPhotos(term);
       setPhotos(fetchedPhotos);
       setError(null);
     } catch (err) {
@@ -24,13 +24,13 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
   // Fetch photos on initial render if initial search term is provided
   useEffect(() => {
     if (initialSearchTerm && !initialFetchDone.current) {
-      fetchPhotos(initialSearchTerm);
+      getPhotos(initialSearchTerm);
       initialFetchDone.current = true;
     }
-  }, [fetchPhotos, initialSearchTerm]);
+  }, [getPhotos, initialSearchTerm]);
 
   const handleFetchPhotos = () => {
-    fetchPhotos(searchTerm);
+    getPhotos(searchTerm);
   };
 
   const handleSave = () => {
