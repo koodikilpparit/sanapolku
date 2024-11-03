@@ -102,4 +102,19 @@ describe('Phase1 Component', () => {
     fireEvent.click(screen.getByText('VALMIS'));
     expect(mockHandleSubmit).toHaveBeenCalled();
   });
+
+  it('Check that pressing Enter can be used to submit answer', () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'E']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(mockHandleSubmit).toHaveBeenCalled();
+  });
 });
