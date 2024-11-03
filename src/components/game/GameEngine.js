@@ -53,10 +53,21 @@ const GameEngine = ({ pathName }) => {
   }, [wordIndex, words]);
 
   // Handle input change for phase 1
-  const handleInputChange = (index, event) => {
+  const handleInputChange = (index, event, inputRefs) => {
+    const value = event.target.value.toUpperCase();
     const newInput = [...playerInput];
-    newInput[index] = event.target.value.toUpperCase();
+    newInput[index] = value;
     setPlayerInput(newInput);
+
+    // Automatically focus the next input if a value is entered
+    if (value && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+
+    // If the input is cleared, move focus back to the previous input
+    if (!value && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
   };
 
   // Handle input change for phases 2 & 3
@@ -91,6 +102,18 @@ const GameEngine = ({ pathName }) => {
 
     setPlayerInput(Array(currentWord.word.length).fill(''));
   };
+
+  // Handle 'Enter' key press
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        handleSubmit();
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+  }, [currentWord, playerInput, currentPhase, handleSubmit]);
 
   const moveToNextWord = () => {
     setCurrentPhase(1);

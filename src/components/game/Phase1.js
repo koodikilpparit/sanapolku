@@ -12,34 +12,7 @@ const Phase1 = ({
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, currentWord.word.length);
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Enter') {
-        handleSubmit();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentWord, handleSubmit]);
-
-  const handleChange = (index, event) => {
-    const { value } = event.target;
-    handleInputChange(index, event);
-
-    if (value) {
-      if (index < inputRefs.current.length - 1) {
-        inputRefs.current[index + 1].focus();
-      }
-    } else {
-      if (index > 0) {
-        inputRefs.current[index - 1].focus();
-      }
-    }
-  };
+  }, [currentWord]);
 
   return (
     <div className="phase1-container">
@@ -56,7 +29,7 @@ const Phase1 = ({
                 type="text"
                 ref={(el) => (inputRefs.current[index] = el)}
                 value={playerInput[index] || ''}
-                onChange={(event) => handleChange(index, event)}
+                onChange={(event) => handleInputChange(index, event, inputRefs)}
                 maxLength="1"
                 className="letter-tile"
               />
