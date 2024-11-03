@@ -115,18 +115,7 @@ const GameEngine = ({ pathName }) => {
     setPlayerInput(Array(currentWord.word.length).fill(''));
   };
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Enter') {
-        handleSubmit();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentWord, playerInput, currentPhase, handleSubmit]);
-
+  // Handle moving to the next word
   const moveToNextWord = () => {
     setCurrentPhase(1);
 

@@ -9,11 +9,24 @@ const Phase1 = ({
   handleSubmit,
   inputRefs,
 }) => {
+  const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
+
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, currentWord.word.length);
   }, [currentWord, inputRefs]);
 
-  const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter' && !isReadyButtonDisabled) {
+        handleSubmit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isReadyButtonDisabled, handleSubmit]);
 
   return (
     <div className="phase1-container">
