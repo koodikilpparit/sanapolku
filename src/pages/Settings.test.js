@@ -44,4 +44,22 @@ describe('Settings Component', () => {
     fireEvent.click(musicCheckbox);
     expect(mockSetMusic).toHaveBeenCalledWith(false);
   });
+
+  it('opens and closes the reset confirmation modal', () => {
+    renderComponent();
+    const resetButton = screen.getByText('Palauta sovellus oletusasetuksiin');
+
+    // Open modal
+    fireEvent.click(resetButton);
+    expect(
+      screen.getByText('Haluatko varmasti palauttaa oletusasetukset?')
+    ).toBeInTheDocument();
+
+    // Close modal
+    const cancelButton = screen.getByText('Peruuta');
+    fireEvent.click(cancelButton);
+    expect(
+      screen.queryByText('Haluatko varmasti palauttaa oletusasetukset?')
+    ).not.toBeInTheDocument();
+  });
 });

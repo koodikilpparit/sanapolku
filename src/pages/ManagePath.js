@@ -46,7 +46,7 @@ const ManagePath = () => {
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <h2>Lisää sanoja</h2>
+        <h2>{pathName}</h2>
         <FontAwesomeIcon
           icon={faPlus}
           className="add-path-icon"

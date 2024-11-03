@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import BackButton from '../components/universal/BackButton';
 import '../styles/Settings.css';
 import { SettingsContext } from '../contexts/SettingsContext';
@@ -19,68 +20,111 @@ import { resetDB } from '../db/db';
 const Settings = () => {
   const { sounds, setSounds, music, setMusic } =
     React.useContext(SettingsContext);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+
+  // Function to open the modal for reset
+  const openResetModal = () => {
+    setIsResetModalOpen(true);
+  };
+
+  // Function to close the modal for reset
+  const closeResetModal = () => {
+    setIsResetModalOpen(false);
+  };
+
+  const handleReset = () => {
+    resetDB()
+      .then(() => {
+        localStorage.clear();
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error('Failed to reset the database:', error);
+      });
+  };
+
   return (
     <div className="settings-container">
       <header className="settings-header">
         <BackButton />
+        <h2> Asetukset </h2>
       </header>
 
-      <div className="settings-about-container">
-        <div className="settings">
-          <h3> Asetukset </h3>
-          <div className="setting-item">
-            <label htmlFor="sounds-checkbox">Äänet</label>
+      <div className="settings">
+        <div className="setting-item">
+          <label htmlFor="sounds-checkbox">Äänet</label>
+          <label className="switch">
             <input
               id="sounds-checkbox"
               type="checkbox"
               checked={sounds}
               onChange={() => setSounds(!sounds)}
             />
-          </div>
-          <div className="setting-item">
-            <label htmlFor="music-checkbox">Musiikki</label>
+            <span className="slider"></span>
+          </label>
+        </div>
+        <div className="setting-item">
+          <label htmlFor="music-checkbox">Musiikki</label>
+          <label className="switch">
             <input
               id="music-checkbox"
               type="checkbox"
               checked={music}
               onChange={() => setMusic(!music)}
             />
-          </div>
-        </div>
-
-        <div className="about-info">
-          <h3>Tietoa sovelluksesta</h3>
-          <p>Kuvat: Papunetin kuvapankki,</p>
-          <p>
-            Sovelluksen kehittäjät: Anni Nieminen, Eveliina Sundberg, Neera
-            Kiviluoma, Tuuli Järvimaa, Juho Rantala, Onni Salomaa, Risto
-            &quot;Reine&quot; Majakangas
-          </p>
+            <span className="slider"></span>
+          </label>
         </div>
 
         <div className="reset-button">
           <button
             onClick={() => {
-              if (
-                window.confirm(
-                  'Haluatko varmasti palauttaa sovelluksen oletusasetuksiin? Tämä poistaa kaikki omat polut ja sanat!'
-                )
-              ) {
-                resetDB()
-                  .then(() => {
-                    localStorage.clear();
-                    window.location.reload();
-                  })
-                  .catch((error) => {
-                    console.error('Failed to reset the database:', error);
-                  });
-              }
+              openResetModal();
             }}
           >
             Palauta sovellus oletusasetuksiin
           </button>
         </div>
       </div>
+
+      <div className="settings-about-container">
+        <h3>Tietoa sovelluksesta</h3>
+        <div className="about-info">
+          <div className="soft-box">
+            <h2>Kuvat:</h2>
+            <p>Papunetin kuvapankki</p>
+          </div>
+          <div className="soft-box">
+            <h2>Sovelluksen idean kehittäjät:</h2>
+            <p>Nita Sorsa, Karri Kauppila</p>
+          </div>
+          <div className="soft-box">
+            <h2>Sovelluksen kehitystiimi:</h2>
+            <p>
+              Anni Nieminen, Eveliina Sundberg, Neera Kiviluoma, Tuuli Järvimaa,
+              Juho Rantala, Onni Salomaa, Risto &quot;Reine&quot; Majakangas
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal for confirming reset */}
+      {isResetModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Haluatko varmasti palauttaa oletusasetukset?</h2>
+            <p>Tämä poistaa kaikki omat polut ja sanat!</p>
+            <div className="modal-buttons">
+              <button className="cancel-button" onClick={closeResetModal}>
+                Peruuta
+              </button>
+              <button className="cancel-button" onClick={handleReset}>
+                Vahvista
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
