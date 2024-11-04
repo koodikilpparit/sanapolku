@@ -54,9 +54,23 @@ const GameEngine = ({ pathName }) => {
     }
   }, [wordIndex, words]);
 
-  // Handle input change for phase 1
+  useEffect(() => {
+    if (currentWord) {
+      setPlayerInput(Array(currentWord.word.length).fill(''));
+      inputRefs.current.forEach((input) => input?.blur());
+      if (inputRefs.current[0]) {
+        inputRefs.current[0].focus();
+      }
+    }
+  }, [currentWord]);
+
   const handleInputChange = (index, event, inputRefs) => {
     const value = event.target.value.toUpperCase();
+
+    if (!/^[a-öA-Ö]*$/.test(value)) {
+      return;
+    }
+
     const newInput = [...playerInput];
     newInput[index] = value;
     setPlayerInput(newInput);
@@ -66,7 +80,7 @@ const GameEngine = ({ pathName }) => {
       inputRefs.current[index + 1].focus();
     }
 
-    // If the input is cleared, move focus back to the previous input
+    // Automatically focus the previous input if the current input is cleared
     if (!value && index > 0) {
       inputRefs.current[index - 1].focus();
     }
@@ -125,14 +139,6 @@ const GameEngine = ({ pathName }) => {
       setGameOver(true);
     }
   };
-
-  // Initialize playerInput based on the currentWord
-  useEffect(() => {
-    if (currentWord) {
-      setPlayerInput(Array(currentWord.word.length).fill(''));
-      inputRefs.current.forEach((input) => input?.blur());
-    }
-  }, [currentWord]);
 
   // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
   const shuffleWord = (word) => {

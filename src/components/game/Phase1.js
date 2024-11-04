@@ -28,6 +28,13 @@ const Phase1 = ({
     };
   }, [isReadyButtonDisabled, handleSubmit]);
 
+  // Function to handle backspace key for navigating to the previous input
+  const handleBackspaceNavigation = (index, event) => {
+    if (event.key === 'Backspace' && index > 0 && playerInput[index] === '') {
+      inputRefs.current[index - 1].focus();
+    }
+  };
+
   return (
     <div className="phase1-container">
       <h1>Kirjoita sana</h1>
@@ -44,6 +51,7 @@ const Phase1 = ({
                 ref={(el) => (inputRefs.current[index] = el)}
                 value={playerInput[index] || ''}
                 onChange={(event) => handleInputChange(index, event, inputRefs)}
+                onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                 maxLength="1"
                 className="letter-tile"
               />
