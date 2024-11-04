@@ -4,6 +4,7 @@ import StartButton from '../components/start/StartButton';
 import HelpButton from '../components/start/HelpButton';
 import LetterTile from '../components/start/LetterTile';
 import './Start.css';
+import ShareButton from '../components/start/ShareButton';
 
 function Start() {
   return (
@@ -32,6 +33,9 @@ function Start() {
         </div>
         <div className="help-button">
           <HelpButton />
+        </div>
+        <div className="share-button">
+          <ShareButton />
         </div>
       </div>
     </div>
