@@ -1,10 +1,10 @@
+// src/components/GameEngine/GameEngine.js
+
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
 import shuffleArray from 'lodash.shuffle';
-import Phase1 from './Phase1';
-import Phase2 from './Phase2';
-import Phase3 from './Phase3';
+import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 import './GameEngine.css';
 
@@ -26,12 +26,14 @@ const GameEngine = ({ pathName }) => {
         const path = await getPathByName(pathName);
         if (!path) {
           setError('Path not found');
+          setLoading(false);
           return;
         }
 
         const fetchedWords = await getWordsForPath(path.id);
         if (!fetchedWords || fetchedWords.length === 0) {
           setError('No words found for this path');
+          setLoading(false);
           return;
         }
 
@@ -39,7 +41,8 @@ const GameEngine = ({ pathName }) => {
         setCurrentWord(fetchedWords[0]);
         setPlayerInput(Array(fetchedWords[0].word.length).fill(''));
         setLoading(false);
-      } catch (error) {
+      } catch (err) {
+        console.error(err);
         setError('Error fetching path or words');
         setLoading(false);
       }
@@ -49,7 +52,7 @@ const GameEngine = ({ pathName }) => {
   }, [pathName]);
 
   useEffect(() => {
-    if (words.length > 0) {
+    if (words.length > 0 && wordIndex < words.length) {
       setCurrentWord(words[wordIndex]);
     }
   }, [wordIndex, words]);
@@ -64,10 +67,11 @@ const GameEngine = ({ pathName }) => {
     }
   }, [currentWord]);
 
-  const handleInputChange = (index, event, inputRefs) => {
+  const handleInputChange = (index, event) => {
     const value = event.target.value.toUpperCase();
 
-    if (!/^[a-öA-Ö]*$/.test(value)) {
+    // Only allow alphabetic characters
+    if (!/^[A-Ö]*$/.test(value)) {
       return;
     }
 
@@ -86,17 +90,11 @@ const GameEngine = ({ pathName }) => {
     }
   };
 
-  // Handle input change for phases 2 & 3
-  const handleInputChange2 = (e) => {
-    const value = e.target.value.toUpperCase();
-    setPlayerInput(value.split(''));
-  };
-
   // Handle submission based on the phase
   const handleSubmit = () => {
     if (!currentWord) return;
 
-    // Check that all input field have been filled before proceeding
+    // Check that all input fields have been filled before proceeding
     if (
       playerInput.some(
         (element) =>
@@ -160,34 +158,15 @@ const GameEngine = ({ pathName }) => {
             <h2>Peli ohi!</h2>
           </div>
         ) : currentWord ? (
-          <>
-            {currentPhase === 1 && (
-              <Phase1
-                currentWord={currentWord}
-                playerInput={playerInput}
-                handleInputChange={handleInputChange}
-                handleSubmit={handleSubmit}
-                inputRefs={inputRefs}
-              />
-            )}
-            {currentPhase === 2 && (
-              <Phase2
-                currentWord={currentWord}
-                shuffledWord={shuffledWord}
-                playerInput={playerInput}
-                handleInputChange2={handleInputChange2}
-                handleSubmit={handleSubmit}
-              />
-            )}
-            {currentPhase === 3 && (
-              <Phase3
-                currentWord={currentWord}
-                playerInput={playerInput}
-                handleInputChange2={handleInputChange2}
-                handleSubmit={handleSubmit}
-              />
-            )}
-          </>
+          <PhaseController
+            currentPhase={currentPhase}
+            currentWord={currentWord}
+            playerInput={playerInput}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            inputRefs={inputRefs}
+            shuffledWord={shuffledWord}
+          />
         ) : (
           <p className="loading-msg">Ladataan sanoja...</p>
         )}
