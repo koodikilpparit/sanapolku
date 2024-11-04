@@ -22,6 +22,7 @@ const PathSelection = () => {
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState(null);
 
   // Fetch all paths from the database when the component loads
@@ -130,6 +131,18 @@ const PathSelection = () => {
     setCurrentPath(null);
   };
 
+  // Function to open the modal for sharing a path
+  const openShareModal = (path) => {
+    setCurrentPath(path);
+    setIsShareModalOpen(true);
+  };
+
+  // Function to close the modal for sharing a path
+  const closeShareModal = () => {
+    setIsShareModalOpen(false);
+    setCurrentPath(null);
+  };
+
   return (
     <div className="paths-page">
       {/* Header */}
@@ -161,7 +174,12 @@ const PathSelection = () => {
                   openDeleteModal(path);
                 }}
               />
-              <ShareButton></ShareButton>
+              <ShareButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openShareModal(path);
+                }}
+              ></ShareButton>
             </div>
           ))
         ) : (
@@ -229,6 +247,26 @@ const PathSelection = () => {
                 Muokkaa polkua
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for sharing a path */}
+      {isShareModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Polun jakaminen</h2>
+            <p>
+              Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kameran
+              käyttäminen ei ole mahdollista, polun jakaminen onnistuu QR-koodin
+              alta löytyvän tunnisteen avulla.
+            </p>
+            <p>QR codee tähän ja muotoile ylempi teksti paremmin</p>
+            <span>Lähettäjän tunniste:</span>
+            <p>tunniste</p>
+            <button className="save-button" onClick={closeShareModal}>
+              Palaa takaisin
+            </button>
           </div>
         </div>
       )}
