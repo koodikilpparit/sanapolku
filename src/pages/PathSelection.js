@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
 import DeleteButton from '../components/universal/DeleteButton';
+import ShareButton from '../components/universal/ShareButton';
 
 const PathSelection = () => {
   const navigate = useNavigate();
@@ -160,6 +161,7 @@ const PathSelection = () => {
                   openDeleteModal(path);
                 }}
               />
+              <ShareButton></ShareButton>
             </div>
           ))
         ) : (

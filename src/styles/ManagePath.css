@@ -129,6 +129,10 @@
     font-size: var(--sp-icon-size-extra-small);
   }
 
+  .share-icon {
+    font-size: var(--sp-icon-size-extra-small);
+  }
+
   .word-image {
     margin-right: 0;
   }
