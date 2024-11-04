@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Phase1.css';
+import ImageContainer from './ImageContainer';
 
 const Phase1 = ({
   currentWord,
@@ -39,9 +40,10 @@ const Phase1 = ({
     <div className="phase1-container">
       <h1>Kirjoita sana</h1>
       <div className="game-components">
-        <div className="image-container">
-          <img src={currentWord.img} alt={`Kuva sanasta ${currentWord.word}`} />
-        </div>
+        <ImageContainer
+          src={currentWord.img}
+          alt={`Kuva sanasta ${currentWord.word}`}
+        />
         <div className="interactive-components">
           <div className="letter-tiles">
             {currentWord.word.split('').map((_, index) => (
