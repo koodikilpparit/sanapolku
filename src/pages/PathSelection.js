@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { QRCode } from 'react-qrcode-logo';
 import {
   getAllPaths,
   addPath,
@@ -7,6 +8,12 @@ import {
   getPathByName,
   getWordsForPath,
 } from '../db/db';
+import {
+  connectToPeerAndReceive,
+  initializePeer,
+  sendDataOnConnection,
+} from '../utils/ShareUtils';
+import { importPath, exportPath } from '../utils/PathUtils';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,16 +21,27 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
 import DeleteButton from '../components/universal/DeleteButton';
 import ShareButton from '../components/universal/ShareButton';
+import QrScannerComponent from '../components/QrScannerComponent';
 
 const PathSelection = () => {
   const navigate = useNavigate();
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
+  const [isScanning, setIsScanning] = useState(true);
+
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isReceivePathModalOpen, setIsReceivePathModalOpen] = useState(false);
+
   const [currentPath, setCurrentPath] = useState(null);
+
+  const [peer, setPeer] = useState(null);
+  const [peerId, setPeerId] = useState(null);
+  const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
+  const [targetPeerID, setTargetPeerID] = useState(null);
+  const QRCODE_PREFIX = 'sanapolku:';
 
   // Fetch all paths from the database when the component loads
   useEffect(() => {
@@ -33,6 +51,48 @@ const PathSelection = () => {
       )
       .catch(() => console.error('Error fetching paths'));
   }, []);
+
+  useEffect(() => {
+    // Initialize WebRTC
+    const initPeer = async () => {
+      const { id: newId, peer: newPeer } = await initializePeer();
+      setPeerId(newId);
+      setPeer(newPeer);
+    };
+    if (!peer) {
+      initPeer();
+    }
+
+    return () => {
+      if (peer) {
+        peer.destroy();
+      }
+    };
+  }, [peer]);
+
+  useEffect(() => {
+    // Set up path to share
+    const handleNewConnection = async () => {
+      console.log('Setting up onConnection with', peer, currentPath);
+      sendDataOnConnection(peer, currentPath)
+        .then(() => console.log('Successfully sent path', currentPath))
+        .catch((e) => {
+          console.log('Error while connecting and sending path', e);
+        });
+    };
+
+    if (!(peer && currentPath)) {
+      return;
+    }
+
+    handleNewConnection();
+  }, [peer, currentPath]);
+
+  useEffect(() => {
+    // Receive path from target
+    if (!(peer && targetPeerID)) return;
+    connectToPeerAndReceive(peer, targetPeerID, importPath);
+  }, [peer, targetPeerID]);
 
   // Function to add a new path to the database and navigate
   // to path management page
@@ -96,6 +156,22 @@ const PathSelection = () => {
     setIsDeleteModalOpen(false);
   };
 
+  const handleShareClick = () => {
+    setTargetPeerID(targetPeerIDInput);
+  };
+
+  const handleQRScan = async (scanResult) => {
+    const result = scanResult.data;
+    if (result.startsWith(QRCODE_PREFIX)) {
+      result.substring();
+      const id = result.slice(QRCODE_PREFIX.length);
+      setTargetPeerID(id);
+      setIsScanning(false);
+    } else {
+      console.warn('Unknown QR code');
+    }
+  };
+
   // Function to open the modal for deleting a path
   const openDeleteModal = (path) => {
     setCurrentPath(path);
@@ -132,7 +208,10 @@ const PathSelection = () => {
   };
 
   // Function to open the modal for sharing a path
-  const openShareModal = (path) => {
+  const openShareModal = async (path) => {
+    await exportPath(path).then((serializedPath) => {
+      setCurrentPath(serializedPath);
+    });
     setCurrentPath(path);
     setIsShareModalOpen(true);
   };
@@ -141,6 +220,17 @@ const PathSelection = () => {
   const closeShareModal = () => {
     setIsShareModalOpen(false);
     setCurrentPath(null);
+  };
+
+  // Function to open the modal for sharing a path
+  const openReceivePathModal = () => {
+    setIsNewPathModalOpen(false);
+    setIsReceivePathModalOpen(true);
+  };
+
+  // Function to close the modal for sharing a path
+  const closeReceivePathModal = () => {
+    setIsReceivePathModalOpen(false);
   };
 
   return (
@@ -191,6 +281,10 @@ const PathSelection = () => {
       {isNewPathModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
+            <h2>Vastaanota polku</h2>
+            <button className="save-button" onClick={openReceivePathModal}>
+              Siirry vastaanottamaan polku
+            </button>
             <h2>Lisää uusi polku</h2>
             <input
               type="text"
@@ -257,14 +351,43 @@ const PathSelection = () => {
           <div className="modal-content">
             <h2>Polun jakaminen</h2>
             <p>
-              Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kameran
-              käyttäminen ei ole mahdollista, polun jakaminen onnistuu QR-koodin
-              alta löytyvän tunnisteen avulla.
+              Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kamera ei
+              ole käytettävissä, polun jakaminen onnistuu QR-koodin alta
+              löytyvän tunnisteen avulla.
             </p>
-            <p>QR codee tähän ja muotoile ylempi teksti paremmin</p>
+            <QRCode value={QRCODE_PREFIX + peerId} />
             <span>Lähettäjän tunniste:</span>
-            <p>tunniste</p>
+            <p>{peerId}</p>
             <button className="save-button" onClick={closeShareModal}>
+              Palaa takaisin
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for sharing a path */}
+      {isReceivePathModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Polun vastaanottaminen</h2>
+            <p>
+              Lue lähettäjän QR-koodi. Jos kamera ei ole käytettävissä, polun
+              jakaminen onnistuu lähettäjän tunnisteen avulla.
+            </p>
+            {isScanning && <QrScannerComponent onSuccess={handleQRScan} />}
+            <div>
+              <input
+                className="fetch-input"
+                type="text"
+                value={targetPeerIDInput}
+                placeholder="Lähettäjän tunniste"
+                onChange={(e) => setTargetPeerIDInput(e.target.value)}
+              />
+              <button className="fetch-button" onClick={handleShareClick}>
+                Hae polku
+              </button>
+            </div>
+            <button className="save-button" onClick={closeReceivePathModal}>
               Palaa takaisin
             </button>
           </div>
