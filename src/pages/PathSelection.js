@@ -32,7 +32,8 @@ const PathSelection = () => {
       .catch(() => console.error('Error fetching paths'));
   }, []);
 
-  // Function to add a new path to the database
+  // Function to add a new path to the database and navigate
+  // to path management page
   const handleAddPath = () => {
     if (newPath.trim()) {
       addPath(newPath)
@@ -41,6 +42,7 @@ const PathSelection = () => {
           setNewPath('');
           console.log('Path added:', newPath);
           setIsNewPathModalOpen(false);
+          navigate(`/muokkaapolkua/${newPath}`);
         })
         .catch((error) => {
           console.error(error.message);
@@ -145,12 +147,19 @@ const PathSelection = () => {
       <div className="path-list">
         {paths.length > 0 ? (
           paths.map((path, index) => (
-            <div key={index} className="path-item-container">
-              <span className="path-item" onClick={() => handlePathClick(path)}>
-                {path}
-              </span>
-              <EditButton path={path} />
-              <DeleteButton onClick={() => openDeleteModal(path)} />
+            <div
+              key={index}
+              className="path-item-container"
+              onClick={() => handlePathClick(path)}
+            >
+              <span className="path-item">{path}</span>
+              <EditButton path={path} onClick={(e) => e.stopPropagation()} />
+              <DeleteButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openDeleteModal(path);
+                }}
+              />
             </div>
           ))
         ) : (

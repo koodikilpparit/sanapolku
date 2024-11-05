@@ -74,7 +74,7 @@ const NewWord = () => {
         <ImageUploader setImageData={setImageData} />
 
         {/* Buttons */}
-        <div className="button-container">
+        <div className="confirm-button-container">
           <button className="nw-cancel-button" onClick={() => navigate(-1)}>
             PERUUTA
           </button>
