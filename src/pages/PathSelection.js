@@ -99,20 +99,29 @@ const PathSelection = () => {
   }, [peer, currentPath]);
 
   useEffect(() => {
-    // Receive path from target
-    if (!(peer && targetPeerID)) return;
-    setSharingStarted(true);
-    connectToPeerAndReceive(peer, targetPeerID, importPath)
-      .then(() => {
+    const receivePath = async () => {
+      // Receive path from target
+      if (!(peer && targetPeerID)) return;
+      setSharingStarted(true);
+      try {
+        const importedPath = await connectToPeerAndReceive(
+          peer,
+          targetPeerID,
+          importPath
+        );
+        const pathName = importedPath.name;
+        setPaths([...paths, pathName]);
         setSharingSucceeded(true);
         setSharingStarted(false);
-      })
-      .catch((e) => {
+      } catch (e) {
         closeReceivePathModal();
         openSharingFailedModal();
         setSharingStarted(false);
         console.error('Connection failed:', e);
-      });
+      }
+    };
+
+    receivePath();
   }, [peer, targetPeerID]);
 
   // Function to add a new path to the database and navigate
