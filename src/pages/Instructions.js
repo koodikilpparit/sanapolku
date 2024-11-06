@@ -19,14 +19,14 @@ function Instructions() {
         <InstructionsStep
           stepNumber={1}
           title="Vaihe 1 – KUVA"
-          text="Ensin koitetaan muodostaa sana pelkän kuvan perusteella. Jos onnistut ensimmäisellä, niin etenet suoraan seuraavaan kuvaan. Jos sana ei muistu mieleen, niin mennään toiseen vaiheeseen, eli JÄRJESTÄ-osuuteen."
+          text="Ensin yritetään muodostaa sana pelkän kuvan perusteella. Jos onnistut ensimmäisellä kerralla, niin etenet suoraan seuraavaan kuvaan. Jos sana ei muistu mieleen, niin mennään toiseen vaiheeseen, eli JÄRJESTÄ-osuuteen."
           image={mrBean}
         />
 
         <InstructionsStep
           stepNumber={2}
           title="Vaihe 2 – JÄRJESTÄ"
-          text="Kuvan alle ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Saat hahmotella sanaa niin pitkään, kuin tarvitsee ja painamalla VALMIS saat selville oikean vastauksen."
+          text="Kuvan alle ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Painamalla VALMIS pääset eteenpäin."
           image={mrBean}
         />
 

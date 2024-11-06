@@ -1,14 +1,17 @@
 import React from 'react';
-import InstructionsText from './InstructionsText';
-import InstructionsImage from './InstructionsImage';
 import PropTypes from 'prop-types';
+import './InstructionsStep.css';
 
 const InstructionsStep = ({ title, text, image }) => {
   return (
-    <div>
-      <strong>{title}</strong>
-      <InstructionsImage image={image} />
-      <InstructionsText text={text} />
+    <div className="instruction-step">
+      <strong className="instruction-title">{title}</strong>
+      <div className="instruction-image">
+        <img src={image} alt={title} />
+      </div>
+      <div className="instruction-text">
+        <p>{text}</p>
+      </div>
     </div>
   );
 };
