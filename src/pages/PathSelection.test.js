@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
 describe('PathSelection Component UI Tests', () => {
   const mockNavigate = jest.fn();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
   });
@@ -128,6 +128,33 @@ describe('PathSelection Component UI Tests', () => {
       expect(
         screen.queryByPlaceholderText('Anna polun nimi')
       ).toBeInTheDocument();
+    });
+  });
+
+  it('should navigate to the path management page when the user enters a path name and clicks "Tallenna"', async () => {
+    const mockAddPath = jest.spyOn(db, 'addPath');
+    mockAddPath.mockResolvedValue(Promise.resolve({ id: 1, name: 'Polku' }));
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    // Open the modal
+    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    fireEvent.click(openModalButton);
+
+    // Type in the input field inside the modal
+    const input = screen.getByPlaceholderText('Anna polun nimi');
+    fireEvent.change(input, { target: { value: 'Polku' } });
+
+    // Simulate a click on the "Tallenna" button
+    const saveButton = screen.getByRole('button', { name: /tallenna/i });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/Polku');
     });
   });
 
@@ -296,6 +323,193 @@ describe('PathSelection Component UI Tests', () => {
     // Check if navigate was called with the correct edit path route
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/EmptyPath');
+    });
+  });
+
+  it('should navigate to the path edit page when edit button is clicked', async () => {
+    // Mock db functions
+    const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
+    mockGetAllPaths.mockImplementation(() =>
+      Promise.resolve([{ id: 1, name: 'TestEditButtonPath' }])
+    );
+
+    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
+    mockGetPathByName.mockImplementation(() =>
+      Promise.resolve({ id: 1, name: 'TestEditButtonPath' })
+    );
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestEditButtonPath')).toBeInTheDocument();
+    });
+
+    // Locate the specific path item container by its name
+    const pathContainer = screen
+      .getByText('TestEditButtonPath')
+      .closest('.path-item-container');
+
+    // Find edit button using querySelector within the container
+    const editButton = pathContainer.querySelector('.edit-button');
+
+    // Click edit button
+    fireEvent.click(editButton);
+
+    // Check if navigate was called with the correct edit path route
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/muokkaapolkua/TestEditButtonPath'
+      );
+    });
+  });
+
+  it('should open the delete confirmation modal when delete button is clicked', async () => {
+    // Mock db function to return a sample path
+    jest
+      .spyOn(db, 'getAllPaths')
+      .mockResolvedValue([{ id: 1, name: 'TestPath' }]);
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestPath')).toBeInTheDocument();
+    });
+
+    // Locate the specific path item container by its name
+    const pathContainer = screen
+      .getByText('TestPath')
+      .closest('.path-item-container');
+
+    // Find the delete button using querySelector within the container and open delete modal
+    const deleteButton = pathContainer.querySelector('.delete-button');
+    fireEvent.click(deleteButton);
+
+    // Check if delete confirmation modal is displayed
+    expect(screen.getByText('Vahvista poisto')).toBeInTheDocument();
+  });
+
+  it('should delete the path and close the modal when confirmed', async () => {
+    // Mock db functions
+    jest
+      .spyOn(db, 'getAllPaths')
+      .mockResolvedValueOnce([{ id: 1, name: 'TestPath' }])
+      .mockResolvedValueOnce([]);
+
+    jest.spyOn(db, 'deletePath').mockResolvedValue();
+
+    jest
+      .spyOn(db, 'getPathByName')
+      .mockResolvedValue({ id: 1, name: 'TestPath' });
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestPath')).toBeInTheDocument();
+    });
+
+    // Locate the specific path item container by its name
+    const pathContainer = screen
+      .getByText('TestPath')
+      .closest('.path-item-container');
+
+    // Find the delete button using querySelector within the container and open delete modal
+    const deleteButton = pathContainer.querySelector('.delete-button');
+    fireEvent.click(deleteButton);
+
+    // Confirm deletion
+    const confirmDeleteButton = screen.getByText('Poista');
+    fireEvent.click(confirmDeleteButton);
+
+    // Verify deletePath was called and the modal closed
+    await waitFor(() => {
+      expect(screen.queryByText('TestPath')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should close the delete modal without deleting when cancel is clicked', async () => {
+    // Mock db function to return a sample path
+    jest
+      .spyOn(db, 'getAllPaths')
+      .mockResolvedValue([{ id: 1, name: 'TestPath' }]);
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestPath')).toBeInTheDocument();
+    });
+
+    // Locate the specific path item container by its name
+    const pathContainer = screen
+      .getByText('TestPath')
+      .closest('.path-item-container');
+
+    // Find the delete button using querySelector within the container and open delete modal
+    const deleteButton = pathContainer.querySelector('.delete-button');
+    fireEvent.click(deleteButton);
+
+    // Cancel deletion
+    const cancelButton = screen.getByText('Peruuta');
+    fireEvent.click(cancelButton);
+
+    // Verify modal closed and path still exists
+    await waitFor(() => {
+      expect(screen.queryByText('Vahvista poisto')).not.toBeInTheDocument();
+      expect(screen.getByText('TestPath')).toBeInTheDocument();
+    });
+  });
+
+  it('should give error if path id can not be found', async () => {
+    const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+    // Mock db function to return a sample path
+    jest
+      .spyOn(db, 'getAllPaths')
+      .mockResolvedValue([{ id: 1, name: 'TestPath' }]);
+
+    jest.spyOn(db, 'getPathByName').mockResolvedValue(undefined);
+
+    render(
+      <BrowserRouter>
+        <PathSelection />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('TestPath')).toBeInTheDocument();
+    });
+
+    // Locate the specific path item container by its name
+    const pathContainer = screen
+      .getByText('TestPath')
+      .closest('.path-item-container');
+
+    // Find the delete button using querySelector within the container and open delete modal
+    const deleteButton = pathContainer.querySelector('.delete-button');
+    fireEvent.click(deleteButton);
+
+    // Confirm deletion
+    const confirmDeleteButton = screen.getByText('Poista');
+    fireEvent.click(confirmDeleteButton);
+
+    // Verify alert is called
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Path not found.');
     });
   });
 });

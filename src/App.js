@@ -9,6 +9,7 @@ import PathSelection from './pages/PathSelection';
 import ManagePath from './pages/ManagePath';
 import NewWord from './pages/NewWord';
 import GamePage from './pages/GamePage';
+import Share from './pages/Share';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/muokkaapolkua/:pathName" element={<ManagePath />} />
           <Route path="/uusisana/:pathName" element={<NewWord />} />
           <Route path="/peli/:pathName" element={<GamePage />} />
+          <Route path="/jakaminen" element={<Share />}></Route>
         </Routes>
       </div>
     </Router>

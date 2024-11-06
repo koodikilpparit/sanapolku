@@ -8,25 +8,30 @@ import PathSelection from './PathSelection';
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
+  useParams: jest.fn(),
 }));
 
 describe('ManagePath Component UI Tests', () => {
   const mockNavigate = jest.fn();
+  const mockPathName = 'testPath';
 
   beforeEach(() => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+    require('react-router-dom').useParams.mockReturnValue({
+      pathName: mockPathName,
+    });
   });
 
-  it('should render the ManagePath component and display the title "Lisää sanoja"', () => {
+  it('should render the ManagePath component and display the path name as the title', () => {
     render(
       <BrowserRouter>
         <ManagePath />
       </BrowserRouter>
     );
 
-    // Check if the title "Lisää sanoja" is rendered
-    expect(screen.getByText('Lisää sanoja')).toBeInTheDocument();
+    // Check if the title is rendered
+    expect(screen.getByText('testPath')).toBeInTheDocument();
   });
 
   it('checks if back button navigates back to the previous page', () => {
@@ -55,10 +60,10 @@ describe('ManagePath Component UI Tests', () => {
     );
 
     // Get the add word button and simulate a click
-    const addButton = screen.getByText('LISÄÄ UUSI SANA');
+    const addButton = screen.getByLabelText('Lisää uusi sana');
     fireEvent.click(addButton);
 
     // Check if navigate was called with the correct route
-    expect(mockNavigate).toHaveBeenCalledWith('/uusisana/undefined');
+    expect(mockNavigate).toHaveBeenCalledWith('/uusisana/testPath');
   });
 });

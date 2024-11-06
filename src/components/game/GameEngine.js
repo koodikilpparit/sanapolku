@@ -37,9 +37,10 @@ const GameEngine = ({ pathName }) => {
           return;
         }
 
-        setWords(fetchedWords);
-        setCurrentWord(fetchedWords[0]);
-        setPlayerInput(Array(fetchedWords[0].word.length).fill(''));
+        const limitedWords = fetchedWords.slice(0, 10);
+
+        setWords(limitedWords);
+        setCurrentWord(limitedWords[0]);
         setLoading(false);
       } catch (err) {
         console.error(err);
