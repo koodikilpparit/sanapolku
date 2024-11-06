@@ -38,7 +38,7 @@ const Phase2 = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col mt-2">
       <h1 className="text-sp-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
         Järjestä kirjaimet
       </h1>
