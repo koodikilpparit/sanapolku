@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas: 'top-bar';
   height: 100vh;
-  background-color: #06705b;
+  background-color: var(--sp-dark-green);
   overflow-y: auto;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .back-icon {
-  color: #fff;
+  color: var(--sp-white);
   height: 48px;
   width: 30px;
 }
@@ -34,23 +34,23 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 60px; /* Added space below header */
+  padding-top: 60px;
 }
 
 .ins-header {
-  color: #fff;
-  font-family: Verdana;
-  font-size: 36px;
+  color: var(--sp-white);
+  font-family: var(--sp-global-font);
+  font-size: var(--sp-heading-1);
   font-weight: 700;
   line-height: 44px;
-  margin-bottom: 24px; /* Increased space below header */
+  margin-bottom: 24px;
   text-align: center;
 }
 
 .instructions-text {
-  color: #fff;
+  color: var(--sp-white);
   text-align: center;
-  font-family: Verdana;
+  font-family: var(--sp-global-font);
   font-size: 20px;
   font-weight: 400;
   line-height: 28px;
@@ -61,9 +61,9 @@
 /* Style for Phones in Portrait mode */
 @media (max-width: 650px) {
   .instructions-page {
-    background-color: #06705b;
+    background-color: var(--sp-dark-green);
     height: 100vh;
-    overflow-y: hidden;
+    overflow-y: auto;
   }
 
   .ins-top-bar {
@@ -83,7 +83,7 @@
   }
 
   .ins-center-area {
-    padding-top: 4vw; /* Space below header for small screens */
+    padding-top: 4vw;
   }
 
   .ins-header {
@@ -101,7 +101,7 @@
 @media (max-width: 60px) {
   .instructions-page {
     height: 100vh;
-    overflow-y: hidden;
+    overflow-y: auto;
   }
 
   .ins-top-bar {
@@ -121,7 +121,7 @@
   }
 
   .ins-center-area {
-    padding-top: 5vw; /* More space below header */
+    padding-top: 5vw;
   }
 
   .ins-header {
