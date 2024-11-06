@@ -66,7 +66,7 @@ const Share = () => {
       sendDataOnConnection(peer, selectedPath)
         .then(() => console.log('Successfully sent path', selectedPath))
         .catch((e) => {
-          console.log('Error while connecting and sending path', e);
+          console.error('Connection failed', e);
         });
     };
 
@@ -80,7 +80,9 @@ const Share = () => {
   useEffect(() => {
     // Receive path from target
     if (!(peer && targetPeerID)) return;
-    connectToPeerAndReceive(peer, targetPeerID, importPath);
+    connectToPeerAndReceive(peer, targetPeerID, importPath).catch((e) =>
+      console.error('Connection failed:', e)
+    );
   }, [peer, targetPeerID]);
 
   return (

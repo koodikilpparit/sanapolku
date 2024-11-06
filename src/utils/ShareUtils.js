@@ -21,7 +21,9 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
     if (!targetPeerId) reject('Target peer ID not set');
     if (!callback) reject('Callback not set');
 
-    const connection = peer.connect(targetPeerId);
+    const connection = peer.connect(targetPeerId, {
+      reliable: true,
+    });
 
     connection.on('open', () => {
       resolve();
@@ -30,8 +32,12 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
       callback(data);
     });
     connection.on('error', (e) => {
-      console.error(e);
       reject(e);
+    });
+    connection.on('iceStateChanged', (e) => {
+      if (e === 'disconnected') {
+        reject(e);
+      }
     });
   });
 }
@@ -48,8 +54,12 @@ export function sendDataOnConnection(peer, data) {
         resolve();
       });
       connection.on('error', (e) => {
-        console.error('Connection error', e);
         reject(e);
+      });
+      connection.on('iceStateChanged', (e) => {
+        if (e === 'disconnected') {
+          reject(e);
+        }
       });
     });
   });
