@@ -25,11 +25,9 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
       reliable: true,
     });
 
-    connection.on('open', () => {
-      resolve();
-    });
-    connection.on('data', (data) => {
-      callback(data);
+    connection.on('data', async (data) => {
+      const importedPath = await callback(data);
+      resolve(importedPath);
     });
     connection.on('error', (e) => {
       reject(e);

@@ -89,9 +89,19 @@ const PathSelection = () => {
   }, [peer, currentPath]);
 
   useEffect(() => {
-    // Receive path from target
-    if (!(peer && targetPeerID)) return;
-    connectToPeerAndReceive(peer, targetPeerID, importPath);
+    const receivePath = async () => {
+      // Receive path from target
+      if (!(peer && targetPeerID)) return;
+      const importedPath = await connectToPeerAndReceive(
+        peer,
+        targetPeerID,
+        importPath
+      );
+      const pathName = importedPath.name;
+      setPaths([...paths, pathName]);
+    };
+
+    receivePath();
   }, [peer, targetPeerID]);
 
   // Function to add a new path to the database and navigate
