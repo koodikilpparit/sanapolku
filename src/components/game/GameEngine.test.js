@@ -161,7 +161,7 @@ describe('GameEngine Component with IndexedDB', () => {
     );
 
     // Checking that the back-button is on the game page
-    const backButton = container.querySelector('.game-back-button');
+    const backButton = container.querySelector('.back-button');
     expect(backButton).toBeInTheDocument();
 
     fireEvent.click(backButton);

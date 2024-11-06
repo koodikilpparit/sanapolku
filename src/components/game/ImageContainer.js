@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './ImageContainer.css';
 
 const ImageContainer = ({ src, alt }) => (
-  <div className="image-container">
-    <img src={src} alt={alt} />
+  <div className="">
+    <img
+      className="max-w-[60vw] sm:max-w-[40vw] aspect-square"
+      src={src}
+      alt={alt}
+    />
   </div>
 );
 
