@@ -2,7 +2,9 @@ import React from 'react';
 import BackButton from '../components/universal/BackButton';
 import InstructionsStep from '../components/instructions/InstructionsStep';
 import '../styles/Instructions.css';
-import mrBean from '../assets/instruction-images/mrBean.png';
+import phase1Img from '../assets/instruction-images/phase1.png';
+import phase2Img from '../assets/instruction-images/phase2.png';
+import phase3Img from '../assets/instruction-images/phase3.png';
 
 function Instructions() {
   return (
@@ -20,28 +22,28 @@ function Instructions() {
           stepNumber={1}
           title="Vaihe 1 – KUVA"
           text="Ensin yritetään muodostaa sana pelkän kuvan perusteella. Jos onnistut ensimmäisellä kerralla, niin etenet suoraan seuraavaan kuvaan. Jos sana ei muistu mieleen, niin mennään toiseen vaiheeseen, eli JÄRJESTÄ-osuuteen."
-          image={mrBean}
+          image={phase1Img}
         />
 
         <InstructionsStep
           stepNumber={2}
           title="Vaihe 2 – JÄRJESTÄ"
           text="Kuvan alle ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Painamalla VALMIS pääset eteenpäin."
-          image={mrBean}
+          image={phase2Img}
         />
 
         <InstructionsStep
           stepNumber={3}
           title="Vaihe 3 – KOPIOI"
           text="Kun oikea kirjoitusasu on näkyvissä, kopioi kirjaimista muodostunut sana."
-          image={mrBean}
+          image={phase3Img}
         />
 
         <InstructionsStep
           stepNumber={4}
           title="Vaihe 4 – TOISTA"
           text="Muistatko vielä vastauksen? Nyt TOISTA vaiheessa kirjoitetaan sana uudelleen. Oikeasta vastauksesta pääset seuraavaan sanaan ja väärästä vastauksesta palataan pelin JÄRJESTÄ-vaiheeseen."
-          image={mrBean}
+          image={phase1Img}
         />
       </div>
     </div>

@@ -5,17 +5,26 @@ import Start from './Start';
 import Instructions from './Instructions';
 
 describe('StartPage', () => {
-  // Rendering the instructions page
   it('checks if Instructions-page renders', () => {
-    render(
+    const { getByText, getByAltText } = render(
       <BrowserRouter>
         <Instructions />
       </BrowserRouter>
     );
+
+    expect(getByText('Pelin ohjeet')).toBeInTheDocument();
+    expect(getByText('Vaihe 1 – KUVA')).toBeInTheDocument();
+    expect(getByText('Vaihe 2 – JÄRJESTÄ')).toBeInTheDocument();
+    expect(getByText('Vaihe 3 – KOPIOI')).toBeInTheDocument();
+    expect(getByText('Vaihe 4 – TOISTA')).toBeInTheDocument();
+
+    expect(getByAltText('Vaihe 1 – KUVA')).toBeInTheDocument();
+    expect(getByAltText('Vaihe 2 – JÄRJESTÄ')).toBeInTheDocument();
+    expect(getByAltText('Vaihe 3 – KOPIOI')).toBeInTheDocument();
+    expect(getByAltText('Vaihe 4 – TOISTA')).toBeInTheDocument();
   });
 
   it('checks if back-button brings you to the start page', () => {
-    // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
         <Instructions />
@@ -23,11 +32,9 @@ describe('StartPage', () => {
       </BrowserRouter>
     );
 
-    // Checking that the back-button is on the start page
     const backButton = container.querySelector('.back-button');
     expect(backButton).toBeInTheDocument();
 
-    // Checking that by clicking the back-button you can navigate to /
     fireEvent.click(backButton);
     expect(window.location.pathname).toBe('/');
   });
