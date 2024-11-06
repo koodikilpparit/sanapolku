@@ -90,7 +90,7 @@ describe('fetchPhotos', () => {
     await fetchPhotos(searchTerm);
 
     expect(fetch).toHaveBeenCalledWith(
-      'https://kuha.papunet.net/api/search/all/test?lang=fi'
+      'https://corsproxy.io/?https://kuha.papunet.net/api/search/all/test?lang=fi'
     );
   });
 
