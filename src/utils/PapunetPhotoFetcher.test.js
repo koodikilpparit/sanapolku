@@ -115,4 +115,11 @@ describe('fetchPhotos', () => {
     const searchTerm = 'fail';
     await expect(fetchPhotos(searchTerm)).rejects.toThrow('Fetch failed');
   });
+
+  it('handles empty search term', async () => {
+    const searchTerm = '';
+    const photos = await fetchPhotos(searchTerm);
+    expect(photos).toEqual([]);
+    expect(fetch).not.toHaveBeenCalled();
+  });
 });
