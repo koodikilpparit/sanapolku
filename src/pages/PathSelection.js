@@ -34,6 +34,8 @@ const PathSelection = () => {
   const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isReceivePathModalOpen, setIsReceivePathModalOpen] = useState(false);
+  const [isSharingFailedModalOpen, setIsSharingFailedModalOpen] =
+    useState(false);
 
   const [currentPath, setCurrentPath] = useState(null);
 
@@ -41,6 +43,8 @@ const PathSelection = () => {
   const [peerId, setPeerId] = useState(null);
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
   const [targetPeerID, setTargetPeerID] = useState(null);
+  const [sharingStarted, setSharingStarted] = useState(false);
+  const [sharingSucceeded, setSharingSucceeded] = useState(false);
   const QRCODE_PREFIX = 'sanapolku:';
 
   // Fetch all paths from the database when the component loads
@@ -75,9 +79,15 @@ const PathSelection = () => {
     const handleNewConnection = async () => {
       console.log('Setting up onConnection with', peer, currentPath);
       sendDataOnConnection(peer, currentPath)
-        .then(() => console.log('Successfully sent path', currentPath))
+        .then(() => {
+          setSharingSucceeded(true);
+          setSharingStarted(false);
+          console.log('Successfully sent path', currentPath);
+        })
         .catch((e) => {
-          console.log('Error while connecting and sending path', e);
+          closeShareModal();
+          openSharingFailedModal();
+          console.error('Connection failed', e);
         });
     };
 
@@ -91,7 +101,18 @@ const PathSelection = () => {
   useEffect(() => {
     // Receive path from target
     if (!(peer && targetPeerID)) return;
-    connectToPeerAndReceive(peer, targetPeerID, importPath);
+    setSharingStarted(true);
+    connectToPeerAndReceive(peer, targetPeerID, importPath)
+      .then(() => {
+        setSharingSucceeded(true);
+        setSharingStarted(false);
+      })
+      .catch((e) => {
+        closeReceivePathModal();
+        openSharingFailedModal();
+        setSharingStarted(false);
+        console.error('Connection failed:', e);
+      });
   }, [peer, targetPeerID]);
 
   // Function to add a new path to the database and navigate
@@ -213,6 +234,7 @@ const PathSelection = () => {
       setCurrentPath(serializedPath);
     });
     setIsShareModalOpen(true);
+    setSharingSucceeded(false);
   };
 
   // Function to close the modal for sharing a path
@@ -225,11 +247,22 @@ const PathSelection = () => {
   const openReceivePathModal = () => {
     setIsNewPathModalOpen(false);
     setIsReceivePathModalOpen(true);
+    setSharingSucceeded(false);
   };
 
   // Function to close the modal for sharing a path
   const closeReceivePathModal = () => {
     setIsReceivePathModalOpen(false);
+  };
+
+  // Function to open the modal for instructions why path sharing failed
+  const openSharingFailedModal = () => {
+    setIsSharingFailedModalOpen(true);
+  };
+
+  // Function to close the modal for instructions why path sharing failed
+  const closeSharingFailedModal = () => {
+    setIsSharingFailedModalOpen(false);
   };
 
   return (
@@ -281,7 +314,10 @@ const PathSelection = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Vastaanota polku</h2>
-            <button className="save-button" onClick={openReceivePathModal}>
+            <button
+              className="receive-path-button"
+              onClick={openReceivePathModal}
+            >
               Siirry vastaanottamaan polku
             </button>
             <h2>Lisää uusi polku</h2>
@@ -354,9 +390,15 @@ const PathSelection = () => {
               ole käytettävissä, polun jakaminen onnistuu QR-koodin alta
               löytyvän tunnisteen avulla.
             </p>
-            <QRCode value={QRCODE_PREFIX + peerId} />
-            <span>Lähettäjän tunniste:</span>
-            <p>{peerId}</p>
+            {sharingSucceeded ? (
+              <label>Polun jakaminen onnistui!</label>
+            ) : (
+              <div>
+                <QRCode value={QRCODE_PREFIX + peerId} />
+                <span>Lähettäjän tunniste:</span>
+                <p>{peerId}</p>
+              </div>
+            )}
             <button className="save-button" onClick={closeShareModal}>
               Palaa takaisin
             </button>
@@ -373,21 +415,52 @@ const PathSelection = () => {
               Lue lähettäjän QR-koodi. Jos kamera ei ole käytettävissä, polun
               jakaminen onnistuu lähettäjän tunnisteen avulla.
             </p>
-            {isScanning && <QrScannerComponent onSuccess={handleQRScan} />}
-            <div>
-              <input
-                className="fetch-input"
-                type="text"
-                value={targetPeerIDInput}
-                placeholder="Lähettäjän tunniste"
-                onChange={(e) => setTargetPeerIDInput(e.target.value)}
-              />
-              <button className="fetch-button" onClick={handleShareClick}>
-                Hae polku
-              </button>
-            </div>
+            {!sharingStarted ? (
+              <div>
+                {sharingSucceeded ? (
+                  <label>Polun jakaminen onnistui!</label>
+                ) : (
+                  <div>
+                    {isScanning && (
+                      <QrScannerComponent onSuccess={handleQRScan} />
+                    )}
+                    <input
+                      className="fetch-input"
+                      type="text"
+                      value={targetPeerIDInput}
+                      placeholder="Lähettäjän tunniste"
+                      onChange={(e) => setTargetPeerIDInput(e.target.value)}
+                    />
+                    <button className="fetch-button" onClick={handleShareClick}>
+                      Hae polku
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <label>Yhdistetään...</label>
+            )}
             <button className="save-button" onClick={closeReceivePathModal}>
               Palaa takaisin
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for path sharing error and instructions */}
+      {isSharingFailedModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Polun jakaminen epäonnistui!</h2>
+            <p>
+              Yritä jakamista uudestaan. Jos jakaminen ei vieläkään onnistu,
+              ongelma voi johtua laitteiden käyttämistä verkoista. Siirtykää
+              käyttämään molemmilla laitteilla esimerkiksi samaa WIFI tai
+              mobiilidata verkkoa. Kun molemmat laitteet ovat yhdistettynä
+              samaan verkkoon, pitäisi polun jakamisen onnistua varmasti.
+            </p>
+            <button className="save-button" onClick={closeSharingFailedModal}>
+              Sulje
             </button>
           </div>
         </div>
