@@ -1,11 +1,9 @@
-/* src/pages/Instructions.css */
-
-/* Deafault style */
 .instructions-page {
   display: grid;
   grid-template-areas: 'top-bar';
   height: 100vh;
-  background-color: #06705b;
+  background-color: sp-dark-green;
+  overflow-y: auto;
 }
 
 .ins-top-bar {
