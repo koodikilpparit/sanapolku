@@ -1,23 +1,22 @@
-const DB_NAME_PATHS = 'pathsDB';
-const DB_NAME_WORDS = 'wordsDB';
+const DB_NAME = 'sanapolkuDB';
 const DB_VERSION = 1;
 
 // Open database
-export function openDB(name) {
+function openDB(name) {
   return new Promise((resolve, reject) => {
     const request = window.indexedDB.open(name, DB_VERSION);
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
 
-      if (name === DB_NAME_PATHS && !db.objectStoreNames.contains('paths')) {
+      if (!db.objectStoreNames.contains('paths')) {
         db.createObjectStore('paths', {
           keyPath: 'id',
           autoIncrement: true,
         }).createIndex('name', 'name', { unique: true });
       }
 
-      if (name === DB_NAME_WORDS && !db.objectStoreNames.contains('words')) {
+      if (!db.objectStoreNames.contains('words')) {
         const wordsStore = db.createObjectStore('words', {
           keyPath: 'id',
           autoIncrement: true,
@@ -43,7 +42,7 @@ export function addPath(pathName) {
     if (existingPath) {
       return Promise.reject(new Error('Path with this name already exists'));
     } else {
-      return openDB(DB_NAME_PATHS).then((db) => {
+      return openDB(DB_NAME).then((db) => {
         const transaction = db.transaction('paths', 'readwrite');
         const store = transaction.objectStore('paths');
         return store.add({ name: pathName });
@@ -54,7 +53,7 @@ export function addPath(pathName) {
 
 // Get all paths
 export function getAllPaths() {
-  return openDB(DB_NAME_PATHS).then((db) => {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
@@ -73,7 +72,7 @@ export function getAllPaths() {
 
 // Get path by name
 export function getPathByName(name) {
-  return openDB(DB_NAME_PATHS).then((db) => {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
@@ -97,7 +96,7 @@ export function addWord(word, pathId, img) {
     return Promise.reject(new Error('Image (img) is required.'));
   }
 
-  return openDB(DB_NAME_WORDS).then((db) => {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('words', 'readwrite');
       const store = transaction.objectStore('words');
@@ -117,7 +116,7 @@ export function addWord(word, pathId, img) {
 
 // Get all words for a specific path
 export function getWordsForPath(pathId) {
-  return openDB(DB_NAME_WORDS).then((db) => {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       if (typeof pathId === 'undefined' || pathId === null) {
         reject('Error: Invalid path ID');
@@ -141,7 +140,7 @@ export function getWordsForPath(pathId) {
 
 // Delete word by ID
 export function deleteWord(wordId) {
-  return openDB(DB_NAME_WORDS).then((db) => {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('words', 'readwrite');
       const store = transaction.objectStore('words');
@@ -160,7 +159,7 @@ export function deleteWord(wordId) {
 
 // Delete path and it's words
 export async function deletePath(pathId) {
-  return openDB(DB_NAME_PATHS).then((db) => {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       const pathTransaction = db.transaction('paths', 'readwrite');
       const pathsStore = pathTransaction.objectStore('paths');
@@ -189,7 +188,7 @@ export async function deletePath(pathId) {
 
 // Delete path's words
 async function deletePathsWords(pathId) {
-  const db = await openDB(DB_NAME_WORDS);
+  const db = await openDB(DB_NAME);
   return await new Promise((resolve, reject) => {
     const wordTransaction = db.transaction('words', 'readwrite');
     const wordsStore = wordTransaction.objectStore('words');
@@ -235,7 +234,7 @@ async function deletePathsWords(pathId) {
 // Reset the database to its initial state
 export function resetDB() {
   return Promise.all([
-    openDB(DB_NAME_PATHS).then((db) => {
+    openDB(DB_NAME).then((db) => {
       return new Promise((resolve, reject) => {
         const transaction = db.transaction('paths', 'readwrite');
         const store = transaction.objectStore('paths');
@@ -250,7 +249,7 @@ export function resetDB() {
         };
       });
     }),
-    openDB(DB_NAME_WORDS).then((db) => {
+    openDB(DB_NAME).then((db) => {
       return new Promise((resolve, reject) => {
         const transaction = db.transaction('words', 'readwrite');
         const store = transaction.objectStore('words');
