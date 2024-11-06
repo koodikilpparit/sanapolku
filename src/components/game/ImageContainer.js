@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ImageContainer = ({ src, alt }) => (
   <div className="">
     <img
-      className="max-w-[60vw] sm:max-w-[40vw] aspect-square"
+      className="w-full max-w-[60vw] sm:max-w-[40vw] aspect-square"
       src={src}
       alt={alt}
     />
