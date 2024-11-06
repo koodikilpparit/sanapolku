@@ -36,16 +36,28 @@ async function openDB(name) {
   });
 }
 
-// Add path
+/**
+ * Adds a new path
+ * @param {string} pathName The name of the path to add
+ * @returns {number} ID
+ */
 export async function addPath(pathName) {
-  return getPathByName(pathName).then((existingPath) => {
+  return getPathByName(pathName).then(async (existingPath) => {
     if (existingPath) {
       return Promise.reject(new Error('Path with this name already exists'));
     } else {
-      return openDB(DB_NAME).then((db) => {
-        const transaction = db.transaction('paths', 'readwrite');
-        const store = transaction.objectStore('paths');
-        return store.add({ name: pathName });
+      return openDB(DB_NAME).then(async (db) => {
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction('paths', 'readwrite');
+          const store = transaction.objectStore('paths');
+          const request = store.add({ name: pathName });
+          request.onsuccess = (event) => {
+            resolve(event.target.result || null);
+          };
+          request.onerror = (_event) => {
+            reject('Failed to add path');
+          };
+        });
       });
     }
   });
@@ -53,7 +65,7 @@ export async function addPath(pathName) {
 
 // Get all paths
 export async function getAllPaths() {
-  return openDB(DB_NAME).then((db) => {
+  return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
@@ -72,7 +84,7 @@ export async function getAllPaths() {
 
 // Get path by name
 export async function getPathByName(name) {
-  return openDB(DB_NAME).then((db) => {
+  return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
@@ -96,7 +108,7 @@ export async function addWord(word, pathId, img) {
     return Promise.reject(new Error('Image (img) is required.'));
   }
 
-  return openDB(DB_NAME).then((db) => {
+  return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('words', 'readwrite');
       const store = transaction.objectStore('words');
