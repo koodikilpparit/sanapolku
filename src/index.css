@@ -50,3 +50,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.btn-sp-primary {
+  @apply text-sp-white font-bold text-2xl rounded-sp-button p-4;
+}
+
+.btn-sp-secondary {
+  @apply text-sp-white font-bold text-2xl rounded-sp-button p-4;
+}

@@ -6,7 +6,6 @@ import { getPathByName, getWordsForPath } from '../../db/db';
 import shuffleArray from 'lodash.shuffle';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
-import './GameEngine.css';
 
 const GameEngine = ({ pathName }) => {
   const [words, setWords] = useState([]);
@@ -79,14 +78,9 @@ const GameEngine = ({ pathName }) => {
     newInput[index] = value;
     setPlayerInput(newInput);
 
-    // Automatically focus the next input if a value is entered
+    // Only move to the next input if a new character is entered (not on delete)
     if (value && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
-    }
-
-    // Automatically focus the previous input if the current input is cleared
-    if (!value && index > 0) {
-      inputRefs.current[index - 1].focus();
     }
   };
 
@@ -144,11 +138,11 @@ const GameEngine = ({ pathName }) => {
   };
 
   return (
-    <div className="game-engine">
-      <div className="game-back-button">
+    <div className="flex flex-col mt-8 sm:m-4">
+      <div className="flex flex-row justify-between mx-4">
         <BackButton />
       </div>
-      <div className="game-content">
+      <div className="">
         {loading ? (
           <p className="loading-msg"> Ladataan sanoja...</p>
         ) : error ? (
