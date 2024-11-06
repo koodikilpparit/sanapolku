@@ -33,10 +33,11 @@ const GameEngine = ({ pathName }) => {
           return;
         }
 
-        const limitedWords = fetchedWords.slice(0, 10);
+        // Randomizes words and takes 10 words
+        const randomWords = shuffleArray(fetchedWords).slice(0, 10);
 
-        setWords(limitedWords);
-        setCurrentWord(limitedWords[0]);
+        setWords(randomWords);
+        setCurrentWord(randomWords[0]);
         setLoading(false);
       } catch (error) {
         setError('Error fetching path or words');
@@ -113,6 +114,11 @@ const GameEngine = ({ pathName }) => {
         </div>
       ) : currentWord ? (
         <>
+          {/* Hidden div for tests */}
+          <div data-testid="word-count" style={{ display: 'none' }}>
+            {words.length}
+          </div>
+
           {currentPhase === 1 && (
             <Phase1
               currentWord={currentWord}

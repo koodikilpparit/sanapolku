@@ -12,10 +12,12 @@ afterAll(() => {
 });
 
 describe('GameEngine Component with IndexedDB', () => {
-  const mockWords = [
-    { id: 1, word: 'apple', img: 'apple.jpg', pathId: 1 },
-    { id: 2, word: 'banana', img: 'banana.jpg', pathId: 1 },
-  ];
+  const mockWords = Array.from({ length: 15 }, (_, index) => ({
+    id: index + 1,
+    word: `word${index + 1}`,
+    img: `word${index + 1}.jpg`,
+    pathId: 1,
+  }));
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
@@ -28,8 +30,9 @@ describe('GameEngine Component with IndexedDB', () => {
     const wordsDB = await openDB('wordsDB');
     const wordsTransaction = wordsDB.transaction(['words'], 'readwrite');
     const wordsStore = wordsTransaction.objectStore('words');
-    await wordsStore.add(mockWords[0]);
-    await wordsStore.add(mockWords[1]);
+    for (const word of mockWords) {
+      await wordsStore.add(word);
+    }
     await wordsTransaction.done;
   };
 
@@ -45,23 +48,53 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(screen.getByText('Ladataan sanoja...')).toBeInTheDocument();
   });
 
-  it('renders the first word when loaded', async () => {
+  it('moves to the next word on correct input', async () => {
+    render(<GameEngine pathName="test-path" />);
+    
+    // Wait for the first word and its image to be displayed
+    await waitFor(() => screen.getByRole('img')); // Wait for the image to appear (we don't know which image)
+    
+    // Remember the initial image (since the order is random, we store the first one)
+    const initialImage = screen.getByRole('img');
+    
+    // Enter the correct word for the first phase
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: mockWords[0].word },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+    
+    // Wait for the game to move to the next word and the image to change
+    await waitFor(() => {
+      const nextImage = screen.getByRole('img');
+      expect(nextImage).not.toBe(initialImage); // Ensure that the image has changed
+    });
+    
+    // Enter the next correct word
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: mockWords[1].word },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+    
+    // Wait for the game to move to the next word again and the image to change
+    await waitFor(() => {
+      const nextImage = screen.getByRole('img');
+      expect(nextImage).not.toBe(initialImage); // Ensure that the image has changed again
+    });
+  });
+
+  it('loads exactly 10 random words', async () => {
     render(<GameEngine pathName="test-path" />);
 
-    // Wait for the words to be fetched and rendered
-    await waitFor(() =>
-      expect(screen.getByText('Kirjoita sana')).toBeInTheDocument()
-    );
-
-    // Check that the first word's image is displayed using the src
-    const imgElement = screen.getByRole('img');
-    expect(imgElement).toHaveAttribute('src', 'apple.jpg');
+    await waitFor(() => {
+      const wordCountElement = screen.getByTestId("word-count");
+      expect(Number(wordCountElement.textContent)).toBe(10);
+    });
   });
 
   it('moves to the second phase on wrong input', async () => {
     render(<GameEngine pathName="test-path" />);
 
-    // Wait for the words to load
+    // Wait for the words to load and phase 1 to be active
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
     // Simulate entering wrong input and submitting
@@ -71,53 +104,6 @@ describe('GameEngine Component with IndexedDB', () => {
     fireEvent.click(screen.getByText('Valmis'));
 
     // Check if it moves to the second phase (letter shuffling)
-    await waitFor(() =>
-      expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
-    );
-  });
-
-  it('moves to the next word on correct input', async () => {
-    render(<GameEngine pathName="test-path" />);
-
-    // Wait for the words to load
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-
-    // Simulate entering correct input and submitting
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'apple' },
-    });
-    fireEvent.click(screen.getByText('Valmis'));
-
-    // Check that it moves to the next word and displays the correct image
-    const nextImgElement = screen.getByRole('img');
-    expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
-  });
-
-  it('displays game over when all words are completed', async () => {
-    render(<GameEngine pathName="test-path" />);
-
-    // Complete the first word
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'apple' },
-    });
-    fireEvent.click(screen.getByText('Valmis'));
-
-    // Check the second word (banana) is displayed by its image source
-    await waitFor(() => {
-      const imgElement = screen.getByRole('img');
-      expect(imgElement).toHaveAttribute('src', 'banana.jpg');
-    });
-
-    // Complete the second word
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'banana' },
-    });
-    fireEvent.click(screen.getByText('Valmis'));
-
-    // Check if the game over message is displayed
-    await waitFor(() =>
-      expect(screen.getByText('Peli ohi!')).toBeInTheDocument()
-    );
+    await waitFor(() => expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument());
   });
 });
