@@ -38,49 +38,65 @@ const Phase2 = ({
   };
 
   return (
-    <div className="phase1-container">
-      <h1>Järjestä kirjaimet</h1>
-      <div className="game-components">
-        <ImageContainer
-          src={currentWord.img}
-          alt={`Kuva sanasta ${currentWord.word}`}
-        />
-        <div className="interactive-components">
-          <div className="letter-tiles">
-            {shuffledWord
-              .toUpperCase()
-              .split('')
-              .map((letter, index) => (
-                <div key={index} className="letter-tile">
-                  {letter}
-                </div>
+    <div className="flex flex-col mt-2">
+      <h1 className="text-sp-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
+        Järjestä kirjaimet
+      </h1>
+      <div className="flex flex-col sm:flex-row mt-8 w-full">
+        <div className="w-full sm:w-1/2 flex items-center justify-center">
+          <ImageContainer
+            src={currentWord.img}
+            alt={`Kuva sanasta ${currentWord.word}`}
+            className=""
+          />
+        </div>
+
+        <div className="w-full sm:w-1/2 gap-16 sm:gap-0 flex flex-col mt-8 sm:mt-0 px-4 sm:px-0">
+          <div className="flex flex-col gap-2 sm:gap-4">
+            <div className="flex gap-1 w-full">
+              {shuffledWord
+                .toUpperCase()
+                .split('')
+                .map((letter, index) => (
+                  <div
+                    key={index}
+                    className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center"
+                  >
+                    {letter}
+                  </div>
+                ))}
+            </div>
+            <div className="flex gap-1 w-full">
+              {currentWord.word.split('').map((_, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  value={playerInput[index] || ''}
+                  onChange={(event) =>
+                    handleInputChange(index, event, inputRefs)
+                  }
+                  onKeyDown={(event) => handleBackspaceNavigation(index, event)}
+                  maxLength="1"
+                  className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
+                />
               ))}
+            </div>
           </div>
-          <div className="letter-tiles">
-            {currentWord.word.split('').map((_, index) => (
-              <input
-                key={index}
-                type="text"
-                ref={(el) => (inputRefs.current[index] = el)}
-                value={playerInput[index] || ''}
-                onChange={(event) => handleInputChange(index, event, inputRefs)}
-                onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                maxLength="1"
-                className="letter-tile"
-              />
-            ))}
+
+          <div className="mt-auto flex justify-end">
+            <button
+              className={`btn-sp-primary w-full sm:w-1/2 ${
+                isReadyButtonDisabled
+                  ? 'bg-sp-gray cursor-not-allowed'
+                  : 'bg-sp-light-green cursor-pointer'
+              }`}
+              onClick={handleSubmit}
+              disabled={isReadyButtonDisabled}
+            >
+              VALMIS
+            </button>
           </div>
-          <button
-            className="ph1-ready-button"
-            onClick={handleSubmit}
-            disabled={isReadyButtonDisabled}
-            style={{
-              backgroundColor: isReadyButtonDisabled ? 'grey' : '#72A895',
-              cursor: isReadyButtonDisabled ? 'not-allowed' : 'pointer',
-            }}
-          >
-            VALMIS
-          </button>
         </div>
       </div>
     </div>
