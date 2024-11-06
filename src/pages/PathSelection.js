@@ -212,7 +212,6 @@ const PathSelection = () => {
     await exportPath(path).then((serializedPath) => {
       setCurrentPath(serializedPath);
     });
-    setCurrentPath(path);
     setIsShareModalOpen(true);
   };
 
