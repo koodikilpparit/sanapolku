@@ -47,6 +47,14 @@
   text-align: center;
 }
 
+.instructions-intro {
+  margin: 20px;
+  font-size: var(--sp-body-large);
+  line-height: 1.5;
+  color: var(--sp-white);
+  max-width: 90%;
+}
+
 .instructions-text {
   color: var(--sp-white);
   text-align: center;

@@ -18,6 +18,15 @@ function Instructions() {
           <h2>Pelin ohjeet</h2>
         </header>
 
+        <section className="instructions-intro">
+          <p>
+            Pelissä edetään polulla, jossa tulee eteen kuvia. Tavoitteena on
+            ratkaista kuvassa esiintyvä sana ja kirjoittaa se onnistuneesti.
+            Pelissä on neljä vaihetta: KUVA, JÄRJESTÄ, KOPIOI ja TOISTA. Kun
+            sana on ratkaistu, niin polulla edetään seuraavaan kuvaan.
+          </p>
+        </section>
+
         <InstructionsStep
           stepNumber={1}
           title="Vaihe 1 – KUVA"
