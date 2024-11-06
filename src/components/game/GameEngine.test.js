@@ -50,31 +50,31 @@ describe('GameEngine Component with IndexedDB', () => {
 
   it('moves to the next word on correct input', async () => {
     render(<GameEngine pathName="test-path" />);
-    
+
     // Wait for the first word and its image to be displayed
     await waitFor(() => screen.getByRole('img')); // Wait for the image to appear (we don't know which image)
-    
+
     // Remember the initial image (since the order is random, we store the first one)
     const initialImage = screen.getByRole('img');
-    
+
     // Enter the correct word for the first phase
     fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
       target: { value: mockWords[0].word },
     });
     fireEvent.click(screen.getByText('Valmis'));
-    
+
     // Wait for the game to move to the next word and the image to change
     await waitFor(() => {
       const nextImage = screen.getByRole('img');
       expect(nextImage).not.toBe(initialImage); // Ensure that the image has changed
     });
-    
+
     // Enter the next correct word
     fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
       target: { value: mockWords[1].word },
     });
     fireEvent.click(screen.getByText('Valmis'));
-    
+
     // Wait for the game to move to the next word again and the image to change
     await waitFor(() => {
       const nextImage = screen.getByRole('img');
@@ -86,7 +86,7 @@ describe('GameEngine Component with IndexedDB', () => {
     render(<GameEngine pathName="test-path" />);
 
     await waitFor(() => {
-      const wordCountElement = screen.getByTestId("word-count");
+      const wordCountElement = screen.getByTestId('word-count');
       expect(Number(wordCountElement.textContent)).toBe(10);
     });
   });
@@ -104,6 +104,8 @@ describe('GameEngine Component with IndexedDB', () => {
     fireEvent.click(screen.getByText('Valmis'));
 
     // Check if it moves to the second phase (letter shuffling)
-    await waitFor(() => expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
+    );
   });
 });
