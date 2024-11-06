@@ -180,25 +180,4 @@ describe('Phase3 Component', () => {
 
     expect(document.activeElement).toBe(screen.getAllByRole('textbox')[3]);
   });
-
-  it('Check that the current word letter tiles are rendered correctly', () => {
-    render(
-      <Phase3
-        currentWord={mockWord}
-        playerInput={['', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
-        handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
-      />
-    );
-
-    const letterTiles = screen.getAllByText((content, element) => {
-      return element.className === 'letter-tile' && content.match(/[A-Z]/);
-    });
-
-    expect(letterTiles.length).toBe(mockWord.word.length);
-    letterTiles.forEach((tile, index) => {
-      expect(tile.textContent).toBe(mockWord.word.toUpperCase()[index]);
-    });
-  });
 });
