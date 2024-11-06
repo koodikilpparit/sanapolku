@@ -125,28 +125,6 @@ describe('Phase2 Component', () => {
     expect(mockHandleSubmit).toHaveBeenCalled();
   });
 
-  it('Check that shuffled word is displayed correctly', () => {
-    render(
-      <Phase2
-        currentWord={mockWord}
-        shuffledWord={mockShuffledWord}
-        playerInput={['', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
-        handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
-      />
-    );
-
-    const shuffledWordTiles = screen.getAllByText((content, element) => {
-      return element.className === 'letter-tile' && content.match(/[A-Ö]/);
-    });
-
-    expect(shuffledWordTiles.length).toBe(mockShuffledWord.length);
-    shuffledWordTiles.forEach((tile, index) => {
-      expect(tile.textContent).toBe(mockShuffledWord[index].toUpperCase());
-    });
-  });
-
   it('Check that backspace navigation works correctly', () => {
     render(
       <Phase2

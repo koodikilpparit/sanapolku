@@ -4,13 +4,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'sp-dark-green': '#06705b',
-        'sp-light-green': '#72a895',
-        'sp-gray': '#0d3b66',
-        'sp-white': '#ffffff',
+        'sp-dark-green': '#06705B',
+        'sp-light-green': '#72A895',
+        'sp-blue': '#3C5A80',
+        'sp-gray': '#4D4D4D',
+        'sp-white': '#FFFFFF',
         'sp-black': '#232323',
-        'sp-light-yellow': '#f0d784',
-        'sp-red': '#8a0a2a',
+        'sp-light-yellow': '#B38D2E',
+        'sp-red': '#8A0A2A',
       },
       fontFamily: {
         'sp-font': ["'Verdana'", 'sans-serif'],
