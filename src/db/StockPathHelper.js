@@ -2,7 +2,7 @@ import { adultImageNames, kidImageNames } from './imageNames';
 
 export function getAdultPath() {
   return new Promise((resolve, reject) => {
-    const path = '/data/paths/adult/images';
+    const path = 'sanapolku/data/paths/adult/images';
     getWords(path, adultImageNames)
       .then((parsedImages) => {
         resolve(parsedImages);
@@ -13,7 +13,7 @@ export function getAdultPath() {
 
 export function getKidPath() {
   return new Promise((resolve, reject) => {
-    const path = '/data/paths/kid/images';
+    const path = 'sanapolku/data/paths/kid/images';
     getWords(path, kidImageNames)
       .then((parsedImages) => {
         resolve(parsedImages);
