@@ -23,9 +23,9 @@ const GameEngine = ({ pathName }) => {
     const fetchData = async () => {
       let fetchedWords = [];
       if (pathName === 'sisäänrakennettu_aikuisten_polku') {
-        fetchedWords = await getAdultPath(10);
+        fetchedWords = await getAdultPath(10); // Get 10 words
       } else if (pathName === 'sisäänrakennettu_lasten_polku') {
-        fetchedWords = await getKidPath(10);
+        fetchedWords = await getKidPath(10); // Get 10 words
       } else {
         try {
           const path = await getPathByName(pathName);
