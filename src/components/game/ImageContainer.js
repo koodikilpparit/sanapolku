@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ImageContainer = ({ src, alt }) => (
-  <div className="">
-    <img
-      className="w-full max-w-[60vw] sm:max-w-[40vw] aspect-square"
-      src={src}
-      alt={alt}
-    />
+  <div className="flex h-full items-center justify-center sm:items-start p-4">
+    <img className="h-full aspect-square" src={src} alt={alt} />
   </div>
 );
 
