@@ -59,7 +59,7 @@ function getWords(path, imageNames) {
               console.warn(
                 `Skipped non-image file: ${fileName} (${blob.type})`
               );
-              //   return null; // Skip non-image files
+              return null; // Skip non-image files
             }
             return new Promise((resolve, reject) => {
               const reader = new FileReader();
