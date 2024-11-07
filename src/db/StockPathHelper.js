@@ -2,8 +2,12 @@ import { adultImageNames, kidImageNames } from './imageNames';
 
 export function getAdultPath() {
   return new Promise((resolve, reject) => {
+    let words = shuffle(adultImageNames);
+    if (arguments.length === 1) {
+      words = words.slice(0, arguments[0]);
+    }
     const path = 'sanapolku/data/paths/adult/images';
-    getWords(path, adultImageNames)
+    getWords(path, words)
       .then((parsedImages) => {
         resolve(parsedImages);
       })
@@ -13,13 +17,26 @@ export function getAdultPath() {
 
 export function getKidPath() {
   return new Promise((resolve, reject) => {
+    let words = shuffle(kidImageNames);
+    if (arguments.length === 1) {
+      words = words.slice(0, arguments[0]);
+    }
     const path = 'sanapolku/data/paths/kid/images';
-    getWords(path, kidImageNames)
+    getWords(path, words)
       .then((parsedImages) => {
         resolve(parsedImages);
       })
       .catch((error) => reject(error));
   });
+}
+
+function shuffle(array) {
+  const shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
 }
 
 function getWords(path, imageNames) {
