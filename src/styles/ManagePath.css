@@ -19,6 +19,7 @@
 
 .word-entry-header h2 {
   font-size: var(--sp-heading-1);
+  font-weight: bold;
   color: var(--sp-white);
   margin: 0 auto;
   text-transform: capitalize;
@@ -79,7 +80,7 @@
   text-transform: capitalize;
   display: inline-block;
   white-space: normal;
-  word-break: break-word; 
+  word-break: break-word;
 }
 
 .word-image {
