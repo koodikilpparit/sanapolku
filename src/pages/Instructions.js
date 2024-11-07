@@ -37,7 +37,7 @@ function Instructions() {
         <InstructionsStep
           stepNumber={2}
           title="Vaihe 2 – JÄRJESTÄ"
-          text="Kuvan alle ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Painamalla VALMIS pääset eteenpäin."
+          text="Kuvan viereen ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Painamalla VALMIS pääset eteenpäin."
           image={phase2Img}
         />
 
