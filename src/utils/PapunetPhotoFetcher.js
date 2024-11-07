@@ -4,8 +4,12 @@
  * @returns {Promise<Object[]>} A promise that resolves to an array of photo objects.
  */
 async function fetchPhotos(searchTerm) {
+  if (!searchTerm) {
+    return [];
+  }
+  const proxy = 'https://corsproxy.io/?';
   const apiBase = 'https://kuha.papunet.net/api/search/all/';
-  const fullUrl = apiBase + searchTerm + '?lang=fi';
+  const fullUrl = proxy + apiBase + searchTerm + '?lang=fi';
   const response = await fetch(fullUrl);
   const data = await response.json();
   return parsePhotos(data.images);

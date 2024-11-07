@@ -90,7 +90,7 @@ describe('fetchPhotos', () => {
     await fetchPhotos(searchTerm);
 
     expect(fetch).toHaveBeenCalledWith(
-      'https://kuha.papunet.net/api/search/all/test?lang=fi'
+      'https://corsproxy.io/?https://kuha.papunet.net/api/search/all/test?lang=fi'
     );
   });
 
@@ -114,5 +114,12 @@ describe('fetchPhotos', () => {
 
     const searchTerm = 'fail';
     await expect(fetchPhotos(searchTerm)).rejects.toThrow('Fetch failed');
+  });
+
+  it('handles empty search term', async () => {
+    const searchTerm = '';
+    const photos = await fetchPhotos(searchTerm);
+    expect(photos).toEqual([]);
+    expect(fetch).not.toHaveBeenCalled();
   });
 });
