@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
+import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
 import Phase1 from './Phase1';
 import Phase2 from './Phase2';
@@ -20,27 +21,42 @@ const GameEngine = ({ pathName }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const path = await getPathByName(pathName);
-        if (!path) {
-          setError('Path not found');
-          return;
-        }
-
-        const fetchedWords = await getWordsForPath(path.id);
-        if (!fetchedWords || fetchedWords.length === 0) {
-          setError('No words found for this path');
-          return;
-        }
-
-        const limitedWords = fetchedWords.slice(0, 10);
-
-        setWords(limitedWords);
-        setCurrentWord(limitedWords[0]);
+      if (pathName === 'sisäänrakennettu_aikuisten_polku') {
+        const adultWords = await getAdultPath();
+        setWords(adultWords);
+        setCurrentWord(adultWords[0]);
         setLoading(false);
-      } catch (error) {
-        setError('Error fetching path or words');
-        setLoading(false);
+      } else if (pathName === 'sisäänrakennettu_lasten_polku') {
+        getKidPath()
+          .then((parsedImages) => {
+            console.log(parsedImages);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        try {
+          const path = await getPathByName(pathName);
+          if (!path) {
+            setError('Path not found');
+            return;
+          }
+
+          const fetchedWords = await getWordsForPath(path.id);
+          if (!fetchedWords || fetchedWords.length === 0) {
+            setError('No words found for this path');
+            return;
+          }
+
+          const limitedWords = fetchedWords.slice(0, 10);
+
+          setWords(limitedWords);
+          setCurrentWord(limitedWords[0]);
+          setLoading(false);
+        } catch (error) {
+          setError('Error fetching path or words');
+          setLoading(false);
+        }
       }
     };
 
