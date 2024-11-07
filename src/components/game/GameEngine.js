@@ -5,6 +5,7 @@ import shuffleArray from 'lodash.shuffle';
 import Phase1 from './Phase1';
 import Phase2 from './Phase2';
 import Phase3 from './Phase3';
+import SuccessIndicator from './SuccessIndicator';
 import './GameEngine.css';
 
 const GameEngine = ({ pathName }) => {
@@ -17,6 +18,7 @@ const GameEngine = ({ pathName }) => {
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +66,8 @@ const GameEngine = ({ pathName }) => {
     const targetWord = currentWord.word.toLowerCase();
 
     if (normalizedInput === targetWord) {
+      triggerSuccessIndicator();
+
       if (currentPhase === 1) {
         moveToNextWord();
       } else if (currentPhase === 2) {
@@ -99,6 +103,11 @@ const GameEngine = ({ pathName }) => {
     return shuffleArray([...word]).join('');
   };
 
+  const triggerSuccessIndicator = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
+
   return (
     <div className="game-engine">
       {loading ? (
@@ -111,6 +120,7 @@ const GameEngine = ({ pathName }) => {
         </div>
       ) : currentWord ? (
         <>
+          {showSuccess && <SuccessIndicator />}
           {currentPhase === 1 && (
             <Phase1
               currentWord={currentWord}
