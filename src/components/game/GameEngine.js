@@ -21,19 +21,11 @@ const GameEngine = ({ pathName }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      let fetchedWords = [];
       if (pathName === 'sisäänrakennettu_aikuisten_polku') {
-        const adultWords = await getAdultPath();
-        setWords(adultWords);
-        setCurrentWord(adultWords[0]);
-        setLoading(false);
+        fetchedWords = await getAdultPath(10);
       } else if (pathName === 'sisäänrakennettu_lasten_polku') {
-        getKidPath()
-          .then((parsedImages) => {
-            console.log(parsedImages);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        fetchedWords = await getKidPath(10);
       } else {
         try {
           const path = await getPathByName(pathName);
@@ -42,22 +34,20 @@ const GameEngine = ({ pathName }) => {
             return;
           }
 
-          const fetchedWords = await getWordsForPath(path.id);
+          fetchedWords = await getWordsForPath(path.id);
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
             return;
           }
-
-          const limitedWords = fetchedWords.slice(0, 10);
-
-          setWords(limitedWords);
-          setCurrentWord(limitedWords[0]);
-          setLoading(false);
         } catch (error) {
           setError('Error fetching path or words');
           setLoading(false);
         }
       }
+      const limitedWords = fetchedWords.slice(0, 10);
+      setWords(limitedWords);
+      setCurrentWord(limitedWords[0]);
+      setLoading(false);
     };
 
     fetchData();
