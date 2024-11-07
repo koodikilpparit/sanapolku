@@ -1,5 +1,5 @@
 const adultImageNames = [
-  'aika_20323_SergioPalao.png',
+  'aika_20323_Sergio Palao.png',
   'aikuinen_19359_Sergio Palao.png',
   'alkoholi_39070_Sergio Palao.png',
   'auto_11631_Annakaisa Ojanen.png',
