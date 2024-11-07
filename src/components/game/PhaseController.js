@@ -1,5 +1,3 @@
-// src/components/GameEngine/PhaseController.js
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Phase1 from './Phase1';
@@ -12,7 +10,7 @@ const PhaseController = ({
   handleInputChange,
   handleSubmit,
   inputRefs,
-  shuffledWord,
+  shuffledWord = '',
 }) => {
   switch (currentPhase) {
     case 1:
@@ -62,10 +60,6 @@ PhaseController.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
   shuffledWord: PropTypes.string,
-};
-
-PhaseController.defaultProps = {
-  shuffledWord: '',
 };
 
 export default PhaseController;

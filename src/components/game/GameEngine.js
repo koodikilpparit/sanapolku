@@ -1,5 +1,3 @@
-// src/components/GameEngine/GameEngine.js
-
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
@@ -76,11 +74,6 @@ const GameEngine = ({ pathName }) => {
   const handleInputChange = (index, event) => {
     const value = event.target.value.toUpperCase();
 
-    // Only allow alphabetic characters
-    if (!/^[A-Ö]*$/.test(value)) {
-      return;
-    }
-
     const newInput = [...playerInput];
     newInput[index] = value;
     setPlayerInput(newInput);
@@ -145,11 +138,11 @@ const GameEngine = ({ pathName }) => {
   };
 
   return (
-    <div className="flex flex-col mt-8 sm:m-4">
-      <div className="flex flex-row justify-between mx-4">
+    <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
+      <div className="px-2">
         <BackButton />
       </div>
-      <div className="">
+      <div className="flex-grow">
         {loading ? (
           <p className="loading-msg"> Ladataan sanoja...</p>
         ) : error ? (
