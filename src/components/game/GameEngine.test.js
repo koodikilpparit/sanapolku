@@ -120,4 +120,21 @@ describe('GameEngine Component with IndexedDB', () => {
       expect(screen.getByText('Peli ohi!')).toBeInTheDocument()
     );
   });
+
+  it('displays success indicator after correct input and hides it after timeout', async () => {
+    render(<GameEngine pathName="test-path" />);
+
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
+      target: { value: 'apple' },
+    });
+    fireEvent.click(screen.getByText('Valmis'));
+
+    await waitFor(() =>
+      expect(screen.getByTestId('success-indicator')).toBeInTheDocument()
+    );
+
+    await new Promise((r) => setTimeout(r, 2000));
+    expect(screen.queryByTestId('success-indicator')).toBeNull();
+  });
 });
