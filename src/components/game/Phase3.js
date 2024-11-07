@@ -36,21 +36,21 @@ const Phase3 = ({
   };
 
   return (
-    <div className="flex flex-col mt-2">
-      <h1 className="text-sp-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
+    <div className="flex flex-col h-full">
+      <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
         Kopioi sana
       </h1>
-      <div className="flex flex-col sm:flex-row mt-8 w-full">
-        <div className="w-full sm:w-1/2 flex items-center justify-center">
+      <div className="flex flex-col sm:flex-row h-full">
+        <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
           <ImageContainer
             src={currentWord.img}
             alt={`Kuva sanasta ${currentWord.word}`}
             className=""
           />
         </div>
-        <div className="w-full sm:w-1/2 gap-16 sm:gap-0 flex flex-col mt-8 sm:mt-0 px-4 sm:px-0">
-          <div className="flex flex-col gap-2 sm:gap-4">
-            <div className="flex gap-1 w-full">
+        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
+          <div className="flex flex-col gap-2 lg:gap-4">
+            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
               {currentWord.word
                 .toUpperCase()
                 .split('')
@@ -63,7 +63,7 @@ const Phase3 = ({
                   </div>
                 ))}
             </div>
-            <div className="flex gap-1 w-full">
+            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
               {currentWord.word.split('').map((_, index) => (
                 <input
                   key={index}
@@ -75,13 +75,13 @@ const Phase3 = ({
                   }
                   onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                   maxLength="1"
-                  className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center"
+                  className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
                 />
               ))}
             </div>
           </div>
 
-          <div className="mt-auto flex justify-end">
+          <div className="flex items-end justify-center sm:justify-end py-4">
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
