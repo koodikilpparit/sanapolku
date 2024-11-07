@@ -52,8 +52,8 @@ const Phase2 = ({
         </div>
 
         <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
-          <div className="flex flex-col">
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2">
+          <div className="flex flex-col gap-2 lg:gap-4">
+            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
               {shuffledWord
                 .toUpperCase()
                 .split('')
@@ -84,7 +84,7 @@ const Phase2 = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-center sm:justify-end  py-4">
+          <div className="flex items-end justify-center sm:justify-end py-4">
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
