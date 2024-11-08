@@ -1,0 +1,34 @@
+.game-engine {
+    background-color: #06705b;
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 'back-button';
+}
+
+.loading-msg .error-msg{
+    color: white;
+    font-size: var(--sp-heading-1);
+}
+
+h2 {
+    color: white;
+    font-size: var(--sp-heading-1);
+}
+
+.game-back-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    grid-area: back-button;
+    width: 100px;
+}
+
+.game-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
