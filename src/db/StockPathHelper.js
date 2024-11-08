@@ -1,12 +1,28 @@
 import { adultImageNames, kidImageNames } from './imageNames';
 
+function adultImagesPath() {
+  const domain = window.location.href;
+  if (domain.includes('localhost:3000') || domain.includes('sanapolku')) {
+    return 'sanapolku/data/paths/adult/images';
+  }
+  return 'public/data/paths/adult/images'; // Path for testing
+}
+
+function kidImagesPath() {
+  const domain = window.location.href;
+  if (domain.includes('localhost:3000') || domain.includes('sanapolku')) {
+    return 'sanapolku/data/paths/kid/images';
+  }
+  return 'public/data/paths/kid/images'; // Path for testing
+}
+
 export function getAdultPath() {
   return new Promise((resolve, reject) => {
     let words = shuffle(adultImageNames);
     if (arguments.length === 1) {
       words = words.slice(0, arguments[0]);
     }
-    const path = 'sanapolku/data/paths/adult/images';
+    const path = adultImagesPath();
     getWords(path, words)
       .then((parsedImages) => {
         resolve(parsedImages);
@@ -21,7 +37,7 @@ export function getKidPath() {
     if (arguments.length === 1) {
       words = words.slice(0, arguments[0]);
     }
-    const path = 'sanapolku/data/paths/kid/images';
+    const path = kidImagesPath();
     getWords(path, words)
       .then((parsedImages) => {
         resolve(parsedImages);
@@ -76,7 +92,6 @@ function getWords(path, imageNames) {
           })
           .catch((error) => {
             console.error(`Error processing ${fileName}:`, error);
-            return null; // Skip files that cause errors
           });
       })
     )
