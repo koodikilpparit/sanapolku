@@ -27,7 +27,8 @@ const PathSelection = () => {
   const navigate = useNavigate();
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
-  const [isScanning, setIsScanning] = useState(true);
+  const [isScanning, setIsScanning] = useState(false);
+  const [isScanningStarted, setIsScanningStarted] = useState(false);
 
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -191,14 +192,19 @@ const PathSelection = () => {
   };
 
   const handleQRScan = async (scanResult) => {
+    // TODO kahden polun vastaanottaminen ei toimi
     const result = scanResult.data;
-    if (result.startsWith(QRCODE_PREFIX)) {
+    console.log(isScanningStarted);
+    if (result.startsWith(QRCODE_PREFIX) && !isScanningStarted) {
+      setIsScanningStarted(true);
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setTargetPeerID(id);
       setIsScanning(false);
+      setIsScanningStarted(false);
     } else {
       console.warn('Unknown QR code');
+      setIsScanningStarted(false);
     }
   };
 
@@ -254,6 +260,7 @@ const PathSelection = () => {
 
   // Function to open the modal for sharing a path
   const openReceivePathModal = () => {
+    setIsScanning(true);
     setIsNewPathModalOpen(false);
     setIsReceivePathModalOpen(true);
     setSharingSucceeded(false);
