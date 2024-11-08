@@ -65,6 +65,12 @@ const GameEngine = ({ pathName }) => {
     }
   }, [currentWord]);
 
+  useEffect(() => {
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, [currentPhase]);
+
   const handleInputChange = (index, event) => {
     const value = event.target.value.toUpperCase();
 
