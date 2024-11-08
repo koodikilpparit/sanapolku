@@ -55,7 +55,7 @@ function shuffle(array) {
   return shuffled;
 }
 
-function getWords(path, imageNames) {
+export function getWords(path, imageNames) {
   return new Promise((resolve, reject) => {
     Promise.all(
       imageNames.map((fileName) => {
@@ -104,7 +104,7 @@ function getWords(path, imageNames) {
   });
 }
 
-function parseName(fileName) {
+export function parseName(fileName) {
   // Remove the file extension
   const nameWithoutExtension = fileName.replace(/\.[^/.]+$/, '');
   // Split the string by underscores
