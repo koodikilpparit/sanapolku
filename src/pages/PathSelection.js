@@ -82,7 +82,6 @@ const PathSelection = () => {
       sendDataOnConnection(peer, currentPath)
         .then(() => {
           setSharingSucceeded(true);
-          setSharingStarted(false);
           console.log('Successfully sent path', currentPath);
         })
         .catch((e) => {
@@ -103,27 +102,31 @@ const PathSelection = () => {
     const receivePath = async () => {
       // Receive path from target
       if (!(peer && targetPeerID)) return;
-      setSharingStarted(true);
       try {
+        console.log('Haetaan jaettu polku');
         const importedPath = await connectToPeerAndReceive(
           peer,
           targetPeerID,
           importPath
         );
+        console.log('Polku haettu ' + importedPath.name);
         const pathName = importedPath.name;
-        setPaths([...paths, pathName]);
+        setPaths((prevPaths) => [...prevPaths, pathName]);
         setSharingSucceeded(true);
-        setSharingStarted(false);
       } catch (e) {
         closeReceivePathModal();
         openSharingFailedModal();
-        setSharingStarted(false);
         console.error('Connection failed:', e);
+      } finally {
+        setSharingStarted(false);
+        setIsScanningStarted(false);
       }
     };
 
+    console.log('receive path called');
+
     receivePath();
-  }, [peer, targetPeerID]);
+  }, [peer, targetPeerID, sharingStarted]);
 
   // Function to add a new path to the database and navigate
   // to path management page
@@ -192,7 +195,6 @@ const PathSelection = () => {
   };
 
   const handleQRScan = async (scanResult) => {
-    // TODO kahden polun vastaanottaminen ei toimi
     const result = scanResult.data;
     console.log(isScanningStarted);
     if (result.startsWith(QRCODE_PREFIX) && !isScanningStarted) {
@@ -201,7 +203,9 @@ const PathSelection = () => {
       const id = result.slice(QRCODE_PREFIX.length);
       setTargetPeerID(id);
       setIsScanning(false);
-      setIsScanningStarted(false);
+      console.log('QR scanning ok');
+      console.log(targetPeerID);
+      setSharingStarted(true);
     } else {
       console.warn('Unknown QR code');
       setIsScanningStarted(false);
@@ -263,12 +267,12 @@ const PathSelection = () => {
     setIsScanning(true);
     setIsNewPathModalOpen(false);
     setIsReceivePathModalOpen(true);
-    setSharingSucceeded(false);
   };
 
   // Function to close the modal for sharing a path
   const closeReceivePathModal = () => {
     setIsReceivePathModalOpen(false);
+    setSharingSucceeded(false);
   };
 
   // Function to open the modal for instructions why path sharing failed
@@ -401,15 +405,15 @@ const PathSelection = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Polun jakaminen</h2>
-            <p>
-              Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kamera ei
-              ole käytettävissä, polun jakaminen onnistuu QR-koodin alta
-              löytyvän tunnisteen avulla.
-            </p>
             {sharingSucceeded ? (
               <label>Polun jakaminen onnistui!</label>
             ) : (
               <div>
+                <p>
+                  Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kamera
+                  ei ole käytettävissä, polun jakaminen onnistuu QR-koodin alta
+                  löytyvän tunnisteen avulla.
+                </p>
                 <QRCode value={QRCODE_PREFIX + peerId} />
                 <span>Lähettäjän tunniste:</span>
                 <p>{peerId}</p>
@@ -427,16 +431,16 @@ const PathSelection = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Polun vastaanottaminen</h2>
-            <p>
-              Lue lähettäjän QR-koodi. Jos kamera ei ole käytettävissä, polun
-              jakaminen onnistuu lähettäjän tunnisteen avulla.
-            </p>
             {!sharingStarted ? (
               <div>
                 {sharingSucceeded ? (
                   <label>Polun jakaminen onnistui!</label>
                 ) : (
                   <div>
+                    <p>
+                      Lue lähettäjän QR-koodi. Jos kamera ei ole käytettävissä,
+                      polun jakaminen onnistuu lähettäjän tunnisteen avulla.
+                    </p>
                     {isScanning && (
                       <QrScannerComponent onSuccess={handleQRScan} />
                     )}
