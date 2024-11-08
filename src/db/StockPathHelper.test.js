@@ -1,9 +1,4 @@
-import {
-  getAdultPath,
-  getKidPath,
-  parseName,
-  getWords,
-} from './StockPathHelper';
+import { getAdultPath, getKidPath, parseName } from './StockPathHelper';
 import { adultImageNames, kidImageNames } from './imageNames';
 
 describe('StockPathHelper', () => {
