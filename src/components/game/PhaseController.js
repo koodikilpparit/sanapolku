@@ -41,6 +41,7 @@ const PhaseController = ({
           playerInput={playerInput}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
+          inputRefs={inputRefs}
         />
       );
     default:
