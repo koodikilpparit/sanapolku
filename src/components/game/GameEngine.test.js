@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
+import PathsPage from '../../pages/PathSelection';
 import { openDB } from '../../db/db';
 
 if (typeof global.structuredClone === 'undefined') {
@@ -42,7 +44,11 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('renders loading message initially', () => {
-    render(<GameEngine pathName="test-path" />);
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
 
     // Check if the "Ladataan sanoja..." message is displayed initially
     expect(screen.getByText('Ladataan sanoja...')).toBeInTheDocument();
@@ -73,7 +79,7 @@ describe('GameEngine Component with IndexedDB', () => {
     fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
       target: { value: mockWords[1].word },
     });
-    fireEvent.click(screen.getByText('Valmis'));
+    fireEvent.click(screen.getByText('VALMIS'));
 
     // Wait for the game to move to the next word again and the image to change
     await waitFor(() => {
@@ -101,11 +107,28 @@ describe('GameEngine Component with IndexedDB', () => {
     fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
       target: { value: 'wrong' },
     });
-    fireEvent.click(screen.getByText('Valmis'));
+    fireEvent.click(screen.getByText('VALMIS'));
 
     // Check if it moves to the second phase (letter shuffling)
     await waitFor(() =>
       expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
     );
+  });
+
+  it('checks that the back-button brings you to /omatpolut', () => {
+    // Rendering the required pages
+    const { container } = render(
+      <BrowserRouter>
+        <GameEngine pathName="test-path" />
+        <PathsPage />
+      </BrowserRouter>
+    );
+
+    // Checking that the back-button is on the game page
+    const backButton = container.querySelector('.back-button');
+    expect(backButton).toBeInTheDocument();
+
+    fireEvent.click(backButton);
+    expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 });
