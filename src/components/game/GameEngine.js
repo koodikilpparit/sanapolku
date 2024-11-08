@@ -38,14 +38,14 @@ const GameEngine = ({ pathName }) => {
             setError('No words found for this path');
             return;
           }
+          fetchedWords = fetchedWords.slice(0, 10);
         } catch (error) {
           setError('Error fetching path or words');
           setLoading(false);
         }
       }
-      const limitedWords = fetchedWords.slice(0, 10);
-      setWords(limitedWords);
-      setCurrentWord(limitedWords[0]);
+      setWords(fetchedWords);
+      setCurrentWord(fetchedWords[0]);
       setLoading(false);
     };
 
