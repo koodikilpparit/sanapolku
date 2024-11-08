@@ -98,35 +98,25 @@ const PathSelection = () => {
     handleNewConnection();
   }, [peer, currentPath]);
 
-  useEffect(() => {
-    const receivePath = async () => {
-      // Receive path from target
-      if (!(peer && targetPeerID)) return;
-      try {
-        console.log('Haetaan jaettu polku');
-        const importedPath = await connectToPeerAndReceive(
-          peer,
-          targetPeerID,
-          importPath
-        );
-        console.log('Polku haettu ' + importedPath.name);
-        const pathName = importedPath.name;
-        setPaths((prevPaths) => [...prevPaths, pathName]);
-        setSharingSucceeded(true);
-      } catch (e) {
-        closeReceivePathModal();
-        openSharingFailedModal();
-        console.error('Connection failed:', e);
-      } finally {
-        setSharingStarted(false);
-        setIsScanningStarted(false);
-      }
-    };
-
-    console.log('receive path called');
-
-    receivePath();
-  }, [peer, targetPeerID, sharingStarted]);
+  const receivePath = async (id) => {
+    // Receive path from target
+    if (!peer) return;
+    try {
+      console.log('Haetaan jaettu polku');
+      const importedPath = await connectToPeerAndReceive(peer, id, importPath);
+      console.log('Polku haettu ' + importedPath.name);
+      const pathName = importedPath.name;
+      setPaths((prevPaths) => [...prevPaths, pathName]);
+      setSharingSucceeded(true);
+    } catch (e) {
+      closeReceivePathModal();
+      openSharingFailedModal();
+      console.error('Connection failed:', e);
+    } finally {
+      setSharingStarted(false);
+      setIsScanningStarted(false);
+    }
+  };
 
   // Function to add a new path to the database and navigate
   // to path management page
@@ -192,6 +182,7 @@ const PathSelection = () => {
 
   const handleShareClick = () => {
     setTargetPeerID(targetPeerIDInput);
+    receivePath(targetPeerIDInput);
   };
 
   const handleQRScan = async (scanResult) => {
@@ -206,6 +197,7 @@ const PathSelection = () => {
       console.log('QR scanning ok');
       console.log(targetPeerID);
       setSharingStarted(true);
+      receivePath(id);
     } else {
       console.warn('Unknown QR code');
       setIsScanningStarted(false);
