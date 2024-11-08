@@ -1,0 +1,281 @@
+/* Default style */
+.phase1-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  color: white;
+  font-size: 5vw;
+}
+
+.game-components {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.interactive-components {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.letter-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vw;
+  margin-bottom: 15px;
+}
+
+.letter-tiles .letter-tile {
+  width: 6vw;
+  height: 6vw;
+  font-size: 4vw;
+  font-weight: 700;
+  text-align: center;
+  font-family: Verdana;
+}
+
+.ph1-ready-button {
+  font-size: 3vw;
+  font-weight: bold;
+  border-radius: var(--sp-button-border-radius);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  background-color: #72a895;
+  color: white;
+  font-family: Verdana;
+  width: 25vw;
+  height: 6vw;
+}
+
+/* Style for Phones in Portrait mode */
+@media (max-width: 650px) {
+  .phase1-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  h1 {
+    color: white;
+    font-size: 10vw;
+  }
+
+  .game-components {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 1vh;
+  }
+
+  .image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-container img {
+    height: 50vw;
+    width: 50vw;
+  }
+
+  .interactive-components {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .letter-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+    margin-bottom: 5vh;
+  }
+
+  .letter-tiles .letter-tile {
+    width: 14vw;
+    height: 14vw;
+    font-size: 8vw;
+    font-weight: 700;
+    text-align: center;
+    font-family: Verdana;
+  }
+
+  .ph1-ready-button {
+    font-size: 7vw;
+    font-weight: bold;
+    border-radius: var(--sp-button-border-radius);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #72a895;
+    color: white;
+    font-family: Verdana;
+    width: 80vw;
+    height: 8vh;
+  }
+}
+
+/* Style for Phones in Horizontal mode */
+@media (max-height: 450px) {
+  .phase1-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  h1 {
+    color: white;
+    font-size: 9vh;
+  }
+
+  .game-components {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  .image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-container img {
+    height: 50vh;
+    width: 50vh;
+  }
+
+  .interactive-components {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .letter-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+    margin-bottom: 8vh;
+  }
+
+  .letter-tiles .letter-tile {
+    width: 13vh;
+    height: 13vh;
+    font-size: 10vh;
+    font-weight: 700;
+    text-align: center;
+    font-family: Verdana;
+  }
+
+  .ph1-ready-button {
+    font-size: 6vh;
+    font-weight: bold;
+    border-radius: var(--sp-button-border-radius);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #72a895;
+    color: white;
+    font-family: Verdana;
+    width: 80vh;
+    height: 12vh;
+  }
+}
+
+/* Style for Tablets in Portrait mode */
+@media (min-height: 1000px) {
+  .phase1-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  h1 {
+    color: white;
+    font-size: 7vw;
+  }
+
+  .game-components {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-container img {
+    height: 28vw;
+    width: 28vw;
+  }
+
+  .interactive-components {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .letter-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6vw;
+    margin-bottom: 15px;
+  }
+
+  .letter-tiles .letter-tile {
+    width: 8vw;
+    height: 8vw;
+    font-size: 6vw;
+    font-weight: 700;
+    text-align: center;
+    font-family: Verdana;
+  }
+
+  .ph1-ready-button {
+    font-size: 3vw;
+    font-weight: bold;
+    border-radius: var(--sp-button-border-radius);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #72a895;
+    color: white;
+    font-family: Verdana;
+    width: 25vw;
+    height: 8vw;
+  }
+}
