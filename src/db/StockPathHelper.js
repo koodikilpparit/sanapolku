@@ -1,20 +1,20 @@
 import { adultImageNames, kidImageNames } from './imageNames';
 import shuffleArray from 'lodash.shuffle';
 
-export function getAdultPath() {
+export function getAdultPath(numberOfWords) {
   const path = 'sanapolku/data/paths/adult/images';
   let words = shuffleArray(adultImageNames);
-  if (arguments.length === 1) {
-    words = words.slice(0, arguments[0]);
+  if (numberOfWords < words.length) {
+    words = words.slice(0, numberOfWords);
   }
   return getPath(words, path);
 }
 
-export function getKidPath() {
+export function getKidPath(numberOfWords) {
   const path = 'sanapolku/data/paths/kid/images';
   let words = shuffleArray(kidImageNames);
-  if (arguments.length === 1) {
-    words = words.slice(0, arguments[0]);
+  if (numberOfWords < words.length) {
+    words = words.slice(0, numberOfWords);
   }
   return getPath(words, path);
 }
