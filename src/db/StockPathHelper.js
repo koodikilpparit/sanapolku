@@ -23,14 +23,7 @@ export function getAdultPath() {
     words = words.slice(0, arguments[0]);
   }
   const path = adultImagesPath();
-  return words.map((fileName) => {
-    const imagePath = `${path}/${fileName}`;
-    const parsed = parseName(fileName);
-    return {
-      ...parsed,
-      img: imagePath,
-    };
-  });
+  return getPath(words, path);
 }
 
 export function getKidPath() {
@@ -39,6 +32,10 @@ export function getKidPath() {
     words = words.slice(0, arguments[0]);
   }
   const path = kidImagesPath();
+  return getPath(words, path);
+}
+
+function getPath(words, path) {
   return words.map((fileName) => {
     const imagePath = `${path}/${fileName}`;
     const parsed = parseName(fileName);
