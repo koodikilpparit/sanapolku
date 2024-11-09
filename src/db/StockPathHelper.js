@@ -2,7 +2,7 @@ import { adultImageNames, kidImageNames } from './imageNames';
 import shuffleArray from 'lodash.shuffle';
 
 export function getAdultPath(numberOfWords) {
-  const path = 'sanapolku/data/paths/adult/images';
+  const path = 'data/paths/adult/images';
   let words = shuffleArray(adultImageNames);
   if (numberOfWords < words.length) {
     words = words.slice(0, numberOfWords);
@@ -11,7 +11,7 @@ export function getAdultPath(numberOfWords) {
 }
 
 export function getKidPath(numberOfWords) {
-  const path = 'sanapolku/data/paths/kid/images';
+  const path = 'data/paths/kid/images';
   let words = shuffleArray(kidImageNames);
   if (numberOfWords < words.length) {
     words = words.slice(0, numberOfWords);
