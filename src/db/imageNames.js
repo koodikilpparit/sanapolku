@@ -32,7 +32,7 @@ const adultImageNames = [
   'kurkku_4857_Paxtoncrafts Charitable Trust.png',
   'kuukausi_3748_Elina Vanninen.png',
   'kuulokkeet_21598_Sergio Palao.png',
-  'käsi, oikea_21551.png_Sergio Palao.png',
+  'käsi_21551.png_Sergio Palao.png',
   'lahja_21350_Sergio Palao.png',
   'lanka_32270_Sergio Palao.png',
   'lapsi_28739_Sergio Palao.png',
