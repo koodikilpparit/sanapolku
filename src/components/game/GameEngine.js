@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
+import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
 import SuccessIndicator from './SuccessIndicator';
 import './GameEngine.css';
@@ -22,31 +23,33 @@ const GameEngine = ({ pathName }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const path = await getPathByName(pathName);
-        if (!path) {
-          setError('Path not found');
+      let fetchedWords = [];
+      if (pathName === 'sisäänrakennettu_aikuisten_polku') {
+        fetchedWords = await getAdultPath(10); // Get 10 words
+      } else if (pathName === 'sisäänrakennettu_lasten_polku') {
+        fetchedWords = await getKidPath(10); // Get 10 words
+      } else {
+        try {
+          const path = await getPathByName(pathName);
+          if (!path) {
+            setError('Path not found');
+            return;
+          }
+
+          fetchedWords = await getWordsForPath(path.id);
+          if (!fetchedWords || fetchedWords.length === 0) {
+            setError('No words found for this path');
+            return;
+          }
+          fetchedWords = fetchedWords.slice(0, 10);
+        } catch (error) {
+          setError('Error fetching path or words');
           setLoading(false);
-          return;
         }
-
-        const fetchedWords = await getWordsForPath(path.id);
-        if (!fetchedWords || fetchedWords.length === 0) {
-          setError('No words found for this path');
-          setLoading(false);
-          return;
-        }
-
-        const limitedWords = fetchedWords.slice(0, 10);
-
-        setWords(limitedWords);
-        setCurrentWord(limitedWords[0]);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setError('Error fetching path or words');
-        setLoading(false);
       }
+      setWords(fetchedWords);
+      setCurrentWord(fetchedWords[0]);
+      setLoading(false);
     };
 
     fetchData();
