@@ -1,8 +1,10 @@
 import { adultImageNames, kidImageNames } from './imageNames';
 import shuffleArray from 'lodash.shuffle';
 
+const public_url = process.env.PUBLIC_URL;
+
 export function getAdultPath(numberOfWords) {
-  const path = 'data/paths/adult/images';
+  const path = public_url + '/data/paths/adult/images';
   let words = shuffleArray(adultImageNames);
   if (numberOfWords < words.length) {
     words = words.slice(0, numberOfWords);
