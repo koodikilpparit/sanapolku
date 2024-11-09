@@ -1,27 +1,25 @@
 import { adultImageNames, kidImageNames } from './imageNames';
+import shuffleArray from 'lodash.shuffle';
 
-function adultImagesPath() {
-  const domain = window.location.href;
-  if (domain.includes('localhost:3000') || domain.includes('sanapolku')) {
-    return 'sanapolku/data/paths/adult/images';
+export function getAdultPath(numberOfWords) {
+  const path = 'sanapolku/data/paths/adult/images';
+  let words = shuffleArray(adultImageNames);
+  if (numberOfWords < words.length) {
+    words = words.slice(0, numberOfWords);
   }
-  return 'public/data/paths/adult/images'; // Path for testing
+  return getPath(words, path);
 }
 
-function kidImagesPath() {
-  const domain = window.location.href;
-  if (domain.includes('localhost:3000') || domain.includes('sanapolku')) {
-    return 'sanapolku/data/paths/kid/images';
+export function getKidPath(numberOfWords) {
+  const path = 'sanapolku/data/paths/kid/images';
+  let words = shuffleArray(kidImageNames);
+  if (numberOfWords < words.length) {
+    words = words.slice(0, numberOfWords);
   }
-  return 'public/data/paths/kid/images'; // Path for testing
+  return getPath(words, path);
 }
 
-export function getAdultPath() {
-  let words = shuffle(adultImageNames);
-  if (arguments.length === 1) {
-    words = words.slice(0, arguments[0]);
-  }
-  const path = adultImagesPath();
+function getPath(words, path) {
   return words.map((fileName) => {
     const imagePath = `${path}/${fileName}`;
     const parsed = parseName(fileName);
@@ -30,31 +28,6 @@ export function getAdultPath() {
       img: imagePath,
     };
   });
-}
-
-export function getKidPath() {
-  let words = shuffle(kidImageNames);
-  if (arguments.length === 1) {
-    words = words.slice(0, arguments[0]);
-  }
-  const path = kidImagesPath();
-  return words.map((fileName) => {
-    const imagePath = `${path}/${fileName}`;
-    const parsed = parseName(fileName);
-    return {
-      ...parsed,
-      img: imagePath,
-    };
-  });
-}
-
-function shuffle(array) {
-  const shuffled = array.slice();
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
 }
 
 export function parseName(fileName) {
