@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
+import PathsPage from '../../pages/PathSelection';
 import { openDB } from '../../db/db';
 
 if (typeof global.structuredClone === 'undefined') {
@@ -39,14 +41,22 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('renders loading message initially', () => {
-    render(<GameEngine pathName="test-path" />);
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
 
     // Check if the "Ladataan sanoja..." message is displayed initially
     expect(screen.getByText('Ladataan sanoja...')).toBeInTheDocument();
   });
 
   it('renders the first word when loaded', async () => {
-    render(<GameEngine pathName="test-path" />);
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
 
     // Wait for the words to be fetched and rendered
     await waitFor(() =>
@@ -59,16 +69,22 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('moves to the second phase on wrong input', async () => {
-    render(<GameEngine pathName="test-path" />);
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
 
     // Wait for the words to load
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
     // Simulate entering wrong input and submitting
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'wrong' },
+    'wrong'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
-    fireEvent.click(screen.getByText('Valmis'));
+    fireEvent.click(screen.getByText('VALMIS'));
 
     // Check if it moves to the second phase (letter shuffling)
     await waitFor(() =>
@@ -77,16 +93,22 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('moves to the next word on correct input', async () => {
-    render(<GameEngine pathName="test-path" />);
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
 
     // Wait for the words to load
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
     // Simulate entering correct input and submitting
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'apple' },
+    'apple'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
-    fireEvent.click(screen.getByText('Valmis'));
+    fireEvent.click(screen.getByText('VALMIS'));
 
     // Check that it moves to the next word and displays the correct image
     const nextImgElement = screen.getByRole('img');
@@ -94,14 +116,20 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('displays game over when all words are completed', async () => {
-    render(<GameEngine pathName="test-path" />);
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
 
     // Complete the first word
     await waitFor(() => screen.getByText('Kirjoita sana'));
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'apple' },
+    'apple'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
-    fireEvent.click(screen.getByText('Valmis'));
+    fireEvent.click(screen.getByText('VALMIS'));
 
     // Check the second word (banana) is displayed by its image source
     await waitFor(() => {
@@ -110,10 +138,12 @@ describe('GameEngine Component with IndexedDB', () => {
     });
 
     // Complete the second word
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'banana' },
+    'banana'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
     });
-    fireEvent.click(screen.getByText('Valmis'));
+    fireEvent.click(screen.getByText('VALMIS'));
 
     // Check if the game over message is displayed
     await waitFor(() =>
@@ -136,5 +166,22 @@ describe('GameEngine Component with IndexedDB', () => {
 
     await new Promise((r) => setTimeout(r, 2000));
     expect(screen.queryByTestId('success-indicator')).toBeNull();
+  });
+
+  it('checks that the back-button brings you to /omatpolut', () => {
+    // Rendering the required pages
+    const { container } = render(
+      <BrowserRouter>
+        <GameEngine pathName="test-path" />
+        <PathsPage />
+      </BrowserRouter>
+    );
+
+    // Checking that the back-button is on the game page
+    const backButton = container.querySelector('.back-button');
+    expect(backButton).toBeInTheDocument();
+
+    fireEvent.click(backButton);
+    expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 });

@@ -5,7 +5,7 @@ import GameEngine from '../components/game/GameEngine';
 const GamePage = () => {
   const { pathName } = useParams();
   return (
-    <div className="game-page">
+    <div className="min-h-screen min-w-screen">
       {/* Pass the pathName prop to GameEngine */}
       <GameEngine pathName={pathName} />
     </div>
