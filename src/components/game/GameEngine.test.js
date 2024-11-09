@@ -40,6 +40,12 @@ describe('GameEngine Component with IndexedDB', () => {
     await initializeTestDB();
   });
 
+  // Reset timer after each test
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   it('renders loading message initially', () => {
     render(
       <MemoryRouter>
@@ -93,6 +99,7 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('moves to the next word on correct input', async () => {
+    jest.useFakeTimers();
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
@@ -110,12 +117,17 @@ describe('GameEngine Component with IndexedDB', () => {
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
     // Check that it moves to the next word and displays the correct image
     const nextImgElement = screen.getByRole('img');
     expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
   });
 
   it('displays game over when all words are completed', async () => {
+    jest.useFakeTimers();
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
@@ -131,6 +143,10 @@ describe('GameEngine Component with IndexedDB', () => {
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
     // Check the second word (banana) is displayed by its image source
     await waitFor(() => {
       const imgElement = screen.getByRole('img');
@@ -144,6 +160,10 @@ describe('GameEngine Component with IndexedDB', () => {
       });
     });
     fireEvent.click(screen.getByText('VALMIS'));
+
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
 
     // Check if the game over message is displayed
     await waitFor(() =>
@@ -179,8 +199,6 @@ describe('GameEngine Component with IndexedDB', () => {
     });
 
     expect(screen.queryByTestId('success-indicator')).toBeNull();
-
-    jest.useRealTimers();
   });
 
   it('checks that the back-button brings you to /omatpolut', () => {
