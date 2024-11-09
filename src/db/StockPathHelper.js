@@ -1,4 +1,5 @@
 import { adultImageNames, kidImageNames } from './imageNames';
+import shuffleArray from 'lodash.shuffle';
 
 function adultImagesPath() {
   const domain = window.location.href;
@@ -17,7 +18,7 @@ function kidImagesPath() {
 }
 
 export function getAdultPath() {
-  let words = shuffle(adultImageNames);
+  let words = shuffleArray(adultImageNames);
   if (arguments.length === 1) {
     words = words.slice(0, arguments[0]);
   }
@@ -33,7 +34,7 @@ export function getAdultPath() {
 }
 
 export function getKidPath() {
-  let words = shuffle(kidImageNames);
+  let words = shuffleArray(kidImageNames);
   if (arguments.length === 1) {
     words = words.slice(0, arguments[0]);
   }
@@ -46,15 +47,6 @@ export function getKidPath() {
       img: imagePath,
     };
   });
-}
-
-function shuffle(array) {
-  const shuffled = array.slice();
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
 }
 
 export function parseName(fileName) {
