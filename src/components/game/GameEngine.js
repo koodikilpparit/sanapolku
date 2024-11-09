@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
 import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
+import SuccessIndicator from './SuccessIndicator';
+import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 
@@ -16,6 +18,7 @@ const GameEngine = ({ pathName }) => {
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -105,13 +108,18 @@ const GameEngine = ({ pathName }) => {
     const targetWord = currentWord.word.toLowerCase();
 
     if (normalizedInput === targetWord) {
-      if (currentPhase === 1) {
-        moveToNextWord();
-      } else if (currentPhase === 2) {
-        setCurrentPhase(3);
-      } else if (currentPhase === 3) {
-        setCurrentPhase(1);
-      }
+      triggerSuccessIndicator();
+
+      // Delay moving to next word/game over, so success indicator has time to be visible
+      setTimeout(() => {
+        if (currentPhase === 1) {
+          moveToNextWord();
+        } else if (currentPhase === 2) {
+          setCurrentPhase(3);
+        } else if (currentPhase === 3) {
+          setCurrentPhase(1);
+        }
+      }, 1500);
     } else {
       if (currentPhase === 1) {
         setCurrentPhase(2);
@@ -140,6 +148,11 @@ const GameEngine = ({ pathName }) => {
     return shuffleArray([...word]).join('');
   };
 
+  const triggerSuccessIndicator = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
+
   return (
     <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
       <div className="px-2">
@@ -155,15 +168,18 @@ const GameEngine = ({ pathName }) => {
             <h2>Peli ohi!</h2>
           </div>
         ) : currentWord ? (
-          <PhaseController
-            currentPhase={currentPhase}
-            currentWord={currentWord}
-            playerInput={playerInput}
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-            inputRefs={inputRefs}
-            shuffledWord={shuffledWord}
-          />
+          <>
+            {showSuccess && <SuccessIndicator />}
+            <PhaseController
+              currentPhase={currentPhase}
+              currentWord={currentWord}
+              playerInput={playerInput}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              inputRefs={inputRefs}
+              shuffledWord={shuffledWord}
+            />
+          </>
         ) : (
           <p className="loading-msg">Ladataan sanoja...</p>
         )}
