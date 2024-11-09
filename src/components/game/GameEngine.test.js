@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
@@ -152,20 +152,35 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('displays success indicator after correct input and hides it after timeout', async () => {
-    render(<GameEngine pathName="test-path" />);
+    jest.useFakeTimers();
 
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'apple' },
-    });
-    fireEvent.click(screen.getByText('Valmis'));
-
-    await waitFor(() =>
-      expect(screen.getByTestId('success-indicator')).toBeInTheDocument()
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
     );
 
-    await new Promise((r) => setTimeout(r, 2000));
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+    'apple'.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
+    });
+    fireEvent.click(screen.getByText('VALMIS'));
+
+    await act(async () => {
+      await waitFor(() =>
+        expect(screen.getByTestId('success-indicator')).toBeInTheDocument()
+      );
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
     expect(screen.queryByTestId('success-indicator')).toBeNull();
+
+    jest.useRealTimers();
   });
 
   it('checks that the back-button brings you to /omatpolut', () => {

@@ -2,9 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
 import shuffleArray from 'lodash.shuffle';
-import Phase1 from './Phase1';
-import Phase2 from './Phase2';
-import Phase3 from './Phase3';
 import SuccessIndicator from './SuccessIndicator';
 import './GameEngine.css';
 import PhaseController from './PhaseController';
@@ -110,13 +107,16 @@ const GameEngine = ({ pathName }) => {
     if (normalizedInput === targetWord) {
       triggerSuccessIndicator();
 
-      if (currentPhase === 1) {
-        moveToNextWord();
-      } else if (currentPhase === 2) {
-        setCurrentPhase(3);
-      } else if (currentPhase === 3) {
-        setCurrentPhase(1);
-      }
+      // Delay moving to next word/game over, so success indicator has time to be visible
+      setTimeout(() => {
+        if (currentPhase === 1) {
+          moveToNextWord();
+        } else if (currentPhase === 2) {
+          setCurrentPhase(3);
+        } else if (currentPhase === 3) {
+          setCurrentPhase(1);
+        }
+      }, 1500);
     } else {
       if (currentPhase === 1) {
         setCurrentPhase(2);
