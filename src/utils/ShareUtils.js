@@ -25,7 +25,7 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
       reliable: true,
     });
 
-    console.log('Connect to peer and receivessä');
+    connection.off('data'); // Not sure if needed, but should not do any harm either
     connection.on('data', (data) => {
       const asyncCallBack = async (data) => {
         const importedPath = await callback(data);
@@ -49,6 +49,7 @@ export function sendDataOnConnection(peer, data) {
   if (!data) throw new Error('Must contain data to send');
 
   return new Promise((resolve, reject) => {
+    peer.off('connection');
     peer.on('connection', (connection) => {
       connection.on('open', () => {
         console.log('Sending data', data);
