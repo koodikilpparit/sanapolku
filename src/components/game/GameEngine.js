@@ -62,17 +62,8 @@ const GameEngine = ({ pathName }) => {
     if (currentWord) {
       setPlayerInput(Array(currentWord.word.length).fill(''));
       inputRefs.current.forEach((input) => input?.blur());
-      if (inputRefs.current[0]) {
-        inputRefs.current[0].focus();
-      }
     }
   }, [currentWord]);
-
-  useEffect(() => {
-    if (inputRefs.current[0]) {
-      inputRefs.current[0].focus();
-    }
-  }, [currentPhase]);
 
   const handleInputChange = (index, event) => {
     const value = event.target.value.toUpperCase();
