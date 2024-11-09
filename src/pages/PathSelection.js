@@ -102,9 +102,7 @@ const PathSelection = () => {
     // Receive path from target
     if (!peer) return;
     try {
-      console.log('Haetaan jaettu polku');
       const importedPath = await connectToPeerAndReceive(peer, id, importPath);
-      console.log('Polku haettu ' + importedPath.name);
       const pathName = importedPath.name;
       setPaths((prevPaths) => [...prevPaths, pathName]);
       setSharingSucceeded(true);
