@@ -81,7 +81,7 @@ const PathSelection = () => {
 
     try {
       console.log('Current path', currentPath);
-      const pathData = await getPathById(currentPath.id); // Wait for getPathByName to resolve
+      const pathData = await getPathById(currentPath.id); // Wait for getPathById to resolve
       if (!pathData || !pathData.id) {
         console.error('Path not found:', currentPath.name);
         alert('Path not found.');
