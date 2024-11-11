@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getWordsForPath, getPathByName, deleteWord } from '../db/db';
+import { getWordsForPath, deleteWord } from '../db/db';
 import WordRow from '../components/create/WordRow';
 import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
@@ -8,25 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const ManagePath = () => {
-  const { pathName } = useParams();
+  const { pathId } = useParams();
   const navigate = useNavigate();
   const [words, setWords] = useState([]);
   const [error, setError] = useState(null);
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
-    getPathByName(pathName)
-      .then((path) => {
-        if (path) {
-          return getWordsForPath(path.id);
-        } else {
-          setError(`Path with the name "${pathName}" was not found.`);
-          return [];
-        }
-      })
+    getWordsForPath(pathId)
       .then((words) => setWords(words))
-      .catch(() => setError('Error fetching words'));
-  }, [pathName]);
+      .catch(() => setError(`Path with the ID "${pathId}" was not found.`));
+  }, [pathId]);
 
   // Function to delete a word from the database and update the word list
   const handleDelete = (wordId) => {
@@ -46,11 +38,11 @@ const ManagePath = () => {
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <h2>{pathName}</h2>
+        <h2>{pathId}</h2>
         <FontAwesomeIcon
           icon={faPlus}
           className="add-path-icon"
-          onClick={() => navigate(`/uusisana/${pathName}`)}
+          onClick={() => navigate(`/uusisana/${pathId}`)}
           aria-label="Lisää uusi sana"
         />
       </div>

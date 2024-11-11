@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { getPathByName, getWordsForPath } from '../../db/db';
+import { getPathById, getWordsForPath } from '../../db/db';
 import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
 import SuccessIndicator from './SuccessIndicator';
@@ -8,7 +8,7 @@ import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 
-const GameEngine = ({ pathName }) => {
+const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -24,13 +24,13 @@ const GameEngine = ({ pathName }) => {
   useEffect(() => {
     const fetchData = async () => {
       let fetchedWords = [];
-      if (pathName === 'sisäänrakennettu_aikuisten_polku') {
+      if (pathId === 'sisäänrakennettu_aikuisten_polku') {
         fetchedWords = await getAdultPath(10); // Get 10 words
-      } else if (pathName === 'sisäänrakennettu_lasten_polku') {
+      } else if (pathId === 'sisäänrakennettu_lasten_polku') {
         fetchedWords = await getKidPath(10); // Get 10 words
       } else {
         try {
-          const path = await getPathByName(pathName);
+          const path = await getPathById(pathId);
           if (!path) {
             setError('Path not found');
             return;
@@ -53,7 +53,7 @@ const GameEngine = ({ pathName }) => {
     };
 
     fetchData();
-  }, [pathName]);
+  }, [pathId]);
 
   useEffect(() => {
     if (words.length > 0 && wordIndex < words.length) {
@@ -180,7 +180,7 @@ const GameEngine = ({ pathName }) => {
 };
 
 GameEngine.propTypes = {
-  pathName: PropTypes.string.isRequired,
+  pathId: PropTypes.string.isRequired,
 };
 
 export default GameEngine;

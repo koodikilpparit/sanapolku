@@ -21,9 +21,9 @@ function App() {
           <Route path="/ohjeet" element={<Instructions />} />
           <Route path="/polut" element={<GameMenu />} />
           <Route path="/omatpolut" element={<PathSelection />} />
-          <Route path="/muokkaapolkua/:pathName" element={<ManagePath />} />
-          <Route path="/uusisana/:pathName" element={<NewWord />} />
-          <Route path="/peli/:pathName" element={<GamePage />} />
+          <Route path="/muokkaapolkua/:pathId" element={<ManagePath />} />
+          <Route path="/uusisana/:pathId" element={<NewWord />} />
+          <Route path="/peli/:pathId" element={<GamePage />} />
           <Route path="/jakaminen" element={<Share />}></Route>
         </Routes>
       </div>

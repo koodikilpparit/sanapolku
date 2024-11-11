@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addWord, getPathByName } from '../db/db';
+import { addWord } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/ImageUploader';
@@ -9,28 +9,13 @@ import PapunetView from './PapunetView';
 
 const NewWord = () => {
   const navigate = useNavigate();
-  const { pathName } = useParams();
+  const { pathId } = useParams();
   const [newWord, setNewWord] = useState('');
-  const [pathId, setPathId] = useState(null);
-  const [error, setError] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Placeholder image URL
   const placeholderImage = 'https://placehold.co/150x150';
-
-  // Function to fetch path ID when the component loads
-  useEffect(() => {
-    getPathByName(pathName)
-      .then((path) => {
-        if (path) {
-          setPathId(path.id);
-        } else {
-          setError(`Path with the name "${pathName}" was not found.`);
-        }
-      })
-      .catch(() => setError('Error fetching path'));
-  }, [pathName]);
 
   // Function to save the word and placeholder image to the database
   const handleSave = () => {
@@ -57,8 +42,6 @@ const NewWord = () => {
         <BackButton />
         <h2>Uusi sana</h2>
       </div>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Container*/}
       <div className="new-word-container">

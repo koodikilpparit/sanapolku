@@ -4,8 +4,8 @@ import {
   getAllPaths,
   addPath,
   deletePath,
-  getPathByName,
   getWordsForPath,
+  getPathById,
 } from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
@@ -26,9 +26,13 @@ const PathSelection = () => {
   // Fetch all paths from the database when the component loads
   useEffect(() => {
     getAllPaths()
-      .then((paths) =>
-        setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : [])
-      )
+      .then((paths) => {
+        setPaths(
+          Array.isArray(paths)
+            ? paths.map((path) => ({ name: path.name, id: path.id }))
+            : []
+        );
+      })
       .catch(() => console.error('Error fetching paths'));
   }, []);
 
@@ -37,12 +41,12 @@ const PathSelection = () => {
   const handleAddPath = () => {
     if (newPath.trim()) {
       addPath(newPath)
-        .then(() => {
-          setPaths([...paths, newPath]);
+        .then((pathId) => {
+          setPaths([...paths, { name: newPath, id: pathId }]);
           setNewPath('');
           console.log('Path added:', newPath);
           setIsNewPathModalOpen(false);
-          navigate(`/muokkaapolkua/${newPath}`);
+          navigate(`/muokkaapolkua/${pathId}`);
         })
         .catch((error) => {
           console.error(error.message);
@@ -55,12 +59,11 @@ const PathSelection = () => {
 
   // Function to navigate to the game
   const handlePathClick = async (path) => {
-    const pathObject = await getPathByName(path);
-    const words = await getWordsForPath(pathObject.id);
+    const words = await getWordsForPath(path.id);
 
     // Navigate to the game only if the path has words
     if (words.length > 0) {
-      navigate(`/peli/${path}`);
+      navigate(`/peli/${path.id}`);
     } else {
       openNoWordsInPathModal(path);
     }
@@ -68,7 +71,7 @@ const PathSelection = () => {
 
   // Navigate to path management page
   const handleEditPathClick = (path) => {
-    navigate(`/muokkaapolkua/${path}`);
+    navigate(`/muokkaapolkua/${path.id}`);
     setIsNoWordsInPathOpen(false);
   };
 
@@ -77,16 +80,17 @@ const PathSelection = () => {
     if (!currentPath) return;
 
     try {
-      const pathData = await getPathByName(currentPath); // Wait for getPathByName to resolve
+      console.log('Current path', currentPath);
+      const pathData = await getPathById(currentPath.id); // Wait for getPathByName to resolve
       if (!pathData || !pathData.id) {
-        console.error('Path not found:', currentPath);
+        console.error('Path not found:', currentPath.name);
         alert('Path not found.');
         return;
       }
 
       await deletePath(pathData.id);
-      setPaths((prevPaths) => prevPaths.filter((p) => p !== currentPath));
-      console.log(`Deleted path with name: ${currentPath}`);
+      setPaths((prevPaths) => prevPaths.filter((p) => p.id !== currentPath.id));
+      console.log(`Deleted path with name: ${currentPath.name}`);
     } catch (error) {
       console.error('Error deleting path:', error);
       alert('Error deleting the path.');
@@ -152,8 +156,11 @@ const PathSelection = () => {
               className="path-item-container"
               onClick={() => handlePathClick(path)}
             >
-              <span className="path-item">{path}</span>
-              <EditButton path={path} onClick={(e) => e.stopPropagation()} />
+              <span className="path-item">{path.name}</span>
+              <EditButton
+                pathId={path.id}
+                onClick={(e) => e.stopPropagation()}
+              />
               <DeleteButton
                 onClick={(e) => {
                   e.stopPropagation();
@@ -197,7 +204,7 @@ const PathSelection = () => {
           <div className="modal-content">
             <h2>Vahvista poisto</h2>
             <p>
-              Haluatko varmasti poistaa polun <b>{currentPath}</b>?
+              Haluatko varmasti poistaa polun <b>{currentPath.name}</b>?
             </p>
             <div className="modal-buttons">
               <button className="cancel-button" onClick={closeDeleteModal}>
