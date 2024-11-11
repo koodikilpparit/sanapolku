@@ -90,7 +90,7 @@ export async function getAllPaths() {
  * @param {string} name name of the path
  * @returns {Promise<Object>} path object
  */
-export async function getPathByName(name) {
+async function getPathByName(name) {
   return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');

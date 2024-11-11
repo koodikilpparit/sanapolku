@@ -165,8 +165,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'TestPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'TestPath' })
     );
 
@@ -202,8 +202,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'EmptyPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'EmptyPath' })
     );
 
@@ -239,8 +239,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'EmptyPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'EmptyPath' })
     );
 
@@ -287,8 +287,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'EmptyPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'EmptyPath' })
     );
 
@@ -333,8 +333,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 2, name: 'TestEditButtonPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 2, name: 'TestEditButtonPath' })
     );
 
@@ -480,7 +480,7 @@ describe('PathSelection Component UI Tests', () => {
       .spyOn(db, 'getAllPaths')
       .mockResolvedValue([{ id: 1, name: 'TestPath' }]);
 
-    jest.spyOn(db, 'getPathByName').mockResolvedValue(undefined);
+    jest.spyOn(db, 'getPathById').mockResolvedValue(undefined);
 
     render(
       <BrowserRouter>
