@@ -278,3 +278,43 @@ export async function resetDB() {
     await transaction.objectStore('words').clear();
   });
 }
+
+/**
+ * Adds a new path with list of word-image pairs in a single transaction
+ * @param {string} pathName name of the path to add
+ * @param {Object[]} wordAndImageList List of words and their images to add. Expected format: [{word: string, img: string}]
+ */
+export async function addPathWithWords(pathName, wordAndImageList) {
+  return openDB(DB_NAME).then(async (db) => {
+    const transaction = db.transaction(['paths', 'words'], 'readwrite');
+    const pathsStore = transaction.objectStore('paths');
+    const wordsStore = transaction.objectStore('words');
+
+    const pathId = await new Promise((resolve, reject) => {
+      const request = pathsStore.add({ name: pathName });
+      request.onsuccess = (event) => {
+        resolve(event.target.result || null);
+      };
+      request.onerror = (_event) => {
+        reject('Failed to add path');
+      };
+    });
+
+    await Promise.all(
+      wordAndImageList.map((wordAndImage) => {
+        const word = wordAndImage.word;
+        const image = wordAndImage.img;
+        return wordsStore.add({ word: word, pathId: pathId, img: image });
+      })
+    );
+
+    return new Promise((resolve, reject) => {
+      transaction.complete = () => {
+        resolve(pathId);
+      };
+      transaction.onerror = () => {
+        reject('Transaction failed');
+      };
+    });
+  });
+}

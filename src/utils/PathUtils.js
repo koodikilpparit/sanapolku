@@ -1,18 +1,10 @@
-import { getPathByName, getWordsForPath, addPath, addWord } from '../db/db';
+import { getPathByName, getWordsForPath, addPathWithWords } from '../db/db';
 
 export async function importPath(path) {
   console.log('Importing path', path);
   const pathName = path.pathName;
   const words = path.words;
-  await addPath(pathName);
-  const pathInDB = await getPathByName(pathName);
-  Promise.all(
-    words.map((wordAndImage) => {
-      const word = wordAndImage.word;
-      const image = wordAndImage.img;
-      addWord(word, pathInDB.id, image);
-    })
-  );
+  await addPathWithWords(pathName, words);
 }
 
 export async function exportPath(pathName) {
