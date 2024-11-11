@@ -224,6 +224,7 @@ export async function deletePath(pathId) {
     const transaction = db.transaction(['paths', 'words'], 'readwrite');
     await deleteFromPathStore(transaction, pathId);
     await deletePathFromWordsStore(transaction, pathId);
+    return 'Path and its words deleted successfully';
   });
 }
 
@@ -235,17 +236,7 @@ export async function deletePath(pathId) {
  */
 async function deleteFromPathStore(transaction, pathId) {
   const pathsStore = transaction.objectStore('paths');
-  const pathDeletionRequest = pathsStore.delete(pathId);
-
-  return new Promise((resolve, reject) => {
-    pathDeletionRequest.onsuccess = () => {
-      resolve('Path and its words deleted successfully');
-    };
-
-    pathDeletionRequest.onerror = () => {
-      reject('Error deleting the path');
-    };
-  });
+  await pathsStore.delete(pathId);
 }
 
 /**

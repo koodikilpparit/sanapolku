@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
 import PathsPage from '../../pages/PathSelection';
-import { openDB } from '../../db/db';
+import { addPath, addWord, resetDB } from '../../db/db';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -15,24 +15,16 @@ afterAll(() => {
 
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = [
-    { id: 1, word: 'apple', img: 'apple.jpg', pathId: 1 },
-    { id: 2, word: 'banana', img: 'banana.jpg', pathId: 1 },
+    { word: 'apple', img: 'apple.jpg' },
+    { word: 'banana', img: 'banana.jpg' },
   ];
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
-    const db = await openDB('pathsDB');
-    const transaction = db.transaction(['paths'], 'readwrite');
-    const pathsStore = transaction.objectStore('paths');
-    await pathsStore.add({ id: 1, name: 'test-path' });
-    await transaction.done;
-
-    const wordsDB = await openDB('wordsDB');
-    const wordsTransaction = wordsDB.transaction(['words'], 'readwrite');
-    const wordsStore = wordsTransaction.objectStore('words');
-    await wordsStore.add(mockWords[0]);
-    await wordsStore.add(mockWords[1]);
-    await wordsTransaction.done;
+    await resetDB();
+    const pathId = await addPath('test-path');
+    await addWord(mockWords[0].word, pathId, mockWords[0].img);
+    await addWord(mockWords[1].word, pathId, mockWords[1].img);
   };
 
   // Initialize the fake IndexedDB before each test
