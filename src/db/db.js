@@ -119,8 +119,7 @@ export async function getPathById(id) {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
-      const index = store.index('id');
-      const request = index.get(id);
+      const request = store.get(id);
 
       request.onsuccess = (event) => {
         resolve(event.target.result || null);
