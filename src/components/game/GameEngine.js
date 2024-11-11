@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { getPathById, getWordsForPath } from '../../db/db';
+import { getWordsForPath } from '../../db/db';
 import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
 import SuccessIndicator from './SuccessIndicator';
@@ -30,13 +30,7 @@ const GameEngine = ({ pathId }) => {
         fetchedWords = await getKidPath(10); // Get 10 words
       } else {
         try {
-          const path = await getPathById(pathId);
-          if (!path) {
-            setError('Path not found');
-            return;
-          }
-
-          fetchedWords = await getWordsForPath(path.id);
+          fetchedWords = await getWordsForPath(Number(pathId));
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
             return;

@@ -9,7 +9,7 @@ import PapunetView from './PapunetView';
 
 const NewWord = () => {
   const navigate = useNavigate();
-  const { pathId } = useParams();
+  const pathId = Number(useParams().pathId);
   const [newWord, setNewWord] = useState('');
   const [imageData, setImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +27,7 @@ const NewWord = () => {
     const imageToSave = imageData || placeholderImage;
 
     if (pathId) {
-      addWord(newWord, pathId, imageToSave)
+      addWord(newWord, Number(pathId), imageToSave)
         .then(() => navigate(-1))
         .catch(() => alert('Error saving the word.'));
     } else {

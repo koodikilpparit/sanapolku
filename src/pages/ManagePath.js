@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getWordsForPath, deleteWord } from '../db/db';
+import { getWordsForPath, deleteWord, getPathById } from '../db/db';
 import WordRow from '../components/create/WordRow';
 import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
@@ -8,15 +8,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const ManagePath = () => {
-  const { pathId } = useParams();
+  const pathId = Number(useParams().pathId);
+  const [pathName, setPathName] = useState(null);
   const navigate = useNavigate();
   const [words, setWords] = useState([]);
   const [error, setError] = useState(null);
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
+    getPathById(pathId).then((path) => {
+      setPathName(path.name);
+    });
     getWordsForPath(pathId)
-      .then((words) => setWords(words))
+      .then((words) => {
+        setWords(words);
+      })
       .catch(() => setError(`Path with the ID "${pathId}" was not found.`));
   }, [pathId]);
 
@@ -38,7 +44,7 @@ const ManagePath = () => {
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <h2>{pathId}</h2>
+        <h2>{pathName}</h2>
         <FontAwesomeIcon
           icon={faPlus}
           className="add-path-icon"

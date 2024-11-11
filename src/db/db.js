@@ -111,7 +111,7 @@ export async function getPathByName(name) {
 
 /**
  * Retrieve path by ID
- * @param {string} id id of the path
+ * @param {number} id id of the path
  * @returns {Promise<Object>} path object
  */
 export async function getPathById(id) {
@@ -135,7 +135,7 @@ export async function getPathById(id) {
 /**
  * Adds a word-image pair to a path
  * @param {string} word The word to add
- * @param {string} pathId ID of the path where word belongs to
+ * @param {number} pathId ID of the path where word belongs to
  * @param {string} img URL or base64 of the image data
  * @returns {Promise<Object>} ID of the word added
  */
@@ -164,7 +164,7 @@ export async function addWord(word, pathId, img) {
 
 /**
  * Get all words for a specific path
- * @param {string} pathId
+ * @param {number} pathId
  * @returns {Promise<Object[]>} List of word objects
  */
 export async function getWordsForPath(pathId) {
@@ -192,7 +192,7 @@ export async function getWordsForPath(pathId) {
 
 /**
  * Delete word by ID
- * @param {string} wordId ID of the word to be deleted
+ * @param {number} wordId ID of the word to be deleted
  * @returns {Promise<void>} Resolve if deleted successfully
  */
 export async function deleteWord(wordId) {
@@ -215,7 +215,7 @@ export async function deleteWord(wordId) {
 
 /**
  * Delete path and all its associated words
- * @param {string} pathId ID of the path to be deleted
+ * @param {number} pathId ID of the path to be deleted
  * @returns {Promise<void>} Resolve if deleted path and its associated words successfully
  */
 export async function deletePath(pathId) {
@@ -230,7 +230,7 @@ export async function deletePath(pathId) {
 /**
  * Delete path from 'paths' store
  * @param {object} transaction Transaction object, must include 'paths' store
- * @param {string} pathId ID of the path to delete
+ * @param {number} pathId ID of the path to delete
  * @returns {Promise<void>} Resolve if deleted successfully
  */
 async function deleteFromPathStore(transaction, pathId) {
@@ -241,7 +241,7 @@ async function deleteFromPathStore(transaction, pathId) {
 /**
  * Delete path from 'words' store
  * @param {object} transaction Transaction object, must include 'words' store
- * @param {*} pathId ID of the path to delete
+ * @param {number} pathId ID of the path to delete
  * @returns {Promise<void>} Resolve if deleted successfully
  */
 async function deletePathFromWordsStore(transaction, pathId) {
