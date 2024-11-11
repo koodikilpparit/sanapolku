@@ -1,5 +1,4 @@
 import {
-  openDB,
   addPath,
   getAllPaths,
   getPathByName,
