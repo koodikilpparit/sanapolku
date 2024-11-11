@@ -1,8 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import ManagePath from './ManagePath';
 import PathSelection from './PathSelection';
+import { resetDB, addPath } from '../db/db';
+
+if (typeof global.structuredClone === 'undefined') {
+  global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
+}
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -13,13 +18,22 @@ jest.mock('react-router-dom', () => ({
 
 describe('ManagePath Component UI Tests', () => {
   const mockNavigate = jest.fn();
-  const mockPathName = 'testPath';
+  let pathId;
 
-  beforeEach(() => {
+  // Utility function to set up the test DB
+  const initializeTestDB = async () => {
+    await resetDB();
+    return await addPath('testPath');
+  };
+
+  // Initialize the fake IndexedDB before each test
+  beforeEach(async () => {
+    pathId = await initializeTestDB();
+
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
     require('react-router-dom').useParams.mockReturnValue({
-      pathName: mockPathName,
+      pathId: pathId,
     });
   });
 
@@ -31,7 +45,9 @@ describe('ManagePath Component UI Tests', () => {
     );
 
     // Check if the title is rendered
-    expect(screen.getByText('testPath')).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText('testPath')).toBeInTheDocument();
+    });
   });
 
   it('checks if back button navigates back to the previous page', () => {
@@ -64,6 +80,6 @@ describe('ManagePath Component UI Tests', () => {
     fireEvent.click(addButton);
 
     // Check if navigate was called with the correct route
-    expect(mockNavigate).toHaveBeenCalledWith('/uusisana/testPath');
+    expect(mockNavigate).toHaveBeenCalledWith(`/uusisana/${pathId}`);
   });
 });

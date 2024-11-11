@@ -19,10 +19,12 @@ describe('GameEngine Component with IndexedDB', () => {
     { word: 'banana', img: 'banana.jpg' },
   ];
 
+  let pathId;
+
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
     await resetDB();
-    const pathId = await addPath('test-path');
+    pathId = await addPath('test-path');
     await addWord(mockWords[0].word, pathId, mockWords[0].img);
     await addWord(mockWords[1].word, pathId, mockWords[1].img);
   };
@@ -41,7 +43,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('renders loading message initially', () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -52,7 +54,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('renders the first word when loaded', async () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -69,7 +71,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('moves to the second phase on wrong input', async () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -94,7 +96,7 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -122,7 +124,7 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -168,7 +170,7 @@ describe('GameEngine Component with IndexedDB', () => {
 
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -197,7 +199,7 @@ describe('GameEngine Component with IndexedDB', () => {
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
         <PathsPage />
       </BrowserRouter>
     );
