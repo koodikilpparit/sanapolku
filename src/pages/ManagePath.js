@@ -16,14 +16,19 @@ const ManagePath = () => {
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
-    getPathById(pathId).then((path) => {
-      setPathName(path.name);
-    });
-    getWordsForPath(pathId)
-      .then((words) => {
+    const fetchData = async () => {
+      try {
+        const [path, words] = await Promise.all([
+          getPathById(pathId),
+          getWordsForPath(pathId),
+        ]);
+        setPathName(path.name);
         setWords(words);
-      })
-      .catch(() => setError(`Path with the ID "${pathId}" was not found.`));
+      } catch (error) {
+        setError(`Path with the ID "${pathId}" was not found.`);
+      }
+    };
+    fetchData();
   }, [pathId]);
 
   // Function to delete a word from the database and update the word list

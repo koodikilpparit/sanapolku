@@ -27,7 +27,7 @@ const NewWord = () => {
     const imageToSave = imageData || placeholderImage;
 
     if (pathId) {
-      addWord(newWord, Number(pathId), imageToSave)
+      addWord(newWord, pathId, imageToSave)
         .then(() => navigate(-1))
         .catch(() => alert('Error saving the word.'));
     } else {
