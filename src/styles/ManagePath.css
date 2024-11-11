@@ -62,7 +62,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
+  width: 100%;
   background-color: var(--sp-white);
   padding: 15px 20px;
   border-radius: var(--sp-button-border-radius);
@@ -77,6 +77,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-transform: capitalize;
+  display: inline-block;
+  white-space: normal;
+  word-break: break-word; 
 }
 
 .word-image {
@@ -84,6 +87,7 @@
   width: 50px;
   height: 50px;
   margin-right: 20px;
+  margin-left: 5px;
 }
 
 .add-word {

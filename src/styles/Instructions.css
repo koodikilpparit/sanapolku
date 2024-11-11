@@ -1,0 +1,181 @@
+.instructions-page {
+  display: grid;
+  grid-template-areas: 'top-bar';
+  height: 100vh;
+  background-color: var(--sp-dark-green);
+  overflow-y: auto;
+}
+
+.ins-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  grid-area: top-bar;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+}
+
+.ins-back-button {
+  background: none;
+  border: none;
+  height: 48px;
+  width: 30px;
+}
+
+.back-icon {
+  color: var(--sp-white);
+  height: 48px;
+  width: 30px;
+}
+
+.ins-center-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+}
+
+.ins-header {
+  color: var(--sp-white);
+  font-family: var(--sp-global-font);
+  font-size: var(--sp-heading-1);
+  font-weight: 700;
+  line-height: 44px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.instructions-intro {
+  margin: 20px;
+  font-size: var(--sp-body-large);
+  line-height: 1.5;
+  color: var(--sp-white);
+  max-width: 90%;
+}
+
+.instructions-text {
+  color: var(--sp-white);
+  text-align: center;
+  font-family: var(--sp-global-font);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  width: 70%;
+  word-wrap: break-word;
+}
+
+/* Style for Phones in Portrait mode */
+@media (max-width: 650px) {
+  .instructions-page {
+    background-color: var(--sp-dark-green);
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .ins-top-bar {
+    position: absolute;
+    top: 2vw;
+    left: 2vw;
+  }
+
+  .ins-back-button {
+    height: 9vw;
+    width: 6vw;
+  }
+
+  .back-icon {
+    height: 9vw;
+    width: 6vw;
+  }
+
+  .ins-center-area {
+    padding-top: 4vw;
+  }
+
+  .ins-header {
+    font-size: 6vw;
+  }
+
+  .instructions-text {
+    font-size: 3vw;
+    width: 80vw;
+    line-height: 1.5;
+  }
+}
+
+/* Style for extremely narrow screens in Portrait mode */
+@media (max-width: 60px) {
+  .instructions-page {
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .ins-top-bar {
+    position: absolute;
+    height: auto;
+    width: auto;
+  }
+
+  .ins-back-button {
+    height: 18vw;
+    width: 9vw;
+  }
+
+  .back-icon {
+    height: 18vw;
+    width: 9vw;
+  }
+
+  .ins-center-area {
+    padding-top: 5vw;
+  }
+
+  .ins-header {
+    font-size: 4vw;
+  }
+
+  .instructions-text {
+    font-size: 2vw;
+    width: 60vw;
+    line-height: 3.5;
+  }
+}
+
+/* Style for Phones in Horizontal mode */
+@media (max-height: 420px) {
+  .instructions-page {
+    height: 100vh;
+  }
+
+  .ins-top-bar {
+    top: 8vh;
+    left: 8vh;
+  }
+
+  .ins-back-button {
+    height: 12vh;
+    width: 6vh;
+  }
+
+  .back-icon {
+    height: 12vh;
+    width: 6vh;
+  }
+
+  .ins-center-area {
+    padding-top: 6vh;
+  }
+
+  .ins-header {
+    font-size: 6vh;
+    margin-bottom: 2vh;
+  }
+
+  .instructions-text {
+    font-size: 4vh;
+    width: 80%;
+    margin-bottom: 2vh;
+  }
+}

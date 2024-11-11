@@ -1,76 +1,116 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
+import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
-import Phase1 from './Phase1';
-import Phase2 from './Phase2';
-import Phase3 from './Phase3';
+import SuccessIndicator from './SuccessIndicator';
 import './GameEngine.css';
+import PhaseController from './PhaseController';
+import BackButton from '../universal/BackButton';
 
 const GameEngine = ({ pathName }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(1);
-  const [playerInput, setPlayerInput] = useState('');
+  const [playerInput, setPlayerInput] = useState([]);
   const [shuffledWord, setShuffledWord] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const path = await getPathByName(pathName);
-        if (!path) {
-          setError('Path not found');
-          return;
-        }
+      let fetchedWords = [];
+      if (pathName === 'sisäänrakennettu_aikuisten_polku') {
+        fetchedWords = await getAdultPath(10); // Get 10 words
+      } else if (pathName === 'sisäänrakennettu_lasten_polku') {
+        fetchedWords = await getKidPath(10); // Get 10 words
+      } else {
+        try {
+          const path = await getPathByName(pathName);
+          if (!path) {
+            setError('Path not found');
+            return;
+          }
 
-        const fetchedWords = await getWordsForPath(path.id);
-        if (!fetchedWords || fetchedWords.length === 0) {
-          setError('No words found for this path');
-          return;
+          fetchedWords = await getWordsForPath(path.id);
+          if (!fetchedWords || fetchedWords.length === 0) {
+            setError('No words found for this path');
+            return;
+          }
+          fetchedWords = fetchedWords.slice(0, 10);
+        } catch (error) {
+          setError('Error fetching path or words');
+          setLoading(false);
         }
-
-        setWords(fetchedWords);
-        setCurrentWord(fetchedWords[0]);
-        setLoading(false);
-      } catch (error) {
-        setError('Error fetching path or words');
-        setLoading(false);
       }
+      setWords(fetchedWords);
+      setCurrentWord(fetchedWords[0]);
+      setLoading(false);
     };
 
     fetchData();
   }, [pathName]);
 
   useEffect(() => {
-    if (words.length > 0) {
+    if (words.length > 0 && wordIndex < words.length) {
       setCurrentWord(words[wordIndex]);
     }
   }, [wordIndex, words]);
 
-  // Handle input change
-  const handleInputChange = (e) => {
-    setPlayerInput(e.target.value);
+  useEffect(() => {
+    if (currentWord) {
+      setPlayerInput(Array(currentWord.word.length).fill(''));
+      inputRefs.current.forEach((input) => input?.blur());
+    }
+  }, [currentWord]);
+
+  const handleInputChange = (index, event) => {
+    const value = event.target.value.toUpperCase();
+
+    const newInput = [...playerInput];
+    newInput[index] = value;
+    setPlayerInput(newInput);
+
+    // Only move to the next input if a new character is entered (not on delete)
+    if (value && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
   };
 
   // Handle submission based on the phase
   const handleSubmit = () => {
     if (!currentWord) return;
 
-    const normalizedInput = playerInput.toLowerCase();
+    // Check that all input fields have been filled before proceeding
+    if (
+      playerInput.some(
+        (element) =>
+          element === '' || playerInput.length !== currentWord.word.length
+      )
+    ) {
+      return;
+    }
+
+    const normalizedInput = playerInput.join('').toLowerCase();
     const targetWord = currentWord.word.toLowerCase();
 
     if (normalizedInput === targetWord) {
-      if (currentPhase === 1) {
-        moveToNextWord();
-      } else if (currentPhase === 2) {
-        setCurrentPhase(3);
-      } else if (currentPhase === 3) {
-        setCurrentPhase(1);
-      }
+      triggerSuccessIndicator();
+
+      // Delay moving to next word/game over, so success indicator has time to be visible
+      setTimeout(() => {
+        if (currentPhase === 1) {
+          moveToNextWord();
+        } else if (currentPhase === 2) {
+          setCurrentPhase(3);
+        } else if (currentPhase === 3) {
+          setCurrentPhase(1);
+        }
+      }, 1500);
     } else {
       if (currentPhase === 1) {
         setCurrentPhase(2);
@@ -80,12 +120,12 @@ const GameEngine = ({ pathName }) => {
       }
     }
 
-    setPlayerInput('');
+    setPlayerInput(Array(currentWord.word.length).fill(''));
   };
 
+  // Handle moving to the next word
   const moveToNextWord = () => {
     setCurrentPhase(1);
-    setPlayerInput('');
 
     if (wordIndex + 1 < words.length) {
       setWordIndex(wordIndex + 1);
@@ -99,46 +139,42 @@ const GameEngine = ({ pathName }) => {
     return shuffleArray([...word]).join('');
   };
 
+  const triggerSuccessIndicator = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
+
   return (
-    <div className="game-engine">
-      {loading ? (
-        <p>Ladataan sanoja...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : gameOver ? (
-        <div>
-          <h2>Peli ohi!</h2>
-        </div>
-      ) : currentWord ? (
-        <>
-          {currentPhase === 1 && (
-            <Phase1
+    <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
+      <div className="px-2">
+        <BackButton />
+      </div>
+      <div className="flex-grow">
+        {loading ? (
+          <p className="loading-msg"> Ladataan sanoja...</p>
+        ) : error ? (
+          <p className="error-msg">{error}</p>
+        ) : gameOver ? (
+          <div>
+            <h2>Peli ohi!</h2>
+          </div>
+        ) : currentWord ? (
+          <>
+            {showSuccess && <SuccessIndicator />}
+            <PhaseController
+              currentPhase={currentPhase}
               currentWord={currentWord}
               playerInput={playerInput}
               handleInputChange={handleInputChange}
               handleSubmit={handleSubmit}
-            />
-          )}
-          {currentPhase === 2 && (
-            <Phase2
-              currentWord={currentWord}
+              inputRefs={inputRefs}
               shuffledWord={shuffledWord}
-              handleInputChange={handleInputChange}
-              handleSubmit={handleSubmit}
             />
-          )}
-          {currentPhase === 3 && (
-            <Phase3
-              currentWord={currentWord}
-              playerInput={playerInput}
-              handleInputChange={handleInputChange}
-              handleSubmit={handleSubmit}
-            />
-          )}
-        </>
-      ) : (
-        <p>Ladataan sanoja...</p>
-      )}
+          </>
+        ) : (
+          <p className="loading-msg">Ladataan sanoja...</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,26 @@
+.image-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  height: 35vw;
+  width: 35vw;
+}
+
+/* Style for Tablets in Horizontal mode */
+@media (min-width: 1000px) and (min-height: 400px) and (orientation: landscape) {
+  .image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .image-container img {
+    height: 50vh;
+    width: 50vh;
+  }
+}
