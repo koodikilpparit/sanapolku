@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
 import * as db from '../db/db';
+import * as ShareUtils from '../utils/ShareUtils';
 import { PathProvider } from '../components/pathSelection/PathContext';
 
 // Mock useNavigate from react-router-dom
@@ -17,6 +18,10 @@ describe('PathSelection Component UI Tests', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+    const mockInitializePeer = jest.spyOn(ShareUtils, 'initializePeer');
+    mockInitializePeer.mockImplementation(() =>
+      Promise.resolve([{ id: 1, peer: jest.fn() }])
+    );
   });
 
   it('should render the PathSelection component and display the title "Polut"', () => {
