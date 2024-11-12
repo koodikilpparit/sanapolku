@@ -6,7 +6,7 @@ import { getWordsForPath, addPathWithWords, getPathById } from '../db/db';
  */
 export async function importPath(path) {
   console.log('Importing path', path);
-  const pathName = path.pathName;
+  const pathName = path.name;
   const words = path.words;
   await addPathWithWords(pathName, words);
 }
@@ -22,7 +22,7 @@ export async function exportPath(pathId) {
     console.warn('Path not found', pathId);
   }
   const words = await getWordsToExport(pathId);
-  return { pathName: path.name, words: words };
+  return { name: path.name, words: words };
 }
 
 async function getWordsToExport(pathId) {

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import ManagePath from './ManagePath';
 import PathSelection from './PathSelection';
 import { resetDB, addPath } from '../db/db';
+import { PathProvider } from '../components/pathSelection/PathContext';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -54,7 +55,9 @@ describe('ManagePath Component UI Tests', () => {
     const { container } = render(
       <BrowserRouter>
         <ManagePath />
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 

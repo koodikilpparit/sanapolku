@@ -35,7 +35,7 @@ const GameEngine = ({ pathId }) => {
             setError('No words found for this path');
             return;
           }
-          fetchedWords = fetchedWords.slice(0, 10);
+          fetchedWords = shuffleArray(fetchedWords).slice(0, 10);
         } catch (error) {
           setError('Error fetching path or words');
           setLoading(false);

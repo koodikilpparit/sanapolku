@@ -1,0 +1,17 @@
+.share-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  margin-left: 2%;
+  padding: 2px 3px;
+}
+
+.share-icon {
+  font-size: var(--sp-icon-size-small);
+  transition: color 0.3s ease;
+}
+
+.share-icon:hover {
+  color: gray;
+}

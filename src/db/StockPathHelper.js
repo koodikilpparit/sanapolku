@@ -13,7 +13,7 @@ export function getAdultPath(numberOfWords) {
 }
 
 export function getKidPath(numberOfWords) {
-  const path = public_url + 'data/paths/kid/images';
+  const path = public_url + '/data/paths/kid/images';
   let words = shuffleArray(kidImageNames);
   if (numberOfWords < words.length) {
     words = words.slice(0, numberOfWords);
