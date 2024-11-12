@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 const SharePathErrorModal = ({ onClose }) => {
   // Function to close the modal for instructions why path sharing failed
   const closeSharingFailedModal = () => {
@@ -25,4 +27,7 @@ const SharePathErrorModal = ({ onClose }) => {
   );
 };
 
+SharePathErrorModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
 export default SharePathErrorModal;

@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { PathContext } from './PathContext';
 import { deletePath, getPathByName } from '../../db/db';
 
+import PropTypes from 'prop-types';
+
 const DeletePathModal = ({ onClose }) => {
   const { currentPath, setCurrentPath, setPaths } = useContext(PathContext);
   // Handle path deletion
@@ -50,6 +52,10 @@ const DeletePathModal = ({ onClose }) => {
       </div>
     </div>
   );
+};
+
+DeletePathModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default DeletePathModal;

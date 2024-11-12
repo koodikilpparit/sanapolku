@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { initializePeer } from '../../utils/ShareUtils';
 
+import PropTypes from 'prop-types';
+
 export const PathContext = createContext();
 
 export const PathProvider = ({ children }) => {
@@ -65,4 +67,8 @@ export const PathProvider = ({ children }) => {
       {children}
     </PathContext.Provider>
   );
+};
+
+PathProvider.propTypes = {
+  children: PropTypes.element.isRequired,
 };

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { PathContext } from './PathContext';
 import { addPath } from '../../db/db';
 
+import PropTypes from 'prop-types';
+
 const AddPathModal = ({ onClose, onOpenReceive }) => {
   const navigate = useNavigate();
   const [newPath, setNewPath] = useState('');
@@ -68,6 +70,11 @@ const AddPathModal = ({ onClose, onOpenReceive }) => {
       </div>
     </div>
   );
+};
+
+AddPathModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onOpenReceive: PropTypes.func.isRequired,
 };
 
 export default AddPathModal;

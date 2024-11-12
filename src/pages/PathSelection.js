@@ -41,7 +41,7 @@ const PathSelection = () => {
         setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : [])
       )
       .catch(() => console.error('Error fetching paths'));
-  }, []);
+  }, [setPaths]);
 
   // Function to navigate to the game
   const handlePathClick = async (path) => {

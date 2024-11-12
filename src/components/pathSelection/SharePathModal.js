@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { PathContext } from './PathContext';
 import { QRCode } from 'react-qrcode-logo';
 import { sendDataOnConnection } from '../../utils/ShareUtils';
 import { exportPath } from '../../utils/PathUtils';
+
+import PropTypes from 'prop-types';
 
 const SharePathModal = ({ onClose }) => {
   const {
@@ -31,7 +33,7 @@ const SharePathModal = ({ onClose }) => {
 
   useEffect(() => {
     setSharingSucceeded(false);
-  }, []);
+  }, [setSharingSucceeded]);
 
   useEffect(() => {
     // Set up path to share
@@ -54,13 +56,19 @@ const SharePathModal = ({ onClose }) => {
     }
 
     handleNewConnection();
-  }, [peer, exportedPath]);
+  }, [
+    peer,
+    exportedPath,
+    closeShareModal,
+    openSharingFailedModal,
+    setSharingSucceeded,
+  ]);
 
   // Function to close the modal for sharing a path
-  const closeShareModal = () => {
+  const closeShareModal = useCallback(() => {
     setExportedPath(null);
     onClose();
-  };
+  }, [onClose]);
 
   return (
     <div className="modal-overlay">
@@ -88,4 +96,7 @@ const SharePathModal = ({ onClose }) => {
   );
 };
 
+SharePathModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
 export default SharePathModal;

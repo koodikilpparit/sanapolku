@@ -4,6 +4,8 @@ import { PathContext } from './PathContext';
 import { connectToPeerAndReceive } from '../../utils/ShareUtils';
 import { importPath } from '../../utils/PathUtils';
 
+import PropTypes from 'prop-types';
+
 const ReceivePathModal = ({ onClose }) => {
   const {
     peer,
@@ -110,6 +112,10 @@ const ReceivePathModal = ({ onClose }) => {
       </div>
     </div>
   );
+};
+
+ReceivePathModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ReceivePathModal;

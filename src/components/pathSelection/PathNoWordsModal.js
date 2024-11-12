@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PathContext } from './PathContext';
 
+import PropTypes from 'prop-types';
+
 const PathNoWordsModal = ({ onClose }) => {
   const navigate = useNavigate();
   const { currentPath, setCurrentPath } = useContext(PathContext);
@@ -34,6 +36,10 @@ const PathNoWordsModal = ({ onClose }) => {
       </div>
     </div>
   );
+};
+
+PathNoWordsModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default PathNoWordsModal;
