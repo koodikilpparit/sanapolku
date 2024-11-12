@@ -1,4 +1,3 @@
-// contexts/PathContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import { initializePeer } from '../utils/ShareUtils';
 import {
