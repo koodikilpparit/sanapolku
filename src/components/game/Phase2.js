@@ -1,82 +1,127 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './Phase1.css';
 import ImageContainer from './ImageContainer';
 
-const Phase2 = ({
-  currentWord,
-  playerInput,
-  shuffledWord,
-  setPlayerInput,
-  handleSubmit,
-}) => {
-  const isReadyButtonDisabled =
-    playerInput.length !== currentWord.word.length || playerInput.includes('');
-  const inputRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
+  const [playerInput, setPlayerInput] = useState([]);
+  const [shuffledLetters, setShuffledLetters] = useState([]);
+  const [selectedLetter, setSelectedLetter] = useState(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
+    const lettersArray = shuffledWord
+      .toUpperCase()
+      .split('')
+      .map((letter, index) => ({
+        letter,
+        isUsed: false,
+        id: index,
+      }));
+
     setPlayerInput(Array(currentWord.word.length).fill(''));
-    setActiveIndex(0);
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 0);
-  }, [currentWord, setPlayerInput]);
+    setShuffledLetters(lettersArray);
+    setSelectedLetter(null);
+  }, [currentWord, shuffledWord]);
 
-  const handleInputChange = (event) => {
-    const value = event.target.value.toUpperCase();
-    if (activeIndex !== null && value) {
-      // Accept input and overwrite
-      const newPlayerInput = [...playerInput];
-      newPlayerInput[activeIndex] = value.slice(-1);
-      setPlayerInput(newPlayerInput);
-      event.target.value = '';
+  const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
 
-      const nextIndex = activeIndex + 1;
-      if (nextIndex < currentWord.word.length) {
-        setActiveIndex(nextIndex);
+  // Handle clicking on a letter in the lower row
+  const handleLetterClick = (event, letter, index) => {
+    event.stopPropagation(); // Prevent click from propagating to parent
+    if (!shuffledLetters[index].isUsed) {
+      if (selectedLetter && selectedLetter.index === index) {
+        // If the letter is already selected, unselect it
+        setSelectedLetter(null);
       } else {
-        setActiveIndex(currentWord.word.length - 1);
+        // Select the letter
+        setSelectedLetter({ letter, index });
       }
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Backspace') {
-      event.preventDefault();
-      if (activeIndex !== null) {
-        const newPlayerInput = [...playerInput];
+  // Handle clicking on a box in the upper row
+  const handleInputClick = (event, index) => {
+    event.stopPropagation();
+    const newPlayerInput = [...playerInput];
+    const newShuffledLetters = [...shuffledLetters];
 
-        if (playerInput[activeIndex] !== '') {
-          // Delete the current letter
-          newPlayerInput[activeIndex] = '';
-          setPlayerInput(newPlayerInput);
-        } else if (activeIndex > 0) {
-          // Move to the previous box
-          setActiveIndex(activeIndex - 1);
+    if (selectedLetter) {
+      const { letter, index: lowerIndex } = selectedLetter;
+
+      // If the box already has a letter, make it available again
+      if (newPlayerInput[index] !== '') {
+        const letterToRemove = newPlayerInput[index];
+        const letterIndex = shuffledLetters.findIndex(
+          (item) => item.letter === letterToRemove && item.isUsed
+        );
+        if (letterIndex !== -1) {
+          newShuffledLetters[letterIndex].isUsed = false;
         }
       }
+
+      // Place the selected letter in the box
+      newPlayerInput[index] = letter;
+      newShuffledLetters[lowerIndex].isUsed = true;
+      setPlayerInput(newPlayerInput);
+      setShuffledLetters(newShuffledLetters);
+      setSelectedLetter(null);
+    } else {
+      // If no letter is selected and the box has a letter, remove it
+      if (newPlayerInput[index] !== '') {
+        const letterToRemove = newPlayerInput[index];
+        const letterIndex = shuffledLetters.findIndex(
+          (item) => item.letter === letterToRemove && item.isUsed
+        );
+        if (letterIndex !== -1) {
+          newShuffledLetters[letterIndex].isUsed = false;
+        }
+        newPlayerInput[index] = '';
+        setPlayerInput(newPlayerInput);
+        setShuffledLetters(newShuffledLetters);
+      }
     }
   };
 
-  const handleLetterBoxClick = (index) => {
-    setActiveIndex(index);
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 0);
+  // Handle clicking outside of letter tiles to unselect the selected letter
+  const handleContainerClick = () => {
+    if (selectedLetter) {
+      setSelectedLetter(null);
+    }
   };
 
-  const handleInputBlur = () => {
-    // Allow user to unfocus the letter box
-    setActiveIndex(null);
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter' && !isReadyButtonDisabled) {
+        handleSubmit(playerInput.join(''));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isReadyButtonDisabled, handleSubmit, playerInput]);
+
+  // Generate the display array for the lower row with blanks at the end
+  const displayShuffledLetters = () => {
+    const unusedLetters = shuffledLetters.filter((item) => !item.isUsed);
+    const blanksCount = shuffledLetters.length - unusedLetters.length;
+    const blanks = Array(blanksCount).fill({
+      letter: '',
+      id: null,
+      isBlank: true,
+    });
+
+    return [...unusedLetters, ...blanks];
   };
 
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-col h-full"
+      onClick={handleContainerClick}
+      ref={containerRef}
+    >
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
         Järjestä kirjaimet
       </h1>
@@ -92,54 +137,55 @@ const Phase2 = ({
         <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
           <div className="flex flex-col gap-2 lg:gap-4">
             <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
-              {shuffledWord
-                .toUpperCase()
-                .split('')
-                .map((letter, index) => (
-                  <div
-                    key={index}
-                    className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center"
-                  >
-                    {letter}
-                  </div>
-                ))}
-            </div>
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2">
-              {currentWord.word.split('').map((_, index) => (
+              {playerInput.map((letter, index) => (
                 <div
                   key={index}
-                  onClick={() => handleLetterBoxClick(index)}
-                  className={`w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center cursor-pointer ${
-                    activeIndex === index ? 'bg-sp-light-yellow' : 'bg-sp-white'
-                  }`}
+                  onClick={(event) => handleInputClick(event, index)}
+                  className={`w-full aspect-square rounded-lg font-bold text-center uppercase text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl ${
+                    letter !== ''
+                      ? 'bg-sp-white text-sp-black'
+                      : 'bg-sp-gray text-sp-black opacity-50'
+                  } p-1 flex items-center justify-center cursor-pointer border-2 border-sp-white`}
+                  data-testid="input-box"
                 >
-                  {playerInput[index] || ''}
+                  {letter}
                 </div>
               ))}
-              <input
-                type="text"
-                ref={inputRef}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onBlur={handleInputBlur}
-                style={{
-                  opacity: 0,
-                  position: 'absolute',
-                  pointerEvents: 'none',
-                }}
-                autoFocus
-              />
+            </div>
+            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+              {displayShuffledLetters().map((item, index) => (
+                <div
+                  key={index}
+                  onClick={
+                    item.isBlank
+                      ? undefined
+                      : (event) =>
+                          handleLetterClick(event, item.letter, item.id)
+                  }
+                  className={`w-full aspect-square rounded-lg font-bold text-center uppercase text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-1 flex items-center justify-center ${
+                    item.isBlank
+                      ? 'bg-sp-dark-green cursor-default'
+                      : 'cursor-pointer bg-sp-white border-2 ' +
+                        (selectedLetter && selectedLetter.index === item.id
+                          ? 'bg-sp-light-yellow border-sp-light-yellow'
+                          : 'border-sp-white')
+                  }`}
+                  data-testid="shuffled-letter"
+                >
+                  {item.letter}
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="flex items-end justify-center sm:justify-end py-5">
+          <div className="flex items-end justify-center sm:justify-end py-4">
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
                   ? 'bg-sp-gray cursor-not-allowed'
                   : 'bg-sp-light-green cursor-pointer'
               }`}
-              onClick={handleSubmit}
+              onClick={() => handleSubmit(playerInput.join(''))}
               disabled={isReadyButtonDisabled}
             >
               VALMIS
@@ -157,8 +203,6 @@ Phase2.propTypes = {
     word: PropTypes.string.isRequired,
   }).isRequired,
   shuffledWord: PropTypes.string.isRequired,
-  setPlayerInput: PropTypes.func.isRequired,
-  playerInput: PropTypes.array.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
 
