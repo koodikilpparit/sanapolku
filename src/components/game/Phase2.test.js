@@ -1,5 +1,5 @@
-import React, { createRef } from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import Phase2 from '../../components/game/Phase2';
 
 // Clear all mocks after all tests
