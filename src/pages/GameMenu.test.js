@@ -34,15 +34,15 @@ describe('GameMenu Component', () => {
     ).toBeInTheDocument();
   });
 
-  /* TODO: when Aikuisten polku and Lasten polku are implemented
-
   it('navigates to "Aikuisten polku" when the button is clicked', async () => {
-
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route path="/" element={<GameMenu />} />
-          <Route path="/aikuistenpolku" element={<div>Aikuisten polku sivu</div>} />
+          <Route
+            path="/peli/sisäänrakennettu_aikuisten_polku"
+            element={<div>Aikuisten polku sivu</div>}
+          />
         </Routes>
       </MemoryRouter>
     );
@@ -57,12 +57,14 @@ describe('GameMenu Component', () => {
   });
 
   it('navigates to "Lasten polku" when the button is clicked', async () => {
-    
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route path="/" element={<GameMenu />} />
-          <Route path="/lastenpolku" element={<div>Lasten polku sivu</div>} />
+          <Route
+            path="/peli/sisäänrakennettu_lasten_polku"
+            element={<div>Lasten polku sivu</div>}
+          />
         </Routes>
       </MemoryRouter>
     );
@@ -74,7 +76,7 @@ describe('GameMenu Component', () => {
     await waitFor(() => {
       expect(screen.getByText('Lasten polku sivu')).toBeInTheDocument();
     });
-  }); */
+  });
 
   it('navigates to "Omat polut" when the button is clicked', async () => {
     render(

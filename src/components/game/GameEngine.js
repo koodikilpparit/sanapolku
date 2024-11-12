@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
+import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
+import SuccessIndicator from './SuccessIndicator';
+import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 
@@ -15,36 +18,38 @@ const GameEngine = ({ pathName }) => {
   const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const path = await getPathByName(pathName);
-        if (!path) {
-          setError('Path not found');
+      let fetchedWords = [];
+      if (pathName === 'sisäänrakennettu_aikuisten_polku') {
+        fetchedWords = await getAdultPath(10); // Get 10 words
+      } else if (pathName === 'sisäänrakennettu_lasten_polku') {
+        fetchedWords = await getKidPath(10); // Get 10 words
+      } else {
+        try {
+          const path = await getPathByName(pathName);
+          if (!path) {
+            setError('Path not found');
+            return;
+          }
+
+          fetchedWords = await getWordsForPath(path.id);
+          if (!fetchedWords || fetchedWords.length === 0) {
+            setError('No words found for this path');
+            return;
+          }
+          fetchedWords = fetchedWords.slice(0, 10);
+        } catch (error) {
+          setError('Error fetching path or words');
           setLoading(false);
-          return;
         }
-
-        const fetchedWords = await getWordsForPath(path.id);
-        if (!fetchedWords || fetchedWords.length === 0) {
-          setError('No words found for this path');
-          setLoading(false);
-          return;
-        }
-
-        // Randomizes words and takes 10 words
-        const randomWords = shuffleArray(fetchedWords).slice(0, 10);
-
-        setWords(randomWords);
-        setCurrentWord(randomWords[0]);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setError('Error fetching path or words');
-        setLoading(false);
       }
+      setWords(fetchedWords);
+      setCurrentWord(fetchedWords[0]);
+      setLoading(false);
     };
 
     fetchData();
@@ -60,17 +65,8 @@ const GameEngine = ({ pathName }) => {
     if (currentWord) {
       setPlayerInput(Array(currentWord.word.length).fill(''));
       inputRefs.current.forEach((input) => input?.blur());
-      if (inputRefs.current[0]) {
-        inputRefs.current[0].focus();
-      }
     }
   }, [currentWord]);
-
-  useEffect(() => {
-    if (inputRefs.current[0]) {
-      inputRefs.current[0].focus();
-    }
-  }, [currentPhase]);
 
   const handleInputChange = (index, event) => {
     const value = event.target.value.toUpperCase();
@@ -103,13 +99,18 @@ const GameEngine = ({ pathName }) => {
     const targetWord = currentWord.word.toLowerCase();
 
     if (normalizedInput === targetWord) {
-      if (currentPhase === 1) {
-        moveToNextWord();
-      } else if (currentPhase === 2) {
-        setCurrentPhase(3);
-      } else if (currentPhase === 3) {
-        setCurrentPhase(1);
-      }
+      triggerSuccessIndicator();
+
+      // Delay moving to next word/game over, so success indicator has time to be visible
+      setTimeout(() => {
+        if (currentPhase === 1) {
+          moveToNextWord();
+        } else if (currentPhase === 2) {
+          setCurrentPhase(3);
+        } else if (currentPhase === 3) {
+          setCurrentPhase(1);
+        }
+      }, 1500);
     } else {
       if (currentPhase === 1) {
         setCurrentPhase(2);
@@ -138,6 +139,11 @@ const GameEngine = ({ pathName }) => {
     return shuffleArray([...word]).join('');
   };
 
+  const triggerSuccessIndicator = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
+
   return (
 
     <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
@@ -154,19 +160,18 @@ const GameEngine = ({ pathName }) => {
             <h2>Peli ohi!</h2>
           </div>
         ) : currentWord ? (
-          <PhaseController
-            currentPhase={currentPhase}
-            currentWord={currentWord}
-            playerInput={playerInput}
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-            inputRefs={inputRefs}
-            shuffledWord={shuffledWord}
-          />
-            {/* Hidden div for tests */}
-            <div data-testid="word-count" style={{ display: 'none' }}>
-              {words.length}
-            </div>
+          <>
+            {showSuccess && <SuccessIndicator />}
+            <PhaseController
+              currentPhase={currentPhase}
+              currentWord={currentWord}
+              playerInput={playerInput}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              inputRefs={inputRefs}
+              shuffledWord={shuffledWord}
+            />
+          </>
         ) : (
           <p className="loading-msg">Ladataan sanoja...</p>
         )}

@@ -36,7 +36,7 @@ const Phase3 = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
         Kopioi sana
       </h1>
@@ -81,7 +81,7 @@ const Phase3 = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-center sm:justify-end py-4">
+          <div className="flex items-end justify-center sm:justify-end py-5">
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
