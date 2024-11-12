@@ -21,7 +21,6 @@ const ReceivePathModal = ({ onClose }) => {
   const [isScanningStarted, setIsScanningStarted] = useState(false);
 
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
-  const [targetPeerID, setTargetPeerID] = useState(null);
 
   const receivePath = async (id) => {
     // Receive path from target
@@ -42,7 +41,6 @@ const ReceivePathModal = ({ onClose }) => {
   };
 
   const handleShareClick = () => {
-    setTargetPeerID(targetPeerIDInput);
     receivePath(targetPeerIDInput);
   };
 
@@ -53,7 +51,6 @@ const ReceivePathModal = ({ onClose }) => {
       setIsScanningStarted(true);
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
-      setTargetPeerID(id);
       setIsScanning(false);
       setSharingStarted(true);
       receivePath(id);
