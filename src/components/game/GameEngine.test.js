@@ -14,10 +14,12 @@ afterAll(() => {
 });
 
 describe('GameEngine Component with IndexedDB', () => {
-  const mockWords = [
-    { id: 1, word: 'apple', img: 'apple.jpg', pathId: 1 },
-    { id: 2, word: 'banana', img: 'banana.jpg', pathId: 1 },
-  ];
+  const mockWords = Array.from({ length: 15 }, (_, index) => ({
+    id: index + 1,
+    word: `word${index + 1}`,
+    img: `word${index + 1}.jpg`,
+    pathId: 1,
+  }));
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
@@ -30,8 +32,9 @@ describe('GameEngine Component with IndexedDB', () => {
     const wordsDB = await openDB('wordsDB');
     const wordsTransaction = wordsDB.transaction(['words'], 'readwrite');
     const wordsStore = wordsTransaction.objectStore('words');
-    await wordsStore.add(mockWords[0]);
-    await wordsStore.add(mockWords[1]);
+    for (const word of mockWords) {
+      await wordsStore.add(word);
+    }
     await wordsTransaction.done;
   };
 
@@ -57,24 +60,9 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(screen.getByText('Ladataan sanoja...')).toBeInTheDocument();
   });
 
-  it('renders the first word when loaded', async () => {
-    render(
-      <MemoryRouter>
-        <GameEngine pathName="test-path" />
-      </MemoryRouter>
-    );
+  it('moves to the next word on correct input', async () => {
+    jest.useFakeTimers();
 
-    // Wait for the words to be fetched and rendered
-    await waitFor(() =>
-      expect(screen.getByText('Kirjoita sana')).toBeInTheDocument()
-    );
-
-    // Check that the first word's image is displayed using the src
-    const imgElement = screen.getByRole('img');
-    expect(imgElement).toHaveAttribute('src', 'apple.jpg');
-  });
-
-  it('moves to the second phase on wrong input', async () => {
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
@@ -84,8 +72,54 @@ describe('GameEngine Component with IndexedDB', () => {
     // Wait for the words to load
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
+    // Wait for the first word and its image to be displayed and remember the first image
+    const firstImage = await screen.findByRole('img');
+    const firstSrc = firstImage.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const firstWord = firstSrc.replace('.jpg', '');
+
+    // Enter the correct word for the first phase
+    firstWord.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: letter },
+      });
+    });
+    fireEvent.click(screen.getByText('VALMIS'));
+
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
+    const newImage = await screen.findByRole('img');
+    const newSrc = newImage.getAttribute('src');
+    const secondWord = newSrc.replace('.jpg', '');
+
+    expect(secondWord).not.toBe(firstWord); // Ensure that the image has changed again
+  });
+
+  it('moves to the second phase on wrong input', async () => {
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
+
+    // Wait for the words to load and phase 1 to be active
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    // Wait for the word and its image to be displayed
+    const image = await screen.findByRole('img');
+    const imageSrc = image.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const correctWord = imageSrc.replace('.jpg', '');
+
+    // Create wrong word which lenght is same than correct word's
+    const wrongWord = 'x'.repeat(correctWord.length);
+
     // Simulate entering wrong input and submitting
-    'wrong'.split('').forEach((letter, index) => {
+    wrongWord.split('').forEach((letter, index) => {
       fireEvent.change(screen.getAllByRole('textbox')[index], {
         target: { value: letter },
       });
@@ -98,77 +132,45 @@ describe('GameEngine Component with IndexedDB', () => {
     );
   });
 
-  it('moves to the next word on correct input', async () => {
-    jest.useFakeTimers();
-    render(
-      <MemoryRouter>
-        <GameEngine pathName="test-path" />
-      </MemoryRouter>
-    );
-
-    // Wait for the words to load
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-
-    // Simulate entering correct input and submitting
-    'apple'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
-    });
-    fireEvent.click(screen.getByText('VALMIS'));
-
-    act(() => {
-      jest.advanceTimersByTime(2500);
-    });
-
-    // Check that it moves to the next word and displays the correct image
-    const nextImgElement = screen.getByRole('img');
-    expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
-  });
-
   it('displays game over when all words are completed', async () => {
     jest.useFakeTimers();
+
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
       </MemoryRouter>
     );
 
-    // Complete the first word
+    // Wait that game begins
     await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
+
+    for (let i = 0; i < 10; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
       });
-    });
-    fireEvent.click(screen.getByText('VALMIS'));
+      fireEvent.click(screen.getByText('VALMIS'));
 
-    act(() => {
-      jest.advanceTimersByTime(2500);
-    });
-
-    // Check the second word (banana) is displayed by its image source
-    await waitFor(() => {
-      const imgElement = screen.getByRole('img');
-      expect(imgElement).toHaveAttribute('src', 'banana.jpg');
-    });
-
-    // Complete the second word
-    'banana'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
+      act(() => {
+        jest.advanceTimersByTime(2500);
       });
-    });
-    fireEvent.click(screen.getByText('VALMIS'));
-
-    act(() => {
-      jest.advanceTimersByTime(2500);
-    });
+    }
 
     // Check if the game over message is displayed
-    await waitFor(() =>
-      expect(screen.getByText('Peli ohi!')).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText('Peli ohi!')).toBeInTheDocument();
+    });
+
+    jest.useRealTimers();
   });
 
   it('displays success indicator after correct input and hides it after timeout', async () => {
@@ -181,7 +183,15 @@ describe('GameEngine Component with IndexedDB', () => {
     );
 
     await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter, index) => {
+
+    const image = await screen.findByRole('img');
+    const imageSrc = image.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const correctWord = imageSrc.replace('.jpg', '');
+
+    // Enter the correct word for the first phase
+    correctWord.split('').forEach((letter, index) => {
       fireEvent.change(screen.getAllByRole('textbox')[index], {
         target: { value: letter },
       });
