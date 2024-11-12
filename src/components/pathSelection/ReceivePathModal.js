@@ -55,8 +55,6 @@ const ReceivePathModal = ({ onClose }) => {
       const id = result.slice(QRCODE_PREFIX.length);
       setTargetPeerID(id);
       setIsScanning(false);
-      console.log('QR scanning ok');
-      console.log(targetPeerID);
       setSharingStarted(true);
       receivePath(id);
     } else {
