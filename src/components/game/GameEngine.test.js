@@ -16,22 +16,19 @@ afterAll(() => {
 
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = Array.from({ length: 15 }, (_, index) => ({
-    id: index + 1,
     word: `word${index + 1}`,
     img: `word${index + 1}.jpg`,
-    pathId: 1,
   }));
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
     await resetDB();
     const pathId = await addPath('test-path');
-    mockWords.forEach((mockWord) => {
-      const addPathAsync = async (word) => {
-        await addWord(word.word, pathId, word.img);
-      };
-      addPathAsync(mockWord);
-    });
+    await Promise.all(
+      mockWords.map((word) => {
+        return addWord(word.word, pathId, word.img);
+      })
+    );
   };
 
   // Initialize the fake IndexedDB before each test
