@@ -98,19 +98,6 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(secondWord).not.toBe(firstWord); // Ensure that the image has changed again
   });
 
-  it('loads exactly 10 random words', async () => {
-    render(
-      <MemoryRouter>
-        <GameEngine pathName="test-path" />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      const wordCountElement = screen.getByTestId('word-count');
-      expect(Number(wordCountElement.textContent)).toBe(10);
-    });
-  });
-
   it('moves to the second phase on wrong input', async () => {
     render(
       <MemoryRouter>

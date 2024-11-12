@@ -170,10 +170,6 @@ const GameEngine = ({ pathName }) => {
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}
             />
-            {/* Hidden div for tests */}
-            <div data-testid="word-count" style={{ display: 'none' }}>
-              {words.length}
-            </div>
           </>
         ) : (
           <p className="loading-msg">Ladataan sanoja...</p>
