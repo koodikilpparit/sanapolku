@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPathByName, getWordsForPath } from '../../db/db';
 import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
@@ -19,7 +19,6 @@ const GameEngine = ({ pathName }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const inputRefs = useRef([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,18 +32,21 @@ const GameEngine = ({ pathName }) => {
           const path = await getPathByName(pathName);
           if (!path) {
             setError('Path not found');
+            setLoading(false);
             return;
           }
 
           fetchedWords = await getWordsForPath(path.id);
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
+            setLoading(false);
             return;
           }
           fetchedWords = fetchedWords.slice(0, 10);
         } catch (error) {
           setError('Error fetching path or words');
           setLoading(false);
+          return;
         }
       }
       setWords(fetchedWords);
@@ -64,34 +66,15 @@ const GameEngine = ({ pathName }) => {
   useEffect(() => {
     if (currentWord) {
       setPlayerInput(Array(currentWord.word.length).fill(''));
-      inputRefs.current.forEach((input) => input?.blur());
     }
   }, [currentWord]);
-
-  const handleInputChange = (index, event) => {
-    const value = event.target.value.toUpperCase();
-
-    const newInput = [...playerInput];
-    newInput[index] = value;
-    setPlayerInput(newInput);
-
-    // Only move to the next input if a new character is entered (not on delete)
-    if (value && index < inputRefs.current.length - 1) {
-      inputRefs.current[index + 1].focus();
-    }
-  };
 
   // Handle submission based on the phase
   const handleSubmit = () => {
     if (!currentWord) return;
 
-    // Check that all input fields have been filled before proceeding
-    if (
-      playerInput.some(
-        (element) =>
-          element === '' || playerInput.length !== currentWord.word.length
-      )
-    ) {
+    // Ensure all inputs are filled
+    if (playerInput.some((char) => char === '')) {
       return;
     }
 
@@ -119,8 +102,6 @@ const GameEngine = ({ pathName }) => {
         setCurrentPhase(3);
       }
     }
-
-    setPlayerInput(Array(currentWord.word.length).fill(''));
   };
 
   // Handle moving to the next word
@@ -134,7 +115,7 @@ const GameEngine = ({ pathName }) => {
     }
   };
 
-  // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
+  // Shuffle the word using lodash.shuffle
   const shuffleWord = (word) => {
     return shuffleArray([...word]).join('');
   };
@@ -145,7 +126,7 @@ const GameEngine = ({ pathName }) => {
   };
 
   return (
-    <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
+    <div className="flex flex-col h-screen p-2 pb-10 sm:p-2 md:p-4">
       <div className="px-2">
         <BackButton />
       </div>
@@ -165,9 +146,8 @@ const GameEngine = ({ pathName }) => {
               currentPhase={currentPhase}
               currentWord={currentWord}
               playerInput={playerInput}
-              handleInputChange={handleInputChange}
+              setPlayerInput={setPlayerInput}
               handleSubmit={handleSubmit}
-              inputRefs={inputRefs}
               shuffledWord={shuffledWord}
             />
           </>
