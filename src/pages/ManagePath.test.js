@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import ManagePath from './ManagePath';
 import PathSelection from './PathSelection';
+import { PathProvider } from '../components/pathSelection/PathContext';
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -38,7 +39,9 @@ describe('ManagePath Component UI Tests', () => {
     const { container } = render(
       <BrowserRouter>
         <ManagePath />
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 

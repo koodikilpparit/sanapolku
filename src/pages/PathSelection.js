@@ -1,27 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  getAllPaths,
-  addPath,
-  deletePath,
-  getPathByName,
-  getWordsForPath,
-} from '../db/db';
+import { getAllPaths, getPathByName, getWordsForPath } from '../db/db';
+
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
 import DeleteButton from '../components/universal/DeleteButton';
+import ShareButton from '../components/universal/ShareButton';
+import { PathContext } from '../components/pathSelection/PathContext';
+import AddPathModal from '../components/pathSelection/AddPathModal';
+import DeletePathModal from '../components/pathSelection/DeletePathModal';
+import PathNoWordsModal from '../components/pathSelection/PathNoWordsModal';
+import SharePathModal from '../components/pathSelection/SharePathModal';
+import ReceivePathModal from '../components/pathSelection/ReceivePathModal';
+import SharePathErrorModal from '../components/pathSelection/SharePathErrorModal';
 
 const PathSelection = () => {
   const navigate = useNavigate();
-  const [paths, setPaths] = useState([]);
-  const [newPath, setNewPath] = useState('');
+
+  const {
+    paths,
+    setPaths,
+    setCurrentPath,
+    isSharingFailedModalOpen,
+    setIsSharingFailedModalOpen,
+  } = useContext(PathContext);
+
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
-  const [currentPath, setCurrentPath] = useState(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isReceivePathModalOpen, setIsReceivePathModalOpen] = useState(false);
 
   // Fetch all paths from the database when the component loads
   useEffect(() => {
@@ -30,28 +41,7 @@ const PathSelection = () => {
         setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : [])
       )
       .catch(() => console.error('Error fetching paths'));
-  }, []);
-
-  // Function to add a new path to the database and navigate
-  // to path management page
-  const handleAddPath = () => {
-    if (newPath.trim()) {
-      addPath(newPath)
-        .then(() => {
-          setPaths([...paths, newPath]);
-          setNewPath('');
-          console.log('Path added:', newPath);
-          setIsNewPathModalOpen(false);
-          navigate(`/muokkaapolkua/${newPath}`);
-        })
-        .catch((error) => {
-          console.error(error.message);
-          alert(error.message);
-        });
-    } else {
-      alert('Anna polulle nimi');
-    }
-  };
+  }, [setPaths]);
 
   // Function to navigate to the game
   const handlePathClick = async (path) => {
@@ -66,55 +56,15 @@ const PathSelection = () => {
     }
   };
 
-  // Navigate to path management page
-  const handleEditPathClick = (path) => {
-    navigate(`/muokkaapolkua/${path}`);
-    setIsNoWordsInPathOpen(false);
-  };
-
-  // Handle path deletion
-  const handlePathDelete = async () => {
-    if (!currentPath) return;
-
-    try {
-      const pathData = await getPathByName(currentPath); // Wait for getPathByName to resolve
-      if (!pathData || !pathData.id) {
-        console.error('Path not found:', currentPath);
-        alert('Path not found.');
-        return;
-      }
-
-      await deletePath(pathData.id);
-      setPaths((prevPaths) => prevPaths.filter((p) => p !== currentPath));
-      console.log(`Deleted path with name: ${currentPath}`);
-    } catch (error) {
-      console.error('Error deleting path:', error);
-      alert('Error deleting the path.');
-    }
-    setIsDeleteModalOpen(false);
-  };
-
   // Function to open the modal for deleting a path
   const openDeleteModal = (path) => {
     setCurrentPath(path);
     setIsDeleteModalOpen(true);
   };
 
-  // Function to close the modal for deleting a path
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-    setCurrentPath(null);
-  };
-
   // Function to open the modal for creating a new path
   const openNewPathModal = () => {
     setIsNewPathModalOpen(true);
-  };
-
-  // Function to close the modal for creating a new path
-  const closeNewPathModal = () => {
-    setIsNewPathModalOpen(false);
-    setNewPath('');
   };
 
   // Function to open the modal for informing lack of words in path
@@ -123,10 +73,10 @@ const PathSelection = () => {
     setIsNoWordsInPathOpen(true);
   };
 
-  // Function to close the modal for informing lack of words in path
-  const closeNoWordsInPathModal = () => {
-    setIsNoWordsInPathOpen(false);
-    setCurrentPath(null);
+  // Function to open the modal for sharing a path
+  const openShareModal = (path) => {
+    setCurrentPath(path);
+    setIsShareModalOpen(true);
   };
 
   return (
@@ -142,7 +92,6 @@ const PathSelection = () => {
           aria-label="Lisää uusi polku"
         />
       </div>
-
       {/* List of paths */}
       <div className="path-list">
         {paths.length > 0 ? (
@@ -160,75 +109,46 @@ const PathSelection = () => {
                   openDeleteModal(path);
                 }}
               />
+              <ShareButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openShareModal(path);
+                }}
+              ></ShareButton>
             </div>
           ))
         ) : (
           <p className="no-paths">Ei polkuja.</p>
         )}
       </div>
-
-      {/* Modal for adding a new path */}
+      {/* Modal for adding a new path */};
       {isNewPathModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Lisää uusi polku</h2>
-            <input
-              type="text"
-              value={newPath}
-              onChange={(e) => setNewPath(e.target.value)}
-              placeholder="Anna polun nimi"
-              className="modal-input"
-            />
-            <div className="modal-buttons">
-              <button className="cancel-button" onClick={closeNewPathModal}>
-                Peruuta
-              </button>
-              <button className="save-button" onClick={handleAddPath}>
-                Tallenna
-              </button>
-            </div>
-          </div>
-        </div>
+        <AddPathModal
+          onClose={() => setIsNewPathModalOpen(false)}
+          onOpenReceive={() => setIsReceivePathModalOpen(true)}
+        />
       )}
-
       {/* Modal for confirming deletion */}
       {isDeleteModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Vahvista poisto</h2>
-            <p>
-              Haluatko varmasti poistaa polun <b>{currentPath}</b>?
-            </p>
-            <div className="modal-buttons">
-              <button className="cancel-button" onClick={closeDeleteModal}>
-                Peruuta
-              </button>
-              <button className="save-button" onClick={handlePathDelete}>
-                Poista
-              </button>
-            </div>
-          </div>
-        </div>
+        <DeletePathModal onClose={() => setIsDeleteModalOpen(false)} />
       )}
-
       {/* Modal for informing user of lack of words in path */}
       {isNoWordsInPathOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Polulla ei ole vielä sanoja</h2>
-            <div className="modal-buttons">
-              <button className="save-button" onClick={closeNoWordsInPathModal}>
-                Palaa takaisin
-              </button>
-              <button
-                className="save-button"
-                onClick={() => handleEditPathClick(currentPath)}
-              >
-                Muokkaa polkua
-              </button>
-            </div>
-          </div>
-        </div>
+        <PathNoWordsModal onClose={() => setIsNoWordsInPathOpen(false)} />
+      )}
+      {/* Modal for sharing a path */}
+      {isShareModalOpen && (
+        <SharePathModal onClose={() => setIsShareModalOpen(false)} />
+      )}
+      {/* Modal for sharing a path */}
+      {isReceivePathModalOpen && (
+        <ReceivePathModal onClose={() => setIsReceivePathModalOpen(false)} />
+      )}
+      {/* Modal for path sharing error and instructions */}
+      {isSharingFailedModalOpen && (
+        <SharePathErrorModal
+          onClose={() => setIsSharingFailedModalOpen(false)}
+        />
       )}
     </div>
   );
