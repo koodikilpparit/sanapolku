@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import Phase1 from './Phase1';
 import Phase2 from './Phase2';
 import Phase3 from './Phase3';
+
 const PhaseController = ({
   currentPhase,
   currentWord,
   playerInput,
-  handleInputChange,
+  setPlayerInput,
   handleSubmit,
-  inputRefs,
   shuffledWord = '',
 }) => {
   switch (currentPhase) {
@@ -18,9 +18,8 @@ const PhaseController = ({
         <Phase1
           currentWord={currentWord}
           playerInput={playerInput}
-          handleInputChange={handleInputChange}
+          setPlayerInput={setPlayerInput}
           handleSubmit={handleSubmit}
-          inputRefs={inputRefs}
         />
       );
     case 2:
@@ -29,9 +28,8 @@ const PhaseController = ({
           currentWord={currentWord}
           shuffledWord={shuffledWord}
           playerInput={playerInput}
-          handleInputChange={handleInputChange}
+          setPlayerInput={setPlayerInput}
           handleSubmit={handleSubmit}
-          inputRefs={inputRefs}
         />
       );
     case 3:
@@ -39,9 +37,8 @@ const PhaseController = ({
         <Phase3
           currentWord={currentWord}
           playerInput={playerInput}
-          handleInputChange={handleInputChange}
+          setPlayerInput={setPlayerInput}
           handleSubmit={handleSubmit}
-          inputRefs={inputRefs}
         />
       );
     default:
@@ -56,9 +53,8 @@ PhaseController.propTypes = {
     word: PropTypes.string.isRequired,
   }).isRequired,
   playerInput: PropTypes.array.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
+  setPlayerInput: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  inputRefs: PropTypes.object.isRequired,
   shuffledWord: PropTypes.string,
 };
 

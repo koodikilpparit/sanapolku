@@ -1,38 +1,71 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import ImageContainer from './ImageContainer';
 
-const Phase3 = ({
-  currentWord,
-  playerInput,
-  handleInputChange,
-  handleSubmit,
-  inputRefs,
-}) => {
-  const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
+const Phase3 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
+  const isReadyButtonDisabled =
+    playerInput.length !== currentWord.word.length || playerInput.includes('');
+  const inputRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    inputRefs.current = inputRefs.current.slice(0, currentWord.word.length);
-  }, [currentWord, inputRefs]);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isReadyButtonDisabled) {
-        handleSubmit();
+    setPlayerInput(Array(currentWord.word.length).fill(''));
+    setActiveIndex(0);
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
-    };
+    }, 0);
+  }, [currentWord, setPlayerInput]);
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isReadyButtonDisabled, handleSubmit]);
+  const handleInputChange = (event) => {
+    const value = event.target.value.toUpperCase();
+    if (activeIndex !== null && value) {
+      // Accept input and overwrite
+      const newPlayerInput = [...playerInput];
+      newPlayerInput[activeIndex] = value.slice(-1);
+      setPlayerInput(newPlayerInput);
+      event.target.value = '';
 
-  // Function to handle backspace key for navigating to the previous input
-  const handleBackspaceNavigation = (index, event) => {
-    if (event.key === 'Backspace' && index > 0 && playerInput[index] === '') {
-      inputRefs.current[index - 1].focus();
+      const nextIndex = activeIndex + 1;
+      if (nextIndex < currentWord.word.length) {
+        setActiveIndex(nextIndex);
+      } else {
+        setActiveIndex(currentWord.word.length - 1);
+      }
     }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Backspace') {
+      event.preventDefault();
+      if (activeIndex !== null) {
+        const newPlayerInput = [...playerInput];
+
+        if (playerInput[activeIndex] !== '') {
+          // Delete the current letter
+          newPlayerInput[activeIndex] = '';
+          setPlayerInput(newPlayerInput);
+        } else if (activeIndex > 0) {
+          // Move to the previous box
+          setActiveIndex(activeIndex - 1);
+        }
+      }
+    }
+  };
+
+  const handleLetterBoxClick = (index) => {
+    setActiveIndex(index);
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 0);
+  };
+
+  const handleInputBlur = () => {
+    // Allow user to unfocus the letter box
+    setActiveIndex(null);
   };
 
   return (
@@ -63,21 +96,31 @@ const Phase3 = ({
                   </div>
                 ))}
             </div>
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2">
               {currentWord.word.split('').map((_, index) => (
-                <input
+                <div
                   key={index}
-                  type="text"
-                  ref={(el) => (inputRefs.current[index] = el)}
-                  value={playerInput[index] || ''}
-                  onChange={(event) =>
-                    handleInputChange(index, event, inputRefs)
-                  }
-                  onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                  maxLength="1"
-                  className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
-                />
+                  onClick={() => handleLetterBoxClick(index)}
+                  className={`w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center cursor-pointer ${
+                    activeIndex === index ? 'bg-sp-light-yellow' : 'bg-sp-white'
+                  }`}
+                >
+                  {playerInput[index] || ''}
+                </div>
               ))}
+              <input
+                type="text"
+                ref={inputRef}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onBlur={handleInputBlur}
+                style={{
+                  opacity: 0,
+                  position: 'absolute',
+                  pointerEvents: 'none',
+                }}
+                autoFocus
+              />
             </div>
           </div>
 
@@ -106,9 +149,8 @@ Phase3.propTypes = {
     word: PropTypes.string.isRequired,
   }).isRequired,
   playerInput: PropTypes.array.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
+  setPlayerInput: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  inputRefs: PropTypes.object.isRequired,
 };
 
 export default Phase3;
