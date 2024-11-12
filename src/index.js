@@ -5,15 +5,12 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { SettingsProvider } from './contexts/SettingsContext';
-import { PathSharingContext } from './contexts/PathSharingContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <SettingsProvider>
-      <PathSharingContext>
-        <App />
-      </PathSharingContext>
+      <App />
     </SettingsProvider>
   </React.StrictMode>
 );

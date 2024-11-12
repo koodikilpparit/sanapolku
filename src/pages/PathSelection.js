@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { QRCode } from 'react-qrcode-logo';
 import {
@@ -8,8 +8,12 @@ import {
   getPathByName,
   getWordsForPath,
 } from '../db/db';
-import { exportPath } from '../utils/PathUtils';
-import SharingContext from '../contexts/PathSharingContext';
+import {
+  connectToPeerAndReceive,
+  initializePeer,
+  sendDataOnConnection,
+} from '../utils/ShareUtils';
+import { importPath, exportPath } from '../utils/PathUtils';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,28 +28,25 @@ const PathSelection = () => {
   const [paths, setPaths] = useState([]);
   const [newPath, setNewPath] = useState('');
   const [isScanning, setIsScanning] = useState(false);
+  const [isScanningStarted, setIsScanningStarted] = useState(false);
 
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isReceivePathModalOpen, setIsReceivePathModalOpen] = useState(false);
+  const [isSharingFailedModalOpen, setIsSharingFailedModalOpen] =
+    useState(false);
 
   const [currentPath, setCurrentPath] = useState(null);
 
+  const [peer, setPeer] = useState(null);
+  const [peerId, setPeerId] = useState(null);
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
+  const [targetPeerID, setTargetPeerID] = useState(null);
+  const [sharingStarted, setSharingStarted] = useState(false);
+  const [sharingSucceeded, setSharingSucceeded] = useState(false);
   const QRCODE_PREFIX = 'sanapolku:';
-
-  const {
-    peerId,
-    sharePath,
-    receivePath,
-    sharingStarted,
-    sharingSucceeded,
-    isSharingFailedModalOpen,
-    setIsSharingFailedModalOpen,
-    initializeStates,
-  } = useContext(SharingContext);
 
   // Fetch all paths from the database when the component loads
   useEffect(() => {
@@ -57,21 +58,63 @@ const PathSelection = () => {
   }, []);
 
   useEffect(() => {
+    // Initialize WebRTC
+    const initPeer = async () => {
+      const { id: newId, peer: newPeer } = await initializePeer();
+      setPeerId(newId);
+      setPeer(newPeer);
+    };
+    if (!peer) {
+      initPeer();
+    }
+
+    return () => {
+      if (peer) {
+        peer.destroy();
+      }
+    };
+  }, [peer]);
+
+  useEffect(() => {
     // Set up path to share
     const handleNewConnection = async () => {
-      sharePath(currentPath).then(() => {
-        if (!sharingSucceeded) {
+      console.log('Setting up onConnection with', peer, currentPath);
+      sendDataOnConnection(peer, currentPath)
+        .then(() => {
+          setSharingSucceeded(true);
+          console.log('Successfully sent path', currentPath);
+        })
+        .catch((e) => {
           closeShareModal();
-        }
-      });
+          openSharingFailedModal();
+          console.error('Connection failed', e);
+        });
     };
 
-    if (!currentPath) {
+    if (!(peer && currentPath)) {
       return;
     }
 
     handleNewConnection();
-  }, [currentPath, sharePath, sharingSucceeded]);
+  }, [peer, currentPath]);
+
+  const receivePath = async (id) => {
+    // Receive path from target
+    if (!peer) return;
+    try {
+      const importedPath = await connectToPeerAndReceive(peer, id, importPath);
+      const pathName = importedPath.name;
+      setPaths((prevPaths) => [...prevPaths, pathName]);
+      setSharingSucceeded(true);
+    } catch (e) {
+      closeReceivePathModal();
+      openSharingFailedModal();
+      console.error('Connection failed:', e);
+    } finally {
+      setSharingStarted(false);
+      setIsScanningStarted(false);
+    }
+  };
 
   // Function to add a new path to the database and navigate
   // to path management page
@@ -135,24 +178,27 @@ const PathSelection = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleReceivePathClick = () => {
+  const handleShareClick = () => {
+    setTargetPeerID(targetPeerIDInput);
     receivePath(targetPeerIDInput);
   };
 
   const handleQRScan = async (scanResult) => {
     const result = scanResult.data;
-    if (result.startsWith(QRCODE_PREFIX)) {
+    console.log(isScanningStarted);
+    if (result.startsWith(QRCODE_PREFIX) && !isScanningStarted) {
+      setIsScanningStarted(true);
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
+      setTargetPeerID(id);
       setIsScanning(false);
-      const receivedPath = await receivePath(id);
-      if (receivedPath) {
-        setPaths([...paths, receivedPath.name]);
-      } else {
-        closeReceivePathModal();
-      }
+      console.log('QR scanning ok');
+      console.log(targetPeerID);
+      setSharingStarted(true);
+      receivePath(id);
     } else {
       console.warn('Unknown QR code');
+      setIsScanningStarted(false);
     }
   };
 
@@ -193,11 +239,11 @@ const PathSelection = () => {
 
   // Function to open the modal for sharing a path
   const openShareModal = async (path) => {
-    initializeStates();
     await exportPath(path).then((serializedPath) => {
       setCurrentPath(serializedPath);
     });
     setIsShareModalOpen(true);
+    setSharingSucceeded(false);
   };
 
   // Function to close the modal for sharing a path
@@ -208,7 +254,6 @@ const PathSelection = () => {
 
   // Function to open the modal for sharing a path
   const openReceivePathModal = () => {
-    initializeStates();
     setIsScanning(true);
     setIsNewPathModalOpen(false);
     setIsReceivePathModalOpen(true);
@@ -217,6 +262,12 @@ const PathSelection = () => {
   // Function to close the modal for sharing a path
   const closeReceivePathModal = () => {
     setIsReceivePathModalOpen(false);
+    setSharingSucceeded(false);
+  };
+
+  // Function to open the modal for instructions why path sharing failed
+  const openSharingFailedModal = () => {
+    setIsSharingFailedModalOpen(true);
   };
 
   // Function to close the modal for instructions why path sharing failed
@@ -369,7 +420,7 @@ const PathSelection = () => {
       {isReceivePathModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Vastaanota polku</h2>
+            <h2>Polun vastaanottaminen</h2>
             {!sharingStarted ? (
               <div>
                 {sharingSucceeded ? (
@@ -390,10 +441,7 @@ const PathSelection = () => {
                       placeholder="Lähettäjän tunniste"
                       onChange={(e) => setTargetPeerIDInput(e.target.value)}
                     />
-                    <button
-                      className="fetch-button"
-                      onClick={handleReceivePathClick}
-                    >
+                    <button className="fetch-button" onClick={handleShareClick}>
                       Hae polku
                     </button>
                   </div>
