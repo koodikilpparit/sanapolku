@@ -19,6 +19,12 @@ const SharePathModal = ({ onClose }) => {
 
   const [exportedPath, setExportedPath] = useState(null);
 
+  // Function to close the modal for sharing a path
+  const closeShareModal = useCallback(() => {
+    setExportedPath(null);
+    onClose();
+  }, [onClose]);
+
   useEffect(() => {
     const initializeExport = async (path) => {
       await exportPath(path).then((serializedPath) => {
@@ -63,12 +69,6 @@ const SharePathModal = ({ onClose }) => {
     openSharingFailedModal,
     setSharingSucceeded,
   ]);
-
-  // Function to close the modal for sharing a path
-  const closeShareModal = useCallback(() => {
-    setExportedPath(null);
-    onClose();
-  }, [onClose]);
 
   return (
     <div className="modal-overlay">
