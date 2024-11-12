@@ -1,5 +1,4 @@
 import {
-  openDB,
   addPath,
   getAllPaths,
   getPathByName,
@@ -15,36 +14,9 @@ if (typeof structuredClone === 'undefined') {
 }
 
 describe('IndexedDB Operations', () => {
-  // Function to clear all records from the databases
-  const clearDatabases = async () => {
-    const pathsDB = await openDB('pathsDB');
-    const wordsDB = await openDB('wordsDB');
-
-    const clearStore = async (db, storeName) => {
-      const tx = db.transaction(storeName, 'readwrite');
-      const store = tx.objectStore(storeName);
-      await store.clear();
-      await tx.done;
-    };
-
-    await clearStore(pathsDB, 'paths');
-    await clearStore(wordsDB, 'words');
-  };
-
   // Clear databases before each test
   beforeEach(async () => {
-    await clearDatabases();
-  });
-
-  // Test opening the database
-  it('should open pathsDB successfully', async () => {
-    const db = await openDB('pathsDB');
-    expect(db.name).toBe('pathsDB');
-  });
-
-  it('should open wordsDB successfully', async () => {
-    const db = await openDB('wordsDB');
-    expect(db.name).toBe('wordsDB');
+    await resetDB();
   });
 
   // Test adding a new path

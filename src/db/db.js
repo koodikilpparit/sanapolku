@@ -1,23 +1,22 @@
-const DB_NAME_PATHS = 'pathsDB';
-const DB_NAME_WORDS = 'wordsDB';
+const DB_NAME = 'sanapolkuDB';
 const DB_VERSION = 1;
 
 // Open database
-export function openDB(name) {
+async function openDB(name) {
   return new Promise((resolve, reject) => {
     const request = window.indexedDB.open(name, DB_VERSION);
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
 
-      if (name === DB_NAME_PATHS && !db.objectStoreNames.contains('paths')) {
+      if (!db.objectStoreNames.contains('paths')) {
         db.createObjectStore('paths', {
           keyPath: 'id',
           autoIncrement: true,
         }).createIndex('name', 'name', { unique: true });
       }
 
-      if (name === DB_NAME_WORDS && !db.objectStoreNames.contains('words')) {
+      if (!db.objectStoreNames.contains('words')) {
         const wordsStore = db.createObjectStore('words', {
           keyPath: 'id',
           autoIncrement: true,
@@ -37,24 +36,39 @@ export function openDB(name) {
   });
 }
 
-// Add path
-export function addPath(pathName) {
-  return getPathByName(pathName).then((existingPath) => {
+/**
+ * Adds a new path
+ * @param {string} pathName The name of the path to add
+ * @returns {Promise<number>} ID
+ */
+export async function addPath(pathName) {
+  return getPathByName(pathName).then(async (existingPath) => {
     if (existingPath) {
       return Promise.reject(new Error('Path with this name already exists'));
     } else {
-      return openDB(DB_NAME_PATHS).then((db) => {
-        const transaction = db.transaction('paths', 'readwrite');
-        const store = transaction.objectStore('paths');
-        return store.add({ name: pathName });
+      return openDB(DB_NAME).then(async (db) => {
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction('paths', 'readwrite');
+          const store = transaction.objectStore('paths');
+          const request = store.add({ name: pathName });
+          request.onsuccess = (event) => {
+            resolve(event.target.result || null);
+          };
+          request.onerror = (_event) => {
+            reject('Failed to add path');
+          };
+        });
       });
     }
   });
 }
 
-// Get all paths
-export function getAllPaths() {
-  return openDB(DB_NAME_PATHS).then((db) => {
+/**
+ * Get all paths
+ * @returns {Promise<Object[]>} All paths
+ */
+export async function getAllPaths() {
+  return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
@@ -71,9 +85,13 @@ export function getAllPaths() {
   });
 }
 
-// Get path by name
-export function getPathByName(name) {
-  return openDB(DB_NAME_PATHS).then((db) => {
+/**
+ * Retrieve path by name
+ * @param {string} name name of the path
+ * @returns {Promise<Object>} path object
+ */
+export async function getPathByName(name) {
+  return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
       const store = transaction.objectStore('paths');
@@ -91,21 +109,50 @@ export function getPathByName(name) {
   });
 }
 
-// Add word to the database
-export function addWord(word, pathId, img) {
+/**
+ * Retrieve path by ID
+ * @param {string} id id of the path
+ * @returns {Promise<Object>} path object
+ */
+export async function getPathById(id) {
+  return openDB(DB_NAME).then(async (db) => {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('paths', 'readonly');
+      const store = transaction.objectStore('paths');
+      const request = store.get(id);
+
+      request.onsuccess = (event) => {
+        resolve(event.target.result || null);
+      };
+
+      request.onerror = (_event) => {
+        reject('Error retrieving the path');
+      };
+    });
+  });
+}
+
+/**
+ * Adds a word-image pair to a path
+ * @param {string} word The word to add
+ * @param {string} pathId ID of the path where word belongs to
+ * @param {string} img URL or base64 of the image data
+ * @returns {Promise<Object>} ID of the word added
+ */
+export async function addWord(word, pathId, img) {
   if (!img) {
     return Promise.reject(new Error('Image (img) is required.'));
   }
 
-  return openDB(DB_NAME_WORDS).then((db) => {
+  return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('words', 'readwrite');
       const store = transaction.objectStore('words');
 
       const request = store.add({ word, pathId, img });
 
-      request.onsuccess = () => {
-        resolve();
+      request.onsuccess = (event) => {
+        resolve(event.target.result || null);
       };
 
       request.onerror = (_event) => {
@@ -115,9 +162,13 @@ export function addWord(word, pathId, img) {
   });
 }
 
-// Get all words for a specific path
-export function getWordsForPath(pathId) {
-  return openDB(DB_NAME_WORDS).then((db) => {
+/**
+ * Get all words for a specific path
+ * @param {string} pathId
+ * @returns {Promise<Object[]>} List of word objects
+ */
+export async function getWordsForPath(pathId) {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       if (typeof pathId === 'undefined' || pathId === null) {
         reject('Error: Invalid path ID');
@@ -139,9 +190,13 @@ export function getWordsForPath(pathId) {
   });
 }
 
-// Delete word by ID
-export function deleteWord(wordId) {
-  return openDB(DB_NAME_WORDS).then((db) => {
+/**
+ * Delete word by ID
+ * @param {string} wordId ID of the word to be deleted
+ * @returns {Promise<void>} Resolve if deleted successfully
+ */
+export async function deleteWord(wordId) {
+  return openDB(DB_NAME).then((db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('words', 'readwrite');
       const store = transaction.objectStore('words');
@@ -158,112 +213,67 @@ export function deleteWord(wordId) {
   });
 }
 
-// Delete path and it's words
+/**
+ * Delete path and all its associated words
+ * @param {string} pathId ID of the path to be deleted
+ * @returns {Promise<void>} Resolve if deleted path and its associated words successfully
+ */
 export async function deletePath(pathId) {
-  return openDB(DB_NAME_PATHS).then((db) => {
-    return new Promise((resolve, reject) => {
-      const pathTransaction = db.transaction('paths', 'readwrite');
-      const pathsStore = pathTransaction.objectStore('paths');
-      const pathDeletionRequest = pathsStore.delete(pathId);
-
-      pathDeletionRequest.onsuccess = async () => {
-        // Attempt to delete associated words
-        const wordsDeletedSuccessfully = await deletePathsWords(pathId);
-        if (wordsDeletedSuccessfully) {
-          resolve('Path and its words deleted successfully');
-        } else {
-          reject('Error while trying to delete words of the path');
-        }
-      };
-
-      pathDeletionRequest.onerror = () => {
-        reject('Error deleting the path');
-      };
-
-      pathTransaction.onerror = (error) => {
-        reject('Error during path transaction: ' + error.message);
-      };
-    });
+  return openDB(DB_NAME).then(async (db) => {
+    const transaction = db.transaction(['paths', 'words'], 'readwrite');
+    await deleteFromPathStore(transaction, pathId);
+    await deletePathFromWordsStore(transaction, pathId);
+    return 'Path and its words deleted successfully';
   });
 }
 
-// Delete path's words
-async function deletePathsWords(pathId) {
-  const db = await openDB(DB_NAME_WORDS);
-  return await new Promise((resolve, reject) => {
-    const wordTransaction = db.transaction('words', 'readwrite');
-    const wordsStore = wordTransaction.objectStore('words');
-    const wordsIndex = wordsStore.index('pathId');
-    const getWordsRequest = wordsIndex.getAllKeys(pathId);
+/**
+ * Delete path from 'paths' store
+ * @param {object} transaction Transaction object, must include 'paths' store
+ * @param {string} pathId ID of the path to delete
+ * @returns {Promise<void>} Resolve if deleted successfully
+ */
+async function deleteFromPathStore(transaction, pathId) {
+  const pathsStore = transaction.objectStore('paths');
+  await pathsStore.delete(pathId);
+}
 
-    getWordsRequest.onsuccess = (event) => {
-      const wordKeys = event.target.result;
-      if (wordKeys.length > 0) {
-        const deleteRequests = wordKeys.map((wordKey) =>
-          wordsStore.delete(wordKey)
-        );
+/**
+ * Delete path from 'words' store
+ * @param {object} transaction Transaction object, must include 'words' store
+ * @param {*} pathId ID of the path to delete
+ * @returns {Promise<void>} Resolve if deleted successfully
+ */
+async function deletePathFromWordsStore(transaction, pathId) {
+  const wordsStore = transaction.objectStore('words');
+  const wordsIndex = wordsStore.index('pathId');
+  const cursorWordsRequest = wordsIndex.openCursor(IDBKeyRange.only(pathId));
 
-        // Wait for all delete requests to complete
-        Promise.all(deleteRequests)
-          .then(() => {
-            wordTransaction.oncomplete = () => {
-              resolve(true);
-            };
-          })
-          .catch(() => {
-            // Reject if any delete request fails
-            reject(false);
-          });
+  return new Promise((resolve, reject) => {
+    cursorWordsRequest.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (cursor) {
+        const deleteWordRequest = cursor.delete();
+        deleteWordRequest.onerror = () => {
+          reject('Failed to delete word that belongs to the path');
+        };
+        cursor.continue();
       } else {
-        // If no words found, resolve as successful deletion
-        wordTransaction.oncomplete = () => {
-          resolve(true);
-        };
-
-        wordTransaction.onerror = () => {
-          reject(false);
-        };
+        // No more words to delete
+        resolve();
       }
     };
-
-    getWordsRequest.onerror = () => {
-      reject(false);
+    cursorWordsRequest.onerror = () => {
+      reject('Failed to open cursor for words store with pathId index');
     };
   });
 }
 
 // Reset the database to its initial state
-export function resetDB() {
-  return Promise.all([
-    openDB(DB_NAME_PATHS).then((db) => {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction('paths', 'readwrite');
-        const store = transaction.objectStore('paths');
-        const request = store.clear();
-
-        request.onsuccess = () => {
-          resolve();
-        };
-
-        request.onerror = (_event) => {
-          reject('Error clearing paths');
-        };
-      });
-    }),
-    openDB(DB_NAME_WORDS).then((db) => {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction('words', 'readwrite');
-        const store = transaction.objectStore('words');
-        const request = store.clear();
-
-        request.onsuccess = () => {
-          resolve();
-        };
-
-        request.onerror = (_event) => {
-          reject('Error clearing words');
-        };
-      });
-    }),
-  ]);
+export async function resetDB() {
+  return openDB(DB_NAME).then(async (db) => {
+    const transaction = db.transaction(['paths', 'words'], 'readwrite');
+    await transaction.objectStore('paths').clear();
+    await transaction.objectStore('words').clear();
+  });
 }
