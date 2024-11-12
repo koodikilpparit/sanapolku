@@ -91,6 +91,7 @@ const Phase3 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
                   <div
                     key={index}
                     className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center"
+                    data-testid="display-letter-box"
                   >
                     {letter}
                   </div>
@@ -101,9 +102,10 @@ const Phase3 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
                 <div
                   key={index}
                   onClick={() => handleLetterBoxClick(index)}
-                  className={`w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center cursor-pointer ${
+                  className={`w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-1 flex items-center justify-center cursor-pointer ${
                     activeIndex === index ? 'bg-sp-light-yellow' : 'bg-sp-white'
                   }`}
+                  data-testid="input-box"
                 >
                   {playerInput[index] || ''}
                 </div>
@@ -120,6 +122,7 @@ const Phase3 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
                   pointerEvents: 'none',
                 }}
                 autoFocus
+                data-testid="hidden-input"
               />
             </div>
           </div>

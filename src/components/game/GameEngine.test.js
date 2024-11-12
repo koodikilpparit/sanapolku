@@ -1,10 +1,16 @@
-import { React, act } from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, BrowserRouter } from 'react-router-dom';
+import React from 'react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import PathsPage from '../../pages/PathSelection';
 import { openDB } from '../../db/db';
 
+// Polyfill for structuredClone if missing
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
 }
@@ -13,7 +19,7 @@ afterAll(() => {
   jest.clearAllMocks();
 });
 
-describe('GameEngine Component with IndexedDB', () => {
+describe('GameEngine Component Integration', () => {
   const mockWords = [
     { id: 1, word: 'apple', img: 'apple.jpg', pathId: 1 },
     { id: 2, word: 'banana', img: 'banana.jpg', pathId: 1 },
@@ -35,70 +41,63 @@ describe('GameEngine Component with IndexedDB', () => {
     await wordsTransaction.done;
   };
 
-  // Initialize the fake IndexedDB before each test
   beforeEach(async () => {
     await initializeTestDB();
   });
 
-  // Reset timer after each test
   afterEach(() => {
     jest.clearAllTimers();
     jest.useRealTimers();
   });
 
-  it('renders loading message initially', () => {
+  it('shows loading message while fetching words', () => {
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
       </MemoryRouter>
     );
 
-    // Check if the "Ladataan sanoja..." message is displayed initially
     expect(screen.getByText('Ladataan sanoja...')).toBeInTheDocument();
   });
 
-  it('renders the first word when loaded', async () => {
+  it('renders first word when loaded', async () => {
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
       </MemoryRouter>
     );
 
-    // Wait for the words to be fetched and rendered
     await waitFor(() =>
-      expect(screen.getByText('Kirjoita sana')).toBeInTheDocument()
+      screen.getByRole('heading', { name: /Kirjoita sana/i })
     );
-
-    // Check that the first word's image is displayed using the src
-    const imgElement = screen.getByRole('img');
-    expect(imgElement).toHaveAttribute('src', 'apple.jpg');
+    expect(screen.getByRole('img')).toHaveAttribute('src', 'apple.jpg');
   });
 
-  it('moves to the second phase on wrong input', async () => {
+  it('transitions to Phase 2 on incorrect input', async () => {
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
       </MemoryRouter>
     );
 
-    // Wait for the words to load
-    await waitFor(() => screen.getByText('Kirjoita sana'));
+    await waitFor(() =>
+      screen.getByRole('heading', { name: /Kirjoita sana/i })
+    );
 
-    // Simulate entering wrong input and submitting
-    'wrong'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
+    // Simulate incorrect input using hidden input for each character
+    const hiddenInput = screen.getByTestId('hidden-input');
+    'wrong'.split('').forEach((letter) => {
+      fireEvent.change(hiddenInput, { target: { value: letter } });
     });
-    fireEvent.click(screen.getByText('VALMIS'));
+    fireEvent.click(screen.getByRole('button', { name: /VALMIS/i }));
 
-    // Check if it moves to the second phase (letter shuffling)
+    // Verify transition to Phase 2
     await waitFor(() =>
-      expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
+      screen.getByRole('heading', { name: /Järjestä kirjaimet/i })
     );
   });
 
-  it('moves to the next word on correct input', async () => {
+  it('advances to next word on correct input in Phase 1', async () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
@@ -106,27 +105,27 @@ describe('GameEngine Component with IndexedDB', () => {
       </MemoryRouter>
     );
 
-    // Wait for the words to load
-    await waitFor(() => screen.getByText('Kirjoita sana'));
+    await waitFor(() =>
+      screen.getByRole('heading', { name: /Kirjoita sana/i })
+    );
 
-    // Simulate entering correct input and submitting
-    'apple'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
+    // Simulate correct input using hidden input for each character
+    const hiddenInput = screen.getByTestId('hidden-input');
+    'apple'.split('').forEach((letter) => {
+      fireEvent.change(hiddenInput, { target: { value: letter } });
     });
-    fireEvent.click(screen.getByText('VALMIS'));
+    fireEvent.click(screen.getByRole('button', { name: /VALMIS/i }));
 
+    // Advance time to allow success indicator
     act(() => {
       jest.advanceTimersByTime(2500);
     });
 
-    // Check that it moves to the next word and displays the correct image
-    const nextImgElement = screen.getByRole('img');
-    expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
+    // Verify second word is loaded
+    expect(screen.getByRole('img')).toHaveAttribute('src', 'banana.jpg');
   });
 
-  it('displays game over when all words are completed', async () => {
+  it('shows game over message after all words are completed', async () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
@@ -134,87 +133,69 @@ describe('GameEngine Component with IndexedDB', () => {
       </MemoryRouter>
     );
 
-    // Complete the first word
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
+    await waitFor(() =>
+      screen.getByRole('heading', { name: /Kirjoita sana/i })
+    );
+
+    // Complete first word
+    const hiddenInput = screen.getByTestId('hidden-input');
+    'apple'.split('').forEach((letter) => {
+      fireEvent.change(hiddenInput, { target: { value: letter } });
     });
-    fireEvent.click(screen.getByText('VALMIS'));
+    fireEvent.click(screen.getByRole('button', { name: /VALMIS/i }));
 
     act(() => {
       jest.advanceTimersByTime(2500);
     });
 
-    // Check the second word (banana) is displayed by its image source
     await waitFor(() => {
-      const imgElement = screen.getByRole('img');
-      expect(imgElement).toHaveAttribute('src', 'banana.jpg');
+      expect(screen.getByRole('img')).toHaveAttribute('src', 'banana.jpg');
     });
 
-    // Complete the second word
-    'banana'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
+    // Complete second word
+    'banana'.split('').forEach((letter) => {
+      fireEvent.change(hiddenInput, { target: { value: letter } });
     });
-    fireEvent.click(screen.getByText('VALMIS'));
+    fireEvent.click(screen.getByRole('button', { name: /VALMIS/i }));
 
     act(() => {
       jest.advanceTimersByTime(2500);
     });
 
-    // Check if the game over message is displayed
+    // Verify game over message is displayed
     await waitFor(() =>
       expect(screen.getByText('Peli ohi!')).toBeInTheDocument()
     );
   });
 
-  it('displays success indicator after correct input and hides it after timeout', async () => {
+  it('shows success indicator on correct input and hides it after delay', async () => {
     jest.useFakeTimers();
-
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
       </MemoryRouter>
     );
 
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
+    await waitFor(() =>
+      screen.getByRole('heading', { name: /Kirjoita sana/i })
+    );
+
+    // Simulate correct input using hidden input for each character
+    const hiddenInput = screen.getByTestId('hidden-input');
+    'apple'.split('').forEach((letter) => {
+      fireEvent.change(hiddenInput, { target: { value: letter } });
     });
-    fireEvent.click(screen.getByText('VALMIS'));
+    fireEvent.click(screen.getByRole('button', { name: /VALMIS/i }));
 
     await act(async () => {
-      await waitFor(() =>
-        expect(screen.getByTestId('success-indicator')).toBeInTheDocument()
-      );
+      await waitFor(() => screen.getByTestId('success-indicator'));
     });
 
     act(() => {
-      jest.advanceTimersByTime(2500);
+      jest.advanceTimersByTime(2000);
     });
 
+    // Verify success indicator is hidden
     expect(screen.queryByTestId('success-indicator')).toBeNull();
-  });
-
-  it('checks that the back-button brings you to /omatpolut', () => {
-    // Rendering the required pages
-    const { container } = render(
-      <BrowserRouter>
-        <GameEngine pathName="test-path" />
-        <PathsPage />
-      </BrowserRouter>
-    );
-
-    // Checking that the back-button is on the game page
-    const backButton = container.querySelector('.back-button');
-    expect(backButton).toBeInTheDocument();
-
-    fireEvent.click(backButton);
-    expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 });

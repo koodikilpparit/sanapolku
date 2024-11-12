@@ -32,21 +32,18 @@ const GameEngine = ({ pathName }) => {
           const path = await getPathByName(pathName);
           if (!path) {
             setError('Path not found');
-            setLoading(false);
             return;
           }
 
           fetchedWords = await getWordsForPath(path.id);
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
-            setLoading(false);
             return;
           }
           fetchedWords = fetchedWords.slice(0, 10);
         } catch (error) {
           setError('Error fetching path or words');
           setLoading(false);
-          return;
         }
       }
       setWords(fetchedWords);
@@ -115,7 +112,7 @@ const GameEngine = ({ pathName }) => {
     }
   };
 
-  // Shuffle the word using lodash.shuffle
+  // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
   const shuffleWord = (word) => {
     return shuffleArray([...word]).join('');
   };

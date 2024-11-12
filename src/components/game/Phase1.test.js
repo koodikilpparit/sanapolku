@@ -1,120 +1,184 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Phase1 from '../../components/game/Phase1';
-
-// Clear all mocks after all tests
-afterAll(() => {
-  jest.clearAllMocks();
-});
 
 describe('Phase1 Component', () => {
   const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
   const mockHandleSubmit = jest.fn();
-  const mockHandleInputChange = jest.fn();
-  const mockInputRefs = createRef();
-  mockInputRefs.current = [];
+  let mockSetPlayerInput;
 
-  // Clear all mocks before each test
-  beforeEach(async () => {
-    mockHandleSubmit.mockClear();
-    mockHandleInputChange.mockClear();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockSetPlayerInput = jest.fn();
   });
 
-  it('Check that phase 1 is initialized correctly', () => {
-    const initialPlayerInput = ['', '', '', '', ''];
+  it('initializes correctly with empty input boxes', () => {
     render(
       <Phase1
         currentWord={mockWord}
-        playerInput={initialPlayerInput}
-        handleInputChange={mockHandleInputChange}
+        playerInput={['', '', '', '', '']}
+        setPlayerInput={mockSetPlayerInput}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
       />
     );
 
-    const letterTiles = screen.getAllByRole('textbox');
-    letterTiles.forEach((tile, index) => {
-      expect(tile.value).toBe(initialPlayerInput[index]);
+    const header = screen.getByRole('heading', {
+      name: /Kirjoita sana/i,
     });
+    expect(header).toBeInTheDocument();
+
+    const inputBoxes = screen.getAllByTestId('input-box');
+    expect(inputBoxes).toHaveLength(mockWord.word.length);
+    inputBoxes.forEach((box) => {
+      expect(box).toHaveTextContent('');
+    });
+
+    const button = screen.getByRole('button', { name: /VALMIS/i });
+    expect(button).toBeDisabled();
   });
 
-  it('Check that the correct number of letter tiles are rendered', async () => {
+  it('focuses on the first input box on render', () => {
     render(
       <Phase1
         currentWord={mockWord}
-        playerInput={[]}
-        handleInputChange={mockHandleInputChange}
+        playerInput={['', '', '', '', '']}
+        setPlayerInput={mockSetPlayerInput}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
       />
     );
 
-    // Check that the number of letter tiles is the length of the current word
-    const letterTiles = screen.getAllByRole('textbox');
-    expect(letterTiles.length).toBe(mockWord.word.length);
+    const inputBoxes = screen.getAllByTestId('input-box');
+    expect(inputBoxes[0]).toHaveClass('bg-sp-light-yellow');
   });
 
-  it('Check that letter tile is updated when typing', async () => {
+  it('updates input boxes when typing letters', () => {
+    const playerInput = ['', '', '', '', ''];
     render(
       <Phase1
         currentWord={mockWord}
-        playerInput={['A', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
+        playerInput={playerInput}
+        setPlayerInput={mockSetPlayerInput}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
       />
     );
 
-    const firstInput = screen.getByDisplayValue('A');
-    fireEvent.change(firstInput, { target: { value: 'Z' } });
+    const inputElement = screen.getByTestId('hidden-input');
+    fireEvent.change(inputElement, { target: { value: 'A' } });
 
-    expect(mockHandleInputChange).toHaveBeenCalledWith(
-      0,
-      expect.anything(),
-      expect.anything()
-    );
+    expect(mockSetPlayerInput).toHaveBeenCalledWith(['A', '', '', '', '']);
+  });
 
+  it('changes active input box when a letter box is clicked', () => {
     render(
       <Phase1
         currentWord={mockWord}
-        playerInput={['Z', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
+        playerInput={['A', 'P', '', '', '']}
+        setPlayerInput={mockSetPlayerInput}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
       />
     );
 
-    expect(screen.getByDisplayValue('Z')).toBeInTheDocument();
+    const inputBoxes = screen.getAllByTestId('input-box');
+
+    // Click on the third input box
+    fireEvent.click(inputBoxes[2]);
+
+    expect(inputBoxes[2]).toHaveClass('bg-sp-light-yellow');
   });
 
-  it('Check that clicking the ready-button can be used to submit answer', () => {
-    render(
-      <Phase1
-        currentWord={mockWord}
-        handleSubmit={mockHandleSubmit}
-        handleInputChange={mockHandleInputChange}
-        playerInput={['A', 'P', 'P', 'L', 'E']}
-        inputRefs={mockInputRefs}
-      />
-    );
-
-    // Check that clicking the ready-button triggers handleSubmit
-    fireEvent.click(screen.getByText('VALMIS'));
-    expect(mockHandleSubmit).toHaveBeenCalled();
-  });
-
-  it('Check that pressing Enter can be used to submit answer', () => {
+  it('enables the VALMIS button when all letters are filled', () => {
     render(
       <Phase1
         currentWord={mockWord}
         playerInput={['A', 'P', 'P', 'L', 'E']}
-        handleInputChange={mockHandleInputChange}
+        setPlayerInput={mockSetPlayerInput}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
       />
     );
 
-    fireEvent.keyDown(window, { key: 'Enter' });
+    const button = screen.getByRole('button', { name: /VALMIS/i });
+    expect(button).not.toBeDisabled();
+  });
+
+  it('calls handleSubmit when VALMIS button is clicked', () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'E']}
+        setPlayerInput={mockSetPlayerInput}
+        handleSubmit={mockHandleSubmit}
+      />
+    );
+
+    const button = screen.getByRole('button', { name: /VALMIS/i });
+    fireEvent.click(button);
+
     expect(mockHandleSubmit).toHaveBeenCalled();
+  });
+
+  it('does not move to next input box if at the last index', () => {
+    let playerInput = ['', '', '', '', ''];
+    const { rerender } = render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={playerInput}
+        setPlayerInput={(input) => {
+          playerInput = input;
+          mockSetPlayerInput(input);
+        }}
+        handleSubmit={mockHandleSubmit}
+      />
+    );
+
+    const inputElement = screen.getByTestId('hidden-input');
+
+    // Fill all input boxes
+    const letters = ['A', 'P', 'P', 'L', 'E'];
+    letters.forEach((letter) => {
+      fireEvent.change(inputElement, { target: { value: letter } });
+      rerender(
+        <Phase1
+          currentWord={mockWord}
+          playerInput={playerInput}
+          setPlayerInput={(input) => {
+            playerInput = input;
+            mockSetPlayerInput(input);
+          }}
+          handleSubmit={mockHandleSubmit}
+        />
+      );
+    });
+
+    // Try to type another letter
+    fireEvent.change(inputElement, { target: { value: 'X' } });
+
+    // Ensure that playerInput hasn't changed
+    expect(mockSetPlayerInput).not.toHaveBeenCalledWith([
+      'A',
+      'P',
+      'P',
+      'L',
+      'X',
+    ]);
+  });
+
+  it('handles unfocusing from the input box correctly', () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', '', '', '']}
+        setPlayerInput={mockSetPlayerInput}
+        handleSubmit={mockHandleSubmit}
+      />
+    );
+
+    const inputElement = screen.getByTestId('hidden-input');
+    fireEvent.blur(inputElement);
+
+    // There should be no active input box
+    const inputBoxes = screen.getAllByTestId('input-box');
+    inputBoxes.forEach((box) => {
+      expect(box).not.toHaveClass('bg-sp-light-yellow');
+    });
   });
 });
