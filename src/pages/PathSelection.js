@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPaths, getPathByName, getWordsForPath } from '../db/db';
 
-import { exportPath } from '../utils/PathUtils';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +24,6 @@ const PathSelection = () => {
     paths,
     setPaths,
     setCurrentPath,
-    setSharingSucceeded,
     isSharingFailedModalOpen,
     setIsSharingFailedModalOpen,
   } = useContext(PathContext);
@@ -76,12 +74,9 @@ const PathSelection = () => {
   };
 
   // Function to open the modal for sharing a path
-  const openShareModal = async (path) => {
-    await exportPath(path).then((serializedPath) => {
-      setCurrentPath(serializedPath);
-    });
+  const openShareModal = (path) => {
+    setCurrentPath(path);
     setIsShareModalOpen(true);
-    setSharingSucceeded(false);
   };
 
   return (

@@ -1,27 +1,46 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PathContext } from './PathContext';
 import { QRCode } from 'react-qrcode-logo';
 import { sendDataOnConnection } from '../../utils/ShareUtils';
+import { exportPath } from '../../utils/PathUtils';
 
 const SharePathModal = ({ onClose }) => {
   const {
     peer,
-    currentPath,
-    setCurrentPath,
     QRCODE_PREFIX,
     peerId,
+    currentPath,
     sharingSucceeded,
     setSharingSucceeded,
     openSharingFailedModal,
   } = useContext(PathContext);
+
+  const [exportedPath, setExportedPath] = useState(null);
+
+  useEffect(() => {
+    const initializeExport = async (path) => {
+      await exportPath(path).then((serializedPath) => {
+        setExportedPath(serializedPath);
+      });
+    };
+
+    if (currentPath) {
+      initializeExport(currentPath);
+    }
+  }, [currentPath]);
+
+  useEffect(() => {
+    setSharingSucceeded(false);
+  }, []);
+
   useEffect(() => {
     // Set up path to share
     const handleNewConnection = async () => {
-      console.log('Setting up onConnection with', peer, currentPath);
-      sendDataOnConnection(peer, currentPath)
+      console.log('Setting up onConnection with', peer, exportedPath);
+      sendDataOnConnection(peer, exportedPath)
         .then(() => {
           setSharingSucceeded(true);
-          console.log('Successfully sent path', currentPath);
+          console.log('Successfully sent path', exportedPath);
         })
         .catch((e) => {
           closeShareModal();
@@ -30,16 +49,16 @@ const SharePathModal = ({ onClose }) => {
         });
     };
 
-    if (!(peer && currentPath)) {
+    if (!(peer && exportedPath)) {
       return;
     }
 
     handleNewConnection();
-  }, [peer, currentPath]);
+  }, [peer, exportedPath]);
 
   // Function to close the modal for sharing a path
   const closeShareModal = () => {
-    setCurrentPath(null);
+    setExportedPath(null);
     onClose();
   };
 
