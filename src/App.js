@@ -10,6 +10,7 @@ import ManagePath from './pages/ManagePath';
 import NewWord from './pages/NewWord';
 import GamePage from './pages/GamePage';
 import Share from './pages/Share';
+import { PathProvider } from './components/pathSelection/PathContext';
 
 function App() {
   return (
@@ -20,7 +21,14 @@ function App() {
           <Route path="/asetukset" element={<Settings />} />
           <Route path="/ohjeet" element={<Instructions />} />
           <Route path="/polut" element={<GameMenu />} />
-          <Route path="/omatpolut" element={<PathSelection />} />
+          <Route
+            path="/omatpolut"
+            element={
+              <PathProvider>
+                <PathSelection />
+              </PathProvider>
+            }
+          />
           <Route path="/muokkaapolkua/:pathName" element={<ManagePath />} />
           <Route path="/uusisana/:pathName" element={<NewWord />} />
           <Route path="/peli/:pathName" element={<GamePage />} />
