@@ -91,6 +91,7 @@ const Phase1 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
                 className={`w-full max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-1 flex items-center justify-center cursor-pointer ${
                   activeIndex === index ? 'bg-sp-light-yellow' : 'bg-sp-white'
                 }`}
+                data-testid="input-box"
               >
                 {playerInput[index] || ''}
               </div>
@@ -99,6 +100,7 @@ const Phase1 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
               type="text"
               ref={inputRef}
               onChange={handleInputChange}
+              data-testid="hidden-input"
               onKeyDown={handleKeyDown}
               onBlur={handleInputBlur}
               style={{
