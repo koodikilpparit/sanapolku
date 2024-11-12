@@ -41,7 +41,7 @@ const GameEngine = ({ pathName }) => {
             setError('No words found for this path');
             return;
           }
-          fetchedWords = fetchedWords.slice(0, 10);
+          fetchedWords = shuffleArray(fetchedWords).slice(0, 10);
         } catch (error) {
           setError('Error fetching path or words');
           setLoading(false);
@@ -145,7 +145,6 @@ const GameEngine = ({ pathName }) => {
   };
 
   return (
-
     <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
       <div className="px-2">
         <BackButton />
@@ -171,6 +170,10 @@ const GameEngine = ({ pathName }) => {
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}
             />
+            {/* Hidden div for tests */}
+            <div data-testid="word-count" style={{ display: 'none' }}>
+              {words.length}
+            </div>
           </>
         ) : (
           <p className="loading-msg">Ladataan sanoja...</p>

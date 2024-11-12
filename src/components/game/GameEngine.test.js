@@ -61,68 +61,8 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('moves to the next word on correct input', async () => {
-    render(<GameEngine pathName="test-path" />);
-
-    // Wait for the first word and its image to be displayed
-    await waitFor(() => screen.getByRole('img')); // Wait for the image to appear (we don't know which image)
-
-    // Remember the initial image (since the order is random, we store the first one)
-    const initialImage = screen.getByRole('img');
-
-    // Enter the correct word for the first phase
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: mockWords[0].word },
-    });
-    fireEvent.click(screen.getByText('Valmis'));
-
-    // Wait for the game to move to the next word and the image to change
-    await waitFor(() => {
-      const nextImage = screen.getByRole('img');
-      expect(nextImage).not.toBe(initialImage); // Ensure that the image has changed
-    });
-
-    // Enter the next correct word
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: mockWords[1].word },
-    });
-    fireEvent.click(screen.getByText('VALMIS'));
-
-    // Wait for the game to move to the next word again and the image to change
-    await waitFor(() => {
-      const nextImage = screen.getByRole('img');
-      expect(nextImage).not.toBe(initialImage); // Ensure that the image has changed again
-    });
-  });
-
-  it('loads exactly 10 random words', async () => {
-    render(<GameEngine pathName="test-path" />);
-
-    await waitFor(() => {
-      const wordCountElement = screen.getByTestId('word-count');
-      expect(Number(wordCountElement.textContent)).toBe(10);
-    });
-  });
-
-  it('moves to the second phase on wrong input', async () => {
-    render(<GameEngine pathName="test-path" />);
-
-    // Wait for the words to load and phase 1 to be active
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-
-    // Simulate entering wrong input and submitting
-    fireEvent.change(screen.getByPlaceholderText('Syötä sana'), {
-      target: { value: 'wrong' },
-    });
-    fireEvent.click(screen.getByText('VALMIS'));
-
-    // Check if it moves to the second phase (letter shuffling)
-    await waitFor(() =>
-      expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
-    );
-  });
-
-  it('moves to the next word on correct input', async () => {
     jest.useFakeTimers();
+
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
@@ -132,8 +72,15 @@ describe('GameEngine Component with IndexedDB', () => {
     // Wait for the words to load
     await waitFor(() => screen.getByText('Kirjoita sana'));
 
-    // Simulate entering correct input and submitting
-    'apple'.split('').forEach((letter, index) => {
+    // Wait for the first word and its image to be displayed and remember the first image
+    const firstImage = await screen.findByRole('img');
+    const firstSrc = firstImage.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const firstWord = firstSrc.replace('.jpg', '');
+
+    // Enter the correct word for the first phase
+    firstWord.split('').forEach((letter, index) => {
       fireEvent.change(screen.getAllByRole('textbox')[index], {
         target: { value: letter },
       });
@@ -143,55 +90,100 @@ describe('GameEngine Component with IndexedDB', () => {
     act(() => {
       jest.advanceTimersByTime(2500);
     });
+    
+    const newImage = await screen.findByRole('img');
+    const newSrc = newImage.getAttribute('src');
+    const secondWord = newSrc.replace('.jpg', '');
 
-    // Check that it moves to the next word and displays the correct image
-    const nextImgElement = screen.getByRole('img');
-    expect(nextImgElement).toHaveAttribute('src', 'banana.jpg');
+    expect(secondWord).not.toBe(firstWord); // Ensure that the image has changed again
   });
 
-  it('displays game over when all words are completed', async () => {
-    jest.useFakeTimers();
+  it('loads exactly 10 random words', async () => {
     render(
       <MemoryRouter>
         <GameEngine pathName="test-path" />
       </MemoryRouter>
     );
 
-    // Complete the first word
-    await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter, index) => {
-      fireEvent.change(screen.getAllByRole('textbox')[index], {
-        target: { value: letter },
-      });
-    });
-    fireEvent.click(screen.getByText('VALMIS'));
-
-    act(() => {
-      jest.advanceTimersByTime(2500);
-    });
-
-    // Check the second word (banana) is displayed by its image source
     await waitFor(() => {
-      const imgElement = screen.getByRole('img');
-      expect(imgElement).toHaveAttribute('src', 'banana.jpg');
+      const wordCountElement = screen.getByTestId('word-count');
+      expect(Number(wordCountElement.textContent)).toBe(10);
     });
+  });
 
-    // Complete the second word
-    'banana'.split('').forEach((letter, index) => {
+  it('moves to the second phase on wrong input', async () => {
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
+
+    // Wait for the words to load and phase 1 to be active
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    // Wait for the word and its image to be displayed
+    const image = await screen.findByRole('img');
+    const imageSrc = image.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const correctWord = imageSrc.replace('.jpg', '');
+
+    // Create wrong word which lenght is same than correct word's
+    const wrongWord = 'x'.repeat(correctWord.length);
+
+    // Simulate entering wrong input and submitting
+    wrongWord.split('').forEach((letter, index) => {
       fireEvent.change(screen.getAllByRole('textbox')[index], {
         target: { value: letter },
       });
     });
     fireEvent.click(screen.getByText('VALMIS'));
 
-    act(() => {
-      jest.advanceTimersByTime(2500);
-    });
+    // Check if it moves to the second phase (letter shuffling)
+    await waitFor(() =>
+      expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
+    );
+  });
+
+  it('displays game over when all words are completed', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathName="test-path" />
+      </MemoryRouter>
+    );
+
+    // Wait that game begins
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    for (let i = 0; i < 10; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
+      });
+      fireEvent.click(screen.getByText('VALMIS'));
+
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+    }
 
     // Check if the game over message is displayed
-    await waitFor(() =>
-      expect(screen.getByText('Peli ohi!')).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText('Peli ohi!')).toBeInTheDocument();
+    });
+
+    jest.useRealTimers();
   });
 
   it('displays success indicator after correct input and hides it after timeout', async () => {
@@ -204,7 +196,15 @@ describe('GameEngine Component with IndexedDB', () => {
     );
 
     await waitFor(() => screen.getByText('Kirjoita sana'));
-    'apple'.split('').forEach((letter, index) => {
+
+    const image = await screen.findByRole('img');
+    const imageSrc = image.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const correctWord = imageSrc.replace('.jpg', '');
+
+    // Enter the correct word for the first phase
+    correctWord.split('').forEach((letter, index) => {
       fireEvent.change(screen.getAllByRole('textbox')[index], {
         target: { value: letter },
       });
