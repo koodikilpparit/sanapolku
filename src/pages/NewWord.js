@@ -6,6 +6,7 @@ import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/ImageUploader';
 import Modal from '../components/Modal';
 import PapunetView from './PapunetView';
+import ImageCropper from '../components/ImageCropper';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -14,10 +15,11 @@ const NewWord = () => {
   const [pathId, setPathId] = useState(null);
   const [error, setError] = useState(null);
   const [imageData, setImageData] = useState(null);
+  const [previewImage, setPreviewImage] = useState(
+    'https://placehold.co/150x150'
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Placeholder image URL
-  const placeholderImage = 'https://placehold.co/150x150';
+  const [isCropping, setIsCropping] = useState(false); // Modal for image cropping
 
   // Function to fetch path ID when the component loads
   useEffect(() => {
@@ -39,7 +41,7 @@ const NewWord = () => {
       return;
     }
 
-    const imageToSave = imageData || placeholderImage;
+    const imageToSave = imageData || previewImage;
 
     if (pathId) {
       addWord(newWord, pathId, imageToSave)
@@ -48,6 +50,18 @@ const NewWord = () => {
     } else {
       alert('Path ID not found.');
     }
+  };
+
+  const handleImageCrop = (croppedImage) => {
+    setImageData(croppedImage); // Set the cropped image
+    setPreviewImage(croppedImage);
+    setIsCropping(false); // Close the cropping modal
+    setIsModalOpen(false); // Close Papunet modal as well
+  };
+
+  const handleImageSelection = (image) => {
+    setImageData(image); // Set the selected image from Papunet
+    setIsCropping(true); // Open the cropping modal
   };
 
   return (
@@ -73,8 +87,18 @@ const NewWord = () => {
           />
         </div>
 
-        {/* Upload image */}
-        <ImageUploader setImageData={setImageData} />
+        {/* Container for ImageUploader and preview image */}
+        <div className="image-upload-preview-container">
+          {/* Upload image */}
+          <ImageUploader
+            setImageData={setImageData}
+            onImageSelect={handleImageSelection}
+            setIsCropping={setIsCropping}
+          />
+
+          {/* Image preview */}
+          <img src={previewImage} alt="Preview" className="image-preview" />
+        </div>
 
         {/* Buttons */}
         <div className="confirm-button-container">
@@ -96,12 +120,14 @@ const NewWord = () => {
       {/* Modal for PapunetView */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <PapunetView
-          onSelectImage={(image) => {
-            setImageData(image);
-            setIsModalOpen(false);
-          }}
+          onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
         />
+      </Modal>
+
+      {/* Modal for Image Cropping */}
+      <Modal isOpen={isCropping} onClose={() => setIsCropping(false)}>
+        <ImageCropper imageSrc={imageData} onCroppedImage={handleImageCrop} />
       </Modal>
     </div>
   );
