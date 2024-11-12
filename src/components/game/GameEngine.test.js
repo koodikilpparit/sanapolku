@@ -90,7 +90,7 @@ describe('GameEngine Component with IndexedDB', () => {
     act(() => {
       jest.advanceTimersByTime(2500);
     });
-    
+
     const newImage = await screen.findByRole('img');
     const newSrc = newImage.getAttribute('src');
     const secondWord = newSrc.replace('.jpg', '');
