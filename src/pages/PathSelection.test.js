@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
 import * as db from '../db/db';
+import { PathProvider } from '../components/pathSelection/PathContext';
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -21,7 +22,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should render the PathSelection component and display the title "Polut"', () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -32,7 +35,9 @@ describe('PathSelection Component UI Tests', () => {
   it('checks if back button navigates back to the previous page', () => {
     const { container } = render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -48,7 +53,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should open the new path modal when clicking the add path button', () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -64,7 +71,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should allow the user to type in the input field inside the modal', () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -83,7 +92,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should trigger an alert if the input is empty when trying to add a new path', async () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -105,7 +116,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should add a new path when the user enters a name and clicks "Tallenna"', async () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -137,7 +150,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -177,7 +192,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -212,7 +229,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -249,7 +268,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -297,7 +318,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -340,7 +363,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -375,7 +400,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -411,7 +438,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -446,7 +475,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -486,7 +517,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 

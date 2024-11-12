@@ -2,8 +2,9 @@ import { React, act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import PathsPage from '../../pages/PathSelection';
+import PathSelection from '../../pages/PathSelection';
 import { openDB } from '../../db/db';
+import { PathProvider } from '../pathSelection/PathContext';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -216,7 +217,9 @@ describe('GameEngine Component with IndexedDB', () => {
     const { container } = render(
       <BrowserRouter>
         <GameEngine pathName="test-path" />
-        <PathsPage />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
