@@ -9,7 +9,7 @@ export async function importPath(path) {
   await Promise.all(
     words.map(async (wordAndImage) => {
       const word = wordAndImage.word;
-      const image = wordAndImage.img;
+      const image = wordAndImage.imageData;
       await addWord(word, pathInDB.id, image);
     })
   );
@@ -32,6 +32,6 @@ async function getWordsToExport(pathId) {
     throw new Error('Path does not have words');
   }
   return words.map((word) => {
-    return { word: word.word, img: word.img };
+    return { word: word.word, imageData: word.imageData };
   });
 }

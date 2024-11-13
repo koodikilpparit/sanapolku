@@ -49,7 +49,7 @@ describe('StockPathHelper', () => {
       expect(parsed).toEqual({
         word: 'word',
         id: '123',
-        maker: 'maker',
+        author: 'maker',
       });
     });
 
@@ -59,7 +59,7 @@ describe('StockPathHelper', () => {
       expect(parsed).toEqual({
         word: 'word',
         id: '123',
-        maker: 'maker name',
+        author: 'maker name',
       });
     });
 
@@ -69,7 +69,7 @@ describe('StockPathHelper', () => {
       expect(parsed).toEqual({
         word: 'word',
         id: undefined,
-        maker: '',
+        author: '',
       });
     });
 
@@ -79,7 +79,7 @@ describe('StockPathHelper', () => {
       expect(parsed).toEqual({
         word: 'word',
         id: '123',
-        maker: 'maker',
+        author: 'maker',
       });
     });
 
@@ -89,7 +89,7 @@ describe('StockPathHelper', () => {
       expect(parsed).toEqual({
         word: 'word',
         id: '123',
-        maker: 'maker.name',
+        author: 'maker.name',
       });
     });
   });

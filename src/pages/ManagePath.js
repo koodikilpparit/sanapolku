@@ -64,7 +64,7 @@ const ManagePath = () => {
               <WordRow
                 key={index}
                 word={wordEntry.word}
-                imgSrc={wordEntry.img}
+                imgSrc={wordEntry.imageData.src}
                 onDelete={() => handleDelete(wordEntry.id)}
               />
             ))

@@ -8,7 +8,11 @@ afterAll(() => {
 });
 
 describe('Phase1 Component', () => {
-  const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
+  const mockWord = {
+    id: 1,
+    word: 'apple',
+    imageData: { src: 'apple.jpg', author: 'Unknown' },
+  };
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();
   const mockInputRefs = createRef();
