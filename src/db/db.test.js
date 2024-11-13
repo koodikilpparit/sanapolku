@@ -51,13 +51,13 @@ describe('IndexedDB Operations', () => {
 
     await addWord('Test Word', path.id, {
       src: 'test-image-url',
-      author: 'Unknown',
+      author: null,
     });
     const words = await getWordsForPath(path.id);
     expect(words.length).toBe(1);
     expect(words[0].word).toBe('Test Word');
     expect(words[0].imageData.src).toBe('test-image-url');
-    expect(words[0].imageData.author).toBe('Unknown');
+    expect(words[0].imageData.author).toBe(null);
   });
 
   // Test that adding a word without an image throws an error
