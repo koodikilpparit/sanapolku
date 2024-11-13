@@ -16,8 +16,11 @@ const NewWord = () => {
   const [imageData, setImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Placeholder image URL
-  const placeholderImage = 'https://placehold.co/150x150';
+  // Placeholder image
+  const placeholderImage = {
+    src: 'https://placehold.co/150x150',
+    author: 'Unknown',
+  };
 
   // Function to fetch path ID when the component loads
   useEffect(() => {
@@ -39,7 +42,10 @@ const NewWord = () => {
       return;
     }
 
-    const imageToSave = imageData || placeholderImage;
+    const imageToSave = imageData || {
+      src: placeholderImage,
+      author: 'Unknown',
+    };
 
     if (pathId) {
       addWord(newWord, pathId, imageToSave)
