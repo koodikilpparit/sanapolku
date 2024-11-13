@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import QrScannerComponent from '../QrScannerComponent';
 import { PathContext } from './PathContext';
 import { connectToPeerAndReceive, QRCODE_PREFIX } from '../../utils/ShareUtils';
@@ -15,27 +15,36 @@ const ReceivePathModal = ({ onClose }) => {
 
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
 
-  const receivePath = async (targetPeerId) => {
-    // Receive path from target
-    if (!peer) return;
-    try {
-      const importedPath = await connectToPeerAndReceive(
-        peer,
-        targetPeerId,
-        importPath
-      );
-      const pathId = importedPath.id;
-      const pathName = importedPath.name;
-      setPaths((prevPaths) => [...prevPaths, { id: pathId, name: pathName }]);
-      setReceiveSucceeded(true);
-    } catch (e) {
-      closeReceivePathModal();
-      openSharingFailedModal();
-      console.error('Connection failed:', e);
-    } finally {
-      setIsReceiveStarted(false);
-    }
-  };
+  // Function to close the modal for sharing a path
+  const closeReceivePathModal = useCallback(() => {
+    setReceiveSucceeded(false);
+    onClose();
+  }, [onClose]);
+
+  const receivePath = useCallback(
+    async (targetPeerId) => {
+      // Receive path from target
+      if (!peer) return;
+      try {
+        const importedPath = await connectToPeerAndReceive(
+          peer,
+          targetPeerId,
+          importPath
+        );
+        const pathId = importedPath.id;
+        const pathName = importedPath.name;
+        setPaths((prevPaths) => [...prevPaths, { id: pathId, name: pathName }]);
+        setReceiveSucceeded(true);
+      } catch (e) {
+        closeReceivePathModal();
+        openSharingFailedModal();
+        console.error('Connection failed:', e);
+      } finally {
+        setIsReceiveStarted(false);
+      }
+    },
+    [peer, setPaths, closeReceivePathModal, openSharingFailedModal]
+  );
 
   const handleShareClick = () => {
     setTargetPeerID(targetPeerIDInput);
@@ -56,12 +65,6 @@ const ReceivePathModal = ({ onClose }) => {
     }
   };
 
-  // Function to close the modal for sharing a path
-  const closeReceivePathModal = () => {
-    setReceiveSucceeded(false);
-    onClose();
-  };
-
   useEffect(() => {
     setIsScanning(true);
   }, []);
@@ -74,7 +77,7 @@ const ReceivePathModal = ({ onClose }) => {
     if (isReceiveStarted) {
       receivePathAsync(targetPeerID);
     }
-  }, [isReceiveStarted, targetPeerID]);
+  }, [isReceiveStarted, targetPeerID, receivePath]);
 
   return (
     <div className="modal-overlay">
