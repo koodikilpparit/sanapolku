@@ -136,12 +136,12 @@ export async function getPathById(id) {
  * Adds a word-image pair to a path
  * @param {string} word The word to add
  * @param {number} pathId ID of the path where word belongs to
- * @param {string} img URL or base64 of the image data
+ * @param {Object} imageData image data object
  * @returns {Promise<Object>} ID of the word added
  */
-export async function addWord(word, pathId, img) {
-  if (!img) {
-    return Promise.reject(new Error('Image (img) is required.'));
+export async function addWord(word, pathId, imageData) {
+  if (!imageData) {
+    return Promise.reject(new Error('Image data is required.'));
   }
 
   return openDB(DB_NAME).then(async (db) => {
@@ -149,7 +149,7 @@ export async function addWord(word, pathId, img) {
       const transaction = db.transaction('words', 'readwrite');
       const store = transaction.objectStore('words');
 
-      const request = store.add({ word, pathId, img });
+      const request = store.add({ word, pathId, imageData });
 
       request.onsuccess = (event) => {
         resolve(event.target.result || null);

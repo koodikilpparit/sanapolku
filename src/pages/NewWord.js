@@ -14,8 +14,11 @@ const NewWord = () => {
   const [imageData, setImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Placeholder image URL
-  const placeholderImage = 'https://placehold.co/150x150';
+  // Placeholder image
+  const placeholderImage = {
+    src: 'https://placehold.co/150x150',
+    author: 'Unknown',
+  };
 
   // Function to save the word and placeholder image to the database
   const handleSave = () => {
@@ -27,7 +30,7 @@ const NewWord = () => {
     const imageToSave = imageData || placeholderImage;
 
     if (pathId) {
-      addWord(newWord, pathId, imageToSave)
+      addWord(newWord, pathId, { src: imageToSave, author: null })
         .then(() => navigate(-1))
         .catch(() => alert('Error saving the word.'));
     } else {

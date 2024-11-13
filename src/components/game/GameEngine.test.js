@@ -17,7 +17,7 @@ afterAll(() => {
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = Array.from({ length: 15 }, (_, index) => ({
     word: `word${index + 1}`,
-    img: `word${index + 1}.jpg`,
+    imageData: { src: `word${index + 1}.jpg`, author: `author${index + 1}` },
   }));
 
   let pathId;
@@ -28,7 +28,7 @@ describe('GameEngine Component with IndexedDB', () => {
     pathId = await addPath('test-path');
     await Promise.all(
       mockWords.map((word) => {
-        return addWord(word.word, pathId, word.img);
+        return addWord(word.word, pathId, word.imageData);
       })
     );
   };

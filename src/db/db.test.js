@@ -49,11 +49,15 @@ describe('IndexedDB Operations', () => {
     const pathId = await addPath('Path with Words');
     const path = await getPathById(pathId);
 
-    await addWord('Test Word', path.id, 'test-image-url');
+    await addWord('Test Word', path.id, {
+      src: 'test-image-url',
+      author: 'Unknown',
+    });
     const words = await getWordsForPath(path.id);
     expect(words.length).toBe(1);
     expect(words[0].word).toBe('Test Word');
-    expect(words[0].img).toBe('test-image-url');
+    expect(words[0].imageData.src).toBe('test-image-url');
+    expect(words[0].imageData.author).toBe('Unknown');
   });
 
   // Test that adding a word without an image throws an error
@@ -61,7 +65,7 @@ describe('IndexedDB Operations', () => {
     const pathId = await addPath('No Image Path');
     const path = await getPathById(pathId);
     await expect(addWord('Word without Image', path.id)).rejects.toThrow(
-      'Image (img) is required.'
+      'Image data is required.'
     );
   });
 

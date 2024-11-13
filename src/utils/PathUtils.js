@@ -2,7 +2,7 @@ import { getWordsForPath, addPathWithWords, getPathById } from '../db/db';
 
 /**
  * Loads a path with words and images into DB
- * @param {Object} path Path object. Format {name: string, words: [{word: string, img: string}] }
+ * @param {Object} path Path object. Format {name: string, words: [{word: string, imageData: object}] }
  * @returns {Object} {id: number, name: string}
  */
 export async function importPath(path) {
@@ -34,6 +34,6 @@ async function getWordsToExport(pathId) {
     throw new Error('Path does not have words');
   }
   return words.map((word) => {
-    return { word: word.word, img: word.img };
+    return { word: word.word, imageData: word.imageData };
   });
 }
