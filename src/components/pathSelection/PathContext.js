@@ -9,16 +9,11 @@ export const PathProvider = ({ children }) => {
   const [paths, setPaths] = useState([]);
   const [currentPath, setCurrentPath] = useState(null);
 
-  const [sharingStarted, setSharingStarted] = useState(false);
-  const [sharingSucceeded, setSharingSucceeded] = useState(false);
-
   const [peer, setPeer] = useState(null);
   const [peerId, setPeerId] = useState(null);
 
   const [isSharingFailedModalOpen, setIsSharingFailedModalOpen] =
     useState(false);
-
-  const QRCODE_PREFIX = 'sanapolku:';
 
   useEffect(() => {
     // Initialize WebRTC
@@ -50,15 +45,10 @@ export const PathProvider = ({ children }) => {
         setPaths,
         currentPath,
         setCurrentPath,
-        sharingStarted,
-        setSharingStarted,
-        sharingSucceeded,
-        setSharingSucceeded,
         peer,
         setPeer,
         peerId,
         setPeerId,
-        QRCODE_PREFIX,
         isSharingFailedModalOpen,
         setIsSharingFailedModalOpen,
         openSharingFailedModal,

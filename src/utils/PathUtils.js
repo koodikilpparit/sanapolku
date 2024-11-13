@@ -2,13 +2,15 @@ import { getWordsForPath, addPathWithWords, getPathById } from '../db/db';
 
 /**
  * Loads a path with words and images into DB
- * @param {Object} path Path object. Format {pathName: string, words: [{word: string, img: string}] }
+ * @param {Object} path Path object. Format {name: string, words: [{word: string, img: string}] }
+ * @returns {Object} {id: number, name: string}
  */
 export async function importPath(path) {
   console.log('Importing path', path);
   const pathName = path.name;
   const words = path.words;
-  await addPathWithWords(pathName, words);
+  const importedPath = await addPathWithWords(pathName, words);
+  return importedPath;
 }
 
 /**
