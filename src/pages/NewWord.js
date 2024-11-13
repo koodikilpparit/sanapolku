@@ -19,7 +19,7 @@ const NewWord = () => {
   // Placeholder image
   const placeholderImage = {
     src: 'https://placehold.co/150x150',
-    author: 'Unknown',
+    author: null,
   };
 
   // Function to fetch path ID when the component loads
