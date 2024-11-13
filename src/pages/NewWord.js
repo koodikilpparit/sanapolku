@@ -78,6 +78,21 @@ const NewWord = () => {
 
         {/* Upload image */}
         <ImageUploader setImageData={setImageData} />
+        <button
+          className="nw-fetch-photos-button"
+          onClick={() => setIsModalOpen(true)}
+        >
+          HAE KUVIA
+        </button>
+
+        {/* Image Preview */}
+        <div className="image-preview">
+          <img
+            src={imageData?.src || placeholderImage.src}
+            alt="Esikatselu"
+            className="image-placeholder"
+          />
+        </div>
 
         {/* Buttons */}
         <div className="confirm-button-container">
@@ -86,12 +101,6 @@ const NewWord = () => {
           </button>
           <button className="nw-save-button" onClick={handleSave}>
             VALMIS
-          </button>
-          <button
-            className="nw-fetch-photos-button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            HAE KUVIA
           </button>
         </div>
       </div>
