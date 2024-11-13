@@ -11,6 +11,7 @@ const ReceivePathModal = ({ onClose }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [isReceiveStarted, setIsReceiveStarted] = useState(false);
   const [receiveSucceeded, setReceiveSucceeded] = useState(false);
+  const [targetPeerID, setTargetPeerID] = useState(null);
 
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
 
@@ -23,7 +24,6 @@ const ReceivePathModal = ({ onClose }) => {
         targetPeerId,
         importPath
       );
-      console.log('Imported path in receive modal', importedPath);
       const pathId = importedPath.id;
       const pathName = importedPath.name;
       setPaths((prevPaths) => [...prevPaths, { id: pathId, name: pathName }]);
@@ -38,10 +38,11 @@ const ReceivePathModal = ({ onClose }) => {
   };
 
   const handleShareClick = () => {
-    receivePath(targetPeerIDInput);
+    setTargetPeerID(targetPeerIDInput);
+    setIsReceiveStarted(true);
   };
 
-  const handleQRScan = async (scanResult) => {
+  const handleQRScan = (scanResult) => {
     const result = scanResult.data;
     if (result.startsWith(QRCODE_PREFIX) && !isReceiveStarted) {
       console.log('Starting receive');
@@ -49,7 +50,7 @@ const ReceivePathModal = ({ onClose }) => {
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setIsScanning(false);
-      await receivePath(id);
+      setTargetPeerID(id);
     } else {
       console.warn('Unknown QR code');
     }
@@ -64,6 +65,16 @@ const ReceivePathModal = ({ onClose }) => {
   useEffect(() => {
     setIsScanning(true);
   }, []);
+
+  useEffect(() => {
+    const receivePathAsync = async (id) => {
+      await receivePath(id);
+    };
+
+    if (isReceiveStarted) {
+      receivePathAsync(targetPeerID);
+    }
+  }, [isReceiveStarted, targetPeerID]);
 
   return (
     <div className="modal-overlay">
