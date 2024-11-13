@@ -18,23 +18,33 @@ const ImageCropper = ({ imageSrc, onCroppedImage }) => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center items-center h-full w-full">
       {imageSrc && (
-        <div>
-          <Cropper
-            src={imageSrc}
-            style={{ height: 400, width: '100%' }}
-            aspectRatio={1}
-            guides={false}
-            zoomable={true}
-            movable={true}
-            cropBoxResizable={false}
-            cropBoxMovable={true}
-            dragMode="none"
-            viewMode={1}
-            ref={cropperRef}
-          />
-          <button onClick={handleCrop}>Rajaa ja tallenna</button>
+        <div className="relative w-5/6 h-5/6 flex justify-center items-center bg-white p-4 rounded-lg shadow-lg">
+          <h3 className="absolute top-4 sm:top-2 w-full text-center z-20 text-xl font-semibold text-black">
+            Rajaa kuva
+          </h3>
+          <div className="relative w-11/12 h-full max-h-[80%] flex justify-center items-center cropper-container">
+            <Cropper
+              src={imageSrc}
+              style={{ height: '100%', width: '100%' }}
+              aspectRatio={1}
+              guides={false}
+              zoomable={true}
+              movable={true}
+              cropBoxResizable={false}
+              cropBoxMovable={true}
+              dragMode="none"
+              viewMode={1}
+              ref={cropperRef}
+            />
+          </div>
+          <button
+            onClick={handleCrop}
+            className="absolute bottom-2 sm:bottom-1 left-1/2 transform -translate-x-1/2 bg-sp-dark-green text-white py-2 px-4 sm:py-0.5 rounded"
+          >
+            Rajaa
+          </button>
         </div>
       )}
     </div>
