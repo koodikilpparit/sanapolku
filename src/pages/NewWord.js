@@ -42,10 +42,7 @@ const NewWord = () => {
       return;
     }
 
-    const imageToSave = imageData || {
-      src: placeholderImage,
-      author: 'Unknown',
-    };
+    const imageToSave = imageData || placeholderImage;
 
     if (pathId) {
       addWord(newWord, pathId, imageToSave)
