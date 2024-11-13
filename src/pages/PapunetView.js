@@ -59,7 +59,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
             <button
               onClick={() =>
                 setSelectedImage({
-                  src: photo.thumb_large,
+                  src: photo.url,
                   author: photo.author,
                 })
               }
