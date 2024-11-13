@@ -24,9 +24,9 @@ const GameEngine = ({ pathId }) => {
   useEffect(() => {
     const fetchData = async () => {
       let fetchedWords = [];
-      if (pathId === 'sisäänrakennettu_aikuisten_polku') {
+      if (pathId === 'aikuistenpolku') {
         fetchedWords = await getAdultPath(10); // Get 10 words
-      } else if (pathId === 'sisäänrakennettu_lasten_polku') {
+      } else if (pathId === 'lastenpolku') {
         fetchedWords = await getKidPath(10); // Get 10 words
       } else {
         try {
