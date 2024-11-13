@@ -6,6 +6,8 @@ import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/ImageUploader';
 import Modal from '../components/Modal';
 import PapunetView from './PapunetView';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ const NewWord = () => {
       <div className="new-word-container">
         {/* Add word */}
         <div className="input-container">
-          <label>Kirjoita uusi sana:</label>
+          <label>Kirjoita uusi sana</label>
           <input
             type="text"
             value={newWord}
@@ -77,13 +79,17 @@ const NewWord = () => {
         </div>
 
         {/* Upload image */}
-        <ImageUploader setImageData={setImageData} />
-        <button
-          className="nw-fetch-photos-button"
-          onClick={() => setIsModalOpen(true)}
-        >
-          HAE KUVIA
-        </button>
+        <div className="img-upload-container">
+          <label>Lataa kuva</label>
+          <ImageUploader setImageData={setImageData} />
+          <button
+            className="img-upload-button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <FontAwesomeIcon icon={faImage} className="button-icon" />
+            <span className="button-text">Papunetistä</span>
+          </button>
+        </div>
 
         {/* Image Preview */}
         <div className="image-preview">

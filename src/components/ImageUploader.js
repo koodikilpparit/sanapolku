@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../styles/NewWord.css';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { faTabletScreenButton } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Component that allows uploading images
@@ -24,18 +24,24 @@ const ImageUploader = ({ setImageData }) => {
     reader.readAsDataURL(file);
   };
 
+  const handleButtonClick = () => {
+    document.getElementById('hiddenFileInput').click();
+  };
+
   return (
-    <div className="image-upload-container">
-      <label className="image-upload-button">
-        <FontAwesomeIcon icon={faImage} className="image-icon" />
-        Lataa kuva
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileUpload}
-          style={{ display: 'none' }}
-        />
-      </label>
+    <div>
+      <button className="img-upload-button" onClick={handleButtonClick}>
+        <FontAwesomeIcon icon={faTabletScreenButton} className="button-icon" />
+
+        <span className="button-text">Laitteelta</span>
+      </button>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+        style={{ display: 'none' }}
+        id="hiddenFileInput"
+      />
     </div>
   );
 };
