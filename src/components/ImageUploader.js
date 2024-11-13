@@ -32,7 +32,6 @@ const ImageUploader = ({ setImageData }) => {
     <div>
       <button className="img-upload-button" onClick={handleButtonClick}>
         <FontAwesomeIcon icon={faTabletScreenButton} className="button-icon" />
-
         <span className="button-text">Laitteelta</span>
       </button>
       <input

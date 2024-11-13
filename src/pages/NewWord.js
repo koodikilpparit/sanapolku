@@ -76,28 +76,29 @@ const NewWord = () => {
             onChange={(e) => setNewWord(e.target.value)}
             placeholder="Uusi sana"
           />
-        </div>
 
-        {/* Upload image */}
-        <div className="img-upload-container">
-          <label>Lataa kuva</label>
-          <ImageUploader setImageData={setImageData} />
-          <button
-            className="img-upload-button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <FontAwesomeIcon icon={faImage} className="button-icon" />
-            <span className="button-text">Papunetistä</span>
-          </button>
-        </div>
+          {/* Upload image */}
+          <div className="img-upload-container">
+            <label>Lataa kuva</label>
+            <div className="img-upload-button-container">
+              <ImageUploader setImageData={setImageData} />
+              <button
+                className="img-upload-button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <FontAwesomeIcon icon={faImage} className="button-icon" />
+                <span className="button-text">Papunetistä</span>
+              </button>
+            </div>
+          </div>
 
-        {/* Image Preview */}
-        <div className="image-preview">
-          <img
-            src={imageData?.src || placeholderImage.src}
-            alt="Esikatselu"
-            className="image-placeholder"
-          />
+          {/* Image Preview */}
+          <div className="image-preview">
+            <img
+              src={imageData?.src || placeholderImage.src}
+              alt="Esikatselu"
+            />
+          </div>
         </div>
 
         {/* Buttons */}
