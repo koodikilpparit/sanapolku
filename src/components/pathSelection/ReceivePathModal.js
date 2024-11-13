@@ -47,8 +47,10 @@ const ReceivePathModal = ({ onClose }) => {
   );
 
   const handleShareClick = () => {
-    setTargetPeerID(targetPeerIDInput);
-    setIsReceiveStarted(true);
+    if (targetPeerIDInput != '') {
+      setTargetPeerID(targetPeerIDInput);
+      setIsReceiveStarted(true);
+    }
   };
 
   const handleQRScan = (scanResult) => {
