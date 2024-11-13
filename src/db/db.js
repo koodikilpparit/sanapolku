@@ -281,7 +281,7 @@ export async function resetDB() {
 /**
  * Adds a new path with list of word-image pairs in a single transaction
  * @param {string} pathName name of the path to add
- * @param {Object[]} wordAndImageList List of words and their images to add. Expected format: [{word: string, img: string}]
+ * @param {Object[]} wordAndImageList List of words and their images to add. Expected format: [{word: string, imageData: object}]
  */
 export async function addPathWithWords(pathName, wordAndImageList) {
   return openDB(DB_NAME).then(async (db) => {
@@ -302,8 +302,12 @@ export async function addPathWithWords(pathName, wordAndImageList) {
     await Promise.all(
       wordAndImageList.map((wordAndImage) => {
         const word = wordAndImage.word;
-        const image = wordAndImage.img;
-        return wordsStore.add({ word: word, pathId: pathId, img: image });
+        const imageData = wordAndImage.imageData;
+        return wordsStore.add({
+          word: word,
+          pathId: pathId,
+          imageData: imageData,
+        });
       })
     );
 
