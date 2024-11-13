@@ -42,10 +42,10 @@ const NewWord = () => {
       return;
     }
 
-    const imageToSave = imageData || placeholderImage;
+    const imageDataToSave = imageData || placeholderImage;
 
     if (pathId) {
-      addWord(newWord, pathId, { src: imageToSave, author: null })
+      addWord(newWord, pathId, imageDataToSave)
         .then(() => navigate(-1))
         .catch(() => alert('Error saving the word.'));
     } else {
