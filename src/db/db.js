@@ -136,7 +136,7 @@ export async function getPathById(id) {
  * Adds a word-image pair to a path
  * @param {string} word The word to add
  * @param {string} pathId ID of the path where word belongs to
- * @param {string} imageData image data object
+ * @param {Object} imageData image data object
  * @returns {Promise<Object>} ID of the word added
  */
 export async function addWord(word, pathId, imageData) {
