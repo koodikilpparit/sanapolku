@@ -8,7 +8,11 @@ afterAll(() => {
 });
 
 describe('Phase3 Component', () => {
-  const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
+  const mockWord = {
+    id: 1,
+    word: 'apple',
+    imageData: { src: 'apple.jpg', author: null },
+  };
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();
   const mockInputRefs = createRef();
@@ -131,7 +135,7 @@ describe('Phase3 Component', () => {
 
     const image = screen.getByAltText(`Kuva sanasta ${mockWord.word}`);
     expect(image).toBeInTheDocument();
-    expect(image.src).toContain(mockWord.img);
+    expect(image.src).toContain(mockWord.imageData.src);
   });
 
   it('Check that the ready button is disabled when player input is incomplete', () => {
