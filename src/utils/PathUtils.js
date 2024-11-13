@@ -1,28 +1,30 @@
-import { getPathByName, getWordsForPath, addPath, addWord } from '../db/db';
+import { getWordsForPath, addPathWithWords, getPathById } from '../db/db';
 
+/**
+ * Loads a path with words and images into DB
+ * @param {Object} path Path object. Format {name: string, words: [{word: string, imageData: object}] }
+ * @returns {Object} {id: number, name: string}
+ */
 export async function importPath(path) {
   console.log('Importing path', path);
   const pathName = path.name;
   const words = path.words;
-  await addPath(pathName);
-  const pathInDB = await getPathByName(pathName);
-  await Promise.all(
-    words.map(async (wordAndImage) => {
-      const word = wordAndImage.word;
-      const image = wordAndImage.imageData;
-      await addWord(word, pathInDB.id, image);
-    })
-  );
-  return pathInDB;
+  const importedPath = await addPathWithWords(pathName, words);
+  return importedPath;
 }
 
-export async function exportPath(pathName) {
-  const path = await getPathByName(pathName);
+/**
+ * Exports a path from DB into object
+ * @param {number} pathId
+ * @returns {Object} exported path object. Same format as import
+ */
+export async function exportPath(pathId) {
+  const path = await getPathById(pathId);
   if (!path) {
-    console.warn('Path not found', pathName);
+    console.warn('Path not found', pathId);
   }
-  const words = await getWordsToExport(path.id);
-  return { name: pathName, words: words };
+  const words = await getWordsToExport(pathId);
+  return { name: path.name, words: words };
 }
 
 async function getWordsToExport(pathId) {

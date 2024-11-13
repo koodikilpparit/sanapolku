@@ -1,23 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { PathContext } from './PathContext';
 import { QRCode } from 'react-qrcode-logo';
-import { sendDataOnConnection } from '../../utils/ShareUtils';
+import { sendDataOnConnection, QRCODE_PREFIX } from '../../utils/ShareUtils';
 import { exportPath } from '../../utils/PathUtils';
 
 import PropTypes from 'prop-types';
 
 const SharePathModal = ({ onClose }) => {
-  const {
-    peer,
-    QRCODE_PREFIX,
-    peerId,
-    currentPath,
-    sharingSucceeded,
-    setSharingSucceeded,
-    openSharingFailedModal,
-  } = useContext(PathContext);
+  const { peer, peerId, currentPath, openSharingFailedModal } =
+    useContext(PathContext);
 
   const [exportedPath, setExportedPath] = useState(null);
+  const [sharingSucceeded, setSharingSucceeded] = useState(false);
 
   // Function to close the modal for sharing a path
   const closeShareModal = useCallback(() => {
@@ -26,14 +20,14 @@ const SharePathModal = ({ onClose }) => {
   }, [onClose]);
 
   useEffect(() => {
-    const initializeExport = async (path) => {
-      await exportPath(path).then((serializedPath) => {
+    const initializeExport = async (pathId) => {
+      await exportPath(pathId).then((serializedPath) => {
         setExportedPath(serializedPath);
       });
     };
 
     if (currentPath) {
-      initializeExport(currentPath);
+      initializeExport(currentPath.id);
     }
   }, [currentPath]);
 

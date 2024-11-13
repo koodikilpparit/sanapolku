@@ -1,5 +1,7 @@
 import Peer from 'peerjs';
 
+export const QRCODE_PREFIX = 'sanapolku:';
+
 export async function initializePeer() {
   return new Promise((resolve, reject) => {
     const peer = new Peer();

@@ -9,19 +9,22 @@ const AddPathModal = ({ onClose, onOpenReceive }) => {
   const navigate = useNavigate();
   const [newPath, setNewPath] = useState('');
 
-  const { setPaths, paths } = useContext(PathContext);
+  const { setPaths } = useContext(PathContext);
 
   // Function to add a new path to the database and navigate
   // to path management page
   const handleAddPath = () => {
     if (newPath.trim()) {
       addPath(newPath)
-        .then(() => {
-          setPaths([...paths, newPath]);
+        .then((pathId) => {
+          setPaths((prevPaths) => [
+            ...prevPaths,
+            { id: pathId, name: newPath },
+          ]);
           setNewPath('');
           console.log('Path added:', newPath);
           onClose();
-          navigate(`/muokkaapolkua/${newPath}`);
+          navigate(`/muokkaapolkua/${pathId}`);
         })
         .catch((error) => {
           console.error(error.message);

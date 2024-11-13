@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPaths, getPathByName, getWordsForPath } from '../db/db';
-
+import { getAllPaths, getWordsForPath } from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,20 +36,23 @@ const PathSelection = () => {
   // Fetch all paths from the database when the component loads
   useEffect(() => {
     getAllPaths()
-      .then((paths) =>
-        setPaths(Array.isArray(paths) ? paths.map((path) => path.name) : [])
-      )
+      .then((paths) => {
+        setPaths(
+          Array.isArray(paths)
+            ? paths.map((path) => ({ name: path.name, id: path.id }))
+            : []
+        );
+      })
       .catch(() => console.error('Error fetching paths'));
   }, [setPaths]);
 
   // Function to navigate to the game
   const handlePathClick = async (path) => {
-    const pathObject = await getPathByName(path);
-    const words = await getWordsForPath(pathObject.id);
+    const words = await getWordsForPath(path.id);
 
     // Navigate to the game only if the path has words
     if (words.length > 0) {
-      navigate(`/peli/${path}`);
+      navigate(`/peli/${path.id}`);
     } else {
       openNoWordsInPathModal(path);
     }
@@ -101,8 +103,11 @@ const PathSelection = () => {
               className="path-item-container"
               onClick={() => handlePathClick(path)}
             >
-              <span className="path-item">{path}</span>
-              <EditButton path={path} onClick={(e) => e.stopPropagation()} />
+              <span className="path-item">{path.name}</span>
+              <EditButton
+                pathId={path.id}
+                onClick={(e) => e.stopPropagation()}
+              />
               <DeleteButton
                 onClick={(e) => {
                   e.stopPropagation();
@@ -121,7 +126,7 @@ const PathSelection = () => {
           <p className="no-paths">Ei polkuja.</p>
         )}
       </div>
-      {/* Modal for adding a new path */};
+      {/* Modal for adding a new path */}
       {isNewPathModalOpen && (
         <AddPathModal
           onClose={() => setIsNewPathModalOpen(false)}

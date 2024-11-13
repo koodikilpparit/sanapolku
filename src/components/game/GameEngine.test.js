@@ -20,10 +20,12 @@ describe('GameEngine Component with IndexedDB', () => {
     imageData: { src: `word${index + 1}.jpg`, author: `author${index + 1}` },
   }));
 
+  let pathId;
+
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
     await resetDB();
-    const pathId = await addPath('test-path');
+    pathId = await addPath('test-path');
     await Promise.all(
       mockWords.map((word) => {
         return addWord(word.word, pathId, word.imageData);
@@ -45,7 +47,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('renders loading message initially', () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -58,7 +60,7 @@ describe('GameEngine Component with IndexedDB', () => {
 
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -94,7 +96,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('moves to the second phase on wrong input', async () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -130,7 +132,7 @@ describe('GameEngine Component with IndexedDB', () => {
 
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -171,7 +173,7 @@ describe('GameEngine Component with IndexedDB', () => {
 
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -208,7 +210,7 @@ describe('GameEngine Component with IndexedDB', () => {
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
         <PathProvider>
           <PathSelection />
         </PathProvider>

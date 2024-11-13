@@ -90,7 +90,7 @@ export async function getAllPaths() {
  * @param {string} name name of the path
  * @returns {Promise<Object>} path object
  */
-export async function getPathByName(name) {
+async function getPathByName(name) {
   return openDB(DB_NAME).then(async (db) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('paths', 'readonly');
@@ -111,7 +111,7 @@ export async function getPathByName(name) {
 
 /**
  * Retrieve path by ID
- * @param {string} id id of the path
+ * @param {number} id id of the path
  * @returns {Promise<Object>} path object
  */
 export async function getPathById(id) {
@@ -135,7 +135,7 @@ export async function getPathById(id) {
 /**
  * Adds a word-image pair to a path
  * @param {string} word The word to add
- * @param {string} pathId ID of the path where word belongs to
+ * @param {number} pathId ID of the path where word belongs to
  * @param {Object} imageData image data object
  * @returns {Promise<Object>} ID of the word added
  */
@@ -164,7 +164,7 @@ export async function addWord(word, pathId, imageData) {
 
 /**
  * Get all words for a specific path
- * @param {string} pathId
+ * @param {number} pathId
  * @returns {Promise<Object[]>} List of word objects
  */
 export async function getWordsForPath(pathId) {
@@ -192,7 +192,7 @@ export async function getWordsForPath(pathId) {
 
 /**
  * Delete word by ID
- * @param {string} wordId ID of the word to be deleted
+ * @param {number} wordId ID of the word to be deleted
  * @returns {Promise<void>} Resolve if deleted successfully
  */
 export async function deleteWord(wordId) {
@@ -215,7 +215,7 @@ export async function deleteWord(wordId) {
 
 /**
  * Delete path and all its associated words
- * @param {string} pathId ID of the path to be deleted
+ * @param {number} pathId ID of the path to be deleted
  * @returns {Promise<void>} Resolve if deleted path and its associated words successfully
  */
 export async function deletePath(pathId) {
@@ -230,7 +230,7 @@ export async function deletePath(pathId) {
 /**
  * Delete path from 'paths' store
  * @param {object} transaction Transaction object, must include 'paths' store
- * @param {string} pathId ID of the path to delete
+ * @param {number} pathId ID of the path to delete
  * @returns {Promise<void>} Resolve if deleted successfully
  */
 async function deleteFromPathStore(transaction, pathId) {
@@ -241,7 +241,7 @@ async function deleteFromPathStore(transaction, pathId) {
 /**
  * Delete path from 'words' store
  * @param {object} transaction Transaction object, must include 'words' store
- * @param {*} pathId ID of the path to delete
+ * @param {number} pathId ID of the path to delete
  * @returns {Promise<void>} Resolve if deleted successfully
  */
 async function deletePathFromWordsStore(transaction, pathId) {
@@ -275,5 +275,49 @@ export async function resetDB() {
     const transaction = db.transaction(['paths', 'words'], 'readwrite');
     await transaction.objectStore('paths').clear();
     await transaction.objectStore('words').clear();
+  });
+}
+
+/**
+ * Adds a new path with list of word-image pairs in a single transaction
+ * @param {string} pathName name of the path to add
+ * @param {Object[]} wordAndImageList List of words and their images to add. Expected format: [{word: string, imageData: object}]
+ */
+export async function addPathWithWords(pathName, wordAndImageList) {
+  return openDB(DB_NAME).then(async (db) => {
+    const transaction = db.transaction(['paths', 'words'], 'readwrite');
+    const pathsStore = transaction.objectStore('paths');
+    const wordsStore = transaction.objectStore('words');
+
+    const pathId = await new Promise((resolve, reject) => {
+      const request = pathsStore.add({ name: pathName });
+      request.onsuccess = (event) => {
+        resolve(event.target.result || null);
+      };
+      request.onerror = (_event) => {
+        reject('Failed to add path');
+      };
+    });
+
+    await Promise.all(
+      wordAndImageList.map((wordAndImage) => {
+        const word = wordAndImage.word;
+        const imageData = wordAndImage.imageData;
+        return wordsStore.add({
+          word: word,
+          pathId: pathId,
+          imageData: imageData,
+        });
+      })
+    );
+
+    return new Promise((resolve, reject) => {
+      transaction.oncomplete = () => {
+        resolve({ id: pathId, name: pathName });
+      };
+      transaction.onerror = () => {
+        reject('Transaction failed');
+      };
+    });
   });
 }
