@@ -126,7 +126,7 @@ const PathSelection = () => {
           <p className="no-paths">Ei polkuja.</p>
         )}
       </div>
-      {/* Modal for adding a new path */};
+      {/* Modal for adding a new path */}
       {isNewPathModalOpen && (
         <AddPathModal
           onClose={() => setIsNewPathModalOpen(false)}
