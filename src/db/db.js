@@ -312,7 +312,7 @@ export async function addPathWithWords(pathName, wordAndImageList) {
     );
 
     return new Promise((resolve, reject) => {
-      transaction.complete = () => {
+      transaction.oncomplete = () => {
         resolve({ id: pathId, name: pathName });
       };
       transaction.onerror = () => {

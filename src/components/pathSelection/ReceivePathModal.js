@@ -9,8 +9,7 @@ import PropTypes from 'prop-types';
 const ReceivePathModal = ({ onClose }) => {
   const { peer, setPaths, openSharingFailedModal } = useContext(PathContext);
   const [isScanning, setIsScanning] = useState(false);
-  const [isScanningStarted, setIsScanningStarted] = useState(false);
-  const [sharingStarted, setSharingStarted] = useState(false);
+  const [isReceiveStarted, setIsReceiveStarted] = useState(false);
   const [receiveSucceeded, setReceiveSucceeded] = useState(false);
 
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
@@ -34,8 +33,7 @@ const ReceivePathModal = ({ onClose }) => {
       openSharingFailedModal();
       console.error('Connection failed:', e);
     } finally {
-      setSharingStarted(false);
-      setIsScanningStarted(false);
+      setIsReceiveStarted(false);
     }
   };
 
@@ -45,17 +43,15 @@ const ReceivePathModal = ({ onClose }) => {
 
   const handleQRScan = async (scanResult) => {
     const result = scanResult.data;
-    if (result.startsWith(QRCODE_PREFIX) && !isScanningStarted) {
+    if (result.startsWith(QRCODE_PREFIX) && !isReceiveStarted) {
       console.log('Starting receive');
-      setIsScanningStarted(true);
+      setIsReceiveStarted(true);
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setIsScanning(false);
-      setSharingStarted(true);
       await receivePath(id);
     } else {
       console.warn('Unknown QR code');
-      setIsScanningStarted(false);
     }
   };
 
@@ -73,7 +69,9 @@ const ReceivePathModal = ({ onClose }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <h2>Polun vastaanottaminen</h2>
-        {!sharingStarted ? (
+        {isReceiveStarted ? (
+          <label>Yhdistetään...</label>
+        ) : (
           <div>
             {receiveSucceeded ? (
               <label>Polun jakaminen onnistui!</label>
@@ -97,8 +95,6 @@ const ReceivePathModal = ({ onClose }) => {
               </div>
             )}
           </div>
-        ) : (
-          <label>Yhdistetään...</label>
         )}
         <button className="save-button" onClick={closeReceivePathModal}>
           Palaa takaisin
