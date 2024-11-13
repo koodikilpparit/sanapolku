@@ -23,7 +23,7 @@ const ImageUploader = ({ setImageData }) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       setUploadedImage(e.target.result); // Set the uploaded image for preview
-      setImageData(e.target.result); // Pass the image data back to NewWord component
+      setImageData({ src: e.target.result, author: null }); // Pass the image data back to NewWord component
     };
     reader.readAsDataURL(file);
   };
