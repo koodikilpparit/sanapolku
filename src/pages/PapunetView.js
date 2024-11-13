@@ -58,7 +58,10 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
             <p>Tekijä: {photo.author}</p>
             <button
               onClick={() =>
-                setSelectedImage({ src: photo.thumb, author: photo.author })
+                setSelectedImage({
+                  src: photo.thumb_large,
+                  author: photo.author,
+                })
               }
             >
               Valitse
