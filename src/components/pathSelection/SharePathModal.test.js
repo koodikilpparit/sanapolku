@@ -1,4 +1,3 @@
-// SharePathModal.test.js
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { PathContext } from './PathContext';
 import SharePathModal from './SharePathModal';
@@ -15,10 +14,6 @@ jest.mock('../../utils/ShareUtils', () => ({
 // Mock the QRCode component to avoid issues during testing
 jest.mock('react-qrcode-logo', () => ({
   QRCode: () => <div>Mocked QR Code</div>,
-}));
-
-jest.mock('../../utils/PathUtils', () => ({
-  exportPath: jest.fn(),
 }));
 
 jest.mock('../../utils/PathUtils', () => ({
