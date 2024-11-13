@@ -45,7 +45,7 @@ const Phase2 = ({
       <div className="flex flex-col sm:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
           <ImageContainer
-            src={currentWord.img}
+            src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
             className=""
           />
@@ -105,7 +105,7 @@ const Phase2 = ({
 
 Phase2.propTypes = {
   currentWord: PropTypes.shape({
-    img: PropTypes.string.isRequired,
+    imageData: PropTypes.object.isRequired,
     word: PropTypes.string.isRequired,
   }).isRequired,
   shuffledWord: PropTypes.string.isRequired,
