@@ -5,6 +5,7 @@ import ManagePath from './ManagePath';
 import PathSelection from './PathSelection';
 import { resetDB, addPath } from '../db/db';
 import { PathProvider } from '../components/pathSelection/PathContext';
+import * as ShareUtils from '../utils/ShareUtils';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -36,6 +37,10 @@ describe('ManagePath Component UI Tests', () => {
     require('react-router-dom').useParams.mockReturnValue({
       pathId: pathId,
     });
+    const mockInitializePeer = jest.spyOn(ShareUtils, 'initializePeer');
+    mockInitializePeer.mockImplementation(() =>
+      Promise.resolve([{ id: 1, peer: jest.fn() }])
+    );
   });
 
   it('should render the ManagePath component and display the path name as the title', () => {

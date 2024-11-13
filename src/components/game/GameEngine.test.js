@@ -20,10 +20,12 @@ describe('GameEngine Component with IndexedDB', () => {
     img: `word${index + 1}.jpg`,
   }));
 
+  let pathId;
+
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
     await resetDB();
-    const pathId = await addPath('test-path');
+    pathId = await addPath('test-path');
     await Promise.all(
       mockWords.map((word) => {
         return addWord(word.word, pathId, word.img);
