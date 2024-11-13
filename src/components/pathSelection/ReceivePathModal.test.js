@@ -11,17 +11,19 @@ jest.mock('../../utils/ShareUtils', () => ({
   QRCODE_PREFIX: 'sanapolku:',
 }));
 
-// Mock the QRCode component to avoid issues during testing
-jest.mock('react-qrcode-logo', () => ({
-  QRCode: () => <div>Mocked QR Code</div>,
-}));
-
-jest.mock('../../utils/PathUtils', () => ({
-  exportPath: jest.fn(),
-}));
-
 jest.mock('../../utils/PathUtils', () => ({
   importPath: jest.fn(),
+}));
+
+// Mock the QrScannerComponent
+jest.mock('../QrScannerComponent', () => ({
+  __esModule: true,
+  default: ({ onSuccess }) => (
+    <div
+      data-testid="mock-qr-scanner"
+      onClick={() => onSuccess({ data: 'sanapolku:testPeerId' })}
+    ></div>
+  ),
 }));
 
 describe('ReceivePathModal', () => {
@@ -130,5 +132,43 @@ describe('ReceivePathModal', () => {
     await waitFor(() => {
       expect(connectToPeerAndReceive).not.toHaveBeenCalled();
     });
+  });
+
+  it('should update state and start receiving when a valid QR code is scanned', async () => {
+    const mockImportedPath = { id: 'path1', name: 'Imported Path' };
+    connectToPeerAndReceive.mockResolvedValueOnce(mockImportedPath);
+    importPath.mockResolvedValueOnce(mockImportedPath);
+
+    initTest();
+
+    // Simulate QR code scan with a valid code by clicking the mocked QR scanner
+    fireEvent.click(screen.getByTestId('mock-qr-scanner'));
+
+    // Check if state is updated and path reception starts
+    await waitFor(() => {
+      expect(connectToPeerAndReceive).toHaveBeenCalledWith(
+        contextValue.peer,
+        'testPeerId',
+        importPath
+      );
+
+      expect(screen.getByText('Polun jakaminen onnistui!')).toBeInTheDocument();
+    });
+  });
+
+  it('should not update state or start receiving if QR code scan is started after receive has already started', async () => {
+    initTest();
+
+    // Initially, QR scan should not trigger anything until the process starts
+    const qrScanner = screen.getByTestId('mock-qr-scanner');
+    fireEvent.click(qrScanner);
+
+    // Ensure the receive process doesn't start again if already started
+    expect(screen.getByText('Yhdistetään...')).toBeInTheDocument();
+
+    fireEvent.click(qrScanner);
+
+    // Ensure the scan doesn't restart the process
+    expect(connectToPeerAndReceive).toHaveBeenCalledTimes(1);
   });
 });
