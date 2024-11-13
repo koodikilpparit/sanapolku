@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { PathContext } from './PathContext';
-import { deletePath, getPathByName } from '../../db/db';
+import { deletePath, getPathById } from '../../db/db';
 
 import PropTypes from 'prop-types';
 
@@ -11,16 +11,16 @@ const DeletePathModal = ({ onClose }) => {
     if (!currentPath) return;
 
     try {
-      const pathData = await getPathByName(currentPath); // Wait for getPathByName to resolve
+      const pathData = await getPathById(currentPath.id); // Wait for getPathByName to resolve
       if (!pathData || !pathData.id) {
-        console.error('Path not found:', currentPath);
+        console.error('Path not found:', currentPath.name);
         alert('Path not found.');
         return;
       }
 
       await deletePath(pathData.id);
-      setPaths((prevPaths) => prevPaths.filter((p) => p !== currentPath));
-      console.log(`Deleted path with name: ${currentPath}`);
+      setPaths((prevPaths) => prevPaths.filter((p) => p.id !== currentPath.id));
+      console.log(`Deleted path with name: ${currentPath.name}`);
     } catch (error) {
       console.error('Error deleting path:', error);
       alert('Error deleting the path.');
@@ -39,7 +39,7 @@ const DeletePathModal = ({ onClose }) => {
       <div className="modal-content">
         <h2>Vahvista poisto</h2>
         <p>
-          Haluatko varmasti poistaa polun <b>{currentPath}</b>?
+          Haluatko varmasti poistaa polun <b>{currentPath.name}</b>?
         </p>
         <div className="modal-buttons">
           <button className="cancel-button" onClick={closeDeleteModal}>

@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  getAllPaths,
-  addPath,
-  deletePath,
-  getWordsForPath,
-  getPathById,
-} from '../db/db';
+import { getAllPaths, getWordsForPath } from '../db/db';
 import '../styles/PathSelection.css';
 import BackButton from '../components/universal/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
