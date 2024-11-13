@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
 import '../styles/PapunetView.css';
 
-const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
+const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
@@ -69,7 +69,10 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
           </div>
         ))}
       </div>
-      <button onClick={handleSave}>Tallenna</button>
+      <div className="return-save-button-container">
+        <button onClick={closeModal}>Peruuta</button>
+        <button onClick={handleSave}>Tallenna</button>
+      </div>
     </div>
   );
 };

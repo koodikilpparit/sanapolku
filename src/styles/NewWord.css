@@ -102,10 +102,10 @@ label {
   font-weight: bold;
 }
 
-.image-placeholder {
+.image-preview {
   width: 150px;
   height: 150px;
-  object-fit: contain;
+  margin-top: 20px;
 }
 
 .confirm-button-container {

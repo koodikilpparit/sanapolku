@@ -78,26 +78,28 @@ const NewWord = () => {
           />
 
           {/* Upload image */}
-          <div className="img-upload-container">
-            <label>Lataa kuva</label>
-            <div className="img-upload-button-container">
-              <ImageUploader setImageData={setImageData} />
-              <button
-                className="img-upload-button"
-                onClick={() => setIsModalOpen(true)}
-              >
-                <FontAwesomeIcon icon={faImage} className="button-icon" />
-                <span className="button-text">Papunetistä</span>
-              </button>
+          <div className="img-upload-preview-wrapper">
+            <div className="img-upload-container">
+              <label>Lataa kuva</label>
+              <div className="img-upload-button-container">
+                <ImageUploader setImageData={setImageData} />
+                <button
+                  className="img-upload-button"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faImage} className="button-icon" />
+                  <span className="button-text">Papunetistä</span>
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Image Preview */}
-          <div className="image-preview">
-            <img
-              src={imageData?.src || placeholderImage.src}
-              alt="Esikatselu"
-            />
+            {/* Image Preview */}
+            <div className="image-preview">
+              <img
+                src={imageData?.src || placeholderImage.src}
+                alt="Esikatselu"
+              />
+            </div>
           </div>
         </div>
 
@@ -120,6 +122,7 @@ const NewWord = () => {
             setIsModalOpen(false);
           }}
           initialSearchTerm={newWord}
+          closeModal={() => setIsModalOpen(false)}
         />
       </Modal>
     </div>

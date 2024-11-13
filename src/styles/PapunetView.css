@@ -1,8 +1,5 @@
 .photo-fetcher {
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .photo-fetcher h1 {
@@ -25,10 +22,6 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.photo-fetcher button:hover {
-  background-color: #0056b3;
 }
 
 .photo-container {
