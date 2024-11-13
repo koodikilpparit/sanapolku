@@ -126,7 +126,11 @@ const NewWord = () => {
       </Modal>
 
       {/* Modal for Image Cropping */}
-      <Modal isOpen={isCropping} onClose={() => setIsCropping(false)}>
+      <Modal
+        isOpen={isCropping}
+        onClose={() => setIsCropping(false)}
+        showCloseButton={false}
+      >
         <ImageCropper imageSrc={imageData} onCroppedImage={handleImageCrop} />
       </Modal>
     </div>
