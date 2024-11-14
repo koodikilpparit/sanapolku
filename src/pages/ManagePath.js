@@ -75,7 +75,6 @@ const ManagePath = () => {
     setIsEditPathNameModalOpen(true);
   };
 
-  // Function to open the modal for sharing a path
   const closeEditPathNameModal = () => {
     setIsEditPathNameModalOpen(false);
   };
@@ -85,9 +84,12 @@ const ManagePath = () => {
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <div>
+        <div className="title-edit-button">
           <h2>{pathName}</h2>
-          <EditButton onClick={openEditPathNameModal}></EditButton>
+          <EditButton
+            onClick={openEditPathNameModal}
+            color="white"
+          ></EditButton>
         </div>
         <FontAwesomeIcon
           icon={faPlus}

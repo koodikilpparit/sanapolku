@@ -24,6 +24,16 @@
   text-transform: capitalize;
 }
 
+.title-edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.edit-button {
+  margin-left: 10px;
+}
+
 .word-entry-container {
   display: flex;
   flex-direction: column;
@@ -79,7 +89,7 @@
   text-transform: capitalize;
   display: inline-block;
   white-space: normal;
-  word-break: break-word; 
+  word-break: break-word;
 }
 
 .word-image {

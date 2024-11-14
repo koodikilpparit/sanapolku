@@ -113,6 +113,7 @@ const PathSelection = () => {
                   e.stopPropagation();
                   handleEditPathClick(path.id);
                 }}
+                color="black"
               />
               <DeleteButton
                 onClick={(e) => {
