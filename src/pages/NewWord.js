@@ -13,25 +13,17 @@ const NewWord = () => {
   const pathId = Number(useParams().pathId);
   const [newWord, setNewWord] = useState('');
   const [imageData, setImageData] = useState(null);
-  const [previewImage, setPreviewImage] = useState({
-    src: 'https://placehold.co/150x150',
-    author: 'Unknown',
-  });
+  const [previewImage, setPreviewImage] = useState(
+    'https://placehold.co/150x150'
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCropping, setIsCropping] = useState(false); // Modal for image cropping
 
-  // Function to fetch path ID when the component loads
-  useEffect(() => {
-    getPathByName(pathName)
-      .then((path) => {
-        if (path) {
-          setPathId(path.id);
-        } else {
-          setError(`Path with the name "${pathName}" was not found.`);
-        }
-      })
-      .catch(() => setError('Error fetching path'));
-  }, [pathName]);
+  // Placeholder image
+  const placeholderImage = {
+    src: 'https://placehold.co/150x150',
+    author: 'Unknown',
+  };
 
   // Function to save the word and placeholder image to the database
   const handleSave = () => {
@@ -40,7 +32,7 @@ const NewWord = () => {
       return;
     }
 
-    const imageDataToSave = imageData || previewImage;
+    const imageDataToSave = imageData || placeholderImage;
 
     if (pathId) {
       addWord(newWord, pathId, imageDataToSave)
@@ -59,7 +51,11 @@ const NewWord = () => {
   };
 
   const handleImageSelection = (image) => {
-    setImageData(image); // Set the selected image from Papunet
+    // Set the selected image and author from Papunet
+    setImageData({
+      src: image.src,
+      author: image.author,
+    });
     setIsCropping(true); // Open the cropping modal
   };
 
@@ -129,7 +125,10 @@ const NewWord = () => {
         modalType="image-cropper"
         showCloseButton={false}
       >
-        <ImageCropper imageSrc={imageData} onCroppedImage={handleImageCrop} />
+        <ImageCropper
+          imageSrc={imageData?.src || imageData}
+          onCroppedImage={handleImageCrop}
+        />
       </Modal>
     </div>
   );
