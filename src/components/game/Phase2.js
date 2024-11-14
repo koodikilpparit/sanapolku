@@ -1,15 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './Phase1.css';
 import ImageContainer from './ImageContainer';
 
-const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
-  const [playerInput, setPlayerInput] = useState([]);
+const Phase2 = ({
+  currentWord,
+  shuffledWord,
+  handleSubmit,
+  playerInput,
+  setPlayerInput,
+}) => {
   const [shuffledLetters, setShuffledLetters] = useState([]);
   const [selectedLetter, setSelectedLetter] = useState(null);
   const containerRef = useRef(null);
 
   useEffect(() => {
+    // Initialize shuffled letters when currentWord or shuffledWord changes
     const lettersArray = shuffledWord
       .toUpperCase()
       .split('')
@@ -22,25 +27,21 @@ const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
     setPlayerInput(Array(currentWord.word.length).fill(''));
     setShuffledLetters(lettersArray);
     setSelectedLetter(null);
-  }, [currentWord, shuffledWord]);
+  }, [currentWord, shuffledWord, setPlayerInput]);
 
   const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
 
-  // Handle clicking on a letter in the lower row
   const handleLetterClick = (event, letter, index) => {
-    event.stopPropagation(); // Prevent click from propagating to parent
+    event.stopPropagation();
     if (!shuffledLetters[index].isUsed) {
       if (selectedLetter && selectedLetter.index === index) {
-        // If the letter is already selected, unselect it
-        setSelectedLetter(null);
+        setSelectedLetter(null); // Unselect if the same letter is clicked
       } else {
-        // Select the letter
-        setSelectedLetter({ letter, index });
+        setSelectedLetter({ letter, index }); // Select the letter
       }
     }
   };
 
-  // Handle clicking on a box in the upper row
   const handleInputClick = (event, index) => {
     event.stopPropagation();
     const newPlayerInput = [...playerInput];
@@ -49,8 +50,8 @@ const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
     if (selectedLetter) {
       const { letter, index: lowerIndex } = selectedLetter;
 
-      // If the box already has a letter, make it available again
       if (newPlayerInput[index] !== '') {
+        // Make the currently placed letter available again
         const letterToRemove = newPlayerInput[index];
         const letterIndex = shuffledLetters.findIndex(
           (item) => item.letter === letterToRemove && item.isUsed
@@ -60,14 +61,13 @@ const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
         }
       }
 
-      // Place the selected letter in the box
       newPlayerInput[index] = letter;
       newShuffledLetters[lowerIndex].isUsed = true;
       setPlayerInput(newPlayerInput);
       setShuffledLetters(newShuffledLetters);
       setSelectedLetter(null);
     } else {
-      // If no letter is selected and the box has a letter, remove it
+      // If no letter is selected, clear the box if it has a letter
       if (newPlayerInput[index] !== '') {
         const letterToRemove = newPlayerInput[index];
         const letterIndex = shuffledLetters.findIndex(
@@ -83,7 +83,6 @@ const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
     }
   };
 
-  // Handle clicking outside of letter tiles to unselect the selected letter
   const handleContainerClick = () => {
     if (selectedLetter) {
       setSelectedLetter(null);
@@ -103,7 +102,6 @@ const Phase2 = ({ currentWord, shuffledWord, handleSubmit }) => {
     };
   }, [isReadyButtonDisabled, handleSubmit, playerInput]);
 
-  // Generate the display array for the lower row with blanks at the end
   const displayShuffledLetters = () => {
     const unusedLetters = shuffledLetters.filter((item) => !item.isUsed);
     const blanksCount = shuffledLetters.length - unusedLetters.length;
@@ -204,6 +202,8 @@ Phase2.propTypes = {
   }).isRequired,
   shuffledWord: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  playerInput: PropTypes.array.isRequired,
+  setPlayerInput: PropTypes.func.isRequired,
 };
 
 export default Phase2;
