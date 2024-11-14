@@ -1,5 +1,7 @@
 import Peer from 'peerjs';
 
+export const QRCODE_PREFIX = 'sanapolku:';
+
 export async function initializePeer() {
   return new Promise((resolve, reject) => {
     const peer = new Peer();
@@ -21,17 +23,25 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
     if (!targetPeerId) reject('Target peer ID not set');
     if (!callback) reject('Callback not set');
 
-    const connection = peer.connect(targetPeerId);
-
-    connection.on('open', () => {
-      resolve();
+    const connection = peer.connect(targetPeerId, {
+      reliable: true,
     });
+
+    connection.off('data'); // Not sure if needed, but should not do any harm either
     connection.on('data', (data) => {
-      callback(data);
+      const asyncCallBack = async (data) => {
+        const importedPath = await callback(data);
+        resolve(importedPath);
+      };
+      asyncCallBack(data);
     });
     connection.on('error', (e) => {
-      console.error(e);
       reject(e);
+    });
+    connection.on('iceStateChanged', (e) => {
+      if (e === 'disconnected') {
+        reject(e);
+      }
     });
   });
 }
@@ -41,6 +51,7 @@ export function sendDataOnConnection(peer, data) {
   if (!data) throw new Error('Must contain data to send');
 
   return new Promise((resolve, reject) => {
+    peer.off('connection');
     peer.on('connection', (connection) => {
       connection.on('open', () => {
         console.log('Sending data', data);
@@ -48,8 +59,12 @@ export function sendDataOnConnection(peer, data) {
         resolve();
       });
       connection.on('error', (e) => {
-        console.error('Connection error', e);
         reject(e);
+      });
+      connection.on('iceStateChanged', (e) => {
+        if (e === 'disconnected') {
+          reject(e);
+        }
       });
     });
   });

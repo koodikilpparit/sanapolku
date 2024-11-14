@@ -9,7 +9,7 @@ export function getAdultPath(numberOfWords) {
   if (numberOfWords < words.length) {
     words = words.slice(0, numberOfWords);
   }
-  return getPath(words, path);
+  return getWordData(words, path);
 }
 
 export function getKidPath(numberOfWords) {
@@ -18,16 +18,20 @@ export function getKidPath(numberOfWords) {
   if (numberOfWords < words.length) {
     words = words.slice(0, numberOfWords);
   }
-  return getPath(words, path);
+  return getWordData(words, path);
 }
 
-function getPath(words, path) {
+function getWordData(words, path) {
   return words.map((fileName) => {
     const imagePath = `${path}/${fileName}`;
     const parsed = parseName(fileName);
     return {
-      ...parsed,
-      img: imagePath,
+      word: parsed.word,
+      id: parsed.id,
+      imageData: {
+        src: imagePath,
+        author: parsed.author,
+      },
     };
   });
 }
@@ -41,6 +45,6 @@ export function parseName(fileName) {
   return {
     word: parts[0],
     id: parts[1],
-    maker: parts.slice(2).join(' '),
+    author: parts.slice(2).join(' '),
   };
 }

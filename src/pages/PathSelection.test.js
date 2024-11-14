@@ -3,6 +3,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
 import * as db from '../db/db';
+import * as ShareUtils from '../utils/ShareUtils';
+import { PathProvider } from '../components/pathSelection/PathContext';
 
 // Mock useNavigate from react-router-dom
 jest.mock('react-router-dom', () => ({
@@ -16,12 +18,18 @@ describe('PathSelection Component UI Tests', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+    const mockInitializePeer = jest.spyOn(ShareUtils, 'initializePeer');
+    mockInitializePeer.mockImplementation(() =>
+      Promise.resolve([{ id: 1, peer: jest.fn() }])
+    );
   });
 
   it('should render the PathSelection component and display the title "Polut"', () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -32,7 +40,9 @@ describe('PathSelection Component UI Tests', () => {
   it('checks if back button navigates back to the previous page', () => {
     const { container } = render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -48,7 +58,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should open the new path modal when clicking the add path button', () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -64,7 +76,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should allow the user to type in the input field inside the modal', () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -83,7 +97,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should trigger an alert if the input is empty when trying to add a new path', async () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -105,7 +121,9 @@ describe('PathSelection Component UI Tests', () => {
   it('should add a new path when the user enters a name and clicks "Tallenna"', async () => {
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -133,11 +151,13 @@ describe('PathSelection Component UI Tests', () => {
 
   it('should navigate to the path management page when the user enters a path name and clicks "Tallenna"', async () => {
     const mockAddPath = jest.spyOn(db, 'addPath');
-    mockAddPath.mockResolvedValue(Promise.resolve({ id: 1, name: 'Polku' }));
+    mockAddPath.mockResolvedValue(Promise.resolve(1));
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -154,7 +174,7 @@ describe('PathSelection Component UI Tests', () => {
     fireEvent.click(saveButton);
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/Polku');
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/1');
     });
   });
 
@@ -165,8 +185,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'TestPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'TestPath' })
     );
 
@@ -177,7 +197,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -191,7 +213,7 @@ describe('PathSelection Component UI Tests', () => {
 
     // Wait and check if navigate was called with the correct route
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/peli/TestPath');
+      expect(mockNavigate).toHaveBeenCalledWith('/peli/1');
     });
   });
 
@@ -202,8 +224,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'EmptyPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'EmptyPath' })
     );
 
@@ -212,7 +234,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -239,8 +263,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'EmptyPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'EmptyPath' })
     );
 
@@ -249,7 +273,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -287,8 +313,8 @@ describe('PathSelection Component UI Tests', () => {
       Promise.resolve([{ id: 1, name: 'EmptyPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
       Promise.resolve({ id: 1, name: 'EmptyPath' })
     );
 
@@ -297,7 +323,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -322,7 +350,7 @@ describe('PathSelection Component UI Tests', () => {
 
     // Check if navigate was called with the correct edit path route
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/EmptyPath');
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/1');
     });
   });
 
@@ -330,17 +358,19 @@ describe('PathSelection Component UI Tests', () => {
     // Mock db functions
     const mockGetAllPaths = jest.spyOn(db, 'getAllPaths');
     mockGetAllPaths.mockImplementation(() =>
-      Promise.resolve([{ id: 1, name: 'TestEditButtonPath' }])
+      Promise.resolve([{ id: 2, name: 'TestEditButtonPath' }])
     );
 
-    const mockGetPathByName = jest.spyOn(db, 'getPathByName');
-    mockGetPathByName.mockImplementation(() =>
-      Promise.resolve({ id: 1, name: 'TestEditButtonPath' })
+    const mockGetPathById = jest.spyOn(db, 'getPathById');
+    mockGetPathById.mockImplementation(() =>
+      Promise.resolve({ id: 2, name: 'TestEditButtonPath' })
     );
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -361,9 +391,7 @@ describe('PathSelection Component UI Tests', () => {
 
     // Check if navigate was called with the correct edit path route
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith(
-        '/muokkaapolkua/TestEditButtonPath'
-      );
+      expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/2');
     });
   });
 
@@ -375,7 +403,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -406,12 +436,14 @@ describe('PathSelection Component UI Tests', () => {
     jest.spyOn(db, 'deletePath').mockResolvedValue();
 
     jest
-      .spyOn(db, 'getPathByName')
+      .spyOn(db, 'getPathById')
       .mockResolvedValue({ id: 1, name: 'TestPath' });
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -446,7 +478,9 @@ describe('PathSelection Component UI Tests', () => {
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 
@@ -482,11 +516,13 @@ describe('PathSelection Component UI Tests', () => {
       .spyOn(db, 'getAllPaths')
       .mockResolvedValue([{ id: 1, name: 'TestPath' }]);
 
-    jest.spyOn(db, 'getPathByName').mockResolvedValue(undefined);
+    jest.spyOn(db, 'getPathById').mockResolvedValue(undefined);
 
     render(
       <BrowserRouter>
-        <PathSelection />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
       </BrowserRouter>
     );
 

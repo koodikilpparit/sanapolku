@@ -8,7 +8,11 @@ afterAll(() => {
 });
 
 describe('Phase2 Component', () => {
-  const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
+  const mockWord = {
+    id: 1,
+    word: 'apple',
+    imageData: { src: 'apple.jpg', author: null },
+  };
   const mockShuffledWord = 'elppa';
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getWordsForPath, getPathByName, deleteWord } from '../db/db';
+import { getWordsForPath, deleteWord, getPathById } from '../db/db';
 import WordRow from '../components/create/WordRow';
 import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
@@ -8,25 +8,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const ManagePath = () => {
-  const { pathName } = useParams();
+  const pathId = Number(useParams().pathId);
+  const [pathName, setPathName] = useState(null);
   const navigate = useNavigate();
   const [words, setWords] = useState([]);
   const [error, setError] = useState(null);
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
-    getPathByName(pathName)
-      .then((path) => {
-        if (path) {
-          return getWordsForPath(path.id);
-        } else {
-          setError(`Path with the name "${pathName}" was not found.`);
-          return [];
-        }
-      })
-      .then((words) => setWords(words))
-      .catch(() => setError('Error fetching words'));
-  }, [pathName]);
+    const fetchData = async () => {
+      try {
+        const [path, words] = await Promise.all([
+          getPathById(pathId),
+          getWordsForPath(pathId),
+        ]);
+        setPathName(path.name);
+        setWords(words);
+      } catch (error) {
+        setError(`Path with the ID "${pathId}" was not found.`);
+      }
+    };
+    fetchData();
+  }, [pathId]);
 
   // Function to delete a word from the database and update the word list
   const handleDelete = (wordId) => {
@@ -50,7 +53,7 @@ const ManagePath = () => {
         <FontAwesomeIcon
           icon={faPlus}
           className="add-path-icon"
-          onClick={() => navigate(`/uusisana/${pathName}`)}
+          onClick={() => navigate(`/uusisana/${pathId}`)}
           aria-label="Lisää uusi sana"
         />
       </div>
@@ -64,7 +67,7 @@ const ManagePath = () => {
               <WordRow
                 key={index}
                 word={wordEntry.word}
-                imgSrc={wordEntry.img}
+                imgSrc={wordEntry.imageData.src}
                 onDelete={() => handleDelete(wordEntry.id)}
               />
             ))

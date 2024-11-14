@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addWord, getPathByName } from '../db/db';
+import { addWord } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/ImageUploader';
@@ -10,14 +10,13 @@ import ImageCropper from '../components/ImageCropper';
 
 const NewWord = () => {
   const navigate = useNavigate();
-  const { pathName } = useParams();
+  const pathId = Number(useParams().pathId);
   const [newWord, setNewWord] = useState('');
-  const [pathId, setPathId] = useState(null);
-  const [error, setError] = useState(null);
   const [imageData, setImageData] = useState(null);
-  const [previewImage, setPreviewImage] = useState(
-    'https://placehold.co/150x150'
-  );
+  const [previewImage, setPreviewImage] = useState({
+    src: 'https://placehold.co/150x150',
+    author: 'Unknown',
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCropping, setIsCropping] = useState(false); // Modal for image cropping
 
@@ -41,10 +40,10 @@ const NewWord = () => {
       return;
     }
 
-    const imageToSave = imageData || previewImage;
+    const imageDataToSave = imageData || previewImage;
 
     if (pathId) {
-      addWord(newWord, pathId, imageToSave)
+      addWord(newWord, pathId, imageDataToSave)
         .then(() => navigate(-1))
         .catch(() => alert('Error saving the word.'));
     } else {
@@ -71,8 +70,6 @@ const NewWord = () => {
         <BackButton />
         <h2>Uusi sana</h2>
       </div>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Container*/}
       <div className="new-word-container">
