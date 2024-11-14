@@ -7,6 +7,7 @@ import {
   deletePath,
   resetDB,
   getPathById,
+  editPathName,
 } from './db';
 
 if (typeof structuredClone === 'undefined') {
@@ -135,6 +136,27 @@ it('should return an error when trying to delete a non-existent path', async () 
   await expect(deletePath('nonExistentPathId')).resolves.toEqual(
     'Path and its words deleted successfully'
   );
+});
+
+// Test editing the name of a path
+it('should update the path name in the database', async () => {
+  const originalPathId = await addPath('Original Path');
+
+  // Edit the path name
+  await editPathName(originalPathId, 'Updated Path');
+
+  // Retrieve the updated path
+  const updatedPath = await getPathById(originalPathId);
+  expect(updatedPath.name).toBe('Updated Path');
+});
+
+// Test rejecting when editing a path that does not exist
+it('should reject when attempting to edit a non-existent path', async () => {
+  const nonExistentPathId = 9999;
+
+  await expect(
+    editPathName(nonExistentPathId, 'New Path Name')
+  ).rejects.toEqual('Error retrieving the path');
 });
 
 describe('resetDB Function', () => {
