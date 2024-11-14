@@ -41,6 +41,8 @@ describe('ManagePath Component UI Tests', () => {
     mockInitializePeer.mockImplementation(() =>
       Promise.resolve([{ id: 1, peer: jest.fn() }])
     );
+
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
   it('should render the ManagePath component and display the path name as the title', () => {
@@ -129,6 +131,13 @@ describe('ManagePath Component UI Tests', () => {
   });
 
   it('successfully edits the path name', async () => {
+    // Mock successful response for editPathName
+    const mockEditPathName = jest.spyOn(db, 'editPathName');
+    mockEditPathName.mockResolvedValue({
+      id: pathId,
+      name: 'Updated Path Name',
+    });
+
     const { container } = render(
       <BrowserRouter>
         <ManagePath />
@@ -141,13 +150,6 @@ describe('ManagePath Component UI Tests', () => {
     // Enter new path name
     const input = screen.getByPlaceholderText(/Anna uusi polun nimi/i);
     fireEvent.change(input, { target: { value: 'Updated Path Name' } });
-
-    // Mock successful response for editPathName
-    const mockEditPathName = jest.spyOn(db, 'editPathName');
-    mockEditPathName.mockResolvedValue({
-      id: pathId,
-      name: 'Updated Path Name',
-    });
 
     // Click save button
     fireEvent.click(screen.getByText(/Tallenna/i));
@@ -164,9 +166,6 @@ describe('ManagePath Component UI Tests', () => {
         <ManagePath />
       </BrowserRouter>
     );
-
-    // Mock the window.alert to avoid actual alert
-    window.alert = jest.fn();
 
     // Open the edit path name modal
     fireEvent.click(container.querySelector('.edit-button'));
