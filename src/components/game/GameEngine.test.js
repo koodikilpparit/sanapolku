@@ -8,7 +8,6 @@ import {
 } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import { openDB } from '../../db/db';
 import PathSelection from '../../pages/PathSelection';
 import { addPath, addWord, resetDB } from '../../db/db';
 import { PathProvider } from '../pathSelection/PathContext';
