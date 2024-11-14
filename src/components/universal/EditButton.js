@@ -2,27 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
 import './EditButton.css';
 
-const EditButton = ({ pathId }) => {
-  const navigate = useNavigate();
-
+const EditButton = ({ onClick, color }) => {
   return (
-    <button
-      className="edit-button"
-      onClick={(e) => {
-        e.stopPropagation();
-        navigate(`/muokkaapolkua/${pathId}`);
-      }}
-    >
-      <FontAwesomeIcon icon={faEdit} className="edit-icon" />
+    <button className="edit-button" onClick={onClick}>
+      <FontAwesomeIcon
+        icon={faEdit}
+        className="edit-icon"
+        style={{ color: color }}
+      />
     </button>
   );
 };
 
 EditButton.propTypes = {
-  pathId: PropTypes.number.isRequired, // path is required
+  onClick: PropTypes.func.isRequired,
+  color: PropTypes.string,
 };
 
 export default EditButton;

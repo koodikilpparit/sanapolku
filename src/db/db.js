@@ -133,6 +133,45 @@ export async function getPathById(id) {
 }
 
 /**
+ * Change path name
+ * @param {number} id id of the path
+ * @param {string} newPathName new name for the path
+ * @returns {Promise<Object>} path object
+ */
+export async function editPathName(id, newPathName) {
+  return openDB(DB_NAME).then(async (db) => {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('paths', 'readwrite');
+      const store = transaction.objectStore('paths');
+      const request = store.get(id);
+
+      request.onsuccess = (event) => {
+        const path = event.target.result;
+
+        if (path) {
+          path.name = newPathName;
+          const updateRequest = store.put(path);
+
+          updateRequest.onsuccess = () => {
+            resolve(path || null);
+          };
+
+          updateRequest.onerror = () => {
+            reject('Failed to change path name');
+          };
+        } else {
+          reject('Error retrieving the path');
+        }
+      };
+
+      request.onerror = (_event) => {
+        reject('Error retrieving the path');
+      };
+    });
+  });
+}
+
+/**
  * Adds a word-image pair to a path
  * @param {string} word The word to add
  * @param {number} pathId ID of the path where word belongs to

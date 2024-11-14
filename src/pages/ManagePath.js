@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getWordsForPath, deleteWord, getPathById } from '../db/db';
+import {
+  getWordsForPath,
+  deleteWord,
+  getPathById,
+  editPathName,
+} from '../db/db';
 import WordRow from '../components/create/WordRow';
 import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import EditButton from '../components/universal/EditButton';
 
 const ManagePath = () => {
   const pathId = Number(useParams().pathId);
@@ -13,6 +19,9 @@ const ManagePath = () => {
   const navigate = useNavigate();
   const [words, setWords] = useState([]);
   const [error, setError] = useState(null);
+  const [newPathName, setNewPathName] = useState('');
+
+  const [isEditPathNameModalOpen, setIsEditPathNameModalOpen] = useState(false);
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
@@ -44,12 +53,44 @@ const ManagePath = () => {
       });
   };
 
+  const handleEditPathNameClick = () => {
+    if (newPathName.trim()) {
+      editPathName(pathId, newPathName)
+        .then((path) => {
+          setPathName(path.name);
+          setNewPathName('');
+          console.log('Path name changed:', path.name);
+          closeEditPathNameModal();
+        })
+        .catch((error) => {
+          console.error(error.message);
+          alert(error.message);
+        });
+    } else {
+      alert('Anna polulle nimi');
+    }
+  };
+
+  const openEditPathNameModal = () => {
+    setIsEditPathNameModalOpen(true);
+  };
+
+  const closeEditPathNameModal = () => {
+    setIsEditPathNameModalOpen(false);
+  };
+
   return (
     <div className="manage-page">
       {/* Header */}
       <div className="word-entry-header">
         <BackButton />
-        <h2>{pathName}</h2>
+        <div className="title-edit-button">
+          <h2>{pathName}</h2>
+          <EditButton
+            onClick={openEditPathNameModal}
+            color="white"
+          ></EditButton>
+        </div>
         <FontAwesomeIcon
           icon={faPlus}
           className="add-path-icon"
@@ -76,6 +117,31 @@ const ManagePath = () => {
           )}
         </div>
       </div>
+      {isEditPathNameModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Vaihda polun nimi</h2>
+            <input
+              type="text"
+              value={newPathName}
+              onChange={(e) => setNewPathName(e.target.value)}
+              placeholder="Anna uusi polun nimi"
+              className="modal-input"
+            />
+            <div className="modal-buttons">
+              <button
+                className="cancel-button"
+                onClick={closeEditPathNameModal}
+              >
+                Peruuta
+              </button>
+              <button className="save-button" onClick={handleEditPathNameClick}>
+                Tallenna
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

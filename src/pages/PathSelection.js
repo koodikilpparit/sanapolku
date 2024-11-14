@@ -58,6 +58,10 @@ const PathSelection = () => {
     }
   };
 
+  const handleEditPathClick = (pathId) => {
+    navigate(`/muokkaapolkua/${pathId}`);
+  };
+
   // Function to open the modal for deleting a path
   const openDeleteModal = (path) => {
     setCurrentPath(path);
@@ -105,8 +109,11 @@ const PathSelection = () => {
             >
               <span className="path-item">{path.name}</span>
               <EditButton
-                pathId={path.id}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditPathClick(path.id);
+                }}
+                color="black"
               />
               <DeleteButton
                 onClick={(e) => {

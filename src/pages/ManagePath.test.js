@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import ManagePath from './ManagePath';
 import PathSelection from './PathSelection';
-import { resetDB, addPath } from '../db/db';
+import * as db from '../db/db';
 import { PathProvider } from '../components/pathSelection/PathContext';
 import * as ShareUtils from '../utils/ShareUtils';
 
@@ -24,8 +24,8 @@ describe('ManagePath Component UI Tests', () => {
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
-    await resetDB();
-    return await addPath('testPath');
+    await db.resetDB();
+    return await db.addPath('testPath');
   };
 
   // Initialize the fake IndexedDB before each test
@@ -41,6 +41,8 @@ describe('ManagePath Component UI Tests', () => {
     mockInitializePeer.mockImplementation(() =>
       Promise.resolve([{ id: 1, peer: jest.fn() }])
     );
+
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
   it('should render the ManagePath component and display the path name as the title', () => {
@@ -89,5 +91,99 @@ describe('ManagePath Component UI Tests', () => {
 
     // Check if navigate was called with the correct route
     expect(mockNavigate).toHaveBeenCalledWith(`/uusisana/${pathId}`);
+  });
+
+  it('opens and closes the edit path name modal', async () => {
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Open the edit path name modal
+    fireEvent.click(container.querySelector('.edit-button'));
+    expect(screen.getByText(/Vaihda polun nimi/i)).toBeInTheDocument();
+
+    // Close the modal
+    fireEvent.click(screen.getByText(/Peruuta/i));
+    expect(screen.queryByText(/Vaihda polun nimi/i)).not.toBeInTheDocument();
+  });
+
+  it('does not submit if path name is empty', async () => {
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Open the edit path name modal
+    fireEvent.click(container.querySelector('.edit-button'));
+
+    // Leave the path name input empty and click save
+    const input = screen.getByPlaceholderText(/Anna uusi polun nimi/i);
+    fireEvent.change(input, { target: { value: '' } });
+    fireEvent.click(screen.getByText(/Tallenna/i));
+
+    // Ensure alert message for empty name is displayed
+    await waitFor(() => {
+      expect(screen.getByText(/Vaihda polun nimi/i)).toBeInTheDocument();
+    });
+  });
+
+  it('successfully edits the path name', async () => {
+    // Mock successful response for editPathName
+    const mockEditPathName = jest.spyOn(db, 'editPathName');
+    mockEditPathName.mockResolvedValue({
+      id: pathId,
+      name: 'Updated Path Name',
+    });
+
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Open the edit path name modal
+    fireEvent.click(container.querySelector('.edit-button'));
+
+    // Enter new path name
+    const input = screen.getByPlaceholderText(/Anna uusi polun nimi/i);
+    fireEvent.change(input, { target: { value: 'Updated Path Name' } });
+
+    // Click save button
+    fireEvent.click(screen.getByText(/Tallenna/i));
+
+    // Wait for the updated path name to display in the title
+    await waitFor(() => {
+      expect(screen.getByText('Updated Path Name')).toBeInTheDocument();
+    });
+  });
+
+  it('shows an error message when editing the path name fails', async () => {
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Open the edit path name modal
+    fireEvent.click(container.querySelector('.edit-button'));
+
+    // Enter new path name
+    const input = screen.getByPlaceholderText(/Anna uusi polun nimi/i);
+    fireEvent.change(input, { target: { value: 'New Path Name' } });
+
+    // Mock error response for editPathName
+    const mockEditPathName = jest.spyOn(db, 'editPathName');
+    mockEditPathName.mockRejectedValue(new Error('Failed to edit path name'));
+
+    // Click save button
+    fireEvent.click(screen.getByText(/Tallenna/i));
+
+    // Wait for the error alert to appear
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith('Failed to edit path name');
+    });
   });
 });
