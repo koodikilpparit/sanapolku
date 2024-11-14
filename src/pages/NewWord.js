@@ -44,7 +44,11 @@ const NewWord = () => {
   };
 
   const handleImageCrop = (croppedImage) => {
-    setImageData(croppedImage); // Set the cropped image
+    const newImageData = {
+      src: croppedImage,
+      author: imageData?.author,
+    };
+    setImageData(newImageData); // Set the cropped image
     setPreviewImage(croppedImage);
     setIsCropping(false); // Close the cropping modal
     setIsModalOpen(false); // Close Papunet modal as well
@@ -126,7 +130,7 @@ const NewWord = () => {
         showCloseButton={false}
       >
         <ImageCropper
-          imageSrc={imageData?.src || imageData}
+          imageSrc={imageData?.src}
           onCroppedImage={handleImageCrop}
         />
       </Modal>

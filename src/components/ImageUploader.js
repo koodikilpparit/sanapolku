@@ -20,7 +20,7 @@ const ImageUploader = ({ setImageData, onImageSelect, setIsCropping }) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       setImageData({ src: e.target.result, author: null }); // Pass the image data back to NewWord component
-      onImageSelect(e.target.result);
+      onImageSelect({ src: e.target.result, author: null });
       setIsCropping(true);
     };
     reader.readAsDataURL(file);
