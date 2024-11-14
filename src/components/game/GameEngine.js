@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { getPathByName, getWordsForPath } from '../../db/db';
+import { getWordsForPath } from '../../db/db';
 import { getAdultPath, getKidPath } from '../../db/StockPathHelper';
 import shuffleArray from 'lodash.shuffle';
 import SuccessIndicator from './SuccessIndicator';
@@ -8,7 +8,7 @@ import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 
-const GameEngine = ({ pathName }) => {
+const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -23,19 +23,13 @@ const GameEngine = ({ pathName }) => {
   useEffect(() => {
     const fetchData = async () => {
       let fetchedWords = [];
-      if (pathName === 'sisäänrakennettu_aikuisten_polku') {
+      if (pathId === 'aikuistenpolku') {
         fetchedWords = await getAdultPath(10); // Get 10 words
-      } else if (pathName === 'sisäänrakennettu_lasten_polku') {
+      } else if (pathId === 'lastenpolku') {
         fetchedWords = await getKidPath(10); // Get 10 words
       } else {
         try {
-          const path = await getPathByName(pathName);
-          if (!path) {
-            setError('Path not found');
-            return;
-          }
-
-          fetchedWords = await getWordsForPath(path.id);
+          fetchedWords = await getWordsForPath(Number(pathId));
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
             return;
@@ -52,7 +46,7 @@ const GameEngine = ({ pathName }) => {
     };
 
     fetchData();
-  }, [pathName]);
+  }, [pathId]);
 
   useEffect(() => {
     if (words.length > 0 && wordIndex < words.length) {
@@ -157,7 +151,7 @@ const GameEngine = ({ pathName }) => {
 };
 
 GameEngine.propTypes = {
-  pathName: PropTypes.string.isRequired,
+  pathId: PropTypes.string.isRequired,
 };
 
 export default GameEngine;

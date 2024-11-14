@@ -77,7 +77,7 @@ const Phase1 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
       <div className="flex flex-col sm:flex-row h-full ">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full ">
           <ImageContainer
-            src={currentWord.img}
+            src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
           />
         </div>
@@ -132,7 +132,7 @@ const Phase1 = ({ currentWord, playerInput, setPlayerInput, handleSubmit }) => {
 
 Phase1.propTypes = {
   currentWord: PropTypes.shape({
-    img: PropTypes.string.isRequired,
+    imageData: PropTypes.object.isRequired,
     word: PropTypes.string.isRequired,
   }).isRequired,
   playerInput: PropTypes.array.isRequired,

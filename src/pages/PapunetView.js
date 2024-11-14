@@ -55,14 +55,21 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
           <div key={photo.uid} className="photo">
             <img src={photo.thumb} alt={photo.name} />
             <p>{photo.name}</p>
-            <p>Author: {photo.author}</p>
-            <button onClick={() => setSelectedImage(photo.thumb)}>
-              Select
+            <p>Tekijä: {photo.author}</p>
+            <button
+              onClick={() =>
+                setSelectedImage({
+                  src: photo.thumb_large,
+                  author: photo.author,
+                })
+              }
+            >
+              Valitse
             </button>
           </div>
         ))}
       </div>
-      <button onClick={handleSave}>Save</button>
+      <button onClick={handleSave}>Tallenna</button>
     </div>
   );
 };

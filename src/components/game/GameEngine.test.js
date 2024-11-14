@@ -6,9 +6,12 @@ import {
   waitFor,
   act,
 } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
 import { openDB } from '../../db/db';
+import PathSelection from '../../pages/PathSelection';
+import { addPath, addWord, resetDB } from '../../db/db';
+import { PathProvider } from '../pathSelection/PathContext';
 
 // Polyfill for structuredClone if missing
 if (typeof global.structuredClone === 'undefined') {
@@ -21,27 +24,21 @@ afterAll(() => {
 
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = Array.from({ length: 15 }, (_, index) => ({
-    id: index + 1,
     word: `word${index + 1}`,
-    img: `word${index + 1}.jpg`,
-    pathId: 1,
+    imageData: { src: `word${index + 1}.jpg`, author: `author${index + 1}` },
   }));
+
+  let pathId;
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
-    const db = await openDB('pathsDB');
-    const transaction = db.transaction(['paths'], 'readwrite');
-    const pathsStore = transaction.objectStore('paths');
-    await pathsStore.add({ id: 1, name: 'test-path' });
-    await transaction.done;
-
-    const wordsDB = await openDB('wordsDB');
-    const wordsTransaction = wordsDB.transaction(['words'], 'readwrite');
-    const wordsStore = wordsTransaction.objectStore('words');
-    for (const word of mockWords) {
-      await wordsStore.add(word);
-    }
-    await wordsTransaction.done;
+    await resetDB();
+    pathId = await addPath('test-path');
+    await Promise.all(
+      mockWords.map((word) => {
+        return addWord(word.word, pathId, word.imageData);
+      })
+    );
   };
 
   // Initialize the fake IndexedDB before each test
@@ -58,7 +55,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('renders loading message initially', () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -70,7 +67,7 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -107,7 +104,7 @@ describe('GameEngine Component with IndexedDB', () => {
   it('moves to the second phase on wrong input', async () => {
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -142,7 +139,7 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -181,7 +178,7 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useFakeTimers();
     render(
       <MemoryRouter>
-        <GameEngine pathName="test-path" />
+        <GameEngine pathId={String(pathId)} />
       </MemoryRouter>
     );
 
@@ -211,5 +208,24 @@ describe('GameEngine Component with IndexedDB', () => {
     });
 
     expect(screen.queryByTestId('success-indicator')).toBeNull();
+  });
+
+  it('checks that the back-button brings you to /omatpolut', () => {
+    // Rendering the required pages
+    const { container } = render(
+      <BrowserRouter>
+        <GameEngine pathId={String(pathId)} />
+        <PathProvider>
+          <PathSelection />
+        </PathProvider>
+      </BrowserRouter>
+    );
+
+    // Checking that the back-button is on the game page
+    const backButton = container.querySelector('.back-button');
+    expect(backButton).toBeInTheDocument();
+
+    fireEvent.click(backButton);
+    expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 });

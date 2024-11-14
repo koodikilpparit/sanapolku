@@ -49,7 +49,7 @@ const PhaseController = ({
 PhaseController.propTypes = {
   currentPhase: PropTypes.number.isRequired,
   currentWord: PropTypes.shape({
-    img: PropTypes.string.isRequired,
+    imageData: PropTypes.object.isRequired,
     word: PropTypes.string.isRequired,
   }).isRequired,
   playerInput: PropTypes.array.isRequired,
