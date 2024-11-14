@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Phase2 from '../../components/game/Phase2';
-
 // Clear all mocks after all tests
 afterAll(() => {
   jest.clearAllMocks();
