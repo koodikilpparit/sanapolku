@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Cropper } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
@@ -49,6 +50,11 @@ const ImageCropper = ({ imageSrc, onCroppedImage }) => {
       )}
     </div>
   );
+};
+
+ImageCropper.propTypes = {
+  imageSrc: PropTypes.string.isRequired,
+  onCroppedImage: PropTypes.func.isRequired,
 };
 
 export default ImageCropper;

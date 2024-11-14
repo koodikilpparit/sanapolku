@@ -22,6 +22,7 @@ Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
+  showCloseButton: PropTypes.bool,
 };
 
 export default Modal;

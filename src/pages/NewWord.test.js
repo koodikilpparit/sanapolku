@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import NewWord from './NewWord';
 import ManagePath from './ManagePath';
@@ -94,5 +94,44 @@ describe('NewWord Component UI Tests', () => {
 
     // Check if navigate was called with -1 (go back to previous page)
     expect(mockNavigate).toHaveBeenCalledWith(-1);
+  });
+
+  it('should open and close the Papunet modal when "HAE KUVIA" button is clicked', () => {
+    render(
+      <BrowserRouter>
+        <NewWord />
+      </BrowserRouter>
+    );
+
+    const fetchPhotosButton = screen.getByText('HAE KUVIA');
+    fireEvent.click(fetchPhotosButton);
+
+    // Check if Papunet modal is open
+    expect(screen.getByText('Photo Fetcher')).toBeInTheDocument();
+
+    // Close the modal
+    fireEvent.click(screen.getByText('X'));
+    expect(screen.queryByText('Photo Fetcher')).not.toBeInTheDocument();
+  });
+
+  it('should open the image cropper modal when an image is selected', async () => {
+    render(
+      <BrowserRouter>
+        <NewWord />
+      </BrowserRouter>
+    );
+
+    // Mocks the image selection
+    const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
+    const input = screen.getByLabelText('Lataa kuva');
+
+    // Simulate selecting a file
+    fireEvent.change(input, { target: { files: [file] } });
+
+    // Wait until cropping modal is open
+    await waitFor(() => {
+      const modal = screen.getByText('Rajaa');
+      expect(modal).toBeInTheDocument();
+    });
   });
 });
