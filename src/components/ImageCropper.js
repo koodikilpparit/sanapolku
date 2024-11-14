@@ -21,7 +21,7 @@ const ImageCropper = ({ imageSrc, onCroppedImage }) => {
   return (
     <div className="flex justify-center items-center h-full w-full">
       {imageSrc && (
-        <div className="relative w-5/6 h-5/6 flex justify-center items-center bg-white p-4 rounded-lg shadow-lg">
+        <div className="relative w-full h-full flex justify-center items-center bg-white p-6 rounded-lg shadow-lg">
           <h3 className="absolute top-4 sm:top-2 w-full text-center z-20 text-xl font-semibold text-black">
             Rajaa kuva
           </h3>

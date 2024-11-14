@@ -129,6 +129,7 @@ const NewWord = () => {
       <Modal
         isOpen={isCropping}
         onClose={() => setIsCropping(false)}
+        modalType="image-cropper"
         showCloseButton={false}
       >
         <ImageCropper imageSrc={imageData} onCroppedImage={handleImageCrop} />
