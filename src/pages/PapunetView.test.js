@@ -38,9 +38,9 @@ describe('PapunetView', () => {
     });
 
     expect(getByText('Photo 1')).toBeInTheDocument();
-    expect(getByText('Author: Author 1')).toBeInTheDocument();
+    expect(getByText('Tekijä: Author 1')).toBeInTheDocument();
     expect(getByText('Photo 2')).toBeInTheDocument();
-    expect(getByText('Author: Author 2')).toBeInTheDocument();
+    expect(getByText('Tekijä: Author 2')).toBeInTheDocument();
   });
 
   test('displays error message when photo fetch fails', async () => {

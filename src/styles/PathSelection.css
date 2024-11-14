@@ -164,6 +164,22 @@
   color: white;
 }
 
+.fetch-input {
+  margin: 10px;
+  border: 2px solid;
+  border-color: var(--sp-black);
+}
+
+.fetch-button {
+  border: 2px solid;
+  border-radius: 5px;
+}
+
+.receive-path-button {
+  border: 2px solid;
+  border-radius: 5px;
+}
+
 @media (max-width: 767px) {
   .add-path-icon {
     font-size: var(--sp-icon-size-small);

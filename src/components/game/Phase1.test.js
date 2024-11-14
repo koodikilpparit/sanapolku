@@ -3,7 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Phase1 from '../../components/game/Phase1';
 
 describe('Phase1 Component', () => {
-  const mockWord = { id: 1, word: 'apple', img: 'apple.jpg' };
+  const mockWord = {
+    id: 1,
+    word: 'apple',
+    imageData: { src: 'apple.jpg', author: 'Unknown' },
+  };
   const mockHandleSubmit = jest.fn();
   let mockSetPlayerInput;
 

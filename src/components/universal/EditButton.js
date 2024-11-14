@@ -5,7 +5,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import './EditButton.css';
 
-const EditButton = ({ path }) => {
+const EditButton = ({ pathId }) => {
   const navigate = useNavigate();
 
   return (
@@ -13,7 +13,7 @@ const EditButton = ({ path }) => {
       className="edit-button"
       onClick={(e) => {
         e.stopPropagation();
-        navigate(`/muokkaapolkua/${path}`);
+        navigate(`/muokkaapolkua/${pathId}`);
       }}
     >
       <FontAwesomeIcon icon={faEdit} className="edit-icon" />
@@ -22,7 +22,7 @@ const EditButton = ({ path }) => {
 };
 
 EditButton.propTypes = {
-  path: PropTypes.string.isRequired, // path is required
+  pathId: PropTypes.number.isRequired, // path is required
 };
 
 export default EditButton;

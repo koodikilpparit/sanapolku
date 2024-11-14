@@ -18,14 +18,14 @@ function GameMenu() {
       <div className="button-container">
         <button
           className="path-button"
-          onClick={() => navigate('/peli/sisäänrakennettu_aikuisten_polku')}
+          onClick={() => navigate('/peli/aikuistenpolku')}
         >
           Aikuisten polku
         </button>
 
         <button
           className="path-button"
-          onClick={() => navigate('/peli/sisäänrakennettu_lasten_polku')}
+          onClick={() => navigate('/peli/lastenpolku')}
         >
           Lasten polku
         </button>
