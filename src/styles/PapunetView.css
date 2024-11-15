@@ -20,6 +20,7 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 20px;
+  padding-bottom: 100px; /* Last images aren't behind return-save-button-container */
 }
 
 .photo {
@@ -89,5 +90,9 @@
   .return-save-button-container button {
     width: 40%;
     height: 10%;
+  }
+
+  .photo-container {
+    padding-bottom: 50px;
   }
 }
