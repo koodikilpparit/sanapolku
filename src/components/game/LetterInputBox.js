@@ -15,9 +15,13 @@ const LetterInputBox = ({ currentWord, playerInput, setPlayerInput }) => {
 
   const handleInputChange = (event) => {
     const value = event.target.value.toUpperCase();
-    if (activeIndex !== null && value) {
+    if (
+      activeIndex !== null &&
+      value &&
+      activeIndex < currentWord.word.length
+    ) {
       const newPlayerInput = [...playerInput];
-      newPlayerInput[activeIndex] = value.slice(-1); // Set the typed letter
+      newPlayerInput[activeIndex] = value.slice(-1);
       setPlayerInput(newPlayerInput);
       event.target.value = '';
 
@@ -33,11 +37,9 @@ const LetterInputBox = ({ currentWord, playerInput, setPlayerInput }) => {
       const newPlayerInput = [...playerInput];
 
       if (playerInput[activeIndex] !== '') {
-        // Delete the current letter at activeIndex
         newPlayerInput[activeIndex] = '';
         setPlayerInput(newPlayerInput);
       } else if (activeIndex > 0) {
-        // Move to the previous box and delete the letter there
         setActiveIndex((prevIndex) => prevIndex - 1);
         newPlayerInput[activeIndex - 1] = '';
         setPlayerInput(newPlayerInput);
@@ -53,7 +55,10 @@ const LetterInputBox = ({ currentWord, playerInput, setPlayerInput }) => {
   };
 
   return (
-    <div className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2">
+    <div
+      className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2"
+      onClick={() => inputRef.current?.focus()}
+    >
       {currentWord.word.split('').map((_, index) => (
         <div
           key={index}
@@ -74,6 +79,8 @@ const LetterInputBox = ({ currentWord, playerInput, setPlayerInput }) => {
         onKeyDown={handleKeyDown}
         style={{
           opacity: 0,
+          width: 1,
+          height: 1,
           position: 'absolute',
           pointerEvents: 'none',
         }}
