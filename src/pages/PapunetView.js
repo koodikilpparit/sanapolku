@@ -68,8 +68,12 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
       </div>
 
       <div className="return-save-button-container">
-        <button onClick={closeModal}>Peruuta</button>
-        <button onClick={handleSave}>Tallenna</button>
+        <button className="btn-sp-primary return-btn" onClick={closeModal}>
+          PERUUTA
+        </button>
+        <button className="btn-sp-primary save-btn" onClick={handleSave}>
+          TALLENNA
+        </button>
       </div>
     </div>
   );
