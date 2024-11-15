@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './ImageContainer.css';
 
 const ImageContainer = ({ src, alt }) => (
-  <div className="image-container flex items-center justify-center sm:items-start p-4">
+  <div className="image-container flex items-center h-full justify-center sm:items-start p-4">
     <img className="h-full aspect-square" src={src} alt={alt} />
   </div>
 );

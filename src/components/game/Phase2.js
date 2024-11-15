@@ -14,7 +14,6 @@ const Phase2 = ({
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // Initialize shuffled letters when currentWord or shuffledWord changes
     const lettersArray = shuffledWord
       .toUpperCase()
       .split('')
@@ -29,15 +28,15 @@ const Phase2 = ({
     setSelectedLetter(null);
   }, [currentWord, shuffledWord, setPlayerInput]);
 
-  const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
+  const isReadyButtonDisabled = playerInput.includes('');
 
   const handleLetterClick = (event, letter, index) => {
     event.stopPropagation();
     if (!shuffledLetters[index].isUsed) {
       if (selectedLetter && selectedLetter.index === index) {
-        setSelectedLetter(null); // Unselect if the same letter is clicked
+        setSelectedLetter(null);
       } else {
-        setSelectedLetter({ letter, index }); // Select the letter
+        setSelectedLetter({ letter, index });
       }
     }
   };
@@ -51,7 +50,6 @@ const Phase2 = ({
       const { letter, index: lowerIndex } = selectedLetter;
 
       if (newPlayerInput[index] !== '') {
-        // Make the currently placed letter available again
         const letterToRemove = newPlayerInput[index];
         const letterIndex = shuffledLetters.findIndex(
           (item) => item.letter === letterToRemove && item.isUsed
@@ -67,7 +65,6 @@ const Phase2 = ({
       setShuffledLetters(newShuffledLetters);
       setSelectedLetter(null);
     } else {
-      // If no letter is selected, clear the box if it has a letter
       if (newPlayerInput[index] !== '') {
         const letterToRemove = newPlayerInput[index];
         const letterIndex = shuffledLetters.findIndex(
@@ -128,11 +125,9 @@ const Phase2 = ({
           <ImageContainer
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
-            className=""
           />
         </div>
-
-        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
+        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 flex flex-col justify-between">
           <div className="flex flex-col gap-2 lg:gap-4">
             <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
               {playerInput.map((letter, index) => (
