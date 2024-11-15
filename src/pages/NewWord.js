@@ -87,11 +87,7 @@ const NewWord = () => {
         {/* Container for ImageUploader and preview image */}
         <div className="image-upload-preview-container">
           {/* Upload image */}
-          <ImageUploader
-            setImageData={setImageData}
-            onImageSelect={handleImageSelection}
-            setIsCropping={setIsCropping}
-          />
+          <ImageUploader onImageSelect={handleImageSelection} />
 
           {/* Image preview */}
           <img src={previewImage} alt="Preview" className="image-preview" />
@@ -129,10 +125,12 @@ const NewWord = () => {
         modalType="image-cropper"
         showCloseButton={false}
       >
-        <ImageCropper
-          imageSrc={imageData?.src}
-          onCroppedImage={handleImageCrop}
-        />
+        {imageData && (
+          <ImageCropper
+            imageSrc={imageData?.src}
+            onCroppedImage={handleImageCrop}
+          />
+        )}
       </Modal>
     </div>
   );
