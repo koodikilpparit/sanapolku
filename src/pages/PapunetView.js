@@ -50,25 +50,23 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
       />
       <button onClick={handleFetchPhotos}>Fetch Photos</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <div className="photo-container">
         {photos.map((photo) => (
-          <div key={photo.uid} className="photo">
+          <div
+            key={photo.uid}
+            className={`photo ${selectedImage?.src === photo.url ? 'selected' : ''}`}
+            onClick={() =>
+              setSelectedImage({ src: photo.url, author: photo.author })
+            }
+          >
             <img src={photo.thumb} alt={photo.name} />
             <p>{photo.name}</p>
             <p>Tekijä: {photo.author}</p>
-            <button
-              onClick={() =>
-                setSelectedImage({
-                  src: photo.url,
-                  author: photo.author,
-                })
-              }
-            >
-              Valitse
-            </button>
           </div>
         ))}
       </div>
+
       <div className="return-save-button-container">
         <button onClick={closeModal}>Peruuta</button>
         <button onClick={handleSave}>Tallenna</button>
@@ -80,6 +78,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
 PapunetView.propTypes = {
   onSelectImage: PropTypes.func.isRequired,
   initialSearchTerm: PropTypes.string,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default PapunetView;
