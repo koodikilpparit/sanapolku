@@ -10,7 +10,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 h3 {
@@ -27,11 +26,8 @@ h3 {
   margin-bottom: 20px;
 }
 
-.filter-menu-button {
-  padding: 10px 20px;
-}
-
 .menu-icon {
+  padding: 10px 20px;
   font-size: var(--sp-icon-size-small);
 }
 

@@ -17,17 +17,20 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
     }
   };
 
+  // Toggle the checkbox when clicking the filter option div
+  const handleFilterOptionClick = (filterKey) => {
+    handleCheckboxChange(filterKey);
+  };
+
   const handleUnselectAll = () => {
     onFilterChange([]);
   };
 
   return (
     <div className="filter-menu">
-      <div className="filter-menu-header">
+      <div className="filter-menu-header" onClick={toggleMenu}>
         <h3>Valitse kuvatyypit ({selectedFilters.length})</h3>
-        <button className="filter-menu-button" onClick={toggleMenu}>
-          <FontAwesomeIcon icon={faBars} className="menu-icon" />
-        </button>
+        <FontAwesomeIcon icon={faBars} className="menu-icon" />
       </div>
 
       {isOpen && (
@@ -42,7 +45,11 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
 
           <div className="filter-options-container">
             {Object.entries(filters).map(([key, label]) => (
-              <div key={key} className="filter-option">
+              <div
+                key={key}
+                className="filter-option"
+                onClick={() => handleFilterOptionClick(key)}
+              >
                 <input
                   type="checkbox"
                   id={key}
