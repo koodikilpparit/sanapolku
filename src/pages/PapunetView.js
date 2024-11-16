@@ -45,6 +45,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
     }
   }, [getPhotos, initialSearchTerm]);
 
+  // Re-fetch photos when filters change
   useEffect(() => {
     if (initialFetchDone.current) {
       getPhotos(searchTerm);
@@ -53,6 +54,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
 
   const handleFetchPhotos = () => {
     getPhotos(searchTerm);
+    initialFetchDone.current = true;
   };
 
   const handleSave = () => {
