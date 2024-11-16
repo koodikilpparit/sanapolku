@@ -109,6 +109,9 @@ const GameEngine = ({ pathId }) => {
       if (currentPhase === 1) {
         setCurrentPhase(2);
         setShuffledWord(shuffleWord(currentWord.word));
+        while (shuffledWord === currentWord.word) {
+          setShuffledWord(shuffleWord(currentWord.word));
+        }
       } else {
         setCurrentPhase(3);
       }
