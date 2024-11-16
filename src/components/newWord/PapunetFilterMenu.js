@@ -23,10 +23,12 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
 
   return (
     <div className="filter-menu">
-      <h3>Valitse kuvatyypit</h3>
-      <button className="filter-menu-button" onClick={toggleMenu}>
-        <FontAwesomeIcon icon={faBars} className="menu-icon" />
-      </button>
+      <div className="filter-menu-header">
+        <h3>Valitse kuvatyypit ({selectedFilters.length})</h3>
+        <button className="filter-menu-button" onClick={toggleMenu}>
+          <FontAwesomeIcon icon={faBars} className="menu-icon" />
+        </button>
+      </div>
 
       {isOpen && (
         <div className="filter-dropdown">
@@ -38,17 +40,19 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
             Poista kaikki valinnat
           </button>
 
-          {Object.entries(filters).map(([key, label]) => (
-            <div key={key} className="filter-option">
-              <input
-                type="checkbox"
-                id={key}
-                checked={selectedFilters.includes(key)}
-                onChange={() => handleCheckboxChange(key)}
-              />
-              <label htmlFor={key}>{label}</label>
-            </div>
-          ))}
+          <div className="filter-options-container">
+            {Object.entries(filters).map(([key, label]) => (
+              <div key={key} className="filter-option">
+                <input
+                  type="checkbox"
+                  id={key}
+                  checked={selectedFilters.includes(key)}
+                  onChange={() => handleCheckboxChange(key)}
+                />
+                <label htmlFor={key}>{label}</label>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
