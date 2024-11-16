@@ -58,14 +58,21 @@ h3 {
 .filter-option label {
   font-size: var(--sp-heading-6);
   font-weight: bold;
-  margin-right: 10px;
   color: var(--sp-black);
+  display: flex;
+  align-items: center;
 }
 
 .filter-option input[type='checkbox'] {
   width: 20px;
   height: 20px;
   accent-color: var(--sp-dark-green);
+}
+
+.filter-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
 @media (max-width: 768px) {

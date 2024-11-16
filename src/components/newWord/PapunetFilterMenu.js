@@ -57,6 +57,11 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
                   onChange={() => handleCheckboxChange(key)}
                 />
                 <label htmlFor={key}>{label}</label>
+                <img
+                  src={`sanapolku/papunet-img-types/${key}.png`}
+                  alt={label}
+                  className="filter-icon"
+                />
               </div>
             ))}
           </div>
