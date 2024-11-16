@@ -1,3 +1,5 @@
+const proxy = 'https://corsproxy.io/?';
+
 /**
  * Fetches photos from the Papunet API based on the search term.
  * @param {string} searchTerm - The term to search for photos.
@@ -7,7 +9,6 @@ async function fetchPhotos(searchTerm) {
   if (!searchTerm) {
     return [];
   }
-  const proxy = 'https://corsproxy.io/?';
   const apiBase = 'https://kuha.papunet.net/api/search/all/';
   const fullUrl = proxy + apiBase + searchTerm + '?lang=fi';
   const response = await fetch(fullUrl);
@@ -36,4 +37,4 @@ function parsePhotos(images) {
   }));
 }
 
-export { fetchPhotos };
+export { fetchPhotos, proxy };

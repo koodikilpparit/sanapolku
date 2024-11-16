@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
+import { fetchPhotos, proxy } from '../utils/PapunetPhotoFetcher';
 import '../styles/PapunetView.css';
 
 const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
@@ -59,7 +59,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm }) => {
             <button
               onClick={() =>
                 setSelectedImage({
-                  src: photo.thumb_large,
+                  src: proxy + photo.thumb_large,
                   author: photo.author,
                 })
               }
