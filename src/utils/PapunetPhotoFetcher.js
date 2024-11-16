@@ -1,16 +1,26 @@
 /**
  * Fetches photos from the Papunet API based on the search term.
  * @param {string} searchTerm - The term to search for photos.
+ * @param {string[]} filters - An array of selected image types.
  * @returns {Promise<Object[]>} A promise that resolves to an array of photo objects.
  */
-async function fetchPhotos(searchTerm) {
+async function fetchPhotos(searchTerm, filters = []) {
   if (!searchTerm) {
     return [];
   }
+
   const proxy = 'https://corsproxy.io/?';
-  const apiBase = 'https://kuha.papunet.net/api/search/all/';
-  const fullUrl = proxy + apiBase + searchTerm + '?lang=fi';
+  const apiBase = 'https://kuha.papunet.net/api/search/';
+
+  // If type filters are provided, join them with "-" to form the slug part
+  const filterSlug = filters.length > 0 ? filters.join('-') : 'all';
+  const fullUrl = `${proxy}${apiBase}${filterSlug}/${searchTerm}?lang=fi`;
+
   const response = await fetch(fullUrl);
+  if (!response.ok) {
+    throw new Error('Failed to fetch photos');
+  }
+
   const data = await response.json();
   return parsePhotos(data.images);
 }

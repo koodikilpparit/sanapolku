@@ -14,25 +14,28 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
 
   const filters = {
     arasaac: 'Arasaac',
-    kuvako: 'Kuvako',
+    kuvako: 'KUVAKO',
     mulberry: 'Mulberry',
     drawing: 'Piirroskuva',
     sclera: 'Sclera',
-    toisto: 'Toistomerkki',
+    toisto: 'Toisto',
     photo: 'Valokuva',
     sign: 'Viittomakuva',
   };
 
-  const getPhotos = useCallback(async (term) => {
-    try {
-      const fetchedPhotos = await fetchPhotos(term);
-      setPhotos(fetchedPhotos);
-      setError(null);
-    } catch (err) {
-      setError('Error fetching photos');
-      setPhotos([]);
-    }
-  }, []);
+  const getPhotos = useCallback(
+    async (term) => {
+      try {
+        const fetchedPhotos = await fetchPhotos(term, selectedFilters);
+        setPhotos(fetchedPhotos);
+        setError(null);
+      } catch (err) {
+        setError('Error fetching photos');
+        setPhotos([]);
+      }
+    },
+    [selectedFilters]
+  );
 
   // Fetch photos on initial render if initial search term is provided
   useEffect(() => {
@@ -68,7 +71,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Enter search term"
       />
-      <button onClick={handleFetchPhotos}>Fetch Photos</button>
+      <button onClick={handleFetchPhotos}>HAE KUVIA</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div className="photo-container">
