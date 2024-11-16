@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
+import PapunetFilterMenu from '../components/newWord/PapunetFilterMenu';
 import '../styles/PapunetView.css';
 
 const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
@@ -8,7 +9,19 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFilters, setSelectedFilters] = useState([]);
   const initialFetchDone = useRef(false);
+
+  const filters = {
+    arasaac: 'Arasaac',
+    kuvako: 'Kuvako',
+    mulberry: 'Mulberry',
+    drawing: 'Piirroskuva',
+    sclera: 'Sclera',
+    toisto: 'Toistomerkki',
+    photo: 'Valokuva',
+    sign: 'Viittomakuva',
+  };
 
   const getPhotos = useCallback(async (term) => {
     try {
@@ -41,7 +54,14 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
 
   return (
     <div className="photo-fetcher">
-      <h1>Photo Fetcher</h1>
+      <h1>Papunet Kuvahaku</h1>
+
+      <PapunetFilterMenu
+        filters={filters}
+        selectedFilters={selectedFilters}
+        onFilterChange={setSelectedFilters}
+      />
+
       <input
         type="text"
         value={searchTerm}

@@ -1,0 +1,44 @@
+.filter-menu {
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: var(--sp-heading-4);
+}
+
+.filter-menu-button {
+  padding: 10px 20px;
+}
+
+.menu-icon {
+  font-size: var(--sp-icon-size-small);
+}
+
+.filter-dropdown {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: var(--sp-white);
+}
+
+.unselect-all-button {
+  color: var(--sp-dark-green);
+  border: none;
+  font-size: var(--sp-heading-6);
+  text-align: center;
+  padding: 15px 20px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: left;
+  margin-bottom: 5px;
+}
+
+.filter-option label {
+  color: var(--sp-black);
+  font-size: var(--sp-heading-6);
+}
+
+.filter-option input {
+  margin-right: 10px;
+}

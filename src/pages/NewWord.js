@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addWord, getPathByName } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
-import ImageUploader from '../components/ImageUploader';
+import ImageUploader from '../components/newWord/ImageUploader';
 import Modal from '../components/Modal';
 import PapunetView from './PapunetView';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
