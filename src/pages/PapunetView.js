@@ -45,6 +45,12 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
     }
   }, [getPhotos, initialSearchTerm]);
 
+  useEffect(() => {
+    if (initialFetchDone.current) {
+      getPhotos(searchTerm);
+    }
+  }, [selectedFilters, getPhotos, searchTerm]);
+
   const handleFetchPhotos = () => {
     getPhotos(searchTerm);
   };
