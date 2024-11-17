@@ -80,9 +80,13 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
 
       <div className="photo-container">
         {loading ? (
-          <p>Haetaan kuvia...</p>
+          <div className="fetch-info">
+            <p>Haetaan kuvia...</p>
+          </div>
         ) : photos.length === 0 && initialFetchDone.current ? (
-          <p>Ei kuvatuloksia</p>
+          <div className="fetch-info">
+            <p>Ei kuvatuloksia</p>
+          </div>
         ) : (
           photos.map((photo) => (
             <div
