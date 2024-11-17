@@ -6,32 +6,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-}
-
-.word-entry-header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  padding-top: 25px;
-  margin-bottom: 25px;
-}
-
-.word-entry-header h2 {
-  font-size: var(--sp-heading-1);
-  color: var(--sp-white);
-  margin: 0 auto;
-  text-transform: capitalize;
-}
-
-.title-edit-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.edit-button {
-  margin-left: 10px;
+  background-image: 
+    url('../../public/app_background.png');
+  background-repeat: unset;
 }
 
 .word-entry-container {
@@ -40,7 +17,9 @@
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  height: 100%;
+  max-width: 800px;
+  height: 60vh;
+  background-color: #06705B;
 }
 
 .word-list {
@@ -56,7 +35,6 @@
   margin-top: 50px;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 40vh;
 }
 
 .word-list::-webkit-scrollbar {
@@ -80,8 +58,8 @@
 
 .word-text {
   font-size: var(--sp-heading-5);
+  color: var(--Dark-Blue, #293642);
   font-weight: bold;
-  color: var(--sp-black);
   flex-grow: 1;
   text-align: left;
   white-space: nowrap;

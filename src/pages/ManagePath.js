@@ -12,6 +12,7 @@ import '../styles/ManagePath.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
+import Header from '../components/universal/Header'
 
 const ManagePath = () => {
   const pathId = Number(useParams().pathId);
@@ -82,22 +83,11 @@ const ManagePath = () => {
   return (
     <div className="manage-page">
       {/* Header */}
-      <div className="word-entry-header">
-        <BackButton />
-        <div className="title-edit-button">
-          <h2>{pathName}</h2>
-          <EditButton
-            onClick={openEditPathNameModal}
-            color="white"
-          ></EditButton>
-        </div>
-        <FontAwesomeIcon
-          icon={faPlus}
-          className="add-path-icon"
-          onClick={() => navigate(`/uusisana/${pathId}`)}
-          aria-label="Lisää uusi sana"
+      <Header
+          title={pathName}
+          onCenterClick={openEditPathNameModal}
+          onRightClick={() => navigate(`/uusisana/${pathId}`)}
         />
-      </div>
 
       {/* Word List */}
       <div className="word-entry-container">
