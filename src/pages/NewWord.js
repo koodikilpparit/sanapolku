@@ -90,7 +90,7 @@ const NewWord = () => {
             <div className="img-upload-container">
               <label>Lataa kuva</label>
               <div className="img-upload-button-container">
-                <ImageUploader setImageData={setImageData} />
+                <ImageUploader setImageData={handleImageSelection} />
                 <button
                   className="img-upload-button"
                   onClick={() => setIsModalOpen(true)}
