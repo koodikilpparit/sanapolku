@@ -1,5 +1,6 @@
 // src/components/universal/Header.js
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import BackButton from './BackButton';
@@ -14,20 +15,23 @@ const Header = ({ title, onCenterClick, onRightClick }) => {
       </div>
       <div className="header-center">
         <h2 className="header-title">{title} </h2>
-        <EditButton
-            onClick={onCenterClick}
-            color="white"
-          ></EditButton>
+        <EditButton onClick={onCenterClick} color="white"></EditButton>
       </div>
-        <div className="header-right">
-            <FontAwesomeIcon
-              icon={faPlus}
-              className="header-icon"
-              onClick={onRightClick}
-            />
-        </div>
+      <div className="header-right">
+        <FontAwesomeIcon
+          icon={faPlus}
+          className="header-icon"
+          onClick={onRightClick}
+        />
+      </div>
     </div>
   );
+};
+
+Header.propTypes = {
+  title: PropTypes.string.isRequired,
+  onCenterClick: PropTypes.func,
+  onRightClick: PropTypes.func,
 };
 
 export default Header;

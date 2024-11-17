@@ -7,12 +7,8 @@ import {
   editPathName,
 } from '../db/db';
 import WordRow from '../components/create/WordRow';
-import BackButton from '../components/universal/BackButton';
 import '../styles/ManagePath.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import EditButton from '../components/universal/EditButton';
-import Header from '../components/universal/Header'
+import Header from '../components/universal/Header';
 
 const ManagePath = () => {
   const pathId = Number(useParams().pathId);
@@ -84,10 +80,10 @@ const ManagePath = () => {
     <div className="manage-page">
       {/* Header */}
       <Header
-          title={pathName}
-          onCenterClick={openEditPathNameModal}
-          onRightClick={() => navigate(`/uusisana/${pathId}`)}
-        />
+        title={pathName}
+        onCenterClick={openEditPathNameModal}
+        onRightClick={() => navigate(`/uusisana/${pathId}`)}
+      />
 
       {/* Word List */}
       <div className="word-entry-container">

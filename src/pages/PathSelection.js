@@ -12,7 +12,7 @@ import PathNoWordsModal from '../components/pathSelection/PathNoWordsModal';
 import SharePathModal from '../components/pathSelection/SharePathModal';
 import ReceivePathModal from '../components/pathSelection/ReceivePathModal';
 import SharePathErrorModal from '../components/pathSelection/SharePathErrorModal';
-import Header from '../components/universal/Header'
+import Header from '../components/universal/Header';
 
 const PathSelection = () => {
   const navigate = useNavigate();
@@ -87,10 +87,10 @@ const PathSelection = () => {
     <div className="paths-page">
       {/* Header */}
       <Header
-          title="Polut"
-          onCenterClick={null}
-          onRightClick={openNewPathModal}
-        />
+        title="Polut"
+        onCenterClick={null}
+        onRightClick={openNewPathModal}
+      />
       {/* List of paths */}
       <div className="path-list">
         {paths.length > 0 ? (

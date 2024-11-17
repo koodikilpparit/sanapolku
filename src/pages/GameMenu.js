@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/GameMenu.css';
-import Header from '../components/universal/Header'
+import Header from '../components/universal/Header';
 
 function GameMenu() {
   const navigate = useNavigate();
@@ -9,15 +9,11 @@ function GameMenu() {
   return (
     <div className="game-menu-page">
       {/* Header */}
-      <Header
-          title="Valitse polku"
-          onClick={null}
-        />
+      <Header title="Valitse polku" onClick={null} />
 
       {/* Buttons for paths */}
       <div className="button-list">
-
-      <div className="button-item-container">
+        <div className="button-item-container">
           <button
             className="path-button"
             onClick={() => navigate('/peli/aikuistenpolku')}
