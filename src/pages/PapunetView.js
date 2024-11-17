@@ -89,7 +89,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
             className={`photo ${selectedImage?.src === photo.url ? 'selected' : ''}`}
             onClick={() =>
               setSelectedImage({
-                src: proxy + photo.thumb_large,
+                src: proxy + photo.url,
                 author: photo.author,
               })
             }
