@@ -27,7 +27,7 @@ const NewWord = () => {
     author: null,
   };
 
-  // Function to save the word and placeholder image to the database
+  // Save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
       alert('Syötä sana');
@@ -103,15 +103,12 @@ const NewWord = () => {
 
             {/* Image Preview */}
             <div className="image-preview">
-              <img
-                src={previewImage}
-                alt="Esikatselu"
-              />
+              <img src={previewImage} alt="Esikatselu" />
             </div>
           </div>
         </div>
 
-        {/* Buttons */}
+        {/* Action Buttons */}
         <div className="confirm-button-container">
           <button className="nw-cancel-button" onClick={() => navigate(-1)}>
             PERUUTA
