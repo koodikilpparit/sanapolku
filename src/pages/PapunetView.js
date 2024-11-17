@@ -67,15 +67,22 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
         onFilterChange={setSelectedFilters}
       />
 
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Enter search term"
-      />
-      <button onClick={handleFetchPhotos} disabled={loading}>
-        HAE KUVIA
-      </button>
+      <div className="search-bar-container">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Kirjoita hakusana"
+        />
+        <button
+          className="search-button"
+          onClick={handleFetchPhotos}
+          disabled={loading}
+        >
+          HAE KUVIA
+        </button>
+      </div>
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div className="photo-container">

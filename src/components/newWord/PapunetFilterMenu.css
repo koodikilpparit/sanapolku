@@ -13,8 +13,7 @@
 }
 
 h3 {
-  font-size: var(--sp-heading-4);
-  font-weight: bold;
+  font-size: var(--sp-heading-5);
   text-align: left;
 }
 
@@ -28,7 +27,7 @@ h3 {
 
 .menu-icon {
   padding: 10px 20px;
-  font-size: var(--sp-icon-size-small);
+  height: 30px;
 }
 
 .filter-dropdown {
@@ -49,10 +48,10 @@ h3 {
   padding: 15px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   border: 1px solid var(--sp-gray-sp);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 .filter-option label {
@@ -60,19 +59,26 @@ h3 {
   font-weight: bold;
   color: var(--sp-black);
   display: flex;
-  align-items: center;
+  flex-grow: 1;
+  flex-basis: 50%;
+  text-align: center;
+  justify-content: center;
+  margin: 0;
 }
 
 .filter-option input[type='checkbox'] {
   width: 20px;
   height: 20px;
   accent-color: var(--sp-dark-green);
+  flex-shrink: 0;
+  margin-right: 10px;
 }
 
 .filter-icon {
   width: 50px;
   height: 50px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
