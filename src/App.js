@@ -28,9 +28,9 @@ function App() {
               </PathProvider>
             }
           />
-          <Route path="/muokkaapolkua/:pathName" element={<ManagePath />} />
-          <Route path="/uusisana/:pathName" element={<NewWord />} />
-          <Route path="/peli/:pathName" element={<GamePage />} />
+          <Route path="/muokkaapolkua/:pathId" element={<ManagePath />} />
+          <Route path="/uusisana/:pathId" element={<NewWord />} />
+          <Route path="/peli/:pathId" element={<GamePage />} />
         </Routes>
       </div>
     </Router>

@@ -40,7 +40,7 @@ describe('GameMenu Component', () => {
         <Routes>
           <Route path="/" element={<GameMenu />} />
           <Route
-            path="/peli/sisäänrakennettu_aikuisten_polku"
+            path="/peli/aikuistenpolku"
             element={<div>Aikuisten polku sivu</div>}
           />
         </Routes>
@@ -62,7 +62,7 @@ describe('GameMenu Component', () => {
         <Routes>
           <Route path="/" element={<GameMenu />} />
           <Route
-            path="/peli/sisäänrakennettu_lasten_polku"
+            path="/peli/lastenpolku"
             element={<div>Lasten polku sivu</div>}
           />
         </Routes>

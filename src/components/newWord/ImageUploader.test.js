@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import ImageUploader from './ImageUploader';
 
 describe('ImageUploader tests', () => {
@@ -20,7 +20,7 @@ describe('ImageUploader tests', () => {
     expect(uploadButton).toBeInTheDocument();
   });
 
-  it('should allow user to upload a valid image and update the preview', async () => {
+  it('should allow user to upload a valid image', () => {
     const setImageDataMock = jest.fn();
     render(<ImageUploader setImageData={setImageDataMock} />);
 
@@ -50,28 +50,6 @@ describe('ImageUploader tests', () => {
     // Calls readAsDataURL
     const reader = new FileReader();
     reader.readAsDataURL(file);
-
-    // Waits that preview is updated
-    await waitFor(() => {
-      const imgPreview = screen.getByAltText('Esikatselu');
-      expect(imgPreview).toBeInTheDocument();
-      expect(imgPreview.src).toContain(
-        'data:image/png;base64,ZHVtbXkgY29udGVudA=='
-      );
-    });
-  });
-
-  it('should show placeholder image when no image is uploaded', () => {
-    const setImageDataMock = jest.fn();
-
-    // Renders component
-    render(<ImageUploader setImageData={setImageDataMock} />);
-
-    const imgPreview = screen.getByAltText('Placeholder');
-
-    // Checks that the there really is placeholder photo
-    expect(imgPreview).toBeInTheDocument();
-    expect(imgPreview.src).toContain('https://placehold.co/150x150');
   });
 
   it('should alert if invalid file type is uploaded', () => {

@@ -1,82 +1,95 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import QrScannerComponent from '../QrScannerComponent';
 import { PathContext } from './PathContext';
-import { connectToPeerAndReceive } from '../../utils/ShareUtils';
+import { connectToPeerAndReceive, QRCODE_PREFIX } from '../../utils/ShareUtils';
 import { importPath } from '../../utils/PathUtils';
 
 import PropTypes from 'prop-types';
 
 const ReceivePathModal = ({ onClose }) => {
-  const {
-    peer,
-    setPaths,
-    QRCODE_PREFIX,
-    sharingSucceeded,
-    sharingStarted,
-    setSharingStarted,
-    setSharingSucceeded,
-    openSharingFailedModal,
-  } = useContext(PathContext);
+  const { peer, setPaths, openSharingFailedModal } = useContext(PathContext);
   const [isScanning, setIsScanning] = useState(false);
-  const [isScanningStarted, setIsScanningStarted] = useState(false);
+  const [isReceiveStarted, setIsReceiveStarted] = useState(false);
+  const [receiveSucceeded, setReceiveSucceeded] = useState(false);
+  const [targetPeerID, setTargetPeerID] = useState(null);
 
   const [targetPeerIDInput, setTargetPeerIDInput] = useState('');
 
-  const receivePath = async (id) => {
-    // Receive path from target
-    if (!peer) return;
-    try {
-      const importedPath = await connectToPeerAndReceive(peer, id, importPath);
-      const pathName = importedPath.name;
-      setPaths((prevPaths) => [...prevPaths, pathName]);
-      setSharingSucceeded(true);
-    } catch (e) {
-      closeReceivePathModal();
-      openSharingFailedModal();
-      console.error('Connection failed:', e);
-    } finally {
-      setSharingStarted(false);
-      setIsScanningStarted(false);
+  // Function to close the modal for sharing a path
+  const closeReceivePathModal = useCallback(() => {
+    setReceiveSucceeded(false);
+    onClose();
+  }, [onClose]);
+
+  const receivePath = useCallback(
+    async (targetPeerId) => {
+      // Receive path from target
+      if (!peer) return;
+      try {
+        const importedPath = await connectToPeerAndReceive(
+          peer,
+          targetPeerId,
+          importPath
+        );
+        const pathId = importedPath.id;
+        const pathName = importedPath.name;
+        setPaths((prevPaths) => [...prevPaths, { id: pathId, name: pathName }]);
+        setReceiveSucceeded(true);
+      } catch (e) {
+        closeReceivePathModal();
+        openSharingFailedModal();
+        console.error('Connection failed:', e);
+      } finally {
+        setIsReceiveStarted(false);
+      }
+    },
+    [peer, setPaths, closeReceivePathModal, openSharingFailedModal]
+  );
+
+  const handleShareClick = () => {
+    if (targetPeerIDInput != '') {
+      setTargetPeerID(targetPeerIDInput);
+      setIsReceiveStarted(true);
     }
   };
 
-  const handleShareClick = () => {
-    receivePath(targetPeerIDInput);
-  };
-
-  const handleQRScan = async (scanResult) => {
+  const handleQRScan = (scanResult) => {
     const result = scanResult.data;
-    console.log(isScanningStarted);
-    if (result.startsWith(QRCODE_PREFIX) && !isScanningStarted) {
-      setIsScanningStarted(true);
+    if (result.startsWith(QRCODE_PREFIX) && !isReceiveStarted) {
+      console.log('Starting receive');
+      setIsReceiveStarted(true);
       result.substring();
       const id = result.slice(QRCODE_PREFIX.length);
       setIsScanning(false);
-      setSharingStarted(true);
-      receivePath(id);
+      setTargetPeerID(id);
     } else {
       console.warn('Unknown QR code');
-      setIsScanningStarted(false);
     }
-  };
-
-  // Function to close the modal for sharing a path
-  const closeReceivePathModal = () => {
-    setSharingSucceeded(false);
-    onClose();
   };
 
   useEffect(() => {
     setIsScanning(true);
   }, []);
 
+  useEffect(() => {
+    const receivePathAsync = async (id) => {
+      await receivePath(id);
+    };
+
+    if (isReceiveStarted) {
+      receivePathAsync(targetPeerID);
+    }
+  }, [isReceiveStarted, targetPeerID, receivePath]);
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <h2>Polun vastaanottaminen</h2>
-        {!sharingStarted ? (
+        {isReceiveStarted ? (
+          <label>Yhdistetään...</label>
+        ) : (
           <div>
-            {sharingSucceeded ? (
+            {receiveSucceeded ? (
               <label>Polun jakaminen onnistui!</label>
             ) : (
               <div>
@@ -98,8 +111,6 @@ const ReceivePathModal = ({ onClose }) => {
               </div>
             )}
           </div>
-        ) : (
-          <label>Yhdistetään...</label>
         )}
         <button className="save-button" onClick={closeReceivePathModal}>
           Palaa takaisin

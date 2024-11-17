@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
+import { fetchPhotos, proxy } from '../utils/PapunetPhotoFetcher';
 import PapunetFilterMenu from '../components/newWord/PapunetFilterMenu';
 import '../styles/PapunetView.css';
 
@@ -88,7 +88,10 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
             key={photo.uid}
             className={`photo ${selectedImage?.src === photo.url ? 'selected' : ''}`}
             onClick={() =>
-              setSelectedImage({ src: photo.url, author: photo.author })
+              setSelectedImage({
+                src: proxy + photo.thumb_large,
+                author: photo.author,
+              })
             }
           >
             <img src={photo.thumb} alt={photo.name} />

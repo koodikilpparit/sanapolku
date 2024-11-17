@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addWord, getPathByName } from '../db/db';
+import { addWord } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/newWord/ImageUploader';
@@ -8,34 +8,24 @@ import Modal from '../components/Modal';
 import PapunetView from './PapunetView';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImageCropper from '../components/newWord/ImageCropper';
 
 const NewWord = () => {
   const navigate = useNavigate();
-  const { pathName } = useParams();
+  const pathId = Number(useParams().pathId);
   const [newWord, setNewWord] = useState('');
-  const [pathId, setPathId] = useState(null);
-  const [error, setError] = useState(null);
   const [imageData, setImageData] = useState(null);
+  const [previewImage, setPreviewImage] = useState(
+    'https://placehold.co/150x150'
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCropping, setIsCropping] = useState(false); // Modal for image cropping
 
   // Placeholder image
   const placeholderImage = {
     src: 'https://placehold.co/150x150',
     author: null,
   };
-
-  // Function to fetch path ID when the component loads
-  useEffect(() => {
-    getPathByName(pathName)
-      .then((path) => {
-        if (path) {
-          setPathId(path.id);
-        } else {
-          setError(`Path with the name "${pathName}" was not found.`);
-        }
-      })
-      .catch(() => setError('Error fetching path'));
-  }, [pathName]);
 
   // Function to save the word and placeholder image to the database
   const handleSave = () => {
@@ -55,6 +45,26 @@ const NewWord = () => {
     }
   };
 
+  const handleImageCrop = (croppedImage) => {
+    const newImageData = {
+      src: croppedImage,
+      author: imageData?.author,
+    };
+    setImageData(newImageData); // Set the cropped image
+    setPreviewImage(croppedImage);
+    setIsCropping(false); // Close the cropping modal
+    setIsModalOpen(false); // Close Papunet modal as well
+  };
+
+  const handleImageSelection = (image) => {
+    // Set the selected image and author from Papunet
+    setImageData({
+      src: image.src,
+      author: image.author,
+    });
+    setIsCropping(true); // Open the cropping modal
+  };
+
   return (
     <div className="word-page">
       {/* Header */}
@@ -62,8 +72,6 @@ const NewWord = () => {
         <BackButton />
         <h2>Uusi sana</h2>
       </div>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Container*/}
       <div className="new-word-container">
@@ -96,7 +104,7 @@ const NewWord = () => {
             {/* Image Preview */}
             <div className="image-preview">
               <img
-                src={imageData?.src || placeholderImage.src}
+                src={previewImage}
                 alt="Esikatselu"
               />
             </div>
@@ -117,13 +125,25 @@ const NewWord = () => {
       {/* Modal for PapunetView */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <PapunetView
-          onSelectImage={(image) => {
-            setImageData(image);
-            setIsModalOpen(false);
-          }}
+          onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
           closeModal={() => setIsModalOpen(false)}
         />
+      </Modal>
+
+      {/* Modal for Image Cropping */}
+      <Modal
+        isOpen={isCropping}
+        onClose={() => setIsCropping(false)}
+        modalType="image-cropper"
+        showCloseButton={false}
+      >
+        {imageData && (
+          <ImageCropper
+            imageSrc={imageData?.src}
+            onCroppedImage={handleImageCrop}
+          />
+        )}
       </Modal>
     </div>
   );

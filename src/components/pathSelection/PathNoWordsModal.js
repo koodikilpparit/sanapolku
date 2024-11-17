@@ -8,8 +8,8 @@ const PathNoWordsModal = ({ onClose }) => {
   const navigate = useNavigate();
   const { currentPath, setCurrentPath } = useContext(PathContext);
   // Navigate to path management page
-  const handleEditPathClick = (path) => {
-    navigate(`/muokkaapolkua/${path}`);
+  const handleEditPathClick = (pathId) => {
+    navigate(`/muokkaapolkua/${pathId}`);
     onClose();
   };
 
@@ -28,7 +28,7 @@ const PathNoWordsModal = ({ onClose }) => {
           </button>
           <button
             className="save-button"
-            onClick={() => handleEditPathClick(currentPath)}
+            onClick={() => handleEditPathClick(currentPath.id)}
           >
             Muokkaa polkua
           </button>

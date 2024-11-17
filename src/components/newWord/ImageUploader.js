@@ -5,7 +5,7 @@ import { faTabletScreenButton } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Component that allows uploading images
-const ImageUploader = ({ setImageData }) => {
+const ImageUploader = ({ onImageSelect }) => {
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -19,7 +19,7 @@ const ImageUploader = ({ setImageData }) => {
 
     const reader = new FileReader();
     reader.onload = async (e) => {
-      setImageData({ src: e.target.result, author: null }); // Pass the image data back to NewWord component
+      onImageSelect({ src: e.target.result, author: null });
     };
     reader.readAsDataURL(file);
   };
@@ -46,7 +46,7 @@ const ImageUploader = ({ setImageData }) => {
 };
 
 ImageUploader.propTypes = {
-  setImageData: PropTypes.func.isRequired,
+  onImageSelect: PropTypes.func,
 };
 
 export default ImageUploader;

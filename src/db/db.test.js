@@ -1,12 +1,13 @@
 import {
   addPath,
   getAllPaths,
-  getPathByName,
   addWord,
   getWordsForPath,
   deleteWord,
   deletePath,
   resetDB,
+  getPathById,
+  editPathName,
 } from './db';
 
 if (typeof structuredClone === 'undefined') {
@@ -21,8 +22,8 @@ describe('IndexedDB Operations', () => {
 
   // Test adding a new path
   it('should add a new path to the database', async () => {
-    await addPath('Test Path');
-    const path = await getPathByName('Test Path');
+    const pathId = await addPath('Test Path');
+    const path = await getPathById(pathId);
     expect(path.name).toBe('Test Path');
   });
 
@@ -46,8 +47,8 @@ describe('IndexedDB Operations', () => {
 
   // Test adding a word with an image to a path
   it('should add a word with an image to the database', async () => {
-    await addPath('Path with Words');
-    const path = await getPathByName('Path with Words');
+    const pathId = await addPath('Path with Words');
+    const path = await getPathById(pathId);
 
     await addWord('Test Word', path.id, {
       src: 'test-image-url',
@@ -62,8 +63,8 @@ describe('IndexedDB Operations', () => {
 
   // Test that adding a word without an image throws an error
   it('should throw an error if no image is provided when adding a word', async () => {
-    await addPath('No Image Path');
-    const path = await getPathByName('No Image Path');
+    const pathId = await addPath('No Image Path');
+    const path = await getPathById(pathId);
     await expect(addWord('Word without Image', path.id)).rejects.toThrow(
       'Image data is required.'
     );
@@ -71,8 +72,8 @@ describe('IndexedDB Operations', () => {
 
   // Test deleting a word by ID
   it('should delete a word by ID', async () => {
-    await addPath('Delete Word Path');
-    const path = await getPathByName('Delete Word Path');
+    const pathId = await addPath('Delete Word Path');
+    const path = await getPathById(pathId);
 
     await addWord('Word to Delete', path.id, 'delete-image-url');
     const words = await getWordsForPath(path.id);
@@ -86,8 +87,8 @@ describe('IndexedDB Operations', () => {
 
 // Test deleting a path and it's words
 it('should delete a path and its associated words', async () => {
-  await addPath('Path with Associated Words');
-  const path = await getPathByName('Path with Associated Words');
+  const pathId = await addPath('Path with Associated Words');
+  const path = await getPathById(pathId);
 
   // Add words associated with the path
   await addWord('Word 1', path.id, 'image-url-1');
@@ -111,8 +112,8 @@ it('should delete a path and its associated words', async () => {
 
 // Test deleting a path with no words
 it('should delete a path with no associated words', async () => {
-  await addPath('Path without Words');
-  const path = await getPathByName('Path without Words');
+  const pathId = await addPath('Path without Words');
+  const path = await getPathById(pathId);
 
   // Ensure no words exist for the path
   let words = await getWordsForPath(path.id);
@@ -137,6 +138,27 @@ it('should return an error when trying to delete a non-existent path', async () 
   );
 });
 
+// Test editing the name of a path
+it('should update the path name in the database', async () => {
+  const originalPathId = await addPath('Original Path');
+
+  // Edit the path name
+  await editPathName(originalPathId, 'Updated Path');
+
+  // Retrieve the updated path
+  const updatedPath = await getPathById(originalPathId);
+  expect(updatedPath.name).toBe('Updated Path');
+});
+
+// Test rejecting when editing a path that does not exist
+it('should reject when attempting to edit a non-existent path', async () => {
+  const nonExistentPathId = 9999;
+
+  await expect(
+    editPathName(nonExistentPathId, 'New Path Name')
+  ).rejects.toEqual('Error retrieving the path');
+});
+
 describe('resetDB Function', () => {
   // Test resetting the paths
   it('should reset the paths in database', async () => {
@@ -154,8 +176,8 @@ describe('resetDB Function', () => {
 
   // Test resetting the words
   it('should reset the words in database', async () => {
-    await addPath('Path for words reset');
-    const path = await getPathByName('Path for words reset');
+    const pathId = await addPath('Path for words reset');
+    const path = await getPathById(pathId);
 
     await addWord('Word to be reset 1', path.id, 'img-url-1');
     await addWord('Word to be reset 2', path.id, 'img-url-2');
