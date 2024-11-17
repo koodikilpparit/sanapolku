@@ -2,9 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPaths, getWordsForPath } from '../db/db';
 import '../styles/PathSelection.css';
-import BackButton from '../components/universal/BackButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditButton from '../components/universal/EditButton';
 import DeleteButton from '../components/universal/DeleteButton';
 import ShareButton from '../components/universal/ShareButton';
@@ -15,6 +12,7 @@ import PathNoWordsModal from '../components/pathSelection/PathNoWordsModal';
 import SharePathModal from '../components/pathSelection/SharePathModal';
 import ReceivePathModal from '../components/pathSelection/ReceivePathModal';
 import SharePathErrorModal from '../components/pathSelection/SharePathErrorModal';
+import Header from '../components/universal/Header'
 
 const PathSelection = () => {
   const navigate = useNavigate();
@@ -88,16 +86,11 @@ const PathSelection = () => {
   return (
     <div className="paths-page">
       {/* Header */}
-      <div className="path-selection-header">
-        <BackButton />
-        <h2 className="title">Polut</h2>
-        <FontAwesomeIcon
-          icon={faPlus}
-          className="add-path-icon"
-          onClick={openNewPathModal}
-          aria-label="Lisää uusi polku"
+      <Header
+          title="Polut"
+          onCenterClick={null}
+          onRightClick={openNewPathModal}
         />
-      </div>
       {/* List of paths */}
       <div className="path-list">
         {paths.length > 0 ? (
@@ -113,7 +106,7 @@ const PathSelection = () => {
                   e.stopPropagation();
                   handleEditPathClick(path.id);
                 }}
-                color="black"
+                color="var(--Dark-Blue, #293642)"
               />
               <DeleteButton
                 onClick={(e) => {
