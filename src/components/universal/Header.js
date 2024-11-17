@@ -1,29 +1,31 @@
 // src/components/universal/Header.js
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import BackButton from './BackButton';
-import '../styles/Header.css';
+import EditButton from './EditButton';
+import '../../styles/Header.css';
 
-const Header = ({ title, rightIcon, onRightIconClick, showRightSection = true }) => {
+const Header = ({ title, onCenterClick, onRightClick }) => {
   return (
     <div className="header">
       <div className="header-left">
-        <BackButton onClick={onBackClick} />
+        <BackButton />
       </div>
       <div className="header-center">
-        <h2 className="header-title">{title}</h2>
+        <h2 className="header-title">{title} </h2>
+        <EditButton
+            onClick={onCenterClick}
+            color="white"
+          ></EditButton>
       </div>
-      {showRightSection && (
         <div className="header-right">
-          {rightIcon && (
             <FontAwesomeIcon
-              icon={rightIcon}
+              icon={faPlus}
               className="header-icon"
-              onClick={onRightIconClick}
+              onClick={onRightClick}
             />
-          )}
         </div>
-      )}
     </div>
   );
 };
