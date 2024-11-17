@@ -6,20 +6,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-}
-
-.path-selection-header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  padding-top: 25px;
-  margin-bottom: 25px;
-}
-
-.path-selection-header h2 {
-  font-size: var(--sp-heading-1);
-  color: var(--sp-white);
+  background-image: 
+    url('../../public/app_background.png');
+  background-repeat: unset;
 }
 
 .path-list {
@@ -34,6 +23,11 @@
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: #06705B;
+}
+
+.paths-page .header .edit-button {
+  display: none;
 }
 
 .path-list::-webkit-scrollbar {
@@ -62,7 +56,7 @@
 }
 
 .path-item {
-  color: var(--sp-w);
+  color: var(--Dark-Blue, #293642);
   width: 100%;
   height: 100%;
   font-size: var(--sp-heading-2);
@@ -71,6 +65,7 @@
   text-transform: capitalize;
   border-radius: var(--sp-button-border-radius) 0 0
     var(--sp-button-border-radius);
+  cursor: pointer;
 }
 
 .path-item-container:hover {
@@ -82,12 +77,6 @@
   color: var(--sp-white);
   font-size: var(--sp-heading-2);
   font-weight: bold;
-}
-
-.add-path-icon {
-  font-size: var(--sp-icon-size-large);
-  color: var(--sp-white);
-  transition: color 0.3s ease;
 }
 
 .add-path-icon:hover {
