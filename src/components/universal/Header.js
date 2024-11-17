@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import BackButton from './BackButton';
 import EditButton from './EditButton';
-import '/Header.css';
+import './Header.css';
 
 const Header = ({ title, onCenterClick, onRightClick }) => {
   return (
