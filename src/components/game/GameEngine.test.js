@@ -206,6 +206,18 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(screen.queryByTestId('success-indicator')).toBeNull();
   });
 
+  it('checks that the progress-bar renders on game page', async () => {
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    // Check that the progress bar is in the document
+    const progressBar = screen.getByTestId('progress-bar');
+    expect(progressBar).toBeInTheDocument();
+  });
+
   it('checks that the back-button brings you to /omatpolut', () => {
     // Rendering the required pages
     const { container } = render(
