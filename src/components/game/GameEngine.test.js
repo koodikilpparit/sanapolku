@@ -218,6 +218,98 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(progressBar).toBeInTheDocument();
   });
 
+  it('checks that the initial progress is 0%', async () => {
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    const progressBar = screen.getByTestId('progress-bar');
+    const progress = progressBar.querySelector('.progress');
+    expect(progress).toHaveStyle(`width: ${0}%`);
+  });
+
+  it('check that progress is 100% when game is over', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    // Wait that game begins
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    for (let i = 0; i < 10; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
+      });
+      fireEvent.click(screen.getByText('VALMIS'));
+
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+    }
+
+    const progressBar = screen.getByTestId('progress-bar');
+    const progress = progressBar.querySelector('.progress');
+    expect(progress).toHaveStyle(`width: ${100}%`);
+
+    jest.useRealTimers();
+  });
+
+  it('check that progress is 50% when game is half-way done', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    // Wait that game begins
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    for (let i = 0; i < 5; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
+      });
+      fireEvent.click(screen.getByText('VALMIS'));
+
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+    }
+
+    const progressBar = screen.getByTestId('progress-bar');
+    const progress = progressBar.querySelector('.progress');
+    expect(progress).toHaveStyle(`width: ${50}%`);
+
+    jest.useRealTimers();
+  });
+
   it('checks that the back-button brings you to /omatpolut', () => {
     // Rendering the required pages
     const { container } = render(
