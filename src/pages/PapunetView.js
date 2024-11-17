@@ -23,37 +23,27 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
     sign: 'Viittomakuva',
   };
 
-  const getPhotos = useCallback(
-    async (term) => {
-      try {
-        const fetchedPhotos = await fetchPhotos(term, selectedFilters);
-        setPhotos(fetchedPhotos);
-        setError(null);
-      } catch (err) {
-        setError('Error fetching photos');
-        setPhotos([]);
-      }
-    },
-    [selectedFilters]
-  );
+  const getPhotos = useCallback(async () => {
+    try {
+      const fetchedPhotos = await fetchPhotos(searchTerm, selectedFilters);
+      setPhotos(fetchedPhotos);
+      setError(null);
+    } catch (err) {
+      setError('Error fetching photos');
+      setPhotos([]);
+    }
+  }, [selectedFilters, searchTerm]);
 
   // Fetch photos on initial render if initial search term is provided
   useEffect(() => {
     if (initialSearchTerm && !initialFetchDone.current) {
-      getPhotos(initialSearchTerm);
+      getPhotos();
       initialFetchDone.current = true;
     }
   }, [getPhotos, initialSearchTerm]);
 
-  // Re-fetch photos when filters change
-  useEffect(() => {
-    if (initialFetchDone.current) {
-      getPhotos(searchTerm);
-    }
-  }, [selectedFilters, getPhotos, searchTerm]);
-
   const handleFetchPhotos = () => {
-    getPhotos(searchTerm);
+    getPhotos();
     initialFetchDone.current = true;
   };
 
@@ -86,7 +76,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
         {photos.map((photo) => (
           <div
             key={photo.uid}
-            className={`photo ${selectedImage?.src === photo.url ? 'selected' : ''}`}
+            className={`photo ${selectedImage?.src === proxy + photo.url ? 'selected' : ''}`}
             onClick={() =>
               setSelectedImage({
                 src: proxy + photo.url,
@@ -106,7 +96,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
           PERUUTA
         </button>
         <button className="btn-sp-primary save-btn" onClick={handleSave}>
-          TALLENNA
+          VALITSE
         </button>
       </div>
     </div>
