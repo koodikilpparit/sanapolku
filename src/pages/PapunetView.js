@@ -7,6 +7,7 @@ import '../styles/PapunetView.css';
 const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -24,13 +25,16 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   };
 
   const getPhotos = useCallback(async () => {
+    setLoading(true);
     try {
       const fetchedPhotos = await fetchPhotos(searchTerm, selectedFilters);
       setPhotos(fetchedPhotos);
       setError(null);
     } catch (err) {
-      setError('Error fetching photos');
+      setError('Virhe kuvien hakemisessa');
       setPhotos([]);
+    } finally {
+      setLoading(false);
     }
   }, [selectedFilters, searchTerm]);
 
@@ -69,26 +73,34 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Enter search term"
       />
-      <button onClick={handleFetchPhotos}>HAE KUVIA</button>
+      <button onClick={handleFetchPhotos} disabled={loading}>
+        HAE KUVIA
+      </button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div className="photo-container">
-        {photos.map((photo) => (
-          <div
-            key={photo.uid}
-            className={`photo ${selectedImage?.src === proxy + photo.url ? 'selected' : ''}`}
-            onClick={() =>
-              setSelectedImage({
-                src: proxy + photo.url,
-                author: photo.author,
-              })
-            }
-          >
-            <img src={photo.thumb} alt={photo.name} />
-            <p>{photo.name}</p>
-            <p>Tekijä: {photo.author}</p>
-          </div>
-        ))}
+        {loading ? (
+          <p>Haetaan kuvia...</p>
+        ) : photos.length === 0 && initialFetchDone.current ? (
+          <p>Ei kuvatuloksia</p>
+        ) : (
+          photos.map((photo) => (
+            <div
+              key={photo.uid}
+              className={`photo ${selectedImage?.src === proxy + photo.url ? 'selected' : ''}`}
+              onClick={() =>
+                setSelectedImage({
+                  src: proxy + photo.url,
+                  author: photo.author,
+                })
+              }
+            >
+              <img src={photo.thumb} alt={photo.name} />
+              <p>{photo.name}</p>
+              <p>Tekijä: {photo.author}</p>
+            </div>
+          ))
+        )}
       </div>
 
       <div className="return-save-button-container">
