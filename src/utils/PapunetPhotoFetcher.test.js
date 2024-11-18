@@ -12,6 +12,7 @@ describe('fetchPhotos', () => {
   it('fetches and parses photos correctly', async () => {
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
+        ok: true,
         json: () =>
           Promise.resolve({
             images: [
@@ -82,6 +83,7 @@ describe('fetchPhotos', () => {
   it('calls the correct API endpoint', async () => {
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
+        ok: true,
         json: () => Promise.resolve({ images: [] }),
       })
     );
@@ -94,9 +96,27 @@ describe('fetchPhotos', () => {
     );
   });
 
+  it('calls the correct API endpoint with filters', async () => {
+    fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ images: [] }),
+      })
+    );
+
+    const searchTerm = 'test';
+    const filters = ['photo', 'drawing'];
+    await fetchPhotos(searchTerm, filters);
+
+    expect(fetch).toHaveBeenCalledWith(
+      'https://corsproxy.io/?https://kuha.papunet.net/api/search/photo-drawing/test?lang=fi'
+    );
+  });
+
   it('handles empty array response', async () => {
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
+        ok: true,
         json: () => Promise.resolve({ images: [] }),
       })
     );
