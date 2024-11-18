@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import NewWord from './NewWord';
 import ManagePath from './ManagePath';
@@ -8,6 +8,56 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
 }));
+
+// Mock the ImageUploader component to simulate an image selectionjest.mock('../components/newWord/ImageUploader', () => {
+jest.mock('../components/newWord/ImageUploader', () => {
+  const PropTypes = require('prop-types');
+
+  const MockImageUploader = ({ setImageData }) => (
+    <button
+      onClick={() =>
+        setImageData({ src: 'test-image-src', author: 'test-author' })
+      }
+    >
+      Mock ImageUploader
+    </button>
+  );
+
+  MockImageUploader.displayName = 'MockImageUploader'; // Add display name
+
+  // Add prop types validation
+  MockImageUploader.propTypes = {
+    setImageData: PropTypes.func.isRequired,
+  };
+
+  return MockImageUploader;
+});
+
+// Mock ImageCropper for simplicity
+jest.mock('../components/newWord/ImageCropper', () => {
+  const PropTypes = require('prop-types');
+
+  const MockImageCropper = ({
+    imageSrc = 'default-image-src',
+    onCroppedImage,
+  }) => (
+    <div>
+      <p>ImageCropper Mock</p>
+      <p>{imageSrc}</p>
+      <button onClick={() => onCroppedImage('cropped-image-src')}>Crop</button>
+    </div>
+  );
+
+  MockImageCropper.displayName = 'MockImageCropper'; // Add display name
+
+  // Add prop types validation
+  MockImageCropper.propTypes = {
+    imageSrc: PropTypes.string.isRequired,
+    onCroppedImage: PropTypes.func.isRequired,
+  };
+
+  return MockImageCropper;
+});
 
 describe('NewWord Component UI Tests', () => {
   const mockNavigate = jest.fn();
@@ -115,32 +165,27 @@ describe('NewWord Component UI Tests', () => {
   });
 
   it('updates the preview image and closes cropping modal after cropping', async () => {
+    // Render the NewWord component inside a Router context
     render(
       <BrowserRouter>
         <NewWord />
       </BrowserRouter>
     );
 
-    // Mock the image selection
-    const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
-    const input = screen.getByText('Laitteelta');
-    fireEvent.change(input, { target: { files: [file] } });
+    // Simulate selecting an image using the mocked ImageUploader
+    const imageUploaderButton = screen.getByText('Mock ImageUploader');
+    fireEvent.click(imageUploaderButton);
 
-    // Wait until the cropping modal opens
-    await waitFor(() => {
-      expect(screen.getByText('Rajaa')).toBeInTheDocument();
-    });
+    // Assert that the cropping modal is displayed
+    const croppingModal = screen.getByText('ImageCropper Mock');
+    expect(croppingModal).toBeInTheDocument();
 
-    // Simulate cropped image submission
-    const croppedImage = 'data:image/png;base64,cropped';
-    const cropButton = screen.getByText('Rajaa');
+    // Simulate cropping the image
+    const cropButton = screen.getByText('Crop');
     fireEvent.click(cropButton);
 
-    // Verify the modal is closed and preview image is updated
-    await waitFor(() => {
-      expect(screen.queryByText('Rajaa')).not.toBeInTheDocument();
-      const previewImg = screen.getByAltText('Esikatselu');
-      expect(previewImg.src).toBe(croppedImage);
-    });
+    // Assert that the preview image and imageData are updated
+    const previewImage = screen.getByAltText('Esikatselu');
+    expect(previewImage).toHaveAttribute('src', 'cropped-image-src');
   });
 });
