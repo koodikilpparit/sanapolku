@@ -68,8 +68,7 @@ const GameEngine = ({ pathId }) => {
     let value = event.target.value.toUpperCase();
     const oldInput = [...playerInput];
 
-    // Prevents writing to the last letter tile more than one letter
-    // on some android phones
+    // If there are more than 1 letter, replace with getNewInputValue logic
     if (value.length > 1) {
       const oldValue = oldInput[index];
       value = getNewInputValue(oldValue, value);
