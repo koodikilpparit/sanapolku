@@ -11,7 +11,6 @@ async function fetchPhotos(searchTerm, filters = []) {
     return [];
   }
 
-  const proxy = 'https://corsproxy.io/?';
   const apiBase = 'https://kuha.papunet.net/api/search/';
 
   // If type filters are provided, join them with "-" to form the slug part
