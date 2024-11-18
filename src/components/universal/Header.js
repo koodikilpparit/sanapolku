@@ -20,8 +20,9 @@ const Header = ({ title, onCenterClick, onRightClick }) => {
       <div className="header-right">
         <FontAwesomeIcon
           icon={faPlus}
-          className="header-icon"
+          className="add-word-icon"
           onClick={onRightClick}
+          data-testid="add-word-icon"
         />
       </div>
     </div>

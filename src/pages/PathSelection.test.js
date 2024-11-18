@@ -64,8 +64,8 @@ describe('PathSelection Component UI Tests', () => {
       </BrowserRouter>
     );
 
-    // Get the button (FontAwesomeIcon with aria-label) and open the modal
-    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    // Open the modal
+    const openModalButton = screen.getByTestId("add-word-icon");
     fireEvent.click(openModalButton);
 
     // Check if the modal content appears
@@ -83,7 +83,7 @@ describe('PathSelection Component UI Tests', () => {
     );
 
     // Open the modal
-    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    const openModalButton = screen.getByTestId("add-word-icon");
     fireEvent.click(openModalButton);
 
     // Get the input field inside the modal and type into it
@@ -107,7 +107,7 @@ describe('PathSelection Component UI Tests', () => {
     window.alert = jest.fn();
 
     // Open the modal
-    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    const openModalButton = screen.getByTestId("add-word-icon");
     fireEvent.click(openModalButton);
 
     // Get the save button and simulate a click without typing in the input
@@ -131,7 +131,7 @@ describe('PathSelection Component UI Tests', () => {
     window.alert = jest.fn();
 
     // Open the modal
-    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    const openModalButton = screen.getByTestId("add-word-icon");
     fireEvent.click(openModalButton);
 
     // Type in the input field inside the modal
@@ -162,7 +162,7 @@ describe('PathSelection Component UI Tests', () => {
     );
 
     // Open the modal
-    const openModalButton = screen.getByLabelText('Lisää uusi polku');
+    const openModalButton = screen.getByTestId("add-word-icon");
     fireEvent.click(openModalButton);
 
     // Type in the input field inside the modal
