@@ -60,7 +60,11 @@ describe('ImageUploader tests', () => {
     const invalidFile = new File(['dummy content'], 'test.txt', {
       type: 'text/plain',
     });
-    const input = screen.getByText('Laitteelta');
+
+    // Get the hidden file input element
+    const input = screen
+      .getByText(/Laitteelta/i)
+      .closest('button').nextElementSibling;
 
     // Simulates uploading invalid file
     fireEvent.change(input, { target: { files: [invalidFile] } });
