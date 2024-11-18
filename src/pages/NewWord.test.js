@@ -96,42 +96,51 @@ describe('NewWord Component UI Tests', () => {
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
-  it('should open and close the Papunet modal when "HAE KUVIA" button is clicked', () => {
+  it('should open and close the Papunet modal when "Papunetistä" button is clicked', () => {
     render(
       <BrowserRouter>
         <NewWord />
       </BrowserRouter>
     );
 
-    const fetchPhotosButton = screen.getByText('HAE KUVIA');
+    const fetchPhotosButton = screen.getByText('Papunetistä');
     fireEvent.click(fetchPhotosButton);
 
     // Check if Papunet modal is open
-    expect(screen.getByText('Photo Fetcher')).toBeInTheDocument();
+    expect(screen.getByText('Papunet Kuvahaku')).toBeInTheDocument();
 
     // Close the modal
     fireEvent.click(screen.getByText('X'));
-    expect(screen.queryByText('Photo Fetcher')).not.toBeInTheDocument();
+    expect(screen.queryByText('Papunet Kuvahaku')).not.toBeInTheDocument();
   });
 
-  it('should open the image cropper modal when an image is selected', async () => {
+  it('updates the preview image and closes cropping modal after cropping', async () => {
     render(
       <BrowserRouter>
         <NewWord />
       </BrowserRouter>
     );
-
-    // Mocks the image selection
+  
+    // Mock the image selection
     const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
-    const input = screen.getByLabelText('Lataa kuva');
-
-    // Simulate selecting a file
+    const input = screen.getByText('Laitteelta');
     fireEvent.change(input, { target: { files: [file] } });
-
-    // Wait until cropping modal is open
+  
+    // Wait until the cropping modal opens
     await waitFor(() => {
-      const modal = screen.getByText('Rajaa');
-      expect(modal).toBeInTheDocument();
+      expect(screen.getByText('Rajaa')).toBeInTheDocument();
     });
-  });
+  
+    // Simulate cropped image submission
+    const croppedImage = 'data:image/png;base64,cropped';
+    const cropButton = screen.getByText('Rajaa');
+    fireEvent.click(cropButton);
+  
+    // Verify the modal is closed and preview image is updated
+    await waitFor(() => {
+      expect(screen.queryByText('Rajaa')).not.toBeInTheDocument();
+      const previewImg = screen.getByAltText('Esikatselu');
+      expect(previewImg.src).toBe(croppedImage);
+    });
+  });  
 });
