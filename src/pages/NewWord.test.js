@@ -9,7 +9,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
-// Mock the ImageUploader component to simulate an image selectionjest.mock('../components/newWord/ImageUploader', () => {
+// Mock the ImageUploader component to simulate an image
 jest.mock('../components/newWord/ImageUploader', () => {
   const PropTypes = require('prop-types');
 
