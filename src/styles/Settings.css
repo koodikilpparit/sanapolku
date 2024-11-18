@@ -78,6 +78,7 @@ body {
   font-size: var(--sp-heading-2);
   color: var(--sp-white);
   margin: 0;
+  text-align: center;
 }
 
 .settings {
