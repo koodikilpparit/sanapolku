@@ -170,6 +170,7 @@ const GameEngine = ({ pathId }) => {
               currentWord={currentWord}
               playerInput={playerInput}
               handleInputChange={handleInputChange}
+              setPlayerInput={setPlayerInput}
               handleSubmit={handleSubmit}
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}

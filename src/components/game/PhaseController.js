@@ -9,6 +9,7 @@ const PhaseController = ({
   playerInput,
   handleInputChange,
   handleSubmit,
+  setPlayerInput,
   inputRefs,
   shuffledWord = '',
 }) => {
@@ -29,9 +30,8 @@ const PhaseController = ({
           currentWord={currentWord}
           shuffledWord={shuffledWord}
           playerInput={playerInput}
-          handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          inputRefs={inputRefs}
+          setPlayerInput={setPlayerInput}
         />
       );
     case 3:
@@ -58,6 +58,7 @@ PhaseController.propTypes = {
   playerInput: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  setPlayerInput: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
   shuffledWord: PropTypes.string,
 };
