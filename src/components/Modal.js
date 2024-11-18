@@ -13,10 +13,8 @@ const Modal = ({ isOpen, children, modalType }) => {
 };
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
   modalType: PropTypes.string,
-  showCloseButton: PropTypes.bool,
 };
 
 export default Modal;
