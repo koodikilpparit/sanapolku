@@ -154,6 +154,10 @@ describe('ManagePath Component UI Tests', () => {
     // Click save button
     fireEvent.click(screen.getByText(/Tallenna/i));
 
+    await waitFor(() => {
+      expect(mockEditPathName).toHaveBeenCalledTimes(1);
+    });
+
     // Wait for the updated path name to display in the title
     await waitFor(() => {
       expect(screen.getByText('Updated Path Name')).toBeInTheDocument();

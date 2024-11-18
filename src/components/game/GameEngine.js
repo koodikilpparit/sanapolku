@@ -65,9 +65,16 @@ const GameEngine = ({ pathId }) => {
   }, [currentWord]);
 
   const handleInputChange = (index, event) => {
-    const value = event.target.value.toUpperCase();
+    let value = event.target.value.toUpperCase();
+    const oldInput = [...playerInput];
 
-    const newInput = [...playerInput];
+    // If there are more than 1 letter, replace with getNewInputValue logic
+    if (value.length > 1) {
+      const oldValue = oldInput[index];
+      value = getNewInputValue(oldValue, value);
+    }
+
+    const newInput = [...oldInput];
     newInput[index] = value;
     setPlayerInput(newInput);
 
@@ -75,6 +82,21 @@ const GameEngine = ({ pathId }) => {
     if (value && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
     }
+  };
+
+  /**
+   * Replace old letter from either side (cursor). Also handle cases where user possibly copy-pastes a longer string.
+   * @param {string} oldInputValue The player input in previous state at a specific index
+   * @param {string} eventValue The input event value at the same index
+   * @returns A single character (new input value) at the same index
+   */
+  const getNewInputValue = (oldInputValue, eventValue) => {
+    const newValue = eventValue.replace(oldInputValue, '');
+    if (newValue.length < 1) {
+      // If managed to replace all letters with empty strings
+      return oldInputValue;
+    }
+    return newValue[0];
   };
 
   // Handle submission based on the phase
