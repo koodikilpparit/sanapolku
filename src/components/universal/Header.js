@@ -17,9 +17,7 @@ const Header = ({ title, onCenterClick, onRightClick }) => {
         <EditButton onClick={onCenterClick} color="white"></EditButton>
       </div>
       <div className="header-right">
-        <AddButton
-        onClick={onRightClick}
-        />
+        <AddButton onClick={onRightClick} />
       </div>
     </div>
   );

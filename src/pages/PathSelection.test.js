@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PathSelection from './PathSelection';
 import * as db from '../db/db';
@@ -24,14 +30,16 @@ describe('PathSelection Component UI Tests', () => {
     );
   });
 
-  it('should render the PathSelection component and display the title "Polut"', () => {
-    render(
-      <BrowserRouter>
-        <PathProvider>
-          <PathSelection />
-        </PathProvider>
-      </BrowserRouter>
-    );
+  it('should render the PathSelection component and display the title "Polut"', async () => {
+    await act(async () => {
+      render(
+        <BrowserRouter>
+          <PathProvider>
+            <PathSelection />
+          </PathProvider>
+        </BrowserRouter>
+      );
+    });
 
     // Check if the title "Polut" is rendered
     expect(screen.getByText('Polut')).toBeInTheDocument();
@@ -65,7 +73,7 @@ describe('PathSelection Component UI Tests', () => {
     );
 
     // Open the modal
-    const openModalButton = screen.getByTestId("add-word-icon");
+    const openModalButton = screen.getByTestId('add-word-icon');
     fireEvent.click(openModalButton);
 
     // Check if the modal content appears
@@ -83,7 +91,7 @@ describe('PathSelection Component UI Tests', () => {
     );
 
     // Open the modal
-    const openModalButton = screen.getByTestId("add-word-icon");
+    const openModalButton = screen.getByTestId('add-word-icon');
     fireEvent.click(openModalButton);
 
     // Get the input field inside the modal and type into it
@@ -107,7 +115,7 @@ describe('PathSelection Component UI Tests', () => {
     window.alert = jest.fn();
 
     // Open the modal
-    const openModalButton = screen.getByTestId("add-word-icon");
+    const openModalButton = screen.getByTestId('add-word-icon');
     fireEvent.click(openModalButton);
 
     // Get the save button and simulate a click without typing in the input
@@ -131,7 +139,7 @@ describe('PathSelection Component UI Tests', () => {
     window.alert = jest.fn();
 
     // Open the modal
-    const openModalButton = screen.getByTestId("add-word-icon");
+    const openModalButton = screen.getByTestId('add-word-icon');
     fireEvent.click(openModalButton);
 
     // Type in the input field inside the modal
@@ -162,7 +170,7 @@ describe('PathSelection Component UI Tests', () => {
     );
 
     // Open the modal
-    const openModalButton = screen.getByTestId("add-word-icon");
+    const openModalButton = screen.getByTestId('add-word-icon');
     fireEvent.click(openModalButton);
 
     // Type in the input field inside the modal
