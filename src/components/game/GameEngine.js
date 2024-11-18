@@ -65,7 +65,13 @@ const GameEngine = ({ pathId }) => {
   }, [currentWord]);
 
   const handleInputChange = (index, event) => {
-    const value = event.target.value.toUpperCase();
+    let value = event.target.value.toUpperCase();
+
+    // Prevents writing to the last letter tile more than one letter
+    // on some android phones
+    if (value.length > 1) {
+      value = value[0];
+    }
 
     const newInput = [...playerInput];
     newInput[index] = value;
