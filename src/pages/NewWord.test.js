@@ -120,27 +120,27 @@ describe('NewWord Component UI Tests', () => {
         <NewWord />
       </BrowserRouter>
     );
-  
+
     // Mock the image selection
     const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
     const input = screen.getByText('Laitteelta');
     fireEvent.change(input, { target: { files: [file] } });
-  
+
     // Wait until the cropping modal opens
     await waitFor(() => {
       expect(screen.getByText('Rajaa')).toBeInTheDocument();
     });
-  
+
     // Simulate cropped image submission
     const croppedImage = 'data:image/png;base64,cropped';
     const cropButton = screen.getByText('Rajaa');
     fireEvent.click(cropButton);
-  
+
     // Verify the modal is closed and preview image is updated
     await waitFor(() => {
       expect(screen.queryByText('Rajaa')).not.toBeInTheDocument();
       const previewImg = screen.getByAltText('Esikatselu');
       expect(previewImg.src).toBe(croppedImage);
     });
-  });  
+  });
 });

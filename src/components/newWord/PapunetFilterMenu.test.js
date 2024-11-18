@@ -25,7 +25,9 @@ describe('PapunetFilterMenu', () => {
     );
 
     expect(screen.getByText(/valitse kuvatyypit/i)).toBeInTheDocument();
-    expect(screen.queryByText(/poista kaikki valinnat/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/poista kaikki valinnat/i)
+    ).not.toBeInTheDocument();
   });
 
   test('opens and closes the dropdown menu', () => {
@@ -43,33 +45,37 @@ describe('PapunetFilterMenu', () => {
     expect(screen.getByText(/poista kaikki valinnat/i)).toBeInTheDocument();
 
     fireEvent.click(menuHeader);
-    expect(screen.queryByText(/poista kaikki valinnat/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/poista kaikki valinnat/i)
+    ).not.toBeInTheDocument();
   });
 
   test('toggles a filter when clicked', () => {
     const filters = { filter1: 'Filter 1', filter2: 'Filter 2' };
-  const selectedFilters = [];
-  const onFilterChange = jest.fn();
+    const selectedFilters = [];
+    const onFilterChange = jest.fn();
 
-  render(
-    <PapunetFilterMenu
-      filters={filters}
-      selectedFilters={selectedFilters}
-      onFilterChange={onFilterChange}
-    />
-  );
+    render(
+      <PapunetFilterMenu
+        filters={filters}
+        selectedFilters={selectedFilters}
+        onFilterChange={onFilterChange}
+      />
+    );
 
-  fireEvent.click(screen.getByText(/valitse kuvatyypit/i));
+    fireEvent.click(screen.getByText(/valitse kuvatyypit/i));
 
-  const filterOption = screen.getByText(/filter 1/i).closest('.filter-option');
-  fireEvent.click(filterOption);
+    const filterOption = screen
+      .getByText(/filter 1/i)
+      .closest('.filter-option');
+    fireEvent.click(filterOption);
 
-  expect(onFilterChange).toHaveBeenCalledTimes(1);
-  expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
+    expect(onFilterChange).toHaveBeenCalledTimes(1);
+    expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
 
-  fireEvent.click(filterOption);
-  expect(onFilterChange).toHaveBeenCalledTimes(2);
-  expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
+    fireEvent.click(filterOption);
+    expect(onFilterChange).toHaveBeenCalledTimes(2);
+    expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
   });
 
   test('handles "Unselect All" functionality', () => {

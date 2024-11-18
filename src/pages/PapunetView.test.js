@@ -68,36 +68,41 @@ describe('PapunetView', () => {
 
   test('should call onSelectImage with selected image when save is clicked', async () => {
     const mockPhotos = [
-      { uid: '1', thumb: 'thumb1.jpg', name: 'Photo 1', author: 'Author 1', url: 'photo1.jpg' },
+      {
+        uid: '1',
+        thumb: 'thumb1.jpg',
+        name: 'Photo 1',
+        author: 'Author 1',
+        url: 'photo1.jpg',
+      },
     ];
     fetchPhotos.mockResolvedValue(mockPhotos);
-  
+
     const { getByAltText, getByText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
-  
+
     await waitFor(() => {
       fireEvent.click(getByAltText('Photo 1'));
     });
-  
+
     fireEvent.click(getByText('VALITSE'));
-  
+
     expect(mockOnSelectImage).toHaveBeenCalledWith({
       src: 'https://corsproxy.io/?photo1.jpg',
       author: 'Author 1',
     });
   });
-  
+
   test('should display "No results" message when no photos are fetched', async () => {
     fetchPhotos.mockResolvedValue([]);
-  
+
     const { getByText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
-  
+
     await waitFor(() => {
       expect(getByText('Ei kuvatuloksia')).toBeInTheDocument();
     });
   });
-  
 });
