@@ -93,6 +93,47 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(secondWord).not.toBe(firstWord); // Ensure that the image has changed again
   });
 
+  it('replaces the input when player continues to write on the same tile', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    // Wait for the words to load
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    // Wait for the first word and its image to be displayed and remember the first image
+    const firstImage = await screen.findByRole('img');
+    const firstSrc = firstImage.getAttribute('src');
+
+    // Use the first image's src to figure out what is correct word
+    const firstWord = firstSrc.replace('.jpg', '');
+
+    // Enter the incorrect letter and then replace with correct one for the first phase
+    firstWord.split('').forEach((letter, index) => {
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: 'o' },
+      });
+      fireEvent.change(screen.getAllByRole('textbox')[index], {
+        target: { value: 'o' + letter },
+      });
+    });
+    fireEvent.click(screen.getByText('VALMIS'));
+
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
+    const newImage = await screen.findByRole('img');
+    const newSrc = newImage.getAttribute('src');
+    const secondWord = newSrc.replace('.jpg', '');
+
+    expect(secondWord).not.toBe(firstWord); // Ensure that the image has changed again
+  });
+
   it('moves to the second phase on wrong input', async () => {
     render(
       <MemoryRouter>
