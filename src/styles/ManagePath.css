@@ -8,7 +8,8 @@
   justify-content: flex-start;
   background-image: 
     url('../../public/app_background.png');
-  background-repeat: unset;
+  background-repeat: repeat;
+  background-position: center;
 }
 
 .word-entry-container {
@@ -78,29 +79,6 @@
   margin-left: 5px;
 }
 
-.add-word {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  background-color: var(--sp-white);
-  border-radius: var(--sp-button-border-radius);
-  width: 60%;
-  margin-top: 50px;
-}
-
-.add-icon {
-  font-size: var(--sp-icon-size-small);
-  color: var(--sp-black);
-  margin-right: 15px;
-}
-
-.add-text {
-  font-size: var(--sp-heading-4);
-  color: var(--sp-black);
-  font-weight: bold;
-}
-
 .no-words {
   color: var(--sp-white);
   font-size: var(--sp-body-large);
@@ -109,6 +87,15 @@
 }
 
 @media (max-width: 767px) {
+  .manage-page {
+    padding: 0px 0px;
+  }
+
+  .manage-page .header {
+    padding: 25px 25px;
+    margin-bottom: 0px;
+  }
+  
   .add-word {
     width: 90%;
   }
@@ -128,6 +115,7 @@
   .word-image {
     margin-right: 0;
   }
+
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -137,5 +125,14 @@
 
   .word-image {
     margin-right: 10px;
+  }
+
+  .manage-page {
+    padding: 0px 0px;
+  }
+
+  .manage-page .header {
+    padding: 25px 25px;
+    margin-bottom: 0px;
   }
 }

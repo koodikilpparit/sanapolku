@@ -8,7 +8,8 @@
   justify-content: flex-start;
   background-image: 
     url('../../public/app_background.png');
-  background-repeat: unset;
+  background-repeat: repeat;
+  background-position: center;
 }
 
 .button-container {
@@ -82,40 +83,67 @@
   border-radius: var(--sp-button-border-radius) 0 0
     var(--sp-button-border-radius);
 }
-  
-/* Style for Phones in Horizontal mode */
-@media (max-height: 420px) {
 
-  .path-button {
-    height: 60px;
-    margin-bottom: 10px;
+
+@media (max-width: 767px) {
+  .game-menu-page {
+    padding: 0px 0px;
+  }
+
+  .game-menu-page .header {
+    padding: 25px 25px;
+    margin-bottom: 0px;
+  }
+  
+  .add-word {
+    width: 90%;
+  }
+
+  .delete-icon {
+    font-size: var(--sp-icon-size-extra-small);
+  }
+
+  .edit-icon {
+    font-size: var(--sp-icon-size-extra-small);
+  }
+
+  .share-icon {
+    font-size: var(--sp-icon-size-extra-small);
+  }
+
+  .word-image {
+    margin-right: 0;
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .add-word {
+    width: 80%;
+  }
+
+  .word-image {
+    margin-right: 10px;
+  }
+
+  .game-menu-page {
+    padding: 0px 0px;
+  }
+
+  .game-menu-page .header {
+    padding: 25px 25px;
+    margin-bottom: 0px;
   }
 }
-  
-/* Style for extremely narrow screens in portrait mode */
-@media (max-width: 360px) {
-  
+
+@media (max-width: 358px) {
   .path-button {
-    width: 95vw;
-    line-height: normal;
+    font-size: 7vw;
   }
 }
-  
-/* Style for the narrowest possible screens in portrait mode */
-@media (max-width: 200px) {
-  
+
+@media (max-width: 218px) {
   .path-button {
-    width: 95vw;
-    line-height: normal;
+    font-size: 5vw;
   }
 }
-  
-/* Style for extremely narrow screens in Horizontal mode */
-@media (max-height: 360px) {
-   
-  .path-button {
-    height: 15vh;
-    line-height: normal;
-    margin-bottom: 10px;
-  }
-}  
