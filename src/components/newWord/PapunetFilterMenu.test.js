@@ -122,7 +122,7 @@ describe('PapunetFilterMenu', () => {
       const filterImage = screen.getByAltText(filters[key]);
       expect(filterImage).toHaveAttribute(
         'src',
-        `sanapolku/papunet-img-types/${key}.png`
+        `/papunet-img-types/${key}.png`
       );
     });
   });

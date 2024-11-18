@@ -4,6 +4,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PapunetFilterMenu.css';
 
+const public_url = process.env.PUBLIC_URL;
+
 const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -58,7 +60,7 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
                 />
                 <label htmlFor={key}>{label}</label>
                 <img
-                  src={`sanapolku/papunet-img-types/${key}.png`}
+                  src={public_url + `/papunet-img-types/${key}.png`}
                   alt={label}
                   className="filter-icon"
                 />

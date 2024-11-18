@@ -2,11 +2,13 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import PapunetView from './PapunetView';
 import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
+import { proxy } from '../utils/PapunetPhotoFetcher';
 
 jest.mock('../utils/PapunetPhotoFetcher');
 
 describe('PapunetView', () => {
   const mockOnSelectImage = jest.fn();
+  const mockCloseModal = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -89,7 +91,7 @@ describe('PapunetView', () => {
     fireEvent.click(getByText('VALITSE'));
 
     expect(mockOnSelectImage).toHaveBeenCalledWith({
-      src: 'https://corsproxy.io/?photo1.jpg',
+      src: proxy + 'photo1.jpg',
       author: 'Author 1',
     });
   });
@@ -104,5 +106,20 @@ describe('PapunetView', () => {
     await waitFor(() => {
       expect(getByText('Ei kuvatuloksia')).toBeInTheDocument();
     });
+  });
+
+  it('should close when "PERUUTA" button is clicked', async () => {
+    fetchPhotos.mockResolvedValue([]);
+    const { getByText } = render(
+      <PapunetView
+        onSelectImage={mockOnSelectImage}
+        initialSearchTerm="test"
+        closeModal={mockCloseModal}
+      />
+    );
+
+    fireEvent.click(getByText('PERUUTA'));
+
+    expect(mockCloseModal).toHaveBeenCalled();
   });
 });

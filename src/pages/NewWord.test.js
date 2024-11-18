@@ -146,7 +146,7 @@ describe('NewWord Component UI Tests', () => {
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
-  it('should open and close the Papunet modal when "Papunetistä" button is clicked', () => {
+  it('should open the Papunet modal when "Papunetistä" button is clicked', () => {
     render(
       <BrowserRouter>
         <NewWord />
@@ -158,10 +158,6 @@ describe('NewWord Component UI Tests', () => {
 
     // Check if Papunet modal is open
     expect(screen.getByText('Papunet Kuvahaku')).toBeInTheDocument();
-
-    // Close the modal
-    fireEvent.click(screen.getByText('X'));
-    expect(screen.queryByText('Papunet Kuvahaku')).not.toBeInTheDocument();
   });
 
   it('updates the preview image and closes cropping modal after cropping', async () => {
