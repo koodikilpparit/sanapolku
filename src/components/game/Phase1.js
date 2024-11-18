@@ -60,6 +60,7 @@ const Phase1 = ({
                 onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                 maxLength="1"
                 className="w-full max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
+                autoCapitalize="none"
               />
             ))}
           </div>
