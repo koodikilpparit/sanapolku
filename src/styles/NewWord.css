@@ -20,6 +20,7 @@
 
 .new-word-header h2 {
   font-size: var(--sp-heading-1);
+  font-weight: bold;
   color: var(--sp-white);
   margin: 0 auto;
 }

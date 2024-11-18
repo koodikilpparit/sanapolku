@@ -7,6 +7,7 @@ import SuccessIndicator from './SuccessIndicator';
 import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
+import ProgressBar from './ProgressBar';
 
 const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
@@ -19,6 +20,7 @@ const GameEngine = ({ pathId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [progress, setProgress] = useState(0);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -126,8 +128,10 @@ const GameEngine = ({ pathId }) => {
 
     if (wordIndex + 1 < words.length) {
       setWordIndex(wordIndex + 1);
+      setProgress((prevProgress) => prevProgress + 100 / words.length);
     } else {
       setGameOver(true);
+      setProgress(100);
     }
   };
 
@@ -143,8 +147,11 @@ const GameEngine = ({ pathId }) => {
 
   return (
     <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
-      <div className="px-2">
+      <div className="top-bar">
         <BackButton />
+        <div className="progress-bar-container">
+          <ProgressBar progress={progress} />
+        </div>
       </div>
       <div className="flex-grow">
         {loading ? (

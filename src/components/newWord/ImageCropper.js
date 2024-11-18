@@ -15,7 +15,7 @@ const ImageCropper = ({ imageSrc, onCroppedImage }) => {
       maxHeight: 400,
     });
 
-    onCroppedImage(croppedCanvas.toDataURL('image/jpeg'));
+    onCroppedImage(croppedCanvas.toDataURL('image/png'));
   };
 
   return (
