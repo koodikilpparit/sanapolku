@@ -1,8 +1,7 @@
 .photo-fetcher {
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100vh;
 }
 
 .photo-fetcher h1 {
@@ -10,25 +9,33 @@
   margin-bottom: 20px;
 }
 
-.photo-fetcher input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.photo-fetcher button {
+.photo-fetcher input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--sp-gray-sp);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.search-button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--sp-light-green);
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  color: var(--sp-white);
+  font-size: 1rem;
+  font-size: var(--sp-heading-6);
 }
 
-.photo-fetcher button:hover {
-  background-color: #0056b3;
+.search-button:disabled {
+  background-color: #ccc;
 }
 
 .photo-container {
@@ -36,24 +43,103 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 20px;
+  padding-bottom: 100px; /* Last images aren't behind return-save-button-container */
+}
+
+.fetch-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin-top: 50px;
 }
 
 .photo {
   flex: 1 1 calc(33.333% - 20px);
   box-sizing: border-box;
   padding: 10px;
-  background-color: white;
+  background-color: var(--sp-white);
   border: 1px solid #ccc;
   border-radius: 4px;
   text-align: center;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo.selected {
+  border: 2px solid var(--sp-dark-green);
+  box-shadow: 0px 0px 10px var(--sp-light-green);
+  transform: scale(1.05);
 }
 
 .photo img {
   max-width: 100%;
+  max-height: 100px; /* Restrict height for better alignment */
   height: auto;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .photo p {
   margin: 5px 0;
+}
+
+.return-save-button-container {
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  padding: 10px;
+  background-color: var(--sp-white);
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1000; /* Ensures the buttons stay on top of other content */
+  border: none;
+  border-radius: 8px;
+}
+
+.return-btn {
+  padding: 15px 20px;
+  width: 30%;
+  background-color: var(--sp-red);
+  font-size: var(--sp-heading-5);
+}
+
+.save-btn {
+  padding: 15px 20px;
+  width: 30%;
+  background-color: var(--sp-light-green);
+  font-size: var(--sp-heading-5);
+}
+
+@media (max-width: 767px) {
+  .search-bar-container {
+    flex-direction: column;
+  }
+
+  .photo-fetcher input,
+  .search-button {
+    width: 100%;
+  }
+
+  .return-save-button-container {
+    bottom: 20%;
+  }
+
+  .return-save-button-container button {
+    width: 40%;
+    height: 10%;
+  }
+
+  .photo-container {
+    padding-bottom: 50px;
+  }
 }

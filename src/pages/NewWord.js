@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addWord } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
-import ImageUploader from '../components/ImageUploader';
+import ImageUploader from '../components/newWord/ImageUploader';
 import Modal from '../components/Modal';
 import PapunetView from './PapunetView';
-import ImageCropper from '../components/ImageCropper';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImageCropper from '../components/newWord/ImageCropper';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -22,10 +24,10 @@ const NewWord = () => {
   // Placeholder image
   const placeholderImage = {
     src: 'https://placehold.co/150x150',
-    author: 'Unknown',
+    author: null,
   };
 
-  // Function to save the word and placeholder image to the database
+  // Save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
       alert('Syötä sana');
@@ -75,37 +77,42 @@ const NewWord = () => {
       <div className="new-word-container">
         {/* Add word */}
         <div className="input-container">
-          <label>Kirjoita uusi sana:</label>
+          <label>Kirjoita uusi sana</label>
           <input
             type="text"
             value={newWord}
             onChange={(e) => setNewWord(e.target.value)}
             placeholder="Uusi sana"
           />
-        </div>
 
-        {/* Container for ImageUploader and preview image */}
-        <div className="image-upload-preview-container">
           {/* Upload image */}
-          <ImageUploader onImageSelect={handleImageSelection} />
+          <div className="img-upload-container">
+            <label>Lataa kuva</label>
+            <div className="img-upload-button-container">
+              <ImageUploader setImageData={handleImageSelection} />
+              <button
+                className="img-upload-button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <FontAwesomeIcon icon={faImage} className="button-icon" />
+                <span className="button-text">Papunetistä</span>
+              </button>
+            </div>
+          </div>
 
-          {/* Image preview */}
-          <img src={previewImage} alt="Preview" className="image-preview" />
+          {/* Image Preview */}
+          <div className="image-preview">
+            <img src={previewImage} alt="Esikatselu" />
+          </div>
         </div>
 
-        {/* Buttons */}
+        {/* Action Buttons */}
         <div className="confirm-button-container">
           <button className="nw-cancel-button" onClick={() => navigate(-1)}>
             PERUUTA
           </button>
           <button className="nw-save-button" onClick={handleSave}>
             VALMIS
-          </button>
-          <button
-            className="nw-fetch-photos-button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            HAE KUVIA
           </button>
         </div>
       </div>
@@ -115,16 +122,12 @@ const NewWord = () => {
         <PapunetView
           onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
+          closeModal={() => setIsModalOpen(false)}
         />
       </Modal>
 
       {/* Modal for Image Cropping */}
-      <Modal
-        isOpen={isCropping}
-        onClose={() => setIsCropping(false)}
-        modalType="image-cropper"
-        showCloseButton={false}
-      >
+      <Modal isOpen={isCropping} modalType="image-cropper">
         {imageData && (
           <ImageCropper
             imageSrc={imageData?.src}
