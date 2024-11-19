@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { fetchPhotos, proxy } from '../utils/PapunetPhotoFetcher';
 import PapunetFilterMenu from '../components/newWord/PapunetFilterMenu';
 import '../styles/PapunetView.css';
+import ImagePreview from '../components/ImagePreview';
 
 const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
@@ -106,6 +107,7 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
                 })
               }
             >
+              <ImagePreview image={photo.url} author={photo.author} />
               <img src={photo.thumb} alt={photo.name} />
               <p>{photo.name}</p>
               <p>Tekijä: {photo.author}</p>
