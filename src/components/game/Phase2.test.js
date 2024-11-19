@@ -1,149 +1,162 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Phase2 from '../../components/game/Phase2';
-
-// Clear all mocks after all tests
-afterAll(() => {
-  jest.clearAllMocks();
-});
+import Phase2 from './Phase2';
 
 describe('Phase2 Component', () => {
-  const mockWord = {
-    id: 1,
-    word: 'apple',
-    imageData: { src: 'apple.jpg', author: null },
-  };
-  const mockShuffledWord = 'elppa';
   const mockHandleSubmit = jest.fn();
-  const mockHandleInputChange = jest.fn();
-  const mockInputRefs = createRef();
-  mockInputRefs.current = [];
+  const mockSetPlayerInput = jest.fn();
+  const mockCurrentWord = {
+    imageData: { src: 'test-image-src' },
+    word: 'test',
+  };
+  const mockShuffledWord = 'tset';
+  const mockPlayerInput = ['', '', '', ''];
 
-  // Clear all mocks before each test
-  beforeEach(async () => {
-    mockHandleSubmit.mockClear();
-    mockHandleInputChange.mockClear();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('Check that phase 2 is initialized correctly', () => {
-    const initialPlayerInput = ['', '', '', '', ''];
+  test('renders the title and image correctly', () => {
     render(
       <Phase2
-        currentWord={mockWord}
+        currentWord={mockCurrentWord}
         shuffledWord={mockShuffledWord}
-        playerInput={initialPlayerInput}
-        handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
+        playerInput={mockPlayerInput}
+        setPlayerInput={mockSetPlayerInput}
       />
     );
 
-    const letterTiles = screen.getAllByRole('textbox');
-    letterTiles.forEach((tile, index) => {
-      expect(tile.value).toBe(initialPlayerInput[index]);
-    });
+    expect(screen.getByText(/järjestä kirjaimet/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/kuva sanasta test/i)).toHaveAttribute(
+      'src',
+      'test-image-src'
+    );
   });
 
-  it('Check that the correct number of letter tiles are rendered', async () => {
+  test('displays shuffled letters correctly', () => {
     render(
       <Phase2
-        currentWord={mockWord}
+        currentWord={mockCurrentWord}
         shuffledWord={mockShuffledWord}
-        playerInput={[]}
-        handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
+        playerInput={mockPlayerInput}
+        setPlayerInput={mockSetPlayerInput}
       />
     );
 
-    // Check that the number of letter tiles is the length of the current word
-    const letterTiles = screen.getAllByRole('textbox');
-    expect(letterTiles.length).toBe(mockWord.word.length);
+    const shuffledLetters = screen.getAllByTestId('shuffled-letter');
+    expect(shuffledLetters).toHaveLength(4);
+    expect(shuffledLetters[0]).toHaveTextContent('T');
+    expect(shuffledLetters[1]).toHaveTextContent('S');
+    expect(shuffledLetters[2]).toHaveTextContent('E');
+    expect(shuffledLetters[3]).toHaveTextContent('T');
   });
 
-  it('Check that letter tile is updated when typing', async () => {
+  test('updates player input when a letter is clicked', () => {
+    const setPlayerInputMock = jest.fn();
     render(
       <Phase2
-        currentWord={mockWord}
+        currentWord={mockCurrentWord}
         shuffledWord={mockShuffledWord}
-        playerInput={['A', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
+        playerInput={mockPlayerInput}
+        setPlayerInput={setPlayerInputMock}
       />
     );
 
-    const firstInput = screen.getByDisplayValue('A');
-    fireEvent.change(firstInput, { target: { value: 'Z' } });
+    const shuffledLetters = screen.getAllByTestId('shuffled-letter');
+    const inputBoxes = screen.getAllByTestId('input-box');
 
-    expect(mockHandleInputChange).toHaveBeenCalledWith(
-      0,
-      expect.anything(),
-      expect.anything()
-    );
+    // Click a shuffled letter
+    fireEvent.click(shuffledLetters[0]);
 
-    render(
-      <Phase2
-        currentWord={mockWord}
-        shuffledWord={mockShuffledWord}
-        playerInput={['Z', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
-        handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
-      />
-    );
+    // Click an input box
+    fireEvent.click(inputBoxes[0]);
 
-    expect(screen.getByDisplayValue('Z')).toBeInTheDocument();
+    expect(setPlayerInputMock).toHaveBeenCalledWith(['T', '', '', '']);
   });
 
-  it('Check that clicking the ready-button can be used to submit answer', () => {
+  test('removes letter from input when input box is clicked', () => {
+    const setPlayerInputMock = jest.fn();
     render(
       <Phase2
-        currentWord={mockWord}
+        currentWord={mockCurrentWord}
         shuffledWord={mockShuffledWord}
         handleSubmit={mockHandleSubmit}
-        handleInputChange={mockHandleInputChange}
-        playerInput={['A', 'P', 'P', 'L', 'E']}
-        inputRefs={mockInputRefs}
+        playerInput={['T', '', '', '']}
+        setPlayerInput={setPlayerInputMock}
       />
     );
 
-    // Check that clicking the ready-button triggers handleSubmit
-    fireEvent.click(screen.getByText('VALMIS'));
-    expect(mockHandleSubmit).toHaveBeenCalled();
+    const inputBoxes = screen.getAllByTestId('input-box');
+
+    // Click on the filled input box
+    fireEvent.click(inputBoxes[0]);
+
+    expect(setPlayerInputMock).toHaveBeenCalledWith(['', '', '', '']);
   });
 
-  it('Check that pressing Enter can be used to submit answer', () => {
+  test('disables the submit button when input is incomplete', () => {
     render(
       <Phase2
-        currentWord={mockWord}
+        currentWord={mockCurrentWord}
         shuffledWord={mockShuffledWord}
-        playerInput={['A', 'P', 'P', 'L', 'E']}
-        handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
+        playerInput={mockPlayerInput}
+        setPlayerInput={mockSetPlayerInput}
       />
     );
 
-    fireEvent.keyDown(window, { key: 'Enter' });
-    expect(mockHandleSubmit).toHaveBeenCalled();
+    const submitButton = screen.getByRole('button', { name: /valmis/i });
+    expect(submitButton).toBeDisabled();
   });
 
-  it('Check that backspace navigation works correctly', () => {
+  test('enables the submit button when input is complete', () => {
     render(
       <Phase2
-        currentWord={mockWord}
+        currentWord={mockCurrentWord}
         shuffledWord={mockShuffledWord}
-        playerInput={['A', '', '', '', '']}
-        handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
-        inputRefs={mockInputRefs}
+        playerInput={['T', 'E', 'S', 'T']}
+        setPlayerInput={mockSetPlayerInput}
       />
     );
 
-    const secondInput = screen.getAllByRole('textbox')[1];
-    fireEvent.keyDown(secondInput, { key: 'Backspace' });
+    const submitButton = screen.getByRole('button', { name: /valmis/i });
+    expect(submitButton).toBeEnabled();
+  });
 
-    expect(document.activeElement).toBe(screen.getAllByRole('textbox')[0]);
+  test('calls handleSubmit when Enter key is pressed', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'T']}
+        setPlayerInput={mockSetPlayerInput}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Enter', code: 'Enter' });
+
+    expect(mockHandleSubmit).toHaveBeenCalledWith('TEST');
+  });
+
+  test('calls handleSubmit when the submit button is clicked', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'T']}
+        setPlayerInput={mockSetPlayerInput}
+      />
+    );
+
+    const submitButton = screen.getByRole('button', { name: /valmis/i });
+    fireEvent.click(submitButton);
+
+    expect(mockHandleSubmit).toHaveBeenCalledWith('TEST');
   });
 });
