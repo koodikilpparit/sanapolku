@@ -83,6 +83,7 @@ const NewWord = () => {
             value={newWord}
             onChange={(e) => setNewWord(e.target.value)}
             placeholder="Uusi sana"
+            maxLength={15}
           />
 
           {/* Upload image */}

@@ -40,7 +40,7 @@ const Phase1 = ({
         Kirjoita sana
       </h1>
 
-      <div className="flex flex-col sm:flex-row h-full ">
+      <div className="flex flex-col sm:flex-row md:flex-row md-minh-1000:flex-col md-minh-1000:items-center lg:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full ">
           <ImageContainer
             src={currentWord.imageData.src}
@@ -48,7 +48,7 @@ const Phase1 = ({
           />
         </div>
 
-        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 flex flex-col justify-between ">
+        <div className="w-full sm:w-3/5 md:w-3/5 h-3/5 flex flex-col justify-between ">
           <div className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2">
             {currentWord.word.split('').map((_, index) => (
               <input
@@ -58,7 +58,10 @@ const Phase1 = ({
                 value={playerInput[index] || ''}
                 onChange={(event) => handleInputChange(index, event, inputRefs)}
                 onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                className="w-full max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
+                className="w-full max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-1"
+                style={{
+                  fontSize: '5wh',
+                }}
                 autoCapitalize="none"
               />
             ))}
