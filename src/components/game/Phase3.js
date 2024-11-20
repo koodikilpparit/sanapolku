@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ImageContainer from './ImageContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKeyboard } from '@fortawesome/free-solid-svg-icons';
 
 const Phase3 = ({
   currentWord,
@@ -81,7 +83,13 @@ const Phase3 = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-center sm:justify-end py-5">
+          <div className="flex items-end justify-between py-2">
+            <button
+              className="btn-sp-secondary w-full sm:w-1/4 bg-sp-blue cursor-pointer"
+              onClick={() => inputRefs.current[0]?.focus()}
+            >
+              <FontAwesomeIcon icon={faKeyboard} className="keyboard" />
+            </button>
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
