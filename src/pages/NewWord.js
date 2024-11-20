@@ -27,6 +27,8 @@ const NewWord = () => {
     author: null,
   };
 
+  const maxWordLength = 15;
+
   // Save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
@@ -78,13 +80,23 @@ const NewWord = () => {
         {/* Add word */}
         <div className="input-container">
           <label>Kirjoita uusi sana</label>
-          <input
-            type="text"
-            value={newWord}
-            onChange={(e) => setNewWord(e.target.value)}
-            placeholder="Uusi sana"
-            maxLength={15}
-          />
+          <div className="input-wrapper">
+            <input
+              type="text"
+              value={newWord}
+              onChange={(e) => setNewWord(e.target.value)}
+              placeholder="Uusi sana"
+              maxLength={maxWordLength}
+            />
+            {/* Indicator for remaining characters */}
+            <span
+              className={`char-indicator ${
+                newWord.length === maxWordLength ? 'warning' : ''
+              }`}
+            >
+              {maxWordLength - newWord.length} kirjainta jäljellä
+            </span>
+          </div>
 
           {/* Upload image */}
           <div className="img-upload-container">
