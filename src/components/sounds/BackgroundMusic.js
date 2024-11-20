@@ -3,10 +3,12 @@ import { useLocation } from 'react-router-dom';
 import { SettingsContext } from '../../contexts/SettingsContext';
 
 const BackgroundMusic = () => {
-  const { music, volume = 0.5 } = useContext(SettingsContext);
+  const { music, volume = 0.25 } = useContext(SettingsContext);
   const location = useLocation();
   const audioRef = useRef(null);
   const [isAudioReady, setAudioReady] = useState(false);
+  const [currentVolume, setCurrentVolume] = useState(volume);
+  const fadeIntervalRef = useRef(null);
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -35,6 +37,7 @@ const BackgroundMusic = () => {
       document.removeEventListener('click', handleUserInteraction);
       audio.pause();
       audio.currentTime = 0;
+      clearInterval(fadeIntervalRef.current);
     };
   }, [isAudioReady]);
 
@@ -44,20 +47,44 @@ const BackgroundMusic = () => {
     if (isAudioReady && music) {
       audio.loop = true;
 
-      // Mute the sound when the user is in the game
       if (location.pathname.startsWith('/peli')) {
-        audio.volume = 0;
+        // Fade out the audio over 2.5 seconds when entering the game
+        fadeAudio(audio, currentVolume, 0, 2500);
       } else {
-        audio.volume = volume;
+        // Fade in the audio over 2.5 seconds when leaving the game
+        fadeAudio(audio, audio.volume, volume, 2500);
       }
 
       audio.play().catch((err) => {
         console.error('Audio playback failed:', err);
       });
     } else if (isAudioReady) {
-      audio.volume = 0;
+      // Fade out the audio if music is disabled
+      fadeAudio(audio, currentVolume, 0, 0);
     }
-  }, [music, volume, location.pathname, isAudioReady]);
+  }, [music, volume, location.pathname, isAudioReady, currentVolume]);
+
+  const fadeAudio = (audio, fromVolume, toVolume, duration) => {
+    clearInterval(fadeIntervalRef.current);
+    const steps = 50;
+    const stepDuration = duration / steps;
+    const volumeStep = (toVolume - fromVolume) / steps;
+    let currentStep = 0;
+
+    fadeIntervalRef.current = setInterval(() => {
+      currentStep++;
+      const newVolume = fromVolume + volumeStep * currentStep;
+      audio.volume = Math.max(0, Math.min(newVolume, 1));
+      setCurrentVolume(audio.volume);
+
+      if (currentStep >= steps) {
+        clearInterval(fadeIntervalRef.current);
+        if (toVolume === 0) {
+          audio.pause();
+        }
+      }
+    }, stepDuration);
+  };
 
   return null;
 };

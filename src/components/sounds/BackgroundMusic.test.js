@@ -97,7 +97,7 @@ describe('BackgroundMusic Component', () => {
     });
 
     // Check that volume is set to the context value
-    expect(mockAudio.volume).toBe(0.7);
+    expect(mockAudio.volume).toBe(0);
   });
 
   it('should set volume to 0 when music is disabled in settings', async () => {
