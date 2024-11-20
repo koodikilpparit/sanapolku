@@ -141,20 +141,6 @@ const Settings = () => {
         </div>
       </div>
 
-      <footer>
-        <p>
-          {' '}
-          <a
-            href="https://github.com/koodikilpparit/sanapolku"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ohjelma lisenssoitu AGPL-3.0 lisenssillä. Lähdekoodi saatavilla
-          </a>
-          .
-        </p>
-      </footer>
-
       {/* Modal for confirming reset */}
       {isResetModalOpen && (
         <div className="modal-overlay">
