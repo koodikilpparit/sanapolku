@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { fetchPhotos, proxy } from '../utils/PapunetPhotoFetcher';
 import PapunetFilterMenu from '../components/newWord/PapunetFilterMenu';
 import '../styles/PapunetView.css';
+import { faMagnifyingGlassPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const PapunetView = ({
   onSelectImage,
@@ -116,7 +118,7 @@ const PapunetView = ({
               }
             >
               <button
-                className="magnifying-glass-button"
+                className="zoom-button"
                 onClick={(e) => {
                   e.stopPropagation();
                   handlePreviewClick({
@@ -125,11 +127,12 @@ const PapunetView = ({
                   });
                 }}
               >
-                🔍
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlassPlus}
+                  className="button-icon"
+                />
               </button>
               <img src={photo.url} alt={photo.name} />
-              <p>{photo.name}</p>
-              <p>Tekijä: {photo.author}</p>
             </div>
           ))
         )}
