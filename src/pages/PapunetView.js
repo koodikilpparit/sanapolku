@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { fetchPhotos, proxy } from '../utils/PapunetPhotoFetcher';
 import PapunetFilterMenu from '../components/newWord/PapunetFilterMenu';
 import '../styles/PapunetView.css';
-import ImagePreview from '../components/ImagePreview';
 
-const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
+const PapunetView = ({
+  onSelectImage,
+  initialSearchTerm,
+  closeModal,
+  setLargeImgPreview,
+}) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,6 +54,10 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   const handleFetchPhotos = () => {
     getPhotos();
     initialFetchDone.current = true;
+  };
+
+  const handlePreviewClick = (image) => {
+    setLargeImgPreview(image);
   };
 
   const handleSave = () => {
@@ -107,8 +115,19 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
                 })
               }
             >
-              <ImagePreview image={photo.url} author={photo.author} />
-              <img src={photo.thumb} alt={photo.name} />
+              <button
+                className="magnifying-glass-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePreviewClick({
+                    src: photo.url,
+                    author: photo.author,
+                  });
+                }}
+              >
+                🔍
+              </button>
+              <img src={photo.url} alt={photo.name} />
               <p>{photo.name}</p>
               <p>Tekijä: {photo.author}</p>
             </div>
@@ -132,6 +151,7 @@ PapunetView.propTypes = {
   onSelectImage: PropTypes.func.isRequired,
   initialSearchTerm: PropTypes.string,
   closeModal: PropTypes.func.isRequired,
+  setLargeImgPreview: PropTypes.func.isRequired,
 };
 
 export default PapunetView;
