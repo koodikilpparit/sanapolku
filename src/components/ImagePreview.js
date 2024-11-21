@@ -14,7 +14,10 @@ const ImagePreview = ({ image, author, onClose }) => (
       <FontAwesomeIcon icon={faMagnifyingGlassMinus} className="button-icon" />
     </button>
     <img src={image} alt="Preview" className="enlarged-image" />
-    {author && <p className="image-author">Tekijä: {author}</p>}
+    <p className="image-author">
+      Kuva: Papunetin kuvapankki, papunet.net,{' '}
+      {author ? author : 'Tuntematon tekijä'}
+    </p>
   </div>
 );
 
