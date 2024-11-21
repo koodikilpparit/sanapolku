@@ -12,7 +12,9 @@ describe('ImagePreview component', () => {
 
   test('renders the image correctly', () => {
     const image = 'https://example.com/image.jpg';
-    render(<ImagePreview image={image} author="John Doe" onClose={mockClose} />);
+    render(
+      <ImagePreview image={image} author="John Doe" onClose={mockClose} />
+    );
 
     const imgElement = screen.getByAltText('Esikatselu');
     expect(imgElement).toBeInTheDocument();
@@ -24,15 +26,25 @@ describe('ImagePreview component', () => {
     const author = 'John Doe';
     render(<ImagePreview image={image} author={author} onClose={mockClose} />);
 
-    const authorText = screen.getByText('Kuva: Papunetin kuvapankki, papunet.net, John Doe');
+    const authorText = screen.getByText(
+      'Kuva: Papunetin kuvapankki, papunet.net, John Doe'
+    );
     expect(authorText).toBeInTheDocument();
   });
 
   test('displays "Tuntematon tekijä" when author is not provided with Papunet image', () => {
     const image = 'https://example.com/image.jpg';
-    render(<ImagePreview image={image} author='Tuntematon tekijä' onClose={mockClose} />);
+    render(
+      <ImagePreview
+        image={image}
+        author="Tuntematon tekijä"
+        onClose={mockClose}
+      />
+    );
 
-    const authorText = screen.getByText('Kuva: Papunetin kuvapankki, papunet.net, Tuntematon tekijä');
+    const authorText = screen.getByText(
+      'Kuva: Papunetin kuvapankki, papunet.net, Tuntematon tekijä'
+    );
     expect(authorText).toBeInTheDocument();
   });
 
@@ -40,13 +52,17 @@ describe('ImagePreview component', () => {
     const image = 'https://example.com/image.jpg';
     render(<ImagePreview image={image} author={null} onClose={mockClose} />);
 
-    const authorText = screen.queryByText(/Kuva: Papunetin kuvapankki, papunet.net/);
+    const authorText = screen.queryByText(
+      /Kuva: Papunetin kuvapankki, papunet.net/
+    );
     expect(authorText).not.toBeInTheDocument();
   });
 
   test('calls onClose when close button is clicked', () => {
     const image = 'https://example.com/image.jpg';
-    render(<ImagePreview image={image} author="John Doe" onClose={mockClose} />);
+    render(
+      <ImagePreview image={image} author="John Doe" onClose={mockClose} />
+    );
 
     const closeButton = screen.getByRole('button');
     fireEvent.click(closeButton);
