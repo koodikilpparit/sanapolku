@@ -6,7 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ImagePreview = ({ image, author, onClose }) => (
   <div className="image-preview-container">
-    <button className="close-btn" onClick={onClose} aria-label="Close Preview">
+    <button
+      className="close-btn"
+      onClick={onClose}
+      aria-label="Sulje esikatselu"
+    >
       <FontAwesomeIcon icon={faMagnifyingGlassMinus} className="button-icon" />
     </button>
     <img src={image} alt="Preview" className="enlarged-image" />
