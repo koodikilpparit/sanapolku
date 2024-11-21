@@ -31,6 +31,8 @@ const PapunetView = ({
     sign: 'Viittomakuva',
   };
 
+  const unknownAuthor = 'Tuntematon tekijä';
+
   const getPhotos = useCallback(async () => {
     setLoading(true);
     try {
@@ -113,7 +115,7 @@ const PapunetView = ({
               onClick={() =>
                 setSelectedImage({
                   src: proxy + photo.url,
-                  author: photo.author,
+                  author: photo.author || unknownAuthor,
                 })
               }
             >
@@ -123,7 +125,7 @@ const PapunetView = ({
                   e.stopPropagation();
                   handlePreviewClick({
                     src: photo.url,
-                    author: photo.author,
+                    author: photo.author || unknownAuthor,
                   });
                 }}
               >
