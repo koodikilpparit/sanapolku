@@ -45,23 +45,6 @@
   max-height: none;
 }
 
-.modal-overlay[data-modal-type='image-preview'] {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 2000;
-  width: 100%;
-}
-
-.modal-overlay[data-modal-type='image-preview'] .modal-content {
-  max-width: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  padding: 20px;
-}
-
 @media (max-width: 767px) and (max-height: 270px) {
   .modal-overlay[data-modal-type='image-cropper'] .modal-content {
     top: 70%;
