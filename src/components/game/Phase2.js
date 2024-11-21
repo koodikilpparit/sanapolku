@@ -48,6 +48,7 @@ const Phase2 = ({
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
             className=""
+            author={currentWord.imageData.author}
           />
         </div>
 
