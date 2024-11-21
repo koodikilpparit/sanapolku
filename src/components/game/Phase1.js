@@ -8,6 +8,8 @@ const Phase1 = ({
   handleInputChange,
   handleSubmit,
   inputRefs,
+  showSkipButton,
+  handleSkip,
 }) => {
   const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
 
@@ -64,6 +66,19 @@ const Phase1 = ({
             ))}
           </div>
           <div className="flex items-end justify-center sm:justify-end  py-2">
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                SKIP
+              </button>
+            )}
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
@@ -90,6 +105,8 @@ Phase1.propTypes = {
   playerInput: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
 };
 
