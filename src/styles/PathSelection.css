@@ -1,14 +1,19 @@
 .paths-page {
   background-color: var(--sp-dark-green);
   height: 100vh;
-  padding: 0 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   background-image: 
     url('../../public/app_background.png');
-  background-repeat: unset;
+  background-repeat: repeat;
+  background-position: center;
+}
+
+.paths-page .header {
+  padding: 25px 25px;
+  margin-bottom: 0px;
 }
 
 .path-list {
@@ -27,7 +32,7 @@
 }
 
 .paths-page .header .edit-button {
-  display: none;
+  visibility: hidden;
 }
 
 .path-list::-webkit-scrollbar {
@@ -169,27 +174,25 @@
   border-radius: 5px;
 }
 
+/* Style for phones in portrait mode */
 @media (max-width: 767px) {
-  .add-path-icon {
-    font-size: var(--sp-icon-size-small);
-  }
-
   .modal-content {
     margin-bottom: 300px;
-  }
-
-  .path-list {
-    height: 50vh;
-    margin-top: 25px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .add-path-icon {
-    font-size: var(--sp-icon-size-medium);
   }
 
   .path-list {
     height: 60vh;
   }
 }
+
+/* Style for phones in horizontal mode */
+@media (max-height: 450px) {
+  .paths-page {
+    background-image: none;
+  }
+
+  .path-list {
+    height: 60vh;
+  }
+}
+
