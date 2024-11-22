@@ -8,6 +8,7 @@ import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 import ProgressBar from './ProgressBar';
+import GameEndingPage from './GameEndingPage';
 
 const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
@@ -182,7 +183,7 @@ const GameEngine = ({ pathId }) => {
           <p className="error-msg">{error}</p>
         ) : gameOver ? (
           <div>
-            <h2>Peli ohi!</h2>
+            <GameEndingPage />
           </div>
         ) : currentWord ? (
           <>
