@@ -32,7 +32,7 @@
 }
 
 .paths-page .header .edit-button {
-  visibility: hidden;
+  display: none;
 }
 
 .path-list::-webkit-scrollbar {
