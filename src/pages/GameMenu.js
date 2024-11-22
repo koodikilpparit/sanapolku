@@ -9,7 +9,7 @@ function GameMenu() {
   return (
     <div className="game-menu-page">
       {/* Header */}
-      <Header title="Valitse polku" onClick={null} />
+      <Header title="Valitse polku" />
 
       {/* Buttons for paths */}
       <div className="button-list">

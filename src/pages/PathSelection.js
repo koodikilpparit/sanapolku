@@ -86,11 +86,7 @@ const PathSelection = () => {
   return (
     <div className="paths-page">
       {/* Header */}
-      <Header
-        title="Polut"
-        onCenterClick={null}
-        onRightClick={openNewPathModal}
-      />
+      <Header title="Polut" onRightClick={openNewPathModal} />
       {/* List of paths */}
       <div className="path-list">
         {paths.length > 0 ? (
