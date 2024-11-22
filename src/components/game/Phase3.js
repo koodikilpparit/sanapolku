@@ -46,6 +46,7 @@ const Phase3 = ({
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
             className=""
+            author={currentWord.imageData.author}
           />
         </div>
         <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
@@ -74,8 +75,8 @@ const Phase3 = ({
                     handleInputChange(index, event, inputRefs)
                   }
                   onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                  maxLength="1"
                   className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
+                  autoCapitalize="none"
                 />
               ))}
             </div>

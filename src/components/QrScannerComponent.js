@@ -43,6 +43,16 @@ const QrScannerComponent = ({ onSuccess }) => {
     }
   }, [scannerReady]);
 
+  useEffect(() => {
+    return () => {
+      if (qrScannerRef.current) {
+        qrScannerRef.current.stop();
+        qrScannerRef.current.destroy();
+        qrScannerRef.current = null;
+      }
+    };
+  }, []);
+
   return (
     <div>
       {isCameraAvailable ? (

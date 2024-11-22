@@ -3,10 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addWord } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
-import ImageUploader from '../components/ImageUploader';
+import ImageUploader from '../components/newWord/ImageUploader';
 import Modal from '../components/Modal';
 import PapunetView from './PapunetView';
-import ImageCropper from '../components/ImageCropper';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImageCropper from '../components/newWord/ImageCropper';
+import ImagePreview from '../components/ImagePreview';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -16,16 +19,18 @@ const NewWord = () => {
   const [previewImage, setPreviewImage] = useState(
     'https://placehold.co/150x150'
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCropping, setIsCropping] = useState(false); // Modal for image cropping
+  const [isPapunetOpen, setIsPapunetOpen] = useState(false);
+  const [isCropping, setIsCropping] = useState(false);
+  const [isLargeImgPreviewOpen, setIsLargeImgPreviewOpen] = useState(false);
+  const [largeImgPreview, setLargeImgPreview] = useState(null);
 
   // Placeholder image
   const placeholderImage = {
     src: 'https://placehold.co/150x150',
-    author: 'Unknown',
+    author: null,
   };
 
-  // Function to save the word and placeholder image to the database
+  // Save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
       alert('Syötä sana');
@@ -51,7 +56,7 @@ const NewWord = () => {
     setImageData(newImageData); // Set the cropped image
     setPreviewImage(croppedImage);
     setIsCropping(false); // Close the cropping modal
-    setIsModalOpen(false); // Close Papunet modal as well
+    setIsPapunetOpen(false); // Close Papunet modal as well
   };
 
   const handleImageSelection = (image) => {
@@ -61,6 +66,11 @@ const NewWord = () => {
       author: image.author,
     });
     setIsCropping(true); // Open the cropping modal
+  };
+
+  const handleLargeImgPreview = (image) => {
+    setLargeImgPreview(image);
+    setIsLargeImgPreviewOpen(true);
   };
 
   return (
@@ -75,25 +85,36 @@ const NewWord = () => {
       <div className="new-word-container">
         {/* Add word */}
         <div className="input-container">
-          <label>Kirjoita uusi sana:</label>
+          <label>Kirjoita uusi sana</label>
           <input
             type="text"
             value={newWord}
             onChange={(e) => setNewWord(e.target.value)}
             placeholder="Uusi sana"
           />
-        </div>
 
-        {/* Container for ImageUploader and preview image */}
-        <div className="image-upload-preview-container">
           {/* Upload image */}
-          <ImageUploader onImageSelect={handleImageSelection} />
+          <div className="img-upload-container">
+            <label>Lataa kuva</label>
+            <div className="img-upload-button-container">
+              <ImageUploader setImageData={handleImageSelection} />
+              <button
+                className="img-upload-button"
+                onClick={() => setIsPapunetOpen(true)}
+              >
+                <FontAwesomeIcon icon={faImage} className="button-icon" />
+                <span className="button-text">Papunetistä</span>
+              </button>
+            </div>
+          </div>
 
-          {/* Image preview */}
-          <img src={previewImage} alt="Preview" className="image-preview" />
+          {/* Image Preview */}
+          <div className="image-preview">
+            <img src={previewImage} alt="Esikatselu" />
+          </div>
         </div>
 
-        {/* Buttons */}
+        {/* Action Buttons */}
         <div className="confirm-button-container">
           <button className="nw-cancel-button" onClick={() => navigate(-1)}>
             PERUUTA
@@ -101,30 +122,32 @@ const NewWord = () => {
           <button className="nw-save-button" onClick={handleSave}>
             VALMIS
           </button>
-          <button
-            className="nw-fetch-photos-button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            HAE KUVIA
-          </button>
         </div>
       </div>
 
       {/* Modal for PapunetView */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isPapunetOpen} onClose={() => setIsPapunetOpen(false)}>
         <PapunetView
           onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
+          closeModal={() => setIsPapunetOpen(false)}
+          setLargeImgPreview={handleLargeImgPreview}
         />
       </Modal>
 
+      {/* Modal for Papunet Large Image Preview */}
+      <Modal isOpen={isLargeImgPreviewOpen} modalType="image-preview">
+        {largeImgPreview && (
+          <ImagePreview
+            image={largeImgPreview.src}
+            author={largeImgPreview.author}
+            onClose={() => setIsLargeImgPreviewOpen(false)}
+          />
+        )}
+      </Modal>
+
       {/* Modal for Image Cropping */}
-      <Modal
-        isOpen={isCropping}
-        onClose={() => setIsCropping(false)}
-        modalType="image-cropper"
-        showCloseButton={false}
-      >
+      <Modal isOpen={isCropping} modalType="image-cropper">
         {imageData && (
           <ImageCropper
             imageSrc={imageData?.src}

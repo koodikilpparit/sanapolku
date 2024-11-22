@@ -7,6 +7,7 @@ import SuccessIndicator from './SuccessIndicator';
 import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
+import ProgressBar from './ProgressBar';
 
 const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
@@ -19,6 +20,7 @@ const GameEngine = ({ pathId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [progress, setProgress] = useState(0);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -63,9 +65,16 @@ const GameEngine = ({ pathId }) => {
   }, [currentWord]);
 
   const handleInputChange = (index, event) => {
-    const value = event.target.value.toUpperCase();
+    let value = event.target.value.toUpperCase();
+    const oldInput = [...playerInput];
 
-    const newInput = [...playerInput];
+    // If there are more than 1 letter, replace with getNewInputValue logic
+    if (value.length > 1) {
+      const oldValue = oldInput[index];
+      value = getNewInputValue(oldValue, value);
+    }
+
+    const newInput = [...oldInput];
     newInput[index] = value;
     setPlayerInput(newInput);
 
@@ -73,6 +82,21 @@ const GameEngine = ({ pathId }) => {
     if (value && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
     }
+  };
+
+  /**
+   * Replace old letter from either side (cursor). Also handle cases where user possibly copy-pastes a longer string.
+   * @param {string} oldInputValue The player input in previous state at a specific index
+   * @param {string} eventValue The input event value at the same index
+   * @returns A single character (new input value) at the same index
+   */
+  const getNewInputValue = (oldInputValue, eventValue) => {
+    const newValue = eventValue.replace(oldInputValue, '');
+    if (newValue.length < 1) {
+      // If managed to replace all letters with empty strings
+      return oldInputValue;
+    }
+    return newValue[0];
   };
 
   // Handle submission based on the phase
@@ -126,8 +150,10 @@ const GameEngine = ({ pathId }) => {
 
     if (wordIndex + 1 < words.length) {
       setWordIndex(wordIndex + 1);
+      setProgress((prevProgress) => prevProgress + 100 / words.length);
     } else {
       setGameOver(true);
+      setProgress(100);
     }
   };
 
@@ -143,8 +169,11 @@ const GameEngine = ({ pathId }) => {
 
   return (
     <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
-      <div className="px-2">
+      <div className="top-bar">
         <BackButton />
+        <div className="progress-bar-container">
+          <ProgressBar progress={progress} />
+        </div>
       </div>
       <div className="flex-grow">
         {loading ? (
@@ -163,6 +192,7 @@ const GameEngine = ({ pathId }) => {
               currentWord={currentWord}
               playerInput={playerInput}
               handleInputChange={handleInputChange}
+              setPlayerInput={setPlayerInput}
               handleSubmit={handleSubmit}
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}

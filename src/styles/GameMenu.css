@@ -117,4 +117,34 @@
   .word-image {
     margin-right: 10px;
   }
+
+  .path-button {
+    height: 60px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Style for extremely narrow screens in portrait mode */
+@media (max-width: 360px) {
+  .path-button {
+    width: 95vw;
+    line-height: normal;
+  }
+}
+
+/* Style for the narrowest possible screens in portrait mode */
+@media (max-width: 200px) {
+  .path-button {
+    width: 95vw;
+    line-height: normal;
+  }
+}
+
+/* Style for extremely narrow screens in Horizontal mode */
+@media (max-height: 360px) {
+  .path-button {
+    height: 15vh;
+    line-height: normal;
+    margin-bottom: 10px;
+  }
 }

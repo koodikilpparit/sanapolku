@@ -93,6 +93,15 @@ const Settings = () => {
           <div className="soft-box">
             <h2>Kuvat:</h2>
             <p>Papunetin kuvapankki</p>
+            <h4>Papunet-kuvahaun kuvatyyppien ikonit:</h4>
+            <p>Arasaac: Sergio Palao, muokkaus Papunet</p>
+            <p>KUVAKO: Kuvako</p>
+            <p>Mulberry: Paxtoncrafts Charitable Trust</p>
+            <p>Piirroskuva: Elina Vanninen</p>
+            <p>Sclera: Sclera</p>
+            <p>Toisto: Aleksei Zamiatin</p>
+            <p>Valokuva: Annakaisa Ojanen</p>
+            <p>Viittomakuva: Elina Vanninen, muokkaus Sari Kivimäki</p>
           </div>
           <div className="soft-box">
             <h2>Sovelluksen idean kehittäjät:</h2>

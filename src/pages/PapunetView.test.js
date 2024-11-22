@@ -2,11 +2,13 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import PapunetView from './PapunetView';
 import { fetchPhotos } from '../utils/PapunetPhotoFetcher';
+import { proxy } from '../utils/PapunetPhotoFetcher';
 
 jest.mock('../utils/PapunetPhotoFetcher');
 
 describe('PapunetView', () => {
   const mockOnSelectImage = jest.fn();
+  const mockCloseModal = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -17,8 +19,8 @@ describe('PapunetView', () => {
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
 
-    expect(getByPlaceholderText('Enter search term')).toHaveValue('test');
-    expect(getByText('Photo Fetcher')).toBeInTheDocument();
+    expect(getByPlaceholderText('Kirjoita hakusana')).toHaveValue('test');
+    expect(getByText('Papunet Kuvahaku')).toBeInTheDocument();
   });
 
   test('fetches photos on initial render if initialSearchTerm is provided', async () => {
@@ -28,7 +30,7 @@ describe('PapunetView', () => {
     ];
     fetchPhotos.mockResolvedValue(mockPhotos);
 
-    const { getByText, getByAltText } = render(
+    const { getByAltText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
 
@@ -36,22 +38,17 @@ describe('PapunetView', () => {
       expect(getByAltText('Photo 1')).toBeInTheDocument();
       expect(getByAltText('Photo 2')).toBeInTheDocument();
     });
-
-    expect(getByText('Photo 1')).toBeInTheDocument();
-    expect(getByText('Tekijä: Author 1')).toBeInTheDocument();
-    expect(getByText('Photo 2')).toBeInTheDocument();
-    expect(getByText('Tekijä: Author 2')).toBeInTheDocument();
   });
 
   test('displays error message when photo fetch fails', async () => {
-    fetchPhotos.mockRejectedValue(new Error('Error fetching photos'));
+    fetchPhotos.mockRejectedValue(new Error('Virhe kuvien hakemisessa'));
 
     const { getByText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
 
     await waitFor(() => {
-      expect(getByText('Error fetching photos')).toBeInTheDocument();
+      expect(getByText('Virhe kuvien hakemisessa')).toBeInTheDocument();
     });
   });
 
@@ -60,9 +57,64 @@ describe('PapunetView', () => {
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
 
-    const input = getByPlaceholderText('Enter search term');
+    const input = getByPlaceholderText('Kirjoita hakusana');
     fireEvent.change(input, { target: { value: 'new search' } });
 
     expect(input).toHaveValue('new search');
+  });
+
+  test('should call onSelectImage with selected image when save is clicked', async () => {
+    const mockPhotos = [
+      {
+        uid: '1',
+        thumb: 'thumb1.jpg',
+        name: 'Photo 1',
+        author: 'Author 1',
+        url: 'photo1.jpg',
+      },
+    ];
+    fetchPhotos.mockResolvedValue(mockPhotos);
+
+    const { getByAltText, getByText } = render(
+      <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
+    );
+
+    await waitFor(() => {
+      fireEvent.click(getByAltText('Photo 1'));
+    });
+
+    fireEvent.click(getByText('VALITSE'));
+
+    expect(mockOnSelectImage).toHaveBeenCalledWith({
+      src: proxy + 'photo1.jpg',
+      author: 'Author 1',
+    });
+  });
+
+  test('should display "No results" message when no photos are fetched', async () => {
+    fetchPhotos.mockResolvedValue([]);
+
+    const { getByText } = render(
+      <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
+    );
+
+    await waitFor(() => {
+      expect(getByText('Ei kuvatuloksia')).toBeInTheDocument();
+    });
+  });
+
+  it('should close when "PERUUTA" button is clicked', async () => {
+    fetchPhotos.mockResolvedValue([]);
+    const { getByText } = render(
+      <PapunetView
+        onSelectImage={mockOnSelectImage}
+        initialSearchTerm="test"
+        closeModal={mockCloseModal}
+      />
+    );
+
+    fireEvent.click(getByText('PERUUTA'));
+
+    expect(mockCloseModal).toHaveBeenCalled();
   });
 });

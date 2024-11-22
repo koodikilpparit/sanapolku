@@ -154,6 +154,10 @@ describe('ManagePath Component UI Tests', () => {
     // Click save button
     fireEvent.click(screen.getByText(/Tallenna/i));
 
+    await waitFor(() => {
+      expect(mockEditPathName).toHaveBeenCalledTimes(1);
+    });
+
     // Wait for the updated path name to display in the title
     await waitFor(() => {
       expect(screen.getByText('Updated Path Name')).toBeInTheDocument();
@@ -184,6 +188,70 @@ describe('ManagePath Component UI Tests', () => {
     // Wait for the error alert to appear
     await waitFor(() => {
       expect(window.alert).toHaveBeenCalledWith('Failed to edit path name');
+    });
+  });
+
+  it('adds a word and then deletes it', async () => {
+    // Mock the addWord function
+    const mockAddWord = jest.spyOn(db, 'addWord');
+    mockAddWord.mockResolvedValue({
+      id: 1,
+      word: 'Test Word',
+      imageData: { src: 'test-image-src' },
+    });
+
+    // Mock the getWordsForPath function to return the added word
+    const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
+    mockGetWordsForPath.mockResolvedValue([
+      {
+        id: 1,
+        word: 'Test Word',
+        imageData: { src: 'test-image-src' },
+      },
+    ]);
+
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Simulate adding a word
+    fireEvent.click(screen.getByLabelText('Lisää uusi sana'));
+    expect(mockNavigate).toHaveBeenCalledWith(`/uusisana/${pathId}`);
+
+    // Mock the navigate function to simulate returning to the ManagePath view
+    mockNavigate.mockImplementation(() => {
+      render(
+        <BrowserRouter>
+          <ManagePath />
+        </BrowserRouter>
+      );
+    });
+
+    // Wait for the word to be displayed in the list
+    await waitFor(() => {
+      expect(screen.getByText('Test Word')).toBeInTheDocument();
+    });
+
+    // Simulate opening the delete word modal
+    const deleteButton = container.querySelector('.delete-button');
+    expect(deleteButton).toBeInTheDocument();
+    fireEvent.click(deleteButton);
+    expect(
+      screen.getByText(/Haluatko varmasti poistaa sanan?/i)
+    ).toBeInTheDocument();
+
+    // Mock the deleteWord function
+    const mockDeleteWord = jest.spyOn(db, 'deleteWord');
+    mockDeleteWord.mockResolvedValue();
+
+    // Simulate confirming the deletion
+    fireEvent.click(screen.getByRole('button', { name: /Poista/i }));
+
+    // Wait for the word to be removed from the list
+    await waitFor(() => {
+      expect(screen.queryByText('Test Word')).not.toBeInTheDocument();
     });
   });
 });

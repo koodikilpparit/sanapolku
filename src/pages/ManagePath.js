@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  getWordsForPath,
-  deleteWord,
-  getPathById,
-  editPathName,
-} from '../db/db';
+import { getWordsForPath, getPathById, editPathName } from '../db/db';
 import WordRow from '../components/create/WordRow';
+import DeleteWordModal from '../components/DeleteWordModal'; // Import the DeleteWordModal component
 import '../styles/ManagePath.css';
 import Header from '../components/universal/Header';
 
@@ -17,8 +13,9 @@ const ManagePath = () => {
   const [words, setWords] = useState([]);
   const [error, setError] = useState(null);
   const [newPathName, setNewPathName] = useState('');
-
   const [isEditPathNameModalOpen, setIsEditPathNameModalOpen] = useState(false);
+  const [isDeleteWordModalOpen, setIsDeleteWordModalOpen] = useState(false); // State to control the DeleteWordModal
+  const [wordToDelete, setWordToDelete] = useState(null); // State to store the word to be deleted
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
@@ -36,19 +33,6 @@ const ManagePath = () => {
     };
     fetchData();
   }, [pathId]);
-
-  // Function to delete a word from the database and update the word list
-  const handleDelete = (wordId) => {
-    deleteWord(wordId)
-      .then(() => {
-        setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
-        console.log(`Deleted word with id: ${wordId}`);
-      })
-      .catch((error) => {
-        console.error('Error deleting word:', error);
-        alert('Error deleting the word.');
-      });
-  };
 
   const handleEditPathNameClick = () => {
     if (newPathName.trim()) {
@@ -76,6 +60,16 @@ const ManagePath = () => {
     setIsEditPathNameModalOpen(false);
   };
 
+  const openDeleteWordModal = (wordId) => {
+    setWordToDelete(wordId);
+    setIsDeleteWordModalOpen(true);
+  };
+
+  const closeDeleteWordModal = () => {
+    setIsDeleteWordModalOpen(false);
+    setWordToDelete(null);
+  };
+
   return (
     <div className="manage-page">
       {/* Header */}
@@ -95,7 +89,7 @@ const ManagePath = () => {
                 key={index}
                 word={wordEntry.word}
                 imgSrc={wordEntry.imageData.src}
-                onDelete={() => handleDelete(wordEntry.id)}
+                onDelete={() => openDeleteWordModal(wordEntry.id)} // Open the delete modal
               />
             ))
           ) : (
@@ -127,6 +121,13 @@ const ManagePath = () => {
             </div>
           </div>
         </div>
+      )}
+      {isDeleteWordModalOpen && (
+        <DeleteWordModal
+          onClose={closeDeleteWordModal}
+          wordId={wordToDelete}
+          setWords={setWords} // Pass the setWords function as a prop
+        />
       )}
     </div>
   );
