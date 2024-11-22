@@ -76,7 +76,7 @@ const Phase1 = ({
                 }}
                 onClick={handleSkip}
               >
-                SKIP
+                OHITA
               </button>
             )}
             <button

@@ -67,12 +67,8 @@ const GameEngine = ({ pathId }) => {
   }, [currentWord]);
 
   useEffect(() => {
-    console.log('Current Phase:', currentPhase); // Tämä tulostaa nykyisen vaiheen
-    console.log('Word Attempts:', wordAttempts);
     if (currentPhase === 2 && wordAttempts >= 1) {
       setShowSkipButton(true);
-    } else {
-      setShowSkipButton(false);
     }
   }, [wordAttempts, currentPhase]);
 
@@ -184,7 +180,6 @@ const GameEngine = ({ pathId }) => {
 
   const handleSkip = () => {
     moveToNextWord();
-    setShowSkipButton(false);
   };
 
   return (
