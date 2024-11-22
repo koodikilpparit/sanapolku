@@ -217,7 +217,8 @@ describe('ManagePath Component UI Tests', () => {
     );
 
     // Simulate adding a word
-    fireEvent.click(screen.getByLabelText('Lisää uusi sana'));
+    const addButton = screen.getByTestId('add-word-icon');
+    fireEvent.click(addButton);
     expect(mockNavigate).toHaveBeenCalledWith(`/uusisana/${pathId}`);
 
     // Mock the navigate function to simulate returning to the ManagePath view
