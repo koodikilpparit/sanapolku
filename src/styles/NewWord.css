@@ -51,14 +51,35 @@ label {
   text-align: left;
 }
 
-.input-container input[type='text'] {
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%
+}
+
+.input-wrapper input[type='text'] {
   width: 100%;
   padding: 15px 20px;
+  padding-right: 50px;
   font-size: var(--sp-body-large);
   font-weight: bold;
   border-radius: var(--sp-button-border-radius);
   border: none;
   outline: none;
+}
+
+.char-indicator {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  font-size: 12px;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.char-indicator.warning {
+  color: red;
+  font-weight: bold;
 }
 
 .img-upload-container {
@@ -176,7 +197,4 @@ label {
   .nw-save-button {
     width: 50%;
   }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
 }
