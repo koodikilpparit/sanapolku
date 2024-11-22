@@ -33,7 +33,7 @@ module.exports = {
         'sp-button': '10px',
       },
       screens: {
-        'md-minh-1000': { raw: '(min-width: 768px) and (min-height: 1000px)' },
+        'md-minh-1000': { raw: '(min-width: 768px) and (max-width: 1800px) and (min-height: 1000px)' },
       },
     },
   },

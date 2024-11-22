@@ -48,8 +48,8 @@ const Phase1 = ({
           />
         </div>
 
-        <div className="w-full sm:w-3/5 md:w-3/5 h-3/5 flex flex-col justify-between ">
-          <div className="flex flex-row gap-1 md:gap-2 items-center justify-center py-4 px-2">
+        <div className="w-full sm:w-4/5 md:w-4/5 h-3/5 flex flex-col justify-between">
+          <div className="flex flex-row gap-1 items-center justify-center py-4 px-2">
             {currentWord.word.split('').map((_, index) => (
               <input
                 key={index}
@@ -58,10 +58,8 @@ const Phase1 = ({
                 value={playerInput[index] || ''}
                 onChange={(event) => handleInputChange(index, event, inputRefs)}
                 onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                className="w-full max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-1"
-                style={{
-                  fontSize: '5wh',
-                }}
+                className="w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 
+                  max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl"
                 autoCapitalize="none"
               />
             ))}
