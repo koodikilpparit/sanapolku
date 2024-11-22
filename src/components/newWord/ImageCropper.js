@@ -11,8 +11,8 @@ const ImageCropper = ({ imageSrc, onCroppedImage }) => {
 
     const cropper = cropperRef.current.cropper;
     const croppedCanvas = cropper.getCroppedCanvas({
-      maxWidth: 400,
-      maxHeight: 400,
+      maxWidth: 600,
+      maxHeight: 600,
     });
 
     onCroppedImage(croppedCanvas.toDataURL('image/png'));
@@ -36,7 +36,7 @@ const ImageCropper = ({ imageSrc, onCroppedImage }) => {
               cropBoxResizable={false}
               cropBoxMovable={true}
               dragMode="none"
-              viewMode={1}
+              viewMode={0}
               ref={cropperRef}
             />
           </div>
