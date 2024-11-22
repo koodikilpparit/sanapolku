@@ -45,6 +45,7 @@ const Phase1 = ({
           <ImageContainer
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
+            author={currentWord.imageData.author}
           />
         </div>
 

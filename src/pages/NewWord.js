@@ -9,6 +9,7 @@ import PapunetView from './PapunetView';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ImageCropper from '../components/newWord/ImageCropper';
+import ImagePreview from '../components/ImagePreview';
 
 const NewWord = () => {
   const navigate = useNavigate();
@@ -18,8 +19,10 @@ const NewWord = () => {
   const [previewImage, setPreviewImage] = useState(
     'https://placehold.co/150x150'
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCropping, setIsCropping] = useState(false); // Modal for image cropping
+  const [isPapunetOpen, setIsPapunetOpen] = useState(false);
+  const [isCropping, setIsCropping] = useState(false);
+  const [isLargeImgPreviewOpen, setIsLargeImgPreviewOpen] = useState(false);
+  const [largeImgPreview, setLargeImgPreview] = useState(null);
 
   // Placeholder image
   const placeholderImage = {
@@ -53,7 +56,7 @@ const NewWord = () => {
     setImageData(newImageData); // Set the cropped image
     setPreviewImage(croppedImage);
     setIsCropping(false); // Close the cropping modal
-    setIsModalOpen(false); // Close Papunet modal as well
+    setIsPapunetOpen(false); // Close Papunet modal as well
   };
 
   const handleImageSelection = (image) => {
@@ -63,6 +66,11 @@ const NewWord = () => {
       author: image.author,
     });
     setIsCropping(true); // Open the cropping modal
+  };
+
+  const handleLargeImgPreview = (image) => {
+    setLargeImgPreview(image);
+    setIsLargeImgPreviewOpen(true);
   };
 
   return (
@@ -92,7 +100,7 @@ const NewWord = () => {
               <ImageUploader setImageData={handleImageSelection} />
               <button
                 className="img-upload-button"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsPapunetOpen(true)}
               >
                 <FontAwesomeIcon icon={faImage} className="button-icon" />
                 <span className="button-text">Papunetistä</span>
@@ -118,12 +126,24 @@ const NewWord = () => {
       </div>
 
       {/* Modal for PapunetView */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isPapunetOpen} onClose={() => setIsPapunetOpen(false)}>
         <PapunetView
           onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
-          closeModal={() => setIsModalOpen(false)}
+          closeModal={() => setIsPapunetOpen(false)}
+          setLargeImgPreview={handleLargeImgPreview}
         />
+      </Modal>
+
+      {/* Modal for Papunet Large Image Preview */}
+      <Modal isOpen={isLargeImgPreviewOpen} modalType="image-preview">
+        {largeImgPreview && (
+          <ImagePreview
+            image={largeImgPreview.src}
+            author={largeImgPreview.author}
+            onClose={() => setIsLargeImgPreviewOpen(false)}
+          />
+        )}
       </Modal>
 
       {/* Modal for Image Cropping */}

@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { fetchPhotos, proxy } from '../utils/PapunetPhotoFetcher';
 import PapunetFilterMenu from '../components/newWord/PapunetFilterMenu';
 import '../styles/PapunetView.css';
+import { faMagnifyingGlassPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
+const PapunetView = ({
+  onSelectImage,
+  initialSearchTerm,
+  closeModal,
+  setLargeImgPreview,
+}) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,6 +30,8 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
     photo: 'Valokuva',
     sign: 'Viittomakuva',
   };
+
+  const unknownAuthor = 'Tuntematon tekijä';
 
   const getPhotos = useCallback(async () => {
     setLoading(true);
@@ -49,6 +58,10 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
   const handleFetchPhotos = () => {
     getPhotos();
     initialFetchDone.current = true;
+  };
+
+  const handlePreviewClick = (image) => {
+    setLargeImgPreview(image);
   };
 
   const handleSave = () => {
@@ -102,13 +115,26 @@ const PapunetView = ({ onSelectImage, initialSearchTerm, closeModal }) => {
               onClick={() =>
                 setSelectedImage({
                   src: proxy + photo.url,
-                  author: photo.author,
+                  author: photo.author || unknownAuthor,
                 })
               }
             >
-              <img src={photo.thumb} alt={photo.name} />
-              <p>{photo.name}</p>
-              <p>Tekijä: {photo.author}</p>
+              <button
+                className="zoom-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePreviewClick({
+                    src: photo.url,
+                    author: photo.author || unknownAuthor,
+                  });
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlassPlus}
+                  className="button-icon"
+                />
+              </button>
+              <img src={photo.url} alt={photo.name} />
             </div>
           ))
         )}
@@ -130,6 +156,7 @@ PapunetView.propTypes = {
   onSelectImage: PropTypes.func.isRequired,
   initialSearchTerm: PropTypes.string,
   closeModal: PropTypes.func.isRequired,
+  setLargeImgPreview: PropTypes.func.isRequired,
 };
 
 export default PapunetView;

@@ -125,6 +125,8 @@ const Phase2 = ({
           <ImageContainer
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
+            className=""
+            author={currentWord.imageData.author}
           />
         </div>
         <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 flex flex-col justify-between">
