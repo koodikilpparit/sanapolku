@@ -1,0 +1,53 @@
+.ending-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    border: 4px solid #000;
+    background: var(--Brown, #76552B);
+    gap: 20px;
+    padding: 10px;
+}
+
+h2 {
+    color: #FFF;
+    text-align: center;
+    font-family: Verdana;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 44px;
+    margin-top: 10px;
+}
+
+p {
+    color: #FFF;
+    font-family: Verdana;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+.restart-button {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: #B38D2E;
+    align-items: center;
+    justify-content: center;
+}
+
+.restart-icon {
+    color: #FFF;
+    height: 80%;
+    width: 80%;
+}
+
