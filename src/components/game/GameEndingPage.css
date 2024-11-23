@@ -107,13 +107,14 @@ img {
     }
 
     h2 {
-        margin-top: 2vh;
         font-size: 6vh;
         margin-top: 0px;
+        line-height: 6vh;
     }
 
     p {
         font-size: 4vh;
+        line-height: 4vh;
     }
 
     .ending-buttons-container {
@@ -152,3 +153,19 @@ img {
   
 }
 
+/* Style for phones in portrait mode */
+@media (max-width: 500px) {
+    .ending-content {
+        margin-bottom: 0px;
+        height: 95%;
+    }
+    h2 {
+        font-size: 32px;
+        line-height: 32px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+}
