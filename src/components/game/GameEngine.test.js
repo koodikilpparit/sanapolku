@@ -199,6 +199,10 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
+
+      if (i === 4) {
+        fireEvent.click(screen.getByText('JATKA PELIÄ'))
+      }
     }
 
     // Check if the game over message is displayed
@@ -302,6 +306,10 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
+      
+      if (i === 4) {
+        fireEvent.click(screen.getByText('JATKA PELIÄ'))
+      }
     }
 
     const progressBar = screen.getByTestId('progress-bar');
