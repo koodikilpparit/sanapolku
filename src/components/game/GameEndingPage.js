@@ -18,13 +18,25 @@ const GameEndingPage = () => {
         alt="Cottage in serene lake and mountain view"
       />
       <div className="ending-buttons-container">
-        <button className="home-button" onClick={() => navigate(-3)}>
+        <button
+          className="home-button"
+          onClick={() => navigate(-3)}
+          aria-label="Go to Start Page"
+        >
           <FontAwesomeIcon icon={faHouse} className="home-icon" />
         </button>
-        <button className="ready-button" onClick={() => navigate(-2)}>
+        <button
+          className="ready-button"
+          onClick={() => navigate(-2)}
+          aria-label="Go to Game Menu"
+        >
           VALMIS
         </button>
-        <button className="restart-button" onClick={() => navigate(0)}>
+        <button
+          className="restart-button"
+          onClick={() => navigate(0)}
+          aria-label="Restart Game"
+        >
           <FontAwesomeIcon icon={faArrowRotateLeft} className="restart-icon" />
         </button>
       </div>
