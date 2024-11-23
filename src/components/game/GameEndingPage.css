@@ -12,7 +12,7 @@
     margin-left: 25px;
     margin-right: 25px;
     margin-bottom: 25px;
-    height: 95%;
+    height: 90%;
 }
 
 h2 {
@@ -94,5 +94,61 @@ img {
     font-style: normal;
     font-weight: 700;
     line-height: 25.6px;
+}
+
+/* Style for phones in horizontal mode */
+@media (max-height: 600px) {
+    .ending-content {
+        margin-left: 5vw;
+        margin-right: 5vw;
+        margin-bottom: 5vh;
+        height: 90%;
+        gap: 1vh
+    }
+
+    h2 {
+        margin-top: 2vh;
+        font-size: 6vh;
+        margin-top: 0px;
+    }
+
+    p {
+        font-size: 4vh;
+    }
+
+    .ending-buttons-container {
+        gap: 8px;
+    }
+
+    .restart-button {
+        height: 8vh;
+        width: 8vh;
+    }
+
+    .home-button {
+        height: 8vh;
+        width: 8vh;
+    }
+
+    .ready-button {
+        height: 8vh;
+        font-size: 4vh;
+    }
+
+    .restart-icon {
+        height: 6vh;
+        width: 6vh;
+    }
+
+    .home-icon {
+        height: 6vh;
+        width: 6vh;
+    }
+
+    img {
+        width: 28vh;
+        height: 28vh;
+    }
+  
 }
 
