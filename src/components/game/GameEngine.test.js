@@ -201,7 +201,7 @@ describe('GameEngine Component with IndexedDB', () => {
       });
 
       if (i === 4) {
-        fireEvent.click(screen.getByText('JATKA PELIÄ'))
+        fireEvent.click(screen.getByText('JATKA PELIÄ'));
       }
     }
 
@@ -306,9 +306,9 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
-      
+
       if (i === 4) {
-        fireEvent.click(screen.getByText('JATKA PELIÄ'))
+        fireEvent.click(screen.getByText('JATKA PELIÄ'));
       }
     }
 
