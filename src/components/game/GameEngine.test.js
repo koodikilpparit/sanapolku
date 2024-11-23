@@ -359,6 +359,43 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useRealTimers();
   });
 
+  it('checks that break view is rendered when progress is 5 words', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    // Wait that game begins
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    for (let i = 0; i < 5; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
+      });
+      fireEvent.click(screen.getByText('VALMIS'));
+
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+    }
+
+    const breakHeader = screen.getByText('Hienoa!');
+    expect(breakHeader).toBeInTheDocument;
+  });
+
   it('checks that the back-button brings you to /omatpolut', () => {
     // Rendering the required pages
     const { container } = render(
