@@ -49,7 +49,7 @@ const BackgroundMusic = () => {
 
       if (location.pathname.startsWith('/peli')) {
         // Fade out the audio over 2.5 seconds when entering the game
-        fadeAudio(audio, currentVolume, 0, 2500);
+        fadeAudio(audio, currentVolume, 0, 1250);
       } else {
         // Fade in the audio over 2.5 seconds when leaving the game
         fadeAudio(audio, audio.volume, volume, 2500);
