@@ -83,31 +83,38 @@ const ReceivePathModal = ({ onClose }) => {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>Polun vastaanottaminen</h2>
+      <div className="modal-content text-sp-black">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl py-2">
+          Polun vastaanottaminen
+        </h2>
         {isReceiveStarted ? (
           <label>Yhdistetään...</label>
         ) : (
           <div>
             {receiveSucceeded ? (
-              <label>Polun jakaminen onnistui!</label>
+              <label className="text-sp-black">Polun jakaminen onnistui!</label>
             ) : (
-              <div>
-                <p>
+              <div className="flex flex-col items-center justify-center">
+                <p className="text-md md:text-lg lg:text-xl pb-2">
                   Lue lähettäjän QR-koodi. Jos kamera ei ole käytettävissä,
                   polun jakaminen onnistuu lähettäjän tunnisteen avulla.
                 </p>
                 {isScanning && <QrScannerComponent onSuccess={handleQRScan} />}
-                <input
-                  className="fetch-input"
-                  type="text"
-                  value={targetPeerIDInput}
-                  placeholder="Lähettäjän tunniste"
-                  onChange={(e) => setTargetPeerIDInput(e.target.value)}
-                />
-                <button className="fetch-button" onClick={handleShareClick}>
-                  Hae polku
-                </button>
+                <div className="py-2 flex flex-row w-full justify-between gap-2">
+                  <input
+                    className="border-2 border-sp-black rounded-lg p-2 w-3/5"
+                    type="text"
+                    value={targetPeerIDInput}
+                    placeholder="Lähettäjän tunniste"
+                    onChange={(e) => setTargetPeerIDInput(e.target.value)}
+                  />
+                  <button
+                    className="border-2 border-sp-black rounded-lg p-2 w-2/5"
+                    onClick={handleShareClick}
+                  >
+                    Hae polku
+                  </button>
+                </div>
               </div>
             )}
           </div>
