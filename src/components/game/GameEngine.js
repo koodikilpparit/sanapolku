@@ -182,9 +182,9 @@ const GameEngine = ({ pathId }) => {
         ) : error ? (
           <p className="error-msg">{error}</p>
         ) : gameOver ? (
-          <div>
+          <>
             <GameEndingPage />
-          </div>
+          </>
         ) : currentWord ? (
           <>
             {showSuccess && <SuccessIndicator />}
