@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
 import PathSelection from '../../pages/PathSelection';
+import GameEndingPage from './GameEndingPage';
 import { addPath, addWord, resetDB } from '../../db/db';
 import { PathProvider } from '../pathSelection/PathContext';
 
@@ -201,9 +202,9 @@ describe('GameEngine Component with IndexedDB', () => {
       });
     }
 
-    // Check if the game over message is displayed
+    // Check if the game ending page renders
     await waitFor(() => {
-      expect(screen.getByText('Peli ohi!')).toBeInTheDocument();
+      expect(screen.getByText('Onnittelut!')).toBeInTheDocument();
     });
 
     jest.useRealTimers();
@@ -349,6 +350,27 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(progress).toHaveStyle(`width: ${50}%`);
 
     jest.useRealTimers();
+  });
+
+  it('Check that restart button can be used to restart game', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+        <GameEndingPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /Restart Game/i }));
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => screen.getByText('Kirjoita sana'));
   });
 
   it('checks that the back-button brings you to /omatpolut', () => {
