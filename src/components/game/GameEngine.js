@@ -8,6 +8,7 @@ import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 import ProgressBar from './ProgressBar';
+import GameBreakPage from './GameBreakPage';
 
 const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
@@ -21,6 +22,7 @@ const GameEngine = ({ pathId }) => {
   const [error, setError] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [showBreakPage, setShowBreakPage] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -149,12 +151,23 @@ const GameEngine = ({ pathId }) => {
     setCurrentPhase(1);
 
     if (wordIndex + 1 < words.length) {
-      setWordIndex(wordIndex + 1);
       setProgress((prevProgress) => prevProgress + 100 / words.length);
+
+      if (wordIndex + 1 === 5 && words.length === 10) {
+        setShowBreakPage(true);
+        return;
+      }
+      setWordIndex(wordIndex + 1);
     } else {
       setGameOver(true);
       setProgress(100);
     }
+  };
+
+  // Handle continuing game after break
+  const handleContinueAfterBreak = () => {
+    setShowBreakPage(false);
+    setWordIndex(wordIndex + 1);
   };
 
   // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
@@ -180,6 +193,8 @@ const GameEngine = ({ pathId }) => {
           <p className="loading-msg"> Ladataan sanoja...</p>
         ) : error ? (
           <p className="error-msg">{error}</p>
+        ) : showBreakPage ? (
+          <GameBreakPage onContinue={handleContinueAfterBreak} />
         ) : gameOver ? (
           <div>
             <h2>Peli ohi!</h2>
