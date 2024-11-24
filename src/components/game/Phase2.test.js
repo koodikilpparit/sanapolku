@@ -5,6 +5,7 @@ import Phase2 from './Phase2';
 describe('Phase2 Component', () => {
   const mockHandleSubmit = jest.fn();
   const mockSetPlayerInput = jest.fn();
+  const mockHandleContinueOnWrongAnswer = jest.fn();
   const mockCurrentWord = {
     imageData: { src: 'test-image-src' },
     word: 'test',
@@ -24,6 +25,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -42,6 +47,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -62,6 +71,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={setPlayerInputMock}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -86,6 +99,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', '', '', '']}
         setPlayerInput={setPlayerInputMock}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -105,6 +122,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -120,6 +141,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', 'E', 'S', 'T']}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -135,6 +160,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', 'E', 'S', 'T']}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -151,6 +180,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', 'E', 'S', 'T']}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 

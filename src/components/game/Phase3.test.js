@@ -15,6 +15,7 @@ describe('Phase3 Component', () => {
   };
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();
+  const mockHandleContinueOnWrongAnswer = jest.fn();
   const mockInputRefs = createRef();
   mockInputRefs.current = [];
 
@@ -33,6 +34,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -50,6 +55,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -66,6 +75,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -85,6 +98,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -99,6 +116,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         playerInput={['A', 'P', 'P', 'L', 'E']}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -115,6 +136,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -130,6 +155,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -146,6 +175,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -161,6 +194,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -176,6 +213,10 @@ describe('Phase3 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
