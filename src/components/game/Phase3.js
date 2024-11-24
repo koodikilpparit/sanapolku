@@ -8,6 +8,10 @@ const Phase3 = ({
   handleInputChange,
   handleSubmit,
   inputRefs,
+  incorrectIndices,
+  inputDisabled,
+  showContinueButton,
+  handleContinueOnWrongAnswer,
 }) => {
   const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
 
@@ -17,8 +21,12 @@ const Phase3 = ({
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isReadyButtonDisabled) {
-        handleSubmit();
+      if (event.key === 'Enter') {
+        if (showContinueButton) {
+          handleContinueOnWrongAnswer();
+        } else if (!isReadyButtonDisabled) {
+          handleSubmit();
+        }
       }
     };
 
@@ -26,7 +34,12 @@ const Phase3 = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isReadyButtonDisabled, handleSubmit]);
+  }, [
+    isReadyButtonDisabled,
+    handleSubmit,
+    handleContinueOnWrongAnswer,
+    showContinueButton,
+  ]);
 
   // Function to handle backspace key for navigating to the previous input
   const handleBackspaceNavigation = (index, event) => {
@@ -75,25 +88,45 @@ const Phase3 = ({
                     handleInputChange(index, event, inputRefs)
                   }
                   onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                  className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1"
+                  className={
+                    'w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1'
+                  }
+                  style={
+                    incorrectIndices.includes(index)
+                      ? {
+                          backgroundColor: 'rgb(242 140 140)',
+                          border: '4px solid rgb(227, 17, 48)',
+                        }
+                      : { backgroundColor: 'rgb(255 255 255)' }
+                  }
                   autoCapitalize="none"
+                  disabled={inputDisabled}
                 />
               ))}
             </div>
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-5">
-            <button
-              className={`btn-sp-primary w-full sm:w-1/2 ${
-                isReadyButtonDisabled
-                  ? 'bg-sp-gray cursor-not-allowed'
-                  : 'bg-sp-light-green cursor-pointer'
-              }`}
-              onClick={handleSubmit}
-              disabled={isReadyButtonDisabled}
-            >
-              VALMIS
-            </button>
+            {showContinueButton ? (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
+                onClick={handleContinueOnWrongAnswer}
+              >
+                JATKA PELIÄ
+              </button>
+            ) : (
+              <button
+                className={`btn-sp-primary w-full sm:w-1/2 ${
+                  isReadyButtonDisabled
+                    ? 'bg-sp-gray cursor-not-allowed'
+                    : 'bg-sp-light-green cursor-pointer'
+                }`}
+                onClick={handleSubmit}
+                disabled={isReadyButtonDisabled}
+              >
+                VALMIS
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -110,6 +143,10 @@ Phase3.propTypes = {
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
+  incorrectIndices: PropTypes.array,
+  inputDisabled: PropTypes.bool,
+  showContinueButton: PropTypes.bool,
+  handleContinueOnWrongAnswer: PropTypes.func,
 };
 
 export default Phase3;
