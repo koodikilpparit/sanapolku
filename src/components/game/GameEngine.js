@@ -21,6 +21,9 @@ const GameEngine = ({ pathId }) => {
   const [error, setError] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [incorrectIndices, setIncorrectIndices] = useState([]);
+  const [inputDisabled, setInputDisabled] = useState(false);
+  const [showContinueButton, setShowContinueButton] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -61,6 +64,9 @@ const GameEngine = ({ pathId }) => {
     if (currentWord) {
       setPlayerInput(Array(currentWord.word.length).fill(''));
       inputRefs.current.forEach((input) => input?.blur());
+      setIncorrectIndices([]);
+      setInputDisabled(false);
+      setShowContinueButton(false);
     }
   }, [currentWord]);
 
@@ -118,6 +124,7 @@ const GameEngine = ({ pathId }) => {
 
     if (normalizedInput === targetWord) {
       triggerSuccessIndicator();
+      setPlayerInput(Array(currentWord.word.length).fill(''));
 
       // Delay moving to next word/game over, so success indicator has time to be visible
       setTimeout(() => {
@@ -130,17 +137,34 @@ const GameEngine = ({ pathId }) => {
         }
       }, 1500);
     } else {
-      if (currentPhase === 1) {
-        setCurrentPhase(2);
-        setShuffledWord(shuffleWord(currentWord.word));
-        while (shuffledWord === currentWord.word) {
-          setShuffledWord(shuffleWord(currentWord.word));
+      const newIncorrectIndices = [];
+      for (let i = 0; i < targetWord.length; i++) {
+        if (normalizedInput[i] !== targetWord[i]) {
+          newIncorrectIndices.push(i);
         }
-      } else {
-        setCurrentPhase(3);
       }
+      setIncorrectIndices(newIncorrectIndices);
+      setInputDisabled(true);
+      setShowContinueButton(true);
     }
+  };
 
+  // Handle continuing game after wrong answer
+  const handleContinueOnWrongAnswer = () => {
+    if (currentPhase === 1) {
+      setCurrentPhase(2);
+      setShuffledWord(shuffleWord(currentWord.word));
+      while (shuffledWord === currentWord.word) {
+        setShuffledWord(shuffleWord(currentWord.word));
+      }
+    } else if (currentPhase === 2) {
+      setCurrentPhase(3);
+    } else {
+      setCurrentPhase(1);
+    }
+    setIncorrectIndices([]);
+    setShowContinueButton(false);
+    setInputDisabled(false);
     setPlayerInput(Array(currentWord.word.length).fill(''));
   };
 
@@ -196,6 +220,10 @@ const GameEngine = ({ pathId }) => {
               handleSubmit={handleSubmit}
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}
+              incorrectIndices={incorrectIndices}
+              inputDisabled={inputDisabled}
+              showContinueButton={showContinueButton}
+              handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
             />
           </>
         ) : (
