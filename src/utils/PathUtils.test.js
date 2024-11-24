@@ -69,4 +69,19 @@ describe('PathUtils', () => {
       expect(getWordsForPath).toHaveBeenCalledWith(mockPathId);
     }
   });
+
+  test('exports found path', async () => {
+    const mockPathId = 'mockPathId';
+    const mockPath = { name: 'mockPathName', id: mockPathId };
+    const mockWords = [
+      { word: 'mockWord1', imageData: { src: 'mockSrc1' } },
+      { word: 'mockWord2', imageData: { src: 'mockSrc2' } },
+    ];
+    getPathById.mockResolvedValueOnce(mockPath);
+    getWordsForPath.mockResolvedValueOnce(mockWords);
+
+    const expected = { name: 'mockPathName', words: mockWords };
+    const exportedPath = await exportPath(mockPathId);
+    expect(exportedPath).toStrictEqual(expected);
+  });
 });
