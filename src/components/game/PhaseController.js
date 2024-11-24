@@ -12,6 +12,10 @@ const PhaseController = ({
   setPlayerInput,
   inputRefs,
   shuffledWord = '',
+  incorrectIndices,
+  inputDisabled,
+  showContinueButton,
+  handleContinueOnWrongAnswer,
 }) => {
   switch (currentPhase) {
     case 1:
@@ -22,6 +26,10 @@ const PhaseController = ({
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
           inputRefs={inputRefs}
+          incorrectIndices={incorrectIndices}
+          inputDisabled={inputDisabled}
+          showContinueButton={showContinueButton}
+          handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
         />
       );
     case 2:
@@ -32,6 +40,10 @@ const PhaseController = ({
           playerInput={playerInput}
           handleSubmit={handleSubmit}
           setPlayerInput={setPlayerInput}
+          incorrectIndices={incorrectIndices}
+          inputDisabled={inputDisabled}
+          showContinueButton={showContinueButton}
+          handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
         />
       );
     case 3:
@@ -42,6 +54,10 @@ const PhaseController = ({
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
           inputRefs={inputRefs}
+          incorrectIndices={incorrectIndices}
+          inputDisabled={inputDisabled}
+          showContinueButton={showContinueButton}
+          handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
         />
       );
     default:
@@ -61,6 +77,10 @@ PhaseController.propTypes = {
   setPlayerInput: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
   shuffledWord: PropTypes.string,
+  incorrectIndices: PropTypes.array,
+  inputDisabled: PropTypes.bool,
+  showContinueButton: PropTypes.bool,
+  handleContinueOnWrongAnswer: PropTypes.func,
 };
 
 export default PhaseController;
