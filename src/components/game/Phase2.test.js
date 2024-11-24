@@ -192,4 +192,87 @@ describe('Phase2 Component', () => {
 
     expect(mockHandleSubmit).toHaveBeenCalledWith('TEST');
   });
+
+  it ('checks that continue button renders on wrong input', async () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[3]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    expect(screen.getByText('JATKA PELIÄ')).toBeInTheDocument;
+  });
+
+  test('checks that pressing enter can be used to continue game after wrong input', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  test('checks that continue button can be used to continue game after wrong input', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.click(screen.getByText('JATKA PELIÄ'));
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  test('checks that player input is not updated when inputDisabled is true', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+  
+    const shuffledLetters = screen.getAllByTestId('shuffled-letter');
+    const inputBoxes = screen.getAllByTestId('input-box');
+    
+    // Click on a shuffled letter and input box
+    fireEvent.click(shuffledLetters[0]);
+    fireEvent.click(inputBoxes[0]);
+  
+    // Ensure that setPlayerInput is only called once in the beginning
+    // of phase 2 but not through the clicks
+    expect(mockSetPlayerInput).toHaveBeenCalledTimes(1);
+  });
 });

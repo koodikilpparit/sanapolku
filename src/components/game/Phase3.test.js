@@ -225,4 +225,81 @@ describe('Phase3 Component', () => {
 
     expect(document.activeElement).toBe(screen.getAllByRole('textbox')[3]);
   });
+
+  it ('checks that continue button renders on wrong input', async () => {
+    render(
+      <Phase3
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    expect(screen.getByText('JATKA PELIÄ')).toBeInTheDocument;
+  });
+
+  it ('checks that pressing enter can be used to continue game after wrong input', () => {
+    render(
+      <Phase3
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  it ('checks that continue button can be used to continue game after wrong input', () => {
+    render(
+      <Phase3
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.click(screen.getByText('JATKA PELIÄ'));
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  it('checks that input fields are disabled when inputDisabled is true', () => {
+    render(
+      <Phase3
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+  
+    const letterInputs = screen.getAllByRole('textbox');
+    letterInputs.forEach(input => {
+      expect(input).toBeDisabled();
+    });
+  });
 });
