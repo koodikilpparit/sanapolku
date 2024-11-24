@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Phase1 from '../../components/game/Phase1';
 
 // Clear all mocks after all tests
@@ -147,7 +147,7 @@ describe('Phase1 Component', () => {
     expect(mockHandleSubmit).toHaveBeenCalled();
   });
 
-  it ('checks that continue button renders on wrong input', async () => {
+  it('checks that continue button renders on wrong input', async () => {
     render(
       <Phase1
         currentWord={mockWord}
@@ -165,7 +165,7 @@ describe('Phase1 Component', () => {
     expect(screen.getByText('JATKA PELIÄ')).toBeInTheDocument;
   });
 
-  it ('checks that pressing enter can be used to continue game after wrong input', () => {
+  it('checks that pressing enter can be used to continue game after wrong input', () => {
     render(
       <Phase1
         currentWord={mockWord}
@@ -184,7 +184,7 @@ describe('Phase1 Component', () => {
     expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
   });
 
-  it ('checks that continue button can be used to continue game after wrong input', () => {
+  it('checks that continue button can be used to continue game after wrong input', () => {
     render(
       <Phase1
         currentWord={mockWord}
@@ -217,9 +217,9 @@ describe('Phase1 Component', () => {
         handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
-  
+
     const letterInputs = screen.getAllByRole('textbox');
-    letterInputs.forEach(input => {
+    letterInputs.forEach((input) => {
       expect(input).toBeDisabled();
     });
   });

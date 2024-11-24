@@ -193,7 +193,7 @@ describe('Phase2 Component', () => {
     expect(mockHandleSubmit).toHaveBeenCalledWith('TEST');
   });
 
-  it ('checks that continue button renders on wrong input', async () => {
+  it('checks that continue button renders on wrong input', async () => {
     render(
       <Phase2
         currentWord={mockCurrentWord}
@@ -263,14 +263,14 @@ describe('Phase2 Component', () => {
         handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
-  
+
     const shuffledLetters = screen.getAllByTestId('shuffled-letter');
     const inputBoxes = screen.getAllByTestId('input-box');
-    
+
     // Click on a shuffled letter and input box
     fireEvent.click(shuffledLetters[0]);
     fireEvent.click(inputBoxes[0]);
-  
+
     // Ensure that setPlayerInput is only called once in the beginning
     // of phase 2 but not through the clicks
     expect(mockSetPlayerInput).toHaveBeenCalledTimes(1);
