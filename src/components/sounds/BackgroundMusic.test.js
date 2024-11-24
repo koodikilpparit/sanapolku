@@ -74,7 +74,12 @@ describe('BackgroundMusic Component', () => {
     });
 
     // Check that volume is set to 0
-    expect(mockAudio.volume).toBe(0);
+    await waitFor(
+      () => {
+        expect(mockAudio.volume).toBe(0);
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('should set volume based on context when not in "/peli"', async () => {
@@ -97,7 +102,12 @@ describe('BackgroundMusic Component', () => {
     });
 
     // Check that volume is set to the context value
-    expect(mockAudio.volume).toBe(0);
+    await waitFor(
+      () => {
+        expect(mockAudio.volume).toBe(0.7);
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('should set volume to 0 when music is disabled in settings', async () => {
@@ -118,7 +128,12 @@ describe('BackgroundMusic Component', () => {
     });
 
     // Check that volume is set to 0
-    expect(mockAudio.volume).toBe(0);
+    await waitFor(
+      () => {
+        expect(mockAudio.volume).toBe(0);
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('should reset audio when unmounted', () => {
