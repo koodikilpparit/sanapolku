@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { SettingsContext } from '../../contexts/SettingsContext';
 
 const BackgroundMusic = () => {
-  const { music, volume = 0.25 } = useContext(SettingsContext);
+  const { music, volume = 0.1 } = useContext(SettingsContext);
   const location = useLocation();
   const audioRef = useRef(null);
   const [isAudioReady, setAudioReady] = useState(false);
@@ -19,6 +19,7 @@ const BackgroundMusic = () => {
 
     const handleUserInteraction = () => {
       if (!isAudioReady) {
+        audio.volume = volume;
         audio
           .play()
           .then(() => {
@@ -39,7 +40,7 @@ const BackgroundMusic = () => {
       audio.currentTime = 0;
       clearInterval(fadeIntervalRef.current);
     };
-  }, [isAudioReady]);
+  }, [isAudioReady, volume]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -49,7 +50,7 @@ const BackgroundMusic = () => {
 
       if (location.pathname.startsWith('/peli')) {
         // Fade out the audio over 2.5 seconds when entering the game
-        fadeAudio(audio, currentVolume, 0, 1250);
+        fadeAudio(audio, currentVolume, 0, 2500);
       } else {
         // Fade in the audio over 2.5 seconds when leaving the game
         fadeAudio(audio, audio.volume, volume, 2500);
@@ -62,7 +63,9 @@ const BackgroundMusic = () => {
       // Fade out the audio if music is disabled
       fadeAudio(audio, currentVolume, 0, 0);
     }
-  }, [music, volume, location.pathname, isAudioReady, currentVolume]);
+    // If currentVolume is in dependencies, fadeAudio gets invoked infinitely
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [music, volume, location.pathname, isAudioReady]);
 
   const fadeAudio = (audio, fromVolume, toVolume, duration) => {
     clearInterval(fadeIntervalRef.current);
