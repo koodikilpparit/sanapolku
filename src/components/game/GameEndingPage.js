@@ -14,7 +14,7 @@ const GameEndingPage = () => {
       <p>Suoritit koko polun ja saavuit määränpäähäsi!</p>
       <img
         className="ending-img"
-        src={`${process.env.PUBLIC_URL}/finish-img.png`}
+        src={`${process.env.PUBLIC_URL}/finish-img.svg`}
         alt="Cottage in serene lake and mountain view"
       />
       <div className="ending-buttons-container">
