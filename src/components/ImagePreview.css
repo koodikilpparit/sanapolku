@@ -29,6 +29,7 @@
   max-height: 60vh;
   margin: 0 auto;
   display: block;
+  object-fit: contain;
 }
 
 .image-author {
