@@ -20,14 +20,14 @@ const GameEndingPage = () => {
       <div className="ending-buttons-container">
         <button
           className="home-button"
-          onClick={() => navigate(-3)}
+          onClick={() => navigate('/')}
           aria-label="Go to Start Page"
         >
           <FontAwesomeIcon icon={faHouse} className="home-icon" />
         </button>
         <button
           className="ready-button"
-          onClick={() => navigate(-2)}
+          onClick={() => navigate('/polut')}
           aria-label="Go to Game Menu"
         >
           VALMIS
