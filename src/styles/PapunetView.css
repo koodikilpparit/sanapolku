@@ -144,6 +144,7 @@
   .return-save-button-container button {
     width: 40%;
     height: 10%;
+    font-size: calc(var(--sp-heading-5) - 4px);
   }
 
   .photo-container {
