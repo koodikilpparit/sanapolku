@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import BackButton from '../components/universal/BackButton';
 import '../styles/Settings.css';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { resetDB } from '../db/db';
+import Header from '../components/universal/Header';
 
 /**
  * Settings component renders the settings page of the application.
@@ -45,11 +45,7 @@ const Settings = () => {
 
   return (
     <div className="settings-container">
-      <header className="settings-header">
-        <BackButton />
-        <h2> Asetukset </h2>
-      </header>
-
+      <Header title="Asetukset" />
       <div className="settings">
         <div className="setting-item">
           <label htmlFor="sounds-checkbox">Äänet</label>
