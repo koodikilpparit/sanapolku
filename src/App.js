@@ -10,11 +10,13 @@ import ManagePath from './pages/ManagePath';
 import NewWord from './pages/NewWord';
 import GamePage from './pages/GamePage';
 import { PathProvider } from './components/pathSelection/PathContext';
+import BackgroundMusic from './components/sounds/BackgroundMusic';
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <BackgroundMusicWrapper />
         <Routes>
           <Route path="/" element={<Start />} />
           <Route path="/asetukset" element={<Settings />} />
@@ -36,5 +38,9 @@ function App() {
     </Router>
   );
 }
+
+const BackgroundMusicWrapper = () => {
+  return <BackgroundMusic />;
+};
 
 export default App;
