@@ -53,18 +53,20 @@ const ImageCropper = ({
               ref={cropperRef}
             />
           </div>
-          <button
-            onClick={handleBack}
-            className="absolute top-4 left-4 bg-gray-300 text-black py-1 px-3 rounded hover:bg-gray-400 transition"
-          >
-            Takaisin
-          </button>
-          <button
-            onClick={handleCrop}
-            className="absolute bottom-2 sm:bottom-1 left-1/2 transform -translate-x-1/2 bg-sp-dark-green text-white py-2 px-4 sm:py-0.5 rounded"
-          >
-            Rajaa
-          </button>
+          <div className="absolute bottom-2 sm:bottom-1 left-1/2 transform -translate-x-1/2 flex gap-4 justify-center items-center">
+            <button
+              onClick={handleBack}
+              className="bg-sp-red text-white py-2 px-4 sm:py-0.5 rounded"
+            >
+              Takaisin
+            </button>
+            <button
+              onClick={handleCrop}
+              className="bg-sp-dark-green text-white py-2 px-4 sm:py-0.5 rounded"
+            >
+              Rajaa
+            </button>
+          </div>
         </div>
       )}
     </div>
