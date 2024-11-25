@@ -19,22 +19,17 @@ body {
   height: 100vh;
 }
 
-.settings-header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  padding-top: 25px;
-  margin-bottom: 25px;
+.settings-container .header-right {
+  visibility: hidden;
 }
 
-.settings-header h2 {
-  font-size: var(--sp-heading-1);
-  margin: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
+.settings-container .edit-button {
+  display: none;
+}
+
+.settings-container .header {
+  padding: 25px 25px;
+  margin-bottom: 0px;
 }
 
 .settings-about-container {
