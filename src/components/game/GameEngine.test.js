@@ -14,6 +14,11 @@ afterAll(() => {
   jest.clearAllMocks();
 });
 
+jest.mock('../../components/game/SuccessIndicator', () => ({
+  __esModule: true,
+  default: () => <div data-testid="success-indicator" />,
+}));
+
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = Array.from({ length: 15 }, (_, index) => ({
     word: `word${index + 1}`,
