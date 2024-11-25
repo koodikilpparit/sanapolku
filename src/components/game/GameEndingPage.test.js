@@ -2,8 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import GameEndingPage from './GameEndingPage';
-import Start from '../../pages/Start';
-import GameMenu from '../../pages/GameMenu';
+import { useNavigate } from 'react-router-dom';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
 
 describe('GameEndingPage Component', () => {
   it('Check that ending content is rendered', () => {
@@ -70,24 +74,28 @@ describe('GameEndingPage Component', () => {
   });
 
   it('checks that the home button brings you to the start page', () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
-        <Start />
         <GameEndingPage />
       </BrowserRouter>
     );
 
     const homeButton = container.querySelector('.home-button');
     fireEvent.click(homeButton);
-    expect(container.querySelector('.start-button')).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 
-  it('checks that the VALMIS button bring syou to the game menu', () => {
+  it('checks that the VALMIS button brings you to the game menu', () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
-        <GameMenu />
         <GameEndingPage />
       </BrowserRouter>
     );
@@ -96,6 +104,6 @@ describe('GameEndingPage Component', () => {
     expect(readyButton).toBeInTheDocument();
 
     fireEvent.click(readyButton);
-    expect(screen.getByText('Valitse polku')).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith('/polut');
   });
 });
