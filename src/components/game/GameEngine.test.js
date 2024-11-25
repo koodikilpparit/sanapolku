@@ -201,7 +201,7 @@ describe('GameEngine Component with IndexedDB', () => {
       });
 
       if (i === 4) {
-        fireEvent.click(screen.getByText('JATKA PELIÄ'));
+        fireEvent.click(screen.getByText('JATKA'));
       }
     }
 
@@ -308,7 +308,7 @@ describe('GameEngine Component with IndexedDB', () => {
       });
 
       if (i === 4) {
-        fireEvent.click(screen.getByText('JATKA PELIÄ'));
+        fireEvent.click(screen.getByText('JATKA'));
       }
     }
 
