@@ -11,7 +11,7 @@ describe('Phase1 Component', () => {
   const mockWord = {
     id: 1,
     word: 'apple',
-    imageData: { src: 'apple.jpg', author: 'Unknown' },
+    imageData: { src: 'apple.jpg', author: null },
   };
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();

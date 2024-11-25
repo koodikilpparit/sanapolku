@@ -1,6 +1,7 @@
 {
   "short_name": "Sanapolku",
   "name": "Sanapolku",
+  "description": "Lähdekoodi saatavilla: https://github.com/koodikilpparit/sanapolku",
   "icons": [
     {
       "src": "/sanapolku/icons/Logo48x48.png",

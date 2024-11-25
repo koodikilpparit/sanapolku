@@ -16,7 +16,7 @@ describe('ImageUploader tests', () => {
     render(<ImageUploader setImageData={setImageDataMock} />);
 
     // Checks if the upload button is rendered
-    const uploadButton = screen.getByLabelText('Lataa kuva');
+    const uploadButton = screen.getByText('Laitteelta');
     expect(uploadButton).toBeInTheDocument();
   });
 
@@ -26,7 +26,7 @@ describe('ImageUploader tests', () => {
 
     // Test file which produces base64
     const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
-    const input = screen.getByLabelText('Lataa kuva');
+    const input = screen.getByText('Laitteelta');
 
     // Simulates uploading file
     fireEvent.change(input, { target: { files: [file] } });
@@ -60,7 +60,11 @@ describe('ImageUploader tests', () => {
     const invalidFile = new File(['dummy content'], 'test.txt', {
       type: 'text/plain',
     });
-    const input = screen.getByLabelText('Lataa kuva');
+
+    // Get the hidden file input element
+    const input = screen
+      .getByText(/Laitteelta/i)
+      .closest('button').nextElementSibling;
 
     // Simulates uploading invalid file
     fireEvent.change(input, { target: { files: [invalidFile] } });
@@ -69,6 +73,8 @@ describe('ImageUploader tests', () => {
     expect(global.alert).toHaveBeenCalledWith(
       'Vain JPEG, JPG tai PNG tiedostot hyväksytään.'
     );
+
+    global.alert.mockRestore();
   });
 
   it('should not call setImageData if an invalid file type is uploaded', () => {
@@ -79,7 +85,7 @@ describe('ImageUploader tests', () => {
     const invalidFile = new File(['dummy content'], 'test.txt', {
       type: 'text/plain',
     });
-    const input = screen.getByLabelText('Lataa kuva');
+    const input = screen.getByText('Laitteelta');
 
     // Simulates uploading invalid file
     fireEvent.change(input, { target: { files: [invalidFile] } });
@@ -92,7 +98,7 @@ describe('ImageUploader tests', () => {
     const setImageDataMock = jest.fn();
     render(<ImageUploader setImageData={setImageDataMock} />);
 
-    const input = screen.getByLabelText('Lataa kuva');
+    const input = screen.getByText('Laitteelta');
 
     // Simulates empty file selection
     fireEvent.change(input, { target: { files: [] } });

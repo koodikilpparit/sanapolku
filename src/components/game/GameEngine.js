@@ -21,6 +21,8 @@ const GameEngine = ({ pathId }) => {
   const [error, setError] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [wordAttempts, setWordAttempts] = useState(0);
+  const [showSkipButton, setShowSkipButton] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -64,10 +66,23 @@ const GameEngine = ({ pathId }) => {
     }
   }, [currentWord]);
 
-  const handleInputChange = (index, event) => {
-    const value = event.target.value.toUpperCase();
+  useEffect(() => {
+    if (currentPhase === 2 && wordAttempts >= 1) {
+      setShowSkipButton(true);
+    }
+  }, [wordAttempts, currentPhase]);
 
-    const newInput = [...playerInput];
+  const handleInputChange = (index, event) => {
+    let value = event.target.value.toUpperCase();
+    const oldInput = [...playerInput];
+
+    // If there are more than 1 letter, replace with getNewInputValue logic
+    if (value.length > 1) {
+      const oldValue = oldInput[index];
+      value = getNewInputValue(oldValue, value);
+    }
+
+    const newInput = [...oldInput];
     newInput[index] = value;
     setPlayerInput(newInput);
 
@@ -75,6 +90,21 @@ const GameEngine = ({ pathId }) => {
     if (value && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
     }
+  };
+
+  /**
+   * Replace old letter from either side (cursor). Also handle cases where user possibly copy-pastes a longer string.
+   * @param {string} oldInputValue The player input in previous state at a specific index
+   * @param {string} eventValue The input event value at the same index
+   * @returns A single character (new input value) at the same index
+   */
+  const getNewInputValue = (oldInputValue, eventValue) => {
+    const newValue = eventValue.replace(oldInputValue, '');
+    if (newValue.length < 1) {
+      // If managed to replace all letters with empty strings
+      return oldInputValue;
+    }
+    return newValue[0];
   };
 
   // Handle submission based on the phase
@@ -115,6 +145,7 @@ const GameEngine = ({ pathId }) => {
           setShuffledWord(shuffleWord(currentWord.word));
         }
       } else {
+        setWordAttempts((prev) => prev + 1);
         setCurrentPhase(3);
       }
     }
@@ -125,6 +156,8 @@ const GameEngine = ({ pathId }) => {
   // Handle moving to the next word
   const moveToNextWord = () => {
     setCurrentPhase(1);
+    setWordAttempts(0);
+    setShowSkipButton(false);
 
     if (wordIndex + 1 < words.length) {
       setWordIndex(wordIndex + 1);
@@ -143,6 +176,10 @@ const GameEngine = ({ pathId }) => {
   const triggerSuccessIndicator = () => {
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
+  };
+
+  const handleSkip = () => {
+    moveToNextWord();
   };
 
   return (
@@ -170,9 +207,12 @@ const GameEngine = ({ pathId }) => {
               currentWord={currentWord}
               playerInput={playerInput}
               handleInputChange={handleInputChange}
+              setPlayerInput={setPlayerInput}
               handleSubmit={handleSubmit}
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}
+              showSkipButton={showSkipButton}
+              handleSkip={handleSkip}
             />
           </>
         ) : (

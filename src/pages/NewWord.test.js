@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import NewWord from './NewWord';
 import ManagePath from './ManagePath';
@@ -8,6 +8,56 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
 }));
+
+// Mock the ImageUploader component to simulate an image
+jest.mock('../components/newWord/ImageUploader', () => {
+  const PropTypes = require('prop-types');
+
+  const MockImageUploader = ({ setImageData }) => (
+    <button
+      onClick={() =>
+        setImageData({ src: 'test-image-src', author: 'test-author' })
+      }
+    >
+      Mock ImageUploader
+    </button>
+  );
+
+  MockImageUploader.displayName = 'MockImageUploader'; // Add display name
+
+  // Add prop types validation
+  MockImageUploader.propTypes = {
+    setImageData: PropTypes.func.isRequired,
+  };
+
+  return MockImageUploader;
+});
+
+// Mock ImageCropper for simplicity
+jest.mock('../components/newWord/ImageCropper', () => {
+  const PropTypes = require('prop-types');
+
+  const MockImageCropper = ({
+    imageSrc = 'default-image-src',
+    onCroppedImage,
+  }) => (
+    <div>
+      <p>ImageCropper Mock</p>
+      <p>{imageSrc}</p>
+      <button onClick={() => onCroppedImage('cropped-image-src')}>Crop</button>
+    </div>
+  );
+
+  MockImageCropper.displayName = 'MockImageCropper'; // Add display name
+
+  // Add prop types validation
+  MockImageCropper.propTypes = {
+    imageSrc: PropTypes.string.isRequired,
+    onCroppedImage: PropTypes.func.isRequired,
+  };
+
+  return MockImageCropper;
+});
 
 describe('NewWord Component UI Tests', () => {
   const mockNavigate = jest.fn();
@@ -96,42 +146,42 @@ describe('NewWord Component UI Tests', () => {
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
-  it('should open and close the Papunet modal when "HAE KUVIA" button is clicked', () => {
+  it('should open the Papunet modal when "Papunetistä" button is clicked', () => {
     render(
       <BrowserRouter>
         <NewWord />
       </BrowserRouter>
     );
 
-    const fetchPhotosButton = screen.getByText('HAE KUVIA');
+    const fetchPhotosButton = screen.getByText('Papunetistä');
     fireEvent.click(fetchPhotosButton);
 
     // Check if Papunet modal is open
-    expect(screen.getByText('Photo Fetcher')).toBeInTheDocument();
-
-    // Close the modal
-    fireEvent.click(screen.getByText('X'));
-    expect(screen.queryByText('Photo Fetcher')).not.toBeInTheDocument();
+    expect(screen.getByText('Papunet Kuvahaku')).toBeInTheDocument();
   });
 
-  it('should open the image cropper modal when an image is selected', async () => {
+  it('updates the preview image and closes cropping modal after cropping', async () => {
+    // Render the NewWord component inside a Router context
     render(
       <BrowserRouter>
         <NewWord />
       </BrowserRouter>
     );
 
-    // Mocks the image selection
-    const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
-    const input = screen.getByLabelText('Lataa kuva');
+    // Simulate selecting an image using the mocked ImageUploader
+    const imageUploaderButton = screen.getByText('Mock ImageUploader');
+    fireEvent.click(imageUploaderButton);
 
-    // Simulate selecting a file
-    fireEvent.change(input, { target: { files: [file] } });
+    // Assert that the cropping modal is displayed
+    const croppingModal = screen.getByText('ImageCropper Mock');
+    expect(croppingModal).toBeInTheDocument();
 
-    // Wait until cropping modal is open
-    await waitFor(() => {
-      const modal = screen.getByText('Rajaa');
-      expect(modal).toBeInTheDocument();
-    });
+    // Simulate cropping the image
+    const cropButton = screen.getByText('Crop');
+    fireEvent.click(cropButton);
+
+    // Assert that the preview image and imageData are updated
+    const previewImage = screen.getByAltText('Esikatselu');
+    expect(previewImage).toHaveAttribute('src', 'cropped-image-src');
   });
 });

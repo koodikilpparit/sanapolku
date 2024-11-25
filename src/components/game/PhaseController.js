@@ -9,8 +9,11 @@ const PhaseController = ({
   playerInput,
   handleInputChange,
   handleSubmit,
+  setPlayerInput,
   inputRefs,
   shuffledWord = '',
+  showSkipButton,
+  handleSkip,
 }) => {
   switch (currentPhase) {
     case 1:
@@ -20,6 +23,8 @@ const PhaseController = ({
           playerInput={playerInput}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
+          showSkipButton={showSkipButton}
+          handleSkip={handleSkip}
           inputRefs={inputRefs}
         />
       );
@@ -29,9 +34,10 @@ const PhaseController = ({
           currentWord={currentWord}
           shuffledWord={shuffledWord}
           playerInput={playerInput}
-          handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          inputRefs={inputRefs}
+          setPlayerInput={setPlayerInput}
+          showSkipButton={showSkipButton}
+          handleSkip={handleSkip}
         />
       );
     case 3:
@@ -42,6 +48,8 @@ const PhaseController = ({
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
           inputRefs={inputRefs}
+          showSkipButton={showSkipButton}
+          handleSkip={handleSkip}
         />
       );
     default:
@@ -58,8 +66,11 @@ PhaseController.propTypes = {
   playerInput: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  setPlayerInput: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
   shuffledWord: PropTypes.string,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default PhaseController;
