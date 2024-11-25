@@ -1,3 +1,4 @@
+/* Default Style */
 .break-content {
     display: flex;
     flex-direction: column;
@@ -117,6 +118,35 @@ img {
     p {
         font-size: 18px;
         line-height: 3.5vh;
+    }
+
+}
+
+/* Style for tablets/large screens */
+@media (min-width: 750px) and (min-height: 750px) {
+    .break-content {
+        gap: 25px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    p {
+        font-size: 26px;
+    }
+
+    .continue-button {
+        width: 30vw;
+        height: 10vw;
+        font-size: 26px;
+        max-height: 80px;
+        max-width: 280px;
+    } 
+
+    img {
+        width: 230px;
+        height: 230px;
     }
 
 }
