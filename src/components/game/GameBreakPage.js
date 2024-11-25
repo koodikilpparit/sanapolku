@@ -22,7 +22,7 @@ const GameBreakPage = ({ onContinue }) => {
           onClick={onContinue}
           aria-label="Continue game"
         >
-          JATKA PELIÄ
+          JATKA
         </button>
       </div>
     </div>
