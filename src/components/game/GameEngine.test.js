@@ -2,10 +2,9 @@ import { React, act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import PathSelection from '../../pages/PathSelection';
 import GameEndingPage from './GameEndingPage';
 import { addPath, addWord, resetDB } from '../../db/db';
-import { PathProvider } from '../pathSelection/PathContext';
+import { useNavigate } from 'react-router-dom';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -14,6 +13,11 @@ if (typeof global.structuredClone === 'undefined') {
 afterAll(() => {
   jest.clearAllMocks();
 });
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
 
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = Array.from({ length: 15 }, (_, index) => ({
@@ -353,6 +357,9 @@ describe('GameEngine Component with IndexedDB', () => {
   });
 
   it('Check that restart button can be used to restart game', async () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+
     jest.useFakeTimers();
 
     render(
@@ -363,24 +370,17 @@ describe('GameEngine Component with IndexedDB', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Restart Game/i }));
-
-    render(
-      <MemoryRouter>
-        <GameEngine pathId={String(pathId)} />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => screen.getByText('Kirjoita sana'));
+    expect(mockNavigate).toHaveBeenCalledWith(0);
   });
 
-  it('checks that the back-button brings you to /omatpolut', () => {
+  it('checks that the back-button brings you back one page', () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
         <GameEngine pathId={String(pathId)} />
-        <PathProvider>
-          <PathSelection />
-        </PathProvider>
       </BrowserRouter>
     );
 
@@ -389,6 +389,6 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(backButton).toBeInTheDocument();
 
     fireEvent.click(backButton);
-    expect(screen.getByText('Polut')).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 });
