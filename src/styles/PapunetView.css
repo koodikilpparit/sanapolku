@@ -80,14 +80,21 @@
 
 .photo img {
   max-width: 100%;
-  max-height: 100px; /* Restrict height for better alignment */
+  max-height: 150px; /* Restrict height for better alignment */
   height: auto;
   border-radius: 4px;
   margin-bottom: 10px;
 }
 
-.photo p {
-  margin: 5px 0;
+.zoom-button {
+  color: var(--sp-black);
+  width: 30px;
+  height: 30px;
+  margin-bottom: 20px;
+}
+
+.photo .button-icon {
+  width: 30px;
 }
 
 .return-save-button-container {
@@ -141,5 +148,9 @@
 
   .photo-container {
     padding-bottom: 50px;
+  }
+
+  .photo {
+    flex: 1 1 calc(50% - 20px);
   }
 }

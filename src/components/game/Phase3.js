@@ -8,6 +8,8 @@ const Phase3 = ({
   handleInputChange,
   handleSubmit,
   inputRefs,
+  showSkipButton,
+  handleSkip,
 }) => {
   const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
 
@@ -40,12 +42,13 @@ const Phase3 = ({
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
         Kopioi sana
       </h1>
-      <div className="flex flex-col sm:flex-row h-full">
+      <div className="flex flex-col sm:flex-row md:flex-row md-minh-1000:flex-col md-minh-1000:items-center lg:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
           <ImageContainer
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
             className=""
+            author={currentWord.imageData.author}
           />
         </div>
         <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
@@ -82,6 +85,19 @@ const Phase3 = ({
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-5">
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                OHITA
+              </button>
+            )}
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
@@ -109,6 +125,8 @@ Phase3.propTypes = {
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default Phase3;
