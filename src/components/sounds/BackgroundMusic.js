@@ -2,6 +2,7 @@ import { useEffect, useRef, useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SettingsContext } from '../../contexts/SettingsContext';
 
+const PUBLIC_URL = process.env.PUBLIC_URL;
 const BackgroundMusic = () => {
   const { music, volume = 0.1 } = useContext(SettingsContext);
   const location = useLocation();
@@ -12,7 +13,7 @@ const BackgroundMusic = () => {
 
   useEffect(() => {
     if (!audioRef.current) {
-      audioRef.current = new Audio('sanapolku/data/audio/hittibiisi.mp3');
+      audioRef.current = new Audio(PUBLIC_URL + '/data/audio/hittibiisi.mp3');
     }
 
     const audio = audioRef.current;
