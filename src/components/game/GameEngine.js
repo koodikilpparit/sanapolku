@@ -23,6 +23,8 @@ const GameEngine = ({ pathId }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showBreakPage, setShowBreakPage] = useState(false);
+  const [wordAttempts, setWordAttempts] = useState(0);
+  const [showSkipButton, setShowSkipButton] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -65,6 +67,12 @@ const GameEngine = ({ pathId }) => {
       inputRefs.current.forEach((input) => input?.blur());
     }
   }, [currentWord]);
+
+  useEffect(() => {
+    if (currentPhase === 2 && wordAttempts >= 1) {
+      setShowSkipButton(true);
+    }
+  }, [wordAttempts, currentPhase]);
 
   const handleInputChange = (index, event) => {
     let value = event.target.value.toUpperCase();
@@ -139,6 +147,7 @@ const GameEngine = ({ pathId }) => {
           setShuffledWord(shuffleWord(currentWord.word));
         }
       } else {
+        setWordAttempts((prev) => prev + 1);
         setCurrentPhase(3);
       }
     }
@@ -149,6 +158,8 @@ const GameEngine = ({ pathId }) => {
   // Handle moving to the next word
   const moveToNextWord = () => {
     setCurrentPhase(1);
+    setWordAttempts(0);
+    setShowSkipButton(false);
 
     if (wordIndex + 1 < words.length) {
       setProgress((prevProgress) => prevProgress + 100 / words.length);
@@ -178,6 +189,10 @@ const GameEngine = ({ pathId }) => {
   const triggerSuccessIndicator = () => {
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
+  };
+
+  const handleSkip = () => {
+    moveToNextWord();
   };
 
   return (
@@ -211,6 +226,8 @@ const GameEngine = ({ pathId }) => {
               handleSubmit={handleSubmit}
               inputRefs={inputRefs}
               shuffledWord={shuffledWord}
+              showSkipButton={showSkipButton}
+              handleSkip={handleSkip}
             />
           </>
         ) : (

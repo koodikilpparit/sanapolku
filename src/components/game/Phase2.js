@@ -8,6 +8,8 @@ const Phase2 = ({
   handleSubmit,
   playerInput,
   setPlayerInput,
+  showSkipButton,
+  handleSkip,
 }) => {
   const [shuffledLetters, setShuffledLetters] = useState([]);
   const [selectedLetter, setSelectedLetter] = useState(null);
@@ -174,6 +176,19 @@ const Phase2 = ({
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-4">
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                OHITA
+              </button>
+            )}
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
@@ -201,6 +216,8 @@ Phase2.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   playerInput: PropTypes.array.isRequired,
   setPlayerInput: PropTypes.func.isRequired,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default Phase2;
