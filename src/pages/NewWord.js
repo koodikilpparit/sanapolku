@@ -21,6 +21,7 @@ const NewWord = () => {
   );
   const [isPapunetOpen, setIsPapunetOpen] = useState(false);
   const [isCropping, setIsCropping] = useState(false);
+  const [imageSource, setImageSource] = useState(null);
   const [isLargeImgPreviewOpen, setIsLargeImgPreviewOpen] = useState(false);
   const [largeImgPreview, setLargeImgPreview] = useState(null);
 
@@ -59,18 +60,23 @@ const NewWord = () => {
     setIsPapunetOpen(false); // Close Papunet modal as well
   };
 
-  const handleImageSelection = (image) => {
+  const handleImageSelection = (image, source) => {
     // Set the selected image and author from Papunet
     setImageData({
       src: image.src,
       author: image.author,
     });
+    setImageSource(source);
     setIsCropping(true); // Open the cropping modal
   };
 
   const handleLargeImgPreview = (image) => {
     setLargeImgPreview(image);
     setIsLargeImgPreviewOpen(true);
+  };
+
+  const reopenFileSelector = () => {
+    document.getElementById('hiddenFileInput').click();
   };
 
   return (
@@ -97,7 +103,10 @@ const NewWord = () => {
           <div className="img-upload-container">
             <label>Lataa kuva</label>
             <div className="img-upload-button-container">
-              <ImageUploader setImageData={handleImageSelection} />
+              <ImageUploader
+                setImageData={handleImageSelection}
+                setImageSource={setImageSource}
+              />
               <button
                 className="img-upload-button"
                 onClick={() => setIsPapunetOpen(true)}
@@ -150,8 +159,12 @@ const NewWord = () => {
       <Modal isOpen={isCropping} modalType="image-cropper">
         {imageData && (
           <ImageCropper
-            imageSrc={imageData?.src}
+            key={imageData.src}
+            imageSrc={imageData.src}
             onCroppedImage={handleImageCrop}
+            onBack={() => setIsCropping(false)}
+            imageSource={imageSource}
+            reopenFileSelector={reopenFileSelector}
           />
         )}
       </Modal>
