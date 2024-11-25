@@ -13,7 +13,7 @@ const GameBreakPage = ({ onContinue }) => {
       <p>Pidä pieni tauko ennen kuin jatkat peliä.</p>
       <img
         className="break-img"
-        src="sanapolku/break-img.svg"
+        src={`${process.env.PUBLIC_URL}/break-img.svg`}
         alt="Camp fire along a path"
       />
       <div className="break-buttons-container">
