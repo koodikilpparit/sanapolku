@@ -35,7 +35,6 @@
 .image-author {
   margin-top: 20px;
   font-size: 1rem;
-  word-wrap: break-word;
   height: 1rem;
   line-height: 1rem;
   background-color: var(--sp-white);
@@ -64,17 +63,18 @@
 }
 
 @media (max-width: 400px) {
+  .image-preview-container {
+    height: 95%;
+  }
+
   .enlarged-image {
     width: 90% !important;
     height: auto;
+    max-height: 80%;
   }
 }
 
 @media (min-width: 401px) {
-  .image-preview-container {
-    width: 95%;
-  }
-
   .enlarged-image {
     width: 90% !important;
     height: auto;
