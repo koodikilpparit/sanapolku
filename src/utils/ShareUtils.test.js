@@ -13,7 +13,6 @@ describe('ShareUtils', () => {
   const mockConnection = { on: jest.fn(), send: jest.fn(), off: jest.fn() };
   const mockData = { someField: 'someData' };
   const mockTargetPeerId = '123';
-  const mockPeerId = '987';
 
   beforeEach(() => {
     jest.clearAllMocks();
