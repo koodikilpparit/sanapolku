@@ -20,11 +20,12 @@ const BackgroundMusic = () => {
 
     const handleUserInteraction = () => {
       if (!isAudioReady) {
-        audio.volume = volume;
+        audio.volume = 0;
         audio
           .play()
           .then(() => {
             setAudioReady(true);
+            fadeAudio(audio, 0, volume, 2500);
           })
           .catch((err) => {
             console.error('Audio playback failed on interaction:', err);
@@ -62,12 +63,11 @@ const BackgroundMusic = () => {
       });
     } else if (isAudioReady) {
       // Fade out the audio if music is disabled
-      fadeAudio(audio, currentVolume, 0, 0);
+      fadeAudio(audio, currentVolume, 0, 2500);
     }
     // If currentVolume is in dependencies, fadeAudio gets invoked infinitely
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [music, volume, location.pathname, isAudioReady]);
-
   const fadeAudio = (audio, fromVolume, toVolume, duration) => {
     clearInterval(fadeIntervalRef.current);
     const steps = 50;
