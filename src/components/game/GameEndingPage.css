@@ -1,3 +1,4 @@
+/* Default Style */
 .ending-content {
     display: flex;
     flex-direction: column;
@@ -166,6 +167,49 @@ img {
 
     p {
         font-size: 18px;
+    }
+
+}
+
+/* Style for tablets/large screens */
+@media (min-width: 750px) and (min-height: 750px) {
+    .ending-content {
+        gap: 40px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    p {
+        font-size: 26px;
+    }
+
+    .restart-button {
+        width: 10vw;
+        height: 10vw;
+        max-height: 80px;
+        max-width: 80px;
+    }
+    
+    .home-button {
+        width: 10vw;
+        height: 10vw;
+        max-height: 80px;
+        max-width: 80px;
+    }
+    
+    .ready-button {
+        width: 30vw;
+        height: 10vw;
+        font-size: 26px;
+        max-height: 80px;
+        max-width: 280px;
+    } 
+
+    img {
+        width: 230px;
+        height: 230px;
     }
 
 }
