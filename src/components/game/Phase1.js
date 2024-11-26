@@ -10,6 +10,10 @@ const Phase1 = ({
   handleInputChange,
   handleSubmit,
   inputRefs,
+  incorrectIndices,
+  inputDisabled,
+  showContinueButton,
+  handleContinueOnWrongAnswer,
   showSkipButton,
   handleSkip,
 }) => {
@@ -21,8 +25,12 @@ const Phase1 = ({
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isReadyButtonDisabled) {
-        handleSubmit();
+      if (event.key === 'Enter') {
+        if (showContinueButton) {
+          handleContinueOnWrongAnswer();
+        } else if (!isReadyButtonDisabled) {
+          handleSubmit();
+        }
       }
     };
 
@@ -30,7 +38,12 @@ const Phase1 = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isReadyButtonDisabled, handleSubmit]);
+  }, [
+    isReadyButtonDisabled,
+    handleSubmit,
+    handleContinueOnWrongAnswer,
+    showContinueButton,
+  ]);
 
   // Function to handle backspace key for navigating to the previous input
   const handleBackspaceNavigation = (index, event) => {
@@ -38,6 +51,7 @@ const Phase1 = ({
       inputRefs.current[index - 1].focus();
     }
   };
+
   return (
     <div className="flex flex-col">
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
@@ -63,13 +77,23 @@ const Phase1 = ({
                 value={playerInput[index] || ''}
                 onChange={(event) => handleInputChange(index, event, inputRefs)}
                 onKeyDown={(event) => handleBackspaceNavigation(index, event)}
-                className="w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 
-                  max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl"
+                className={
+                  'w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl'
+                }
+                style={
+                  incorrectIndices.includes(index)
+                    ? {
+                        backgroundColor: 'rgb(242 140 140)',
+                        border: '4px solid rgb(227, 17, 48)',
+                      }
+                    : { backgroundColor: 'rgb(255 255 255)' }
+                }
                 autoCapitalize="none"
+                disabled={inputDisabled}
               />
             ))}
           </div>
-          <div className="flex items-end justify-between py-2 px-2">
+          <div className="flex items-end justify-center sm:justify-end py-2">
             <button
               className="btn-sp-secondary w-full sm:w-1/4 bg-sp-blue cursor-pointer"
               onClick={() => inputRefs.current[0]?.focus()}
@@ -90,17 +114,26 @@ const Phase1 = ({
                 OHITA
               </button>
             )}
-            <button
-              className={`btn-sp-primary w-full sm:w-1/2 ${
-                isReadyButtonDisabled
-                  ? 'bg-sp-gray cursor-not-allowed'
-                  : 'bg-sp-light-green cursor-pointer'
-              }`}
-              onClick={handleSubmit}
-              disabled={isReadyButtonDisabled}
-            >
-              VALMIS
-            </button>
+            {showContinueButton ? (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
+                onClick={handleContinueOnWrongAnswer}
+              >
+                JATKA
+              </button>
+            ) : (
+              <button
+                className={`btn-sp-primary w-full sm:w-1/2 ${
+                  isReadyButtonDisabled
+                    ? 'bg-sp-gray cursor-not-allowed'
+                    : 'bg-sp-light-green cursor-pointer'
+                }`}
+                onClick={handleSubmit}
+                disabled={isReadyButtonDisabled}
+              >
+                VALMIS
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -119,6 +152,10 @@ Phase1.propTypes = {
   showSkipButton: PropTypes.bool.isRequired,
   handleSkip: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
+  incorrectIndices: PropTypes.array,
+  inputDisabled: PropTypes.bool,
+  showContinueButton: PropTypes.bool,
+  handleContinueOnWrongAnswer: PropTypes.func,
 };
 
 export default Phase1;

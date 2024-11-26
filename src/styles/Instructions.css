@@ -1,32 +1,7 @@
 .instructions-page {
-  display: grid;
-  grid-template-areas: 'top-bar';
   height: 100vh;
   background-color: var(--sp-dark-green);
   overflow-y: auto;
-}
-
-.ins-top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  grid-area: top-bar;
-  position: absolute;
-  top: 24px;
-  left: 24px;
-}
-
-.ins-back-button {
-  background: none;
-  border: none;
-  height: 48px;
-  width: 30px;
-}
-
-.back-icon {
-  color: var(--sp-white);
-  height: 48px;
-  width: 30px;
 }
 
 .ins-center-area {
@@ -37,14 +12,17 @@
   padding-top: 60px;
 }
 
-.ins-header {
-  color: var(--sp-white);
-  font-family: var(--sp-global-font);
-  font-size: var(--sp-heading-1);
-  font-weight: 700;
-  line-height: 44px;
-  margin-bottom: 24px;
-  text-align: center;
+.instructions-page .header-right {
+  visibility: hidden;
+}
+
+.instructions-page .edit-button {
+  display: none;
+}
+
+.instructions-page .header {
+  padding: 25px 25px;
+  margin-bottom: 0px;
 }
 
 .instructions-intro {
@@ -74,22 +52,6 @@
     overflow-y: auto;
   }
 
-  .ins-top-bar {
-    position: absolute;
-    top: 2vw;
-    left: 2vw;
-  }
-
-  .ins-back-button {
-    height: 9vw;
-    width: 6vw;
-  }
-
-  .back-icon {
-    height: 9vw;
-    width: 6vw;
-  }
-
   .ins-center-area {
     padding-top: 4vw;
   }
@@ -112,22 +74,6 @@
     overflow-y: auto;
   }
 
-  .ins-top-bar {
-    position: absolute;
-    height: auto;
-    width: auto;
-  }
-
-  .ins-back-button {
-    height: 18vw;
-    width: 9vw;
-  }
-
-  .back-icon {
-    height: 18vw;
-    width: 9vw;
-  }
-
   .ins-center-area {
     padding-top: 5vw;
   }
@@ -147,21 +93,6 @@
 @media (max-height: 420px) {
   .instructions-page {
     height: 100vh;
-  }
-
-  .ins-top-bar {
-    top: 8vh;
-    left: 8vh;
-  }
-
-  .ins-back-button {
-    height: 12vh;
-    width: 6vh;
-  }
-
-  .back-icon {
-    height: 12vh;
-    width: 6vh;
   }
 
   .ins-center-area {

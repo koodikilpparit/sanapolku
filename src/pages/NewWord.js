@@ -21,6 +21,7 @@ const NewWord = () => {
   );
   const [isPapunetOpen, setIsPapunetOpen] = useState(false);
   const [isCropping, setIsCropping] = useState(false);
+  const [imageSource, setImageSource] = useState(null);
   const [isLargeImgPreviewOpen, setIsLargeImgPreviewOpen] = useState(false);
   const [largeImgPreview, setLargeImgPreview] = useState(null);
 
@@ -61,12 +62,13 @@ const NewWord = () => {
     setIsPapunetOpen(false); // Close Papunet modal as well
   };
 
-  const handleImageSelection = (image) => {
+  const handleImageSelection = (image, source) => {
     // Set the selected image and author from Papunet
     setImageData({
       src: image.src,
       author: image.author,
     });
+    setImageSource(source);
     setIsCropping(true); // Open the cropping modal
   };
 
@@ -75,11 +77,15 @@ const NewWord = () => {
     setIsLargeImgPreviewOpen(true);
   };
 
+  const reopenFileSelector = () => {
+    document.getElementById('hiddenFileInput').click();
+  };
+
   return (
     <div className="word-page">
       {/* Header */}
       <div className="new-word-header">
-        <BackButton />
+        <BackButton url={'/muokkaapolkua/' + pathId} />
         <h2>Uusi sana</h2>
       </div>
 
@@ -110,7 +116,10 @@ const NewWord = () => {
           <div className="img-upload-container">
             <label>Lataa kuva</label>
             <div className="img-upload-button-container">
-              <ImageUploader setImageData={handleImageSelection} />
+              <ImageUploader
+                setImageData={handleImageSelection}
+                setImageSource={setImageSource}
+              />
               <button
                 className="img-upload-button"
                 onClick={() => setIsPapunetOpen(true)}
@@ -129,7 +138,10 @@ const NewWord = () => {
 
         {/* Action Buttons */}
         <div className="confirm-button-container">
-          <button className="nw-cancel-button" onClick={() => navigate(-1)}>
+          <button
+            className="nw-cancel-button"
+            onClick={() => navigate('/muokkaapolkua/' + pathId)}
+          >
             PERUUTA
           </button>
           <button className="nw-save-button" onClick={handleSave}>
@@ -139,7 +151,11 @@ const NewWord = () => {
       </div>
 
       {/* Modal for PapunetView */}
-      <Modal isOpen={isPapunetOpen} onClose={() => setIsPapunetOpen(false)}>
+      <Modal
+        isOpen={isPapunetOpen}
+        modalType="papunet"
+        onClose={() => setIsPapunetOpen(false)}
+      >
         <PapunetView
           onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
@@ -163,8 +179,12 @@ const NewWord = () => {
       <Modal isOpen={isCropping} modalType="image-cropper">
         {imageData && (
           <ImageCropper
-            imageSrc={imageData?.src}
+            key={imageData.src}
+            imageSrc={imageData.src}
             onCroppedImage={handleImageCrop}
+            onBack={() => setIsCropping(false)}
+            imageSource={imageSource}
+            reopenFileSelector={reopenFileSelector}
           />
         )}
       </Modal>

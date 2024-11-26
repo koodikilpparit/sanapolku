@@ -5,6 +5,7 @@ import Phase2 from './Phase2';
 describe('Phase2 Component', () => {
   const mockHandleSubmit = jest.fn();
   const mockSetPlayerInput = jest.fn();
+  const mockHandleContinueOnWrongAnswer = jest.fn();
   const mockCurrentWord = {
     imageData: { src: 'test-image-src' },
     word: 'test',
@@ -24,6 +25,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -42,6 +47,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -62,6 +71,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={setPlayerInputMock}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -86,6 +99,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', '', '', '']}
         setPlayerInput={setPlayerInputMock}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -105,6 +122,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={mockPlayerInput}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -120,6 +141,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', 'E', 'S', 'T']}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -135,6 +160,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', 'E', 'S', 'T']}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -151,6 +180,10 @@ describe('Phase2 Component', () => {
         handleSubmit={mockHandleSubmit}
         playerInput={['T', 'E', 'S', 'T']}
         setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -158,5 +191,88 @@ describe('Phase2 Component', () => {
     fireEvent.click(submitButton);
 
     expect(mockHandleSubmit).toHaveBeenCalledWith('TEST');
+  });
+
+  it('checks that continue button renders on wrong input', async () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[3]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    expect(screen.getByText('JATKA')).toBeInTheDocument;
+  });
+
+  test('checks that pressing enter can be used to continue game after wrong input', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  test('checks that continue button can be used to continue game after wrong input', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.click(screen.getByText('JATKA'));
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  test('checks that player input is not updated when inputDisabled is true', () => {
+    render(
+      <Phase2
+        currentWord={mockCurrentWord}
+        shuffledWord={mockShuffledWord}
+        handleSubmit={mockHandleSubmit}
+        playerInput={['T', 'E', 'S', 'X']}
+        setPlayerInput={mockSetPlayerInput}
+        incorrectIndices={[]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    const shuffledLetters = screen.getAllByTestId('shuffled-letter');
+    const inputBoxes = screen.getAllByTestId('input-box');
+
+    // Click on a shuffled letter and input box
+    fireEvent.click(shuffledLetters[0]);
+    fireEvent.click(inputBoxes[0]);
+
+    // Ensure that setPlayerInput is only called once in the beginning
+    // of phase 2 but not through the clicks
+    expect(mockSetPlayerInput).toHaveBeenCalledTimes(1);
   });
 });

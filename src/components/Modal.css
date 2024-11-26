@@ -45,6 +45,11 @@
   max-height: none;
 }
 
+.modal-overlay[data-modal-type='papunet'] .modal-content {
+  width: 95vw;
+  height: 95vh;
+}
+
 @media (max-width: 767px) and (max-height: 270px) {
   .modal-overlay[data-modal-type='image-cropper'] .modal-content {
     top: 70%;
