@@ -73,8 +73,8 @@ describe('ManagePath Component UI Tests', () => {
     expect(backButton).toBeInTheDocument();
     fireEvent.click(backButton);
 
-    // Check if navigate was called with -1 (go back to previous page)
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    // Check if navigate was called with correct url
+    expect(mockNavigate).toHaveBeenCalledWith('/omatpolut');
     expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 

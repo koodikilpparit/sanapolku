@@ -59,8 +59,8 @@ describe('PathSelection Component UI Tests', () => {
     expect(backButton).toBeInTheDocument();
     fireEvent.click(backButton);
 
-    // Check if navigate was called with -1 (go back to previous page)
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    // Check if navigate was called with the correct url
+    expect(mockNavigate).toHaveBeenCalledWith('/polut');
   });
 
   it('should open the new path modal when clicking the add path button', () => {

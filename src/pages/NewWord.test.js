@@ -125,8 +125,8 @@ describe('NewWord Component UI Tests', () => {
     expect(cancelButton).toBeInTheDocument();
     fireEvent.click(cancelButton);
 
-    // Check if navigate was called with -1 (go back to previous page)
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    // Check if navigate was called with correct url
+    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/NaN');
   });
 
   it('checks if back button navigates back to the previous page', () => {
@@ -142,8 +142,8 @@ describe('NewWord Component UI Tests', () => {
     expect(backButton).toBeInTheDocument();
     fireEvent.click(backButton);
 
-    // Check if navigate was called with -1 (go back to previous page)
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    // Check if navigate was called with correct url
+    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/NaN');
   });
 
   it('should open the Papunet modal when "Papunetistä" button is clicked', () => {

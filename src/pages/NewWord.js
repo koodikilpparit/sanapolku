@@ -138,7 +138,10 @@ const NewWord = () => {
 
         {/* Action Buttons */}
         <div className="confirm-button-container">
-          <button className="nw-cancel-button" onClick={() => navigate(-1)}>
+          <button
+            className="nw-cancel-button"
+            onClick={() => navigate('/muokkaapolkua/' + pathId)}
+          >
             PERUUTA
           </button>
           <button className="nw-save-button" onClick={handleSave}>
