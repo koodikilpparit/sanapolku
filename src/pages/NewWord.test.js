@@ -3,10 +3,16 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import NewWord from './NewWord';
 import ManagePath from './ManagePath';
+import * as db from '../db/db';
+
+if (typeof global.structuredClone === 'undefined') {
+  global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
+}
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
+  useParams: jest.fn(),
 }));
 
 // Mock the ImageUploader component to simulate an image
@@ -61,10 +67,22 @@ jest.mock('../components/newWord/ImageCropper', () => {
 
 describe('NewWord Component UI Tests', () => {
   const mockNavigate = jest.fn();
+  let pathId;
 
-  beforeEach(() => {
+  // Utility function to set up the test DB
+  const initializeTestDB = async () => {
+    await db.resetDB();
+    return await db.addPath('testPath');
+  };
+
+  beforeEach(async () => {
+    pathId = await initializeTestDB();
+
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+    require('react-router-dom').useParams.mockReturnValue({
+      pathId: pathId,
+    });
   });
 
   it('should render the NewWord component and display "Uusi sana"', () => {
@@ -126,7 +144,7 @@ describe('NewWord Component UI Tests', () => {
     fireEvent.click(cancelButton);
 
     // Check if navigate was called with correct url
-    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/NaN');
+    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/' + pathId);
   });
 
   it('checks if back button navigates back to the previous page', () => {
@@ -143,7 +161,7 @@ describe('NewWord Component UI Tests', () => {
     fireEvent.click(backButton);
 
     // Check if navigate was called with correct url
-    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/NaN');
+    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/' + pathId);
   });
 
   it('should open the Papunet modal when "Papunetistä" button is clicked', () => {
