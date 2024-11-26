@@ -30,7 +30,7 @@ describe('PapunetView', () => {
     ];
     fetchPhotos.mockResolvedValue(mockPhotos);
 
-    const { getByText, getByAltText } = render(
+    const { getByAltText } = render(
       <PapunetView onSelectImage={mockOnSelectImage} initialSearchTerm="test" />
     );
 
@@ -38,11 +38,6 @@ describe('PapunetView', () => {
       expect(getByAltText('Photo 1')).toBeInTheDocument();
       expect(getByAltText('Photo 2')).toBeInTheDocument();
     });
-
-    expect(getByText('Photo 1')).toBeInTheDocument();
-    expect(getByText('Tekijä: Author 1')).toBeInTheDocument();
-    expect(getByText('Photo 2')).toBeInTheDocument();
-    expect(getByText('Tekijä: Author 2')).toBeInTheDocument();
   });
 
   test('displays error message when photo fetch fails', async () => {

@@ -8,6 +8,12 @@ const Phase2 = ({
   handleSubmit,
   playerInput,
   setPlayerInput,
+  incorrectIndices,
+  inputDisabled,
+  showContinueButton,
+  handleContinueOnWrongAnswer,
+  showSkipButton,
+  handleSkip,
 }) => {
   const [shuffledLetters, setShuffledLetters] = useState([]);
   const [selectedLetter, setSelectedLetter] = useState(null);
@@ -31,6 +37,7 @@ const Phase2 = ({
   const isReadyButtonDisabled = playerInput.includes('');
 
   const handleLetterClick = (event, letter, index) => {
+    if (inputDisabled) return;
     event.stopPropagation();
     if (!shuffledLetters[index].isUsed) {
       if (selectedLetter && selectedLetter.index === index) {
@@ -42,6 +49,7 @@ const Phase2 = ({
   };
 
   const handleInputClick = (event, index) => {
+    if (inputDisabled) return;
     event.stopPropagation();
     const newPlayerInput = [...playerInput];
     const newShuffledLetters = [...shuffledLetters];
@@ -88,8 +96,12 @@ const Phase2 = ({
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isReadyButtonDisabled) {
-        handleSubmit(playerInput.join(''));
+      if (event.key === 'Enter') {
+        if (showContinueButton) {
+          handleContinueOnWrongAnswer();
+        } else if (!isReadyButtonDisabled) {
+          handleSubmit(playerInput.join(''));
+        }
       }
     };
 
@@ -97,7 +109,13 @@ const Phase2 = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isReadyButtonDisabled, handleSubmit, playerInput]);
+  }, [
+    isReadyButtonDisabled,
+    handleSubmit,
+    playerInput,
+    handleContinueOnWrongAnswer,
+    showContinueButton,
+  ]);
 
   const displayShuffledLetters = () => {
     const unusedLetters = shuffledLetters.filter((item) => !item.isUsed);
@@ -120,11 +138,13 @@ const Phase2 = ({
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
         Järjestä kirjaimet
       </h1>
-      <div className="flex flex-col sm:flex-row h-full">
+      <div className="flex flex-col sm:flex-row md:flex-row md-minh-1000:flex-col md-minh-1000:items-center lg:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
           <ImageContainer
             src={currentWord.imageData.src}
             alt={`Kuva sanasta ${currentWord.word}`}
+            className=""
+            author={currentWord.imageData.author}
           />
         </div>
         <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 flex flex-col justify-between">
@@ -135,10 +155,12 @@ const Phase2 = ({
                   key={index}
                   onClick={(event) => handleInputClick(event, index)}
                   className={`w-full aspect-square rounded-lg font-bold text-center uppercase text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl ${
-                    letter !== ''
-                      ? 'bg-sp-white text-sp-black'
-                      : 'bg-sp-gray text-sp-black opacity-50'
-                  } p-1 flex items-center justify-center cursor-pointer border-2 border-sp-white`}
+                    incorrectIndices.includes(index)
+                      ? 'bg-[#F28C8C] border-4 border-[#E31130]'
+                      : letter !== ''
+                        ? 'bg-sp-white text-sp-black'
+                        : 'bg-sp-gray text-sp-black opacity-50 border-2 border-sp-white'
+                  } p-1 flex items-center justify-center cursor-pointer`}
                   data-testid="input-box"
                 >
                   {letter}
@@ -150,7 +172,7 @@ const Phase2 = ({
                 <div
                   key={index}
                   onClick={
-                    item.isBlank
+                    inputDisabled || item.isBlank
                       ? undefined
                       : (event) =>
                           handleLetterClick(event, item.letter, item.id)
@@ -172,17 +194,39 @@ const Phase2 = ({
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-4">
-            <button
-              className={`btn-sp-primary w-full sm:w-1/2 ${
-                isReadyButtonDisabled
-                  ? 'bg-sp-gray cursor-not-allowed'
-                  : 'bg-sp-light-green cursor-pointer'
-              }`}
-              onClick={() => handleSubmit(playerInput.join(''))}
-              disabled={isReadyButtonDisabled}
-            >
-              VALMIS
-            </button>
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                OHITA
+              </button>
+            )}
+            {showContinueButton ? (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
+                onClick={handleContinueOnWrongAnswer}
+              >
+                JATKA
+              </button>
+            ) : (
+              <button
+                className={`btn-sp-primary w-full sm:w-1/2 ${
+                  isReadyButtonDisabled
+                    ? 'bg-sp-gray cursor-not-allowed'
+                    : 'bg-sp-light-green cursor-pointer'
+                }`}
+                onClick={() => handleSubmit(playerInput.join(''))}
+                disabled={isReadyButtonDisabled}
+              >
+                VALMIS
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -199,6 +243,12 @@ Phase2.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   playerInput: PropTypes.array.isRequired,
   setPlayerInput: PropTypes.func.isRequired,
+  incorrectIndices: PropTypes.array,
+  inputDisabled: PropTypes.bool,
+  showContinueButton: PropTypes.bool,
+  handleContinueOnWrongAnswer: PropTypes.func,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default Phase2;

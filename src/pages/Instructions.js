@@ -1,20 +1,13 @@
 import React from 'react';
-import BackButton from '../components/universal/BackButton';
 import InstructionsStep from '../components/instructions/InstructionsStep';
 import '../styles/Instructions.css';
+import Header from '../components/universal/Header';
 
 function Instructions() {
   return (
     <div className="instructions-page">
-      <div className="ins-top-bar">
-        <BackButton className="ins-back-button" />
-      </div>
-
+      <Header title="Pelin ohjeet" backButtonUrl={'/'} />
       <div className="ins-center-area">
-        <header className="ins-header">
-          <h2>Pelin ohjeet</h2>
-        </header>
-
         <section className="instructions-intro">
           <p>
             Pelissä edetään polulla, jossa tulee eteen kuvia. Tavoitteena on

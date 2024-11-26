@@ -84,7 +84,7 @@ const ReceivePathModal = ({ onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content text-sp-black">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl py-2">
+        <h2 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
           Polun vastaanottaminen
         </h2>
         {isReceiveStarted ? (
@@ -102,7 +102,7 @@ const ReceivePathModal = ({ onClose }) => {
                 {isScanning && <QrScannerComponent onSuccess={handleQRScan} />}
                 <div className="py-2 flex flex-row w-full justify-between gap-2">
                   <input
-                    className="border-2 border-sp-black rounded-lg p-2 w-3/5"
+                    className="border-2 border-sp-black rounded-lg p-2 w-3/5 text-xs sm:text-sm md:text-md lg:text-lg"
                     type="text"
                     value={targetPeerIDInput}
                     placeholder="Lähettäjän tunniste"
@@ -119,7 +119,10 @@ const ReceivePathModal = ({ onClose }) => {
             )}
           </div>
         )}
-        <button className="save-button" onClick={closeReceivePathModal}>
+        <button
+          className="btn-sp-primary bg-sp-dark-green w-full"
+          onClick={closeReceivePathModal}
+        >
           Palaa takaisin
         </button>
       </div>

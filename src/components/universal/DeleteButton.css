@@ -9,6 +9,7 @@
 
 .delete-icon {
   font-size: var(--sp-icon-size-small);
+  color: var(--Dark-Blue, #293642);
   transition: color 0.3s ease;
 }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import BackButton from '../components/universal/BackButton';
 import '../styles/Settings.css';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { resetDB } from '../db/db';
+import Header from '../components/universal/Header';
 
 /**
  * Settings component renders the settings page of the application.
@@ -45,11 +45,7 @@ const Settings = () => {
 
   return (
     <div className="settings-container">
-      <header className="settings-header">
-        <BackButton />
-        <h2> Asetukset </h2>
-      </header>
-
+      <Header title="Asetukset" backButtonUrl={'/'} />
       <div className="settings">
         <div className="setting-item">
           <label htmlFor="sounds-checkbox">Äänet</label>
@@ -112,6 +108,23 @@ const Settings = () => {
             <p>
               Anni Nieminen, Eveliina Sundberg, Neera Kiviluoma, Tuuli Järvimaa,
               Juho Rantala, Onni Salomaa, Risto &quot;Reine&quot; Majakangas
+            </p>
+          </div>
+          <div className="soft-box">
+            <h2>Lisenssi:</h2>
+            <p>
+              Tämä sovellus on avoimen lähdekoodin ohjelmisto ja lisensoitu
+              AGPL-3.0-lisenssillä. Voit käyttää, muokata ja jakaa ohjelmaa
+              lisenssiehtojen mukaisesti.{' '}
+              <a
+                href="https://github.com/koodikilpparit/sanapolku"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'underline' }}
+              >
+                Lähdekoodi saatavilla
+              </a>
+              .
             </p>
           </div>
         </div>

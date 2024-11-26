@@ -15,6 +15,7 @@ describe('Phase1 Component', () => {
   };
   const mockHandleSubmit = jest.fn();
   const mockHandleInputChange = jest.fn();
+  const mockHandleContinueOnWrongAnswer = jest.fn();
   const mockInputRefs = createRef();
   mockInputRefs.current = [];
 
@@ -33,6 +34,10 @@ describe('Phase1 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -50,6 +55,10 @@ describe('Phase1 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -66,6 +75,10 @@ describe('Phase1 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -85,6 +98,10 @@ describe('Phase1 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -99,6 +116,10 @@ describe('Phase1 Component', () => {
         handleInputChange={mockHandleInputChange}
         playerInput={['A', 'P', 'P', 'L', 'E']}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
@@ -115,10 +136,91 @@ describe('Phase1 Component', () => {
         handleInputChange={mockHandleInputChange}
         handleSubmit={mockHandleSubmit}
         inputRefs={mockInputRefs}
+        incorrectIndices={[]}
+        inputDisabled={false}
+        showContinueButton={false}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
       />
     );
 
     fireEvent.keyDown(window, { key: 'Enter' });
     expect(mockHandleSubmit).toHaveBeenCalled();
+  });
+
+  it('checks that continue button renders on wrong input', async () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    expect(screen.getByText('JATKA')).toBeInTheDocument;
+  });
+
+  it('checks that pressing enter can be used to continue game after wrong input', () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  it('checks that continue button can be used to continue game after wrong input', () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    fireEvent.click(screen.getByText('JATKA'));
+    expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
+  });
+
+  it('checks that input fields are disabled when inputDisabled is true', () => {
+    render(
+      <Phase1
+        currentWord={mockWord}
+        playerInput={['A', 'P', 'P', 'L', 'X']}
+        handleInputChange={mockHandleInputChange}
+        handleSubmit={mockHandleSubmit}
+        inputRefs={mockInputRefs}
+        incorrectIndices={[4]}
+        inputDisabled={true}
+        showContinueButton={true}
+        handleContinueOnWrongAnswer={mockHandleContinueOnWrongAnswer}
+      />
+    );
+
+    const letterInputs = screen.getAllByRole('textbox');
+    letterInputs.forEach((input) => {
+      expect(input).toBeDisabled();
+    });
   });
 });

@@ -19,9 +19,9 @@ export async function initializePeer() {
 
 export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
   return new Promise((resolve, reject) => {
-    if (!peer) reject('Peer not initialized');
-    if (!targetPeerId) reject('Target peer ID not set');
-    if (!callback) reject('Callback not set');
+    if (!peer) reject(new Error('Peer not initialized'));
+    if (!targetPeerId) reject(new Error('Target peer ID not set'));
+    if (!callback) reject(new Error('Callback not set'));
 
     const connection = peer.connect(targetPeerId, {
       reliable: true,
@@ -46,7 +46,7 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
   });
 }
 
-export function sendDataOnConnection(peer, data) {
+export async function sendDataOnConnection(peer, data) {
   if (!peer) throw new Error('Peer not initialized');
   if (!data) throw new Error('Must contain data to send');
 

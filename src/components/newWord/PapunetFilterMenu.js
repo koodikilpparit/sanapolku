@@ -19,11 +19,6 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
     }
   };
 
-  // Toggle the checkbox when clicking the filter option div
-  const handleFilterOptionClick = (filterKey) => {
-    handleCheckboxChange(filterKey);
-  };
-
   const handleUnselectAll = () => {
     onFilterChange([]);
   };
@@ -47,24 +42,20 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
 
           <div className="filter-options-container">
             {Object.entries(filters).map(([key, label]) => (
-              <div
-                key={key}
-                className="filter-option"
-                onClick={() => handleFilterOptionClick(key)}
-              >
+              <label key={key} htmlFor={key} className="filter-option">
                 <input
                   type="checkbox"
                   id={key}
                   checked={selectedFilters.includes(key)}
                   onChange={() => handleCheckboxChange(key)}
                 />
-                <label htmlFor={key}>{label}</label>
+                <span className="filter-label">{label}</span>
                 <img
                   src={public_url + `/papunet-img-types/${key}.png`}
                   alt={label}
                   className="filter-icon"
                 />
-              </div>
+              </label>
             ))}
           </div>
         </div>

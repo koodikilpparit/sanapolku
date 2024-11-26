@@ -2,9 +2,8 @@ import { React, act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import PathSelection from '../../pages/PathSelection';
 import { addPath, addWord, resetDB } from '../../db/db';
-import { PathProvider } from '../pathSelection/PathContext';
+import { useNavigate } from 'react-router-dom';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -13,6 +12,16 @@ if (typeof global.structuredClone === 'undefined') {
 afterAll(() => {
   jest.clearAllMocks();
 });
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
+
+jest.mock('../../components/game/SuccessIndicator', () => ({
+  __esModule: true,
+  default: () => <div data-testid="success-indicator" />,
+}));
 
 describe('GameEngine Component with IndexedDB', () => {
   const mockWords = Array.from({ length: 15 }, (_, index) => ({
@@ -163,6 +172,7 @@ describe('GameEngine Component with IndexedDB', () => {
     fireEvent.click(screen.getByText('VALMIS'));
 
     // Check if it moves to the second phase (letter shuffling)
+    fireEvent.click(screen.getByText('JATKA'));
     await waitFor(() =>
       expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
     );
@@ -199,11 +209,15 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
+
+      if (i === 4) {
+        fireEvent.click(screen.getByText('JATKA'));
+      }
     }
 
-    // Check if the game over message is displayed
+    // Check if the game ending page renders
     await waitFor(() => {
-      expect(screen.getByText('Peli ohi!')).toBeInTheDocument();
+      expect(screen.getByText('Onnittelut!')).toBeInTheDocument();
     });
 
     jest.useRealTimers();
@@ -302,6 +316,10 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
+
+      if (i === 4) {
+        fireEvent.click(screen.getByText('JATKA'));
+      }
     }
 
     const progressBar = screen.getByTestId('progress-bar');
@@ -351,14 +369,51 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useRealTimers();
   });
 
-  it('checks that the back-button brings you to /omatpolut', () => {
+  it('checks that break view is rendered when progress is 5 words', async () => {
+    jest.useFakeTimers();
+
+    render(
+      <MemoryRouter>
+        <GameEngine pathId={String(pathId)} />
+      </MemoryRouter>
+    );
+
+    // Wait that game begins
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    for (let i = 0; i < 5; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
+      });
+      fireEvent.click(screen.getByText('VALMIS'));
+
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+    }
+
+    const breakHeader = screen.getByText('Hienoa!');
+    expect(breakHeader).toBeInTheDocument;
+  });
+
+  it('checks that the back-button brings you back one page', () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
         <GameEngine pathId={String(pathId)} />
-        <PathProvider>
-          <PathSelection />
-        </PathProvider>
       </BrowserRouter>
     );
 
@@ -367,6 +422,6 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(backButton).toBeInTheDocument();
 
     fireEvent.click(backButton);
-    expect(screen.getByText('Polut')).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith('/polut');
   });
 });
