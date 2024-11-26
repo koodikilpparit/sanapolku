@@ -70,6 +70,10 @@ const ManagePath = () => {
     setWordToDelete(null);
   };
 
+  const EditWord = (wordEntry) => {
+    navigate(`/uusisana/${wordEntry.pathId}`, { state: { wordEntry } });
+  };
+
   return (
     <div className="manage-page">
       {/* Header */}
@@ -91,6 +95,7 @@ const ManagePath = () => {
                 word={wordEntry.word}
                 imgSrc={wordEntry.imageData.src}
                 onDelete={() => openDeleteWordModal(wordEntry.id)} // Open the delete modal
+                onEdit={() => EditWord(wordEntry)}
               />
             ))
           ) : (

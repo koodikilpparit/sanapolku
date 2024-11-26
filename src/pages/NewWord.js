@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { addWord } from '../db/db';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { addWord, deleteWord } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/newWord/ImageUploader';
@@ -14,6 +14,7 @@ import ImagePreview from '../components/ImagePreview';
 const NewWord = () => {
   const navigate = useNavigate();
   const pathId = Number(useParams().pathId);
+  const loadedWord = useLocation().state?.wordEntry;
   const [newWord, setNewWord] = useState('');
   const [imageData, setImageData] = useState(null);
   const [previewImage, setPreviewImage] = useState(
@@ -33,11 +34,27 @@ const NewWord = () => {
 
   const maxWordLength = 15;
 
+  // Set initial values if a word is provided as a status. This happens when editing a word
+  useEffect(() => {
+    if (loadedWord) {
+      setNewWord(loadedWord.word || '');
+      setImageData(loadedWord.imageData || null);
+      setPreviewImage(
+        loadedWord.imageData?.src || 'https://placehold.co/150x150'
+      );
+    }
+  }, [loadedWord]);
+
   // Save the word and placeholder image to the database
   const handleSave = () => {
     if (!newWord.trim()) {
       alert('Syötä sana');
       return;
+    }
+
+    // If the word is being edited, delete the old word first
+    if (loadedWord) {
+      deleteWord(loadedWord.id);
     }
 
     const imageDataToSave = imageData || placeholderImage;
