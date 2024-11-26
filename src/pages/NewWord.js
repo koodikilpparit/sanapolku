@@ -85,7 +85,7 @@ const NewWord = () => {
     <div className="word-page">
       {/* Header */}
       <div className="new-word-header">
-        <BackButton />
+        <BackButton url={'/muokkaapolkua/' + pathId} />
         <h2>Uusi sana</h2>
       </div>
 

@@ -199,7 +199,7 @@ const GameEngine = ({ pathId }) => {
   return (
     <div className="flex flex-col  h-screen p-2 pb-10 sm:p-2 md:p-4">
       <div className="top-bar">
-        <BackButton />
+        <BackButton url="/polut" />
         <div className="progress-bar-container">
           <ProgressBar progress={progress} />
         </div>

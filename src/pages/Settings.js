@@ -45,7 +45,7 @@ const Settings = () => {
 
   return (
     <div className="settings-container">
-      <Header title="Asetukset" />
+      <Header title="Asetukset" backButtonUrl={'/'} />
       <div className="settings">
         <div className="setting-item">
           <label htmlFor="sounds-checkbox">Äänet</label>
