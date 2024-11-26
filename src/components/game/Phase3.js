@@ -111,26 +111,25 @@ const Phase3 = ({
           </div>
 
           <div className="flex items-end justify-between py-2 px-2">
-            <button
-              className="btn-sp-secondary w-full sm:w-1/4 bg-sp-blue cursor-pointer"
-              onClick={() => inputRefs.current[0]?.focus()}
-            >
-              <FontAwesomeIcon icon={faKeyboard} className="keyboard" />
-            </button>
             {showSkipButton && (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
                 style={{
                   backgroundColor: '#F0D784',
                   color: '#013326',
-                  marginRight: '20px',
-                  marginLeft: '20px',
                 }}
                 onClick={handleSkip}
               >
                 OHITA
               </button>
             )}
+            <button
+              className="btn-sp-secondary w-full sm:w-1/4 bg-sp-blue cursor-pointer"
+              style={{ marginRight: '3%', marginLeft: '3%' }}
+              onClick={() => inputRefs.current[0]?.focus()}
+            >
+              <FontAwesomeIcon icon={faKeyboard} className="keyboard" />
+            </button>
             {showContinueButton ? (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
