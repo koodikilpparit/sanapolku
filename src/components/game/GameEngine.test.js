@@ -2,7 +2,6 @@ import { React, act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import GameEndingPage from './GameEndingPage';
 import { addPath, addWord, resetDB } from '../../db/db';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +16,11 @@ afterAll(() => {
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
+}));
+
+jest.mock('../../components/game/SuccessIndicator', () => ({
+  __esModule: true,
+  default: () => <div data-testid="success-indicator" />,
 }));
 
 describe('GameEngine Component with IndexedDB', () => {
@@ -204,6 +208,10 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
+
+      if (i === 4) {
+        fireEvent.click(screen.getByText('JATKA'));
+      }
     }
 
     // Check if the game ending page renders
@@ -307,6 +315,10 @@ describe('GameEngine Component with IndexedDB', () => {
       act(() => {
         jest.advanceTimersByTime(2500);
       });
+
+      if (i === 4) {
+        fireEvent.click(screen.getByText('JATKA'));
+      }
     }
 
     const progressBar = screen.getByTestId('progress-bar');
@@ -356,21 +368,41 @@ describe('GameEngine Component with IndexedDB', () => {
     jest.useRealTimers();
   });
 
-  it('Check that restart button can be used to restart game', async () => {
-    const mockNavigate = jest.fn();
-    useNavigate.mockReturnValue(mockNavigate);
-
+  it('checks that break view is rendered when progress is 5 words', async () => {
     jest.useFakeTimers();
 
     render(
       <MemoryRouter>
         <GameEngine pathId={String(pathId)} />
-        <GameEndingPage />
       </MemoryRouter>
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Restart Game/i }));
-    expect(mockNavigate).toHaveBeenCalledWith(0);
+    // Wait that game begins
+    await waitFor(() => screen.getByText('Kirjoita sana'));
+
+    for (let i = 0; i < 5; i++) {
+      // Wait for the word and its image to be displayed
+      const image = await screen.findByRole('img');
+      const imageSrc = image.getAttribute('src');
+
+      // Use the first image's src to figure out what is correct word
+      const correctWord = imageSrc.replace('.jpg', '');
+
+      // Enter the correct word for the first phase
+      correctWord.split('').forEach((letter, index) => {
+        fireEvent.change(screen.getAllByRole('textbox')[index], {
+          target: { value: letter },
+        });
+      });
+      fireEvent.click(screen.getByText('VALMIS'));
+
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+    }
+
+    const breakHeader = screen.getByText('Hienoa!');
+    expect(breakHeader).toBeInTheDocument;
   });
 
   it('checks that the back-button brings you back one page', () => {

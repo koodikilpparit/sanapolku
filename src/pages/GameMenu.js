@@ -1,38 +1,44 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/GameMenu.css';
-import BackButton from '../components/universal/BackButton';
+import Header from '../components/universal/Header';
 
 function GameMenu() {
   const navigate = useNavigate();
 
   return (
-    <div className="game-menu-container">
+    <div className="game-menu-page">
       {/* Header */}
-      <div className="header">
-        <BackButton className="gm-back-button" />
-        <h2 className="title">Valitse polku</h2>
-      </div>
+      <Header title="Valitse polku" />
 
       {/* Buttons for paths */}
-      <div className="button-container">
-        <button
-          className="path-button"
-          onClick={() => navigate('/peli/aikuistenpolku')}
-        >
-          Aikuisten polku
-        </button>
+      <div className="button-list">
+        <div className="button-item-container">
+          <button
+            className="path-button"
+            onClick={() => navigate('/peli/aikuistenpolku')}
+          >
+            Aikuisten polku
+          </button>
+        </div>
 
-        <button
-          className="path-button"
-          onClick={() => navigate('/peli/lastenpolku')}
-        >
-          Lasten polku
-        </button>
+        <div className="button-item-container">
+          <button
+            className="path-button"
+            onClick={() => navigate('/peli/lastenpolku')}
+          >
+            Lasten polku
+          </button>
+        </div>
 
-        <button className="path-button" onClick={() => navigate('/omatpolut')}>
-          Omat polut
-        </button>
+        <div className="button-item-container">
+          <button
+            className="path-button"
+            onClick={() => navigate('/omatpolut')}
+          >
+            Omat polut
+          </button>
+        </div>
       </div>
     </div>
   );

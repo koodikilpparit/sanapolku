@@ -106,4 +106,17 @@ describe('GameEndingPage Component', () => {
     fireEvent.click(readyButton);
     expect(mockNavigate).toHaveBeenCalledWith('/polut');
   });
+
+  it('checks that restart button can be used to restart game', async () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+    render(
+      <BrowserRouter>
+        <GameEndingPage />
+      </BrowserRouter>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /Restart Game/i }));
+    expect(mockNavigate).toHaveBeenCalledWith(0);
+  });
 });
