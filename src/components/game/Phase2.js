@@ -154,7 +154,7 @@ const Phase2 = ({
                 <div
                   key={index}
                   onClick={(event) => handleInputClick(event, index)}
-                  className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl ${
+                  className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl ${
                     incorrectIndices.includes(index)
                       ? 'bg-[#F28C8C] border-4 border-[#E31130]'
                       : letter !== ''
