@@ -88,14 +88,16 @@ const ReceivePathModal = ({ onClose }) => {
           Polun vastaanottaminen
         </h2>
         {isReceiveStarted ? (
-          <label>Yhdistetään...</label>
+          <label className="text-sp-black text-sm smd:text-md md:text-lg lg:text-xl pb-2">
+            Yhdistetään...
+          </label>
         ) : (
           <div>
             {receiveSucceeded ? (
               <label className="text-sp-black">Polun jakaminen onnistui!</label>
             ) : (
               <div className="flex flex-col items-center justify-center">
-                <p className="text-md md:text-lg lg:text-xl pb-2">
+                <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
                   Lue lähettäjän QR-koodi. Jos kamera ei ole käytettävissä,
                   polun jakaminen onnistuu lähettäjän tunnisteen avulla.
                 </p>
