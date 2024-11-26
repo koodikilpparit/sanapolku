@@ -154,12 +154,12 @@ const Phase2 = ({
                 <div
                   key={index}
                   onClick={(event) => handleInputClick(event, index)}
-                  className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl ${
+                  className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl border-2 ${
                     incorrectIndices.includes(index)
                       ? 'bg-[#F28C8C] border-4 border-[#E31130]'
                       : letter !== ''
                         ? 'bg-sp-white text-sp-black'
-                        : 'bg-sp-gray text-sp-black opacity-50 border-2 border-sp-white'
+                        : 'bg-sp-gray text-sp-black opacity-50 border-sp-white'
                   } flex`}
                   data-testid="input-box"
                 >
