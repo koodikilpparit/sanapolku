@@ -151,7 +151,11 @@ const NewWord = () => {
       </div>
 
       {/* Modal for PapunetView */}
-      <Modal isOpen={isPapunetOpen} onClose={() => setIsPapunetOpen(false)}>
+      <Modal
+        isOpen={isPapunetOpen}
+        modalType="papunet"
+        onClose={() => setIsPapunetOpen(false)}
+      >
         <PapunetView
           onSelectImage={handleImageSelection}
           initialSearchTerm={newWord}
