@@ -8,6 +8,8 @@ const Phase2 = ({
   handleSubmit,
   playerInput,
   setPlayerInput,
+  showSkipButton,
+  handleSkip,
 }) => {
   const [shuffledLetters, setShuffledLetters] = useState([]);
   const [selectedLetter, setSelectedLetter] = useState(null);
@@ -120,7 +122,7 @@ const Phase2 = ({
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
         Järjestä kirjaimet
       </h1>
-      <div className="flex flex-col sm:flex-row h-full">
+      <div className="flex flex-col sm:flex-row md:flex-row md-minh-1000:flex-col md-minh-1000:items-center lg:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
           <ImageContainer
             src={currentWord.imageData.src}
@@ -174,6 +176,19 @@ const Phase2 = ({
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-4">
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                OHITA
+              </button>
+            )}
             <button
               className={`btn-sp-primary w-full sm:w-1/2 ${
                 isReadyButtonDisabled
@@ -201,6 +216,8 @@ Phase2.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   playerInput: PropTypes.array.isRequired,
   setPlayerInput: PropTypes.func.isRequired,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default Phase2;
