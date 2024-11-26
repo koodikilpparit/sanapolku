@@ -135,7 +135,8 @@ label {
 }
 
 .image-preview img {  
-  height: 100%;   
+  height: 150px;
+  width: 150px;   
 }
 
 .confirm-button-container {
