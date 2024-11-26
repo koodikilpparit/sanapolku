@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../styles/NewWord.css';
 import { faTabletScreenButton } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Component that allows uploading images
-const ImageUploader = ({ setImageData }) => {
-  const handleFileUpload = async (event) => {
+const ImageUploader = ({ setImageData, setImageSource }) => {
+  const [imageKey, setImageKey] = useState(0);
+
+  const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -20,6 +22,8 @@ const ImageUploader = ({ setImageData }) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       setImageData({ src: e.target.result, author: null });
+      setImageSource('device');
+      setImageKey((prevKey) => prevKey + 1);
     };
     reader.readAsDataURL(file);
   };
@@ -40,6 +44,7 @@ const ImageUploader = ({ setImageData }) => {
         onChange={handleFileUpload}
         style={{ display: 'none' }}
         id="hiddenFileInput"
+        key={imageKey}
       />
     </div>
   );
@@ -47,6 +52,7 @@ const ImageUploader = ({ setImageData }) => {
 
 ImageUploader.propTypes = {
   setImageData: PropTypes.func,
+  setImageSource: PropTypes.func,
 };
 
 export default ImageUploader;
