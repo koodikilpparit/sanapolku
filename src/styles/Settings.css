@@ -15,23 +15,21 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 10px;
   height: 100%;
   overflow: auto;
 }
 
-.settings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding-top: 25px;
-  margin-bottom: 25px;
+.settings-container .header-right {
+  visibility: hidden;
 }
 
-.settings-header h2 {
-  flex-grow: 1;
-  text-align: center;
+.settings-container .edit-button {
+  display: none;
+}
+
+.settings-container .header {
+  padding: 25px 25px;
+  margin-bottom: 0px;
 }
 
 .settings-about-container {

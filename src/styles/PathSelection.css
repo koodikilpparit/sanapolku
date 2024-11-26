@@ -1,29 +1,21 @@
 .paths-page {
   background-color: var(--sp-dark-green);
   height: 100vh;
-  padding: 0 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background-image: 
+    url('../../public/app_background.png');
+  background-repeat: repeat;
+  background-position: center;
 }
 
-.path-selection-header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  padding-top: 25px;
-  margin-bottom: 25px;
+.paths-page .header {
+  padding: 25px 25px;
+  margin-bottom: 0px;
 }
 
-.word-entry-header h2 {
-  font-size: var(--sp-heading-1);
-  font-weight: bold;
-  color: var(--sp-white);
-  margin: 0 auto;
-  text-transform: capitalize;
-}
 .path-list {
   display: flex;
   flex-direction: column;
@@ -31,11 +23,16 @@
   justify-content: flex-start;
   width: 100%;
   max-width: 800px;
-  height: 60vh;
+  max-height: 60vh;
   row-gap: 20px;
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: #06705B;
+}
+
+.paths-page .header .edit-button {
+  display: none;
 }
 
 .path-list::-webkit-scrollbar {
@@ -56,7 +53,7 @@
   border-radius: var(--sp-button-border-radius);
   border: none;
   width: 100%;
-  max-height: 80px;
+  max-height: 60vh;
   transition:
     transform 0.3s ease,
     background-color 0.3s ease,
@@ -64,7 +61,7 @@
 }
 
 .path-item {
-  color: var(--sp-w);
+  color: var(--Dark-Blue, #293642);
   width: 100%;
   height: 100%;
   font-size: var(--sp-heading-2);
@@ -73,6 +70,7 @@
   text-transform: capitalize;
   border-radius: var(--sp-button-border-radius) 0 0
     var(--sp-button-border-radius);
+  cursor: pointer;
 }
 
 .path-item-container:hover {
@@ -84,12 +82,6 @@
   color: var(--sp-white);
   font-size: var(--sp-heading-2);
   font-weight: bold;
-}
-
-.add-path-icon {
-  font-size: var(--sp-icon-size-large);
-  color: var(--sp-white);
-  transition: color 0.3s ease;
 }
 
 .add-path-icon:hover {
@@ -182,27 +174,25 @@
   border-radius: 5px;
 }
 
+/* Style for phones in portrait mode */
 @media (max-width: 767px) {
-  .add-path-icon {
-    font-size: var(--sp-icon-size-small);
-  }
-
   .modal-content {
     margin-bottom: 300px;
-  }
-
-  .path-list {
-    height: 50vh;
-    margin-top: 25px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .add-path-icon {
-    font-size: var(--sp-icon-size-medium);
   }
 
   .path-list {
     height: 60vh;
   }
 }
+
+/* Style for phones in horizontal mode */
+@media (max-height: 450px) {
+  .paths-page {
+    background-image: none;
+  }
+
+  .path-list {
+    height: 60vh;
+  }
+}
+

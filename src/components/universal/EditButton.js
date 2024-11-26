@@ -17,7 +17,7 @@ const EditButton = ({ onClick, color }) => {
 };
 
 EditButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   color: PropTypes.string,
 };
 

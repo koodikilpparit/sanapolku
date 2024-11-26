@@ -78,7 +78,7 @@ describe('ManagePath Component UI Tests', () => {
     expect(screen.getByText('Polut')).toBeInTheDocument();
   });
 
-  it('should allow navigation to add a new word when "LISÄÄ UUSI SANA" is clicked', () => {
+  it('should allow navigation to add a new word when the add word button is clicked', () => {
     render(
       <BrowserRouter>
         <ManagePath />
@@ -86,7 +86,7 @@ describe('ManagePath Component UI Tests', () => {
     );
 
     // Get the add word button and simulate a click
-    const addButton = screen.getByLabelText('Lisää uusi sana');
+    const addButton = screen.getByTestId('add-word-icon');
     fireEvent.click(addButton);
 
     // Check if navigate was called with the correct route
@@ -217,7 +217,8 @@ describe('ManagePath Component UI Tests', () => {
     );
 
     // Simulate adding a word
-    fireEvent.click(screen.getByLabelText('Lisää uusi sana'));
+    const addButton = screen.getByTestId('add-word-icon');
+    fireEvent.click(addButton);
     expect(mockNavigate).toHaveBeenCalledWith(`/uusisana/${pathId}`);
 
     // Mock the navigate function to simulate returning to the ManagePath view
