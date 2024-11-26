@@ -197,7 +197,7 @@ const Phase2 = ({
                 className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
                 onClick={handleContinueOnWrongAnswer}
               >
-                JATKA PELIÄ
+                JATKA
               </button>
             ) : (
               <button
