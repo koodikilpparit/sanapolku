@@ -99,10 +99,10 @@
 
 .return-save-button-container {
   position: fixed;
-  bottom: 5%;
+  bottom: 5vh;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
+  width: 90vw;
   padding: 10px;
   background-color: var(--sp-white);
   display: flex;
@@ -135,10 +135,6 @@
   .photo-fetcher input,
   .search-button {
     width: 100%;
-  }
-
-  .return-save-button-container {
-    bottom: 20%;
   }
 
   .return-save-button-container button {
