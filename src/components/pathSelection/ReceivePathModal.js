@@ -111,7 +111,7 @@ const ReceivePathModal = ({ onClose }) => {
                     onChange={(e) => setTargetPeerIDInput(e.target.value)}
                   />
                   <button
-                    className="border-2 border-sp-black rounded-lg p-2 w-2/5"
+                    className="border-2 border-sp-black rounded-lg p-2 w-2/5 text-xs sm:text-sm md:text-md lg:text-lg"
                     onClick={handleShareClick}
                   >
                     Hae polku
