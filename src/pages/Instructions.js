@@ -13,7 +13,11 @@ function Instructions() {
             Pelissä edetään polulla, jossa tulee eteen kuvia. Tavoitteena on
             ratkaista kuvassa esiintyvä sana ja kirjoittaa se onnistuneesti.
             Pelissä on neljä vaihetta: KUVA, JÄRJESTÄ, KOPIOI ja TOISTA. Kun
-            sana on ratkaistu, niin polulla edetään seuraavaan kuvaan.
+            sana on ratkaistu, niin polulla edetään seuraavaan kuvaan. Sanan
+            mennessä väärin, korostuvat väärät kirjaimet punaisella. Tästä
+            seuraavaan vaiheeseen pääsee painamalla JATKA-nappia. Jos sana
+            tuntuu todella haastavalta eikä se mene oikein, se on ensimmäisten
+            neljän vaiheen jälkeen mahdollista ohittaa OHITA-napista.
           </p>
         </section>
 
@@ -27,7 +31,7 @@ function Instructions() {
         <InstructionsStep
           stepNumber={2}
           title="Vaihe 2 – JÄRJESTÄ"
-          text="Kuvan viereen ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Painamalla VALMIS pääset eteenpäin."
+          text="Kuvan viereen ilmestyy kirjaimia, jotka tulee järjestää oikeaan järjestykseen. Klikkaa ensin kirjainta, jonka haluat siirtää ja sen jälkeen laatikkoa, johon kirjaimen haluat laittaa. Painamalla VALMIS pääset eteenpäin."
           image="/sanapolku/instruction-images/phase2.png"
         />
 
