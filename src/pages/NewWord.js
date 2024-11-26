@@ -96,21 +96,23 @@ const NewWord = () => {
           {/* Upload image */}
           <div className="img-upload-container">
             <label>Lataa kuva</label>
-            <div className="img-upload-button-container">
-              <ImageUploader setImageData={handleImageSelection} />
-              <button
-                className="img-upload-button"
-                onClick={() => setIsPapunetOpen(true)}
-              >
-                <FontAwesomeIcon icon={faImage} className="button-icon" />
-                <span className="button-text">Papunetistä</span>
-              </button>
+            {/* Wrapper for upload and preview */}
+            <div className="img-upload-preview-wrapper">
+              <div className="img-upload-button-container">
+                <ImageUploader setImageData={handleImageSelection} />
+                <button
+                  className="img-upload-button"
+                  onClick={() => setIsPapunetOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faImage} className="button-icon" />
+                  <span className="button-text">Papunetistä</span>
+                </button>
+              </div>
+              {/* Image Preview */}
+              <div className="image-preview">
+                <img src={previewImage} alt="Esikatselu" />
+              </div>
             </div>
-          </div>
-
-          {/* Image Preview */}
-          <div className="image-preview">
-            <img src={previewImage} alt="Esikatselu" />
           </div>
         </div>
 
