@@ -77,6 +77,7 @@ const ManagePath = () => {
         title={pathName}
         onCenterClick={openEditPathNameModal}
         onRightClick={() => navigate(`/uusisana/${pathId}`)}
+        backButtonUrl={'/omatpolut'}
       />
 
       {/* Word List */}

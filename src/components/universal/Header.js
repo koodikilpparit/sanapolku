@@ -6,11 +6,11 @@ import EditButton from './EditButton';
 import AddButton from './AddButton';
 import './Header.css';
 
-const Header = ({ title, onCenterClick, onRightClick }) => {
+const Header = ({ title, onCenterClick, onRightClick, backButtonUrl }) => {
   return (
     <div className="header">
       <div className="header-left">
-        <BackButton />
+        <BackButton url={backButtonUrl} />
       </div>
       <div className="header-center">
         <h2 className="header-title">{title} </h2>
@@ -27,6 +27,7 @@ Header.propTypes = {
   title: PropTypes.string,
   onCenterClick: PropTypes.func,
   onRightClick: PropTypes.func,
+  backButtonUrl: PropTypes.string,
 };
 
 export default Header;

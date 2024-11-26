@@ -6,7 +6,7 @@ import Header from '../components/universal/Header';
 function Instructions() {
   return (
     <div className="instructions-page">
-      <Header title="Pelin ohjeet" />
+      <Header title="Pelin ohjeet" backButtonUrl={'/'} />
       <div className="ins-center-area">
         <section className="instructions-intro">
           <p>

@@ -7,6 +7,7 @@ import ManagePath from './ManagePath';
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
+  useParams: jest.fn(),
 }));
 
 // Mock the ImageUploader component to simulate an image
@@ -62,9 +63,12 @@ jest.mock('../components/newWord/ImageCropper', () => {
 describe('NewWord Component UI Tests', () => {
   const mockNavigate = jest.fn();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
     require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+    require('react-router-dom').useParams.mockReturnValue({
+      pathId: 5,
+    });
   });
 
   it('should render the NewWord component and display "Uusi sana"', () => {
@@ -125,8 +129,8 @@ describe('NewWord Component UI Tests', () => {
     expect(cancelButton).toBeInTheDocument();
     fireEvent.click(cancelButton);
 
-    // Check if navigate was called with -1 (go back to previous page)
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    // Check if navigate was called with correct url
+    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/5');
   });
 
   it('checks if back button navigates back to the previous page', () => {
@@ -142,8 +146,8 @@ describe('NewWord Component UI Tests', () => {
     expect(backButton).toBeInTheDocument();
     fireEvent.click(backButton);
 
-    // Check if navigate was called with -1 (go back to previous page)
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    // Check if navigate was called with correct url
+    expect(mockNavigate).toHaveBeenCalledWith('/muokkaapolkua/5');
   });
 
   it('should open the Papunet modal when "Papunetistä" button is clicked', () => {

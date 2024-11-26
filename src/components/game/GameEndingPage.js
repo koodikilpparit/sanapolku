@@ -11,7 +11,9 @@ const GameEndingPage = () => {
   return (
     <div className="ending-content">
       <h2>Onnittelut!</h2>
-      <p>Suoritit koko polun ja saavuit määränpäähäsi!</p>
+      <p className="ending-page-paragraph">
+        Suoritit koko polun ja saavuit määränpäähäsi!
+      </p>
       <img
         className="ending-img"
         src={`${process.env.PUBLIC_URL}/finish-img.svg`}

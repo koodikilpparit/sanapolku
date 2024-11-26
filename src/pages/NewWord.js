@@ -85,7 +85,7 @@ const NewWord = () => {
     <div className="word-page">
       {/* Header */}
       <div className="new-word-header">
-        <BackButton />
+        <BackButton url={'/muokkaapolkua/' + pathId} />
         <h2>Uusi sana</h2>
       </div>
 
@@ -138,7 +138,10 @@ const NewWord = () => {
 
         {/* Action Buttons */}
         <div className="confirm-button-container">
-          <button className="nw-cancel-button" onClick={() => navigate(-1)}>
+          <button
+            className="nw-cancel-button"
+            onClick={() => navigate('/muokkaapolkua/' + pathId)}
+          >
             PERUUTA
           </button>
           <button className="nw-save-button" onClick={handleSave}>

@@ -421,6 +421,6 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(backButton).toBeInTheDocument();
 
     fireEvent.click(backButton);
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    expect(mockNavigate).toHaveBeenCalledWith('/polut');
   });
 });
