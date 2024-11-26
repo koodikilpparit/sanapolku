@@ -172,6 +172,7 @@ describe('GameEngine Component with IndexedDB', () => {
     fireEvent.click(screen.getByText('VALMIS'));
 
     // Check if it moves to the second phase (letter shuffling)
+    fireEvent.click(screen.getByText('JATKA'));
     await waitFor(() =>
       expect(screen.getByText('Järjestä kirjaimet')).toBeInTheDocument()
     );

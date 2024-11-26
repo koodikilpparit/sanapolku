@@ -12,6 +12,10 @@ const PhaseController = ({
   setPlayerInput,
   inputRefs,
   shuffledWord = '',
+  incorrectIndices,
+  inputDisabled,
+  showContinueButton,
+  handleContinueOnWrongAnswer,
   showSkipButton,
   handleSkip,
 }) => {
@@ -26,6 +30,10 @@ const PhaseController = ({
           showSkipButton={showSkipButton}
           handleSkip={handleSkip}
           inputRefs={inputRefs}
+          incorrectIndices={incorrectIndices}
+          inputDisabled={inputDisabled}
+          showContinueButton={showContinueButton}
+          handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
         />
       );
     case 2:
@@ -36,6 +44,10 @@ const PhaseController = ({
           playerInput={playerInput}
           handleSubmit={handleSubmit}
           setPlayerInput={setPlayerInput}
+          incorrectIndices={incorrectIndices}
+          inputDisabled={inputDisabled}
+          showContinueButton={showContinueButton}
+          handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
           showSkipButton={showSkipButton}
           handleSkip={handleSkip}
         />
@@ -48,6 +60,10 @@ const PhaseController = ({
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
           inputRefs={inputRefs}
+          incorrectIndices={incorrectIndices}
+          inputDisabled={inputDisabled}
+          showContinueButton={showContinueButton}
+          handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
           showSkipButton={showSkipButton}
           handleSkip={handleSkip}
         />
@@ -69,6 +85,10 @@ PhaseController.propTypes = {
   setPlayerInput: PropTypes.func.isRequired,
   inputRefs: PropTypes.object.isRequired,
   shuffledWord: PropTypes.string,
+  incorrectIndices: PropTypes.array,
+  inputDisabled: PropTypes.bool,
+  showContinueButton: PropTypes.bool,
+  handleContinueOnWrongAnswer: PropTypes.func,
   showSkipButton: PropTypes.bool.isRequired,
   handleSkip: PropTypes.func.isRequired,
 };
