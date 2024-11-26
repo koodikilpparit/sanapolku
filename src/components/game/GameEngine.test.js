@@ -2,9 +2,8 @@ import { React, act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import GameEngine from '../../components/game/GameEngine';
-import PathSelection from '../../pages/PathSelection';
 import { addPath, addWord, resetDB } from '../../db/db';
-import { PathProvider } from '../pathSelection/PathContext';
+import { useNavigate } from 'react-router-dom';
 
 if (typeof global.structuredClone === 'undefined') {
   global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -13,6 +12,11 @@ if (typeof global.structuredClone === 'undefined') {
 afterAll(() => {
   jest.clearAllMocks();
 });
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
 
 jest.mock('../../components/game/SuccessIndicator', () => ({
   __esModule: true,
@@ -210,9 +214,9 @@ describe('GameEngine Component with IndexedDB', () => {
       }
     }
 
-    // Check if the game over message is displayed
+    // Check if the game ending page renders
     await waitFor(() => {
-      expect(screen.getByText('Peli ohi!')).toBeInTheDocument();
+      expect(screen.getByText('Onnittelut!')).toBeInTheDocument();
     });
 
     jest.useRealTimers();
@@ -401,14 +405,14 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(breakHeader).toBeInTheDocument;
   });
 
-  it('checks that the back-button brings you to /omatpolut', () => {
+  it('checks that the back-button brings you back one page', () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
         <GameEngine pathId={String(pathId)} />
-        <PathProvider>
-          <PathSelection />
-        </PathProvider>
       </BrowserRouter>
     );
 
@@ -417,6 +421,6 @@ describe('GameEngine Component with IndexedDB', () => {
     expect(backButton).toBeInTheDocument();
 
     fireEvent.click(backButton);
-    expect(screen.getByText('Polut')).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 });

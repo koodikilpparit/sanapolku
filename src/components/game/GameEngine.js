@@ -8,6 +8,7 @@ import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 import ProgressBar from './ProgressBar';
+import GameEndingPage from './GameEndingPage';
 import GameBreakPage from './GameBreakPage';
 
 const GameEngine = ({ pathId }) => {
@@ -211,9 +212,9 @@ const GameEngine = ({ pathId }) => {
         ) : showBreakPage ? (
           <GameBreakPage onContinue={handleContinueAfterBreak} />
         ) : gameOver ? (
-          <div>
-            <h2>Peli ohi!</h2>
-          </div>
+          <>
+            <GameEndingPage />
+          </>
         ) : currentWord ? (
           <>
             {showSuccess && <SuccessIndicator />}
