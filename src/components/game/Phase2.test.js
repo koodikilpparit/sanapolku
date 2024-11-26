@@ -208,7 +208,7 @@ describe('Phase2 Component', () => {
       />
     );
 
-    expect(screen.getByText('JATKA PELIÄ')).toBeInTheDocument;
+    expect(screen.getByText('JATKA')).toBeInTheDocument;
   });
 
   test('checks that pressing enter can be used to continue game after wrong input', () => {
@@ -245,7 +245,7 @@ describe('Phase2 Component', () => {
       />
     );
 
-    fireEvent.click(screen.getByText('JATKA PELIÄ'));
+    fireEvent.click(screen.getByText('JATKA'));
     expect(mockHandleContinueOnWrongAnswer).toHaveBeenCalled();
   });
 
