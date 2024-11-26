@@ -180,9 +180,6 @@
     margin-bottom: 300px;
   }
 
-  .path-list {
-    height: 60vh;
-  }
 }
 
 /* Style for phones in horizontal mode */
@@ -191,8 +188,5 @@
     background-image: none;
   }
 
-  .path-list {
-    height: 60vh;
-  }
 }
 
