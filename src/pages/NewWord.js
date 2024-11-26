@@ -21,6 +21,7 @@ const NewWord = () => {
   );
   const [isPapunetOpen, setIsPapunetOpen] = useState(false);
   const [isCropping, setIsCropping] = useState(false);
+  const [imageSource, setImageSource] = useState(null);
   const [isLargeImgPreviewOpen, setIsLargeImgPreviewOpen] = useState(false);
   const [largeImgPreview, setLargeImgPreview] = useState(null);
 
@@ -29,6 +30,8 @@ const NewWord = () => {
     src: 'https://placehold.co/150x150',
     author: null,
   };
+
+  const maxWordLength = 15;
 
   // Save the word and placeholder image to the database
   const handleSave = () => {
@@ -59,18 +62,23 @@ const NewWord = () => {
     setIsPapunetOpen(false); // Close Papunet modal as well
   };
 
-  const handleImageSelection = (image) => {
+  const handleImageSelection = (image, source) => {
     // Set the selected image and author from Papunet
     setImageData({
       src: image.src,
       author: image.author,
     });
+    setImageSource(source);
     setIsCropping(true); // Open the cropping modal
   };
 
   const handleLargeImgPreview = (image) => {
     setLargeImgPreview(image);
     setIsLargeImgPreviewOpen(true);
+  };
+
+  const reopenFileSelector = () => {
+    document.getElementById('hiddenFileInput').click();
   };
 
   return (
@@ -86,12 +94,23 @@ const NewWord = () => {
         {/* Add word */}
         <div className="input-container">
           <label>Kirjoita uusi sana</label>
-          <input
-            type="text"
-            value={newWord}
-            onChange={(e) => setNewWord(e.target.value)}
-            placeholder="Uusi sana"
-          />
+          <div className="input-wrapper">
+            <input
+              type="text"
+              value={newWord}
+              onChange={(e) => setNewWord(e.target.value)}
+              placeholder="Uusi sana"
+              maxLength={maxWordLength}
+            />
+            {/* Indicator for remaining characters */}
+            <span
+              className={`char-indicator ${
+                newWord.length === maxWordLength ? 'warning' : ''
+              }`}
+            >
+              {maxWordLength - newWord.length} kirjainta jäljellä
+            </span>
+          </div>
 
           {/* Upload image */}
           <div className="img-upload-container">
@@ -99,7 +118,10 @@ const NewWord = () => {
             {/* Wrapper for upload and preview */}
             <div className="img-upload-preview-wrapper">
               <div className="img-upload-button-container">
-                <ImageUploader setImageData={handleImageSelection} />
+                <ImageUploader
+                  setImageData={handleImageSelection}
+                  setImageSource={setImageSource}
+                />
                 <button
                   className="img-upload-button"
                   onClick={() => setIsPapunetOpen(true)}
@@ -152,8 +174,12 @@ const NewWord = () => {
       <Modal isOpen={isCropping} modalType="image-cropper">
         {imageData && (
           <ImageCropper
-            imageSrc={imageData?.src}
+            key={imageData.src}
+            imageSrc={imageData.src}
             onCroppedImage={handleImageCrop}
+            onBack={() => setIsCropping(false)}
+            imageSource={imageSource}
+            reopenFileSelector={reopenFileSelector}
           />
         )}
       </Modal>

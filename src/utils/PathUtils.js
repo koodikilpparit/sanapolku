@@ -22,6 +22,7 @@ export async function exportPath(pathId) {
   const path = await getPathById(pathId);
   if (!path) {
     console.warn('Path not found', pathId);
+    throw new Error('Path not found');
   }
   const words = await getWordsToExport(pathId);
   return { name: path.name, words: words };
