@@ -12,6 +12,8 @@ const Phase3 = ({
   inputDisabled,
   showContinueButton,
   handleContinueOnWrongAnswer,
+  showSkipButton,
+  handleSkip,
 }) => {
   const isReadyButtonDisabled = playerInput.some((letter) => letter === '');
 
@@ -107,6 +109,19 @@ const Phase3 = ({
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-5">
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                OHITA
+              </button>
+            )}
             {showContinueButton ? (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
@@ -147,6 +162,8 @@ Phase3.propTypes = {
   inputDisabled: PropTypes.bool,
   showContinueButton: PropTypes.bool,
   handleContinueOnWrongAnswer: PropTypes.func,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default Phase3;

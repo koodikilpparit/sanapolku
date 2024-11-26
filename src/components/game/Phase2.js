@@ -12,6 +12,8 @@ const Phase2 = ({
   inputDisabled,
   showContinueButton,
   handleContinueOnWrongAnswer,
+  showSkipButton,
+  handleSkip,
 }) => {
   const [shuffledLetters, setShuffledLetters] = useState([]);
   const [selectedLetter, setSelectedLetter] = useState(null);
@@ -192,6 +194,19 @@ const Phase2 = ({
           </div>
 
           <div className="flex items-end justify-center sm:justify-end py-4">
+            {showSkipButton && (
+              <button
+                className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
+                style={{
+                  backgroundColor: '#F0D784',
+                  color: '#013326',
+                  marginRight: '20px',
+                }}
+                onClick={handleSkip}
+              >
+                OHITA
+              </button>
+            )}
             {showContinueButton ? (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
@@ -232,6 +247,8 @@ Phase2.propTypes = {
   inputDisabled: PropTypes.bool,
   showContinueButton: PropTypes.bool,
   handleContinueOnWrongAnswer: PropTypes.func,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default Phase2;

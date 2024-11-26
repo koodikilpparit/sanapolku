@@ -8,6 +8,8 @@ import './GameEngine.css';
 import PhaseController from './PhaseController';
 import BackButton from '../universal/BackButton';
 import ProgressBar from './ProgressBar';
+import GameEndingPage from './GameEndingPage';
+import GameBreakPage from './GameBreakPage';
 
 const GameEngine = ({ pathId }) => {
   const [words, setWords] = useState([]);
@@ -24,6 +26,9 @@ const GameEngine = ({ pathId }) => {
   const [incorrectIndices, setIncorrectIndices] = useState([]);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [showContinueButton, setShowContinueButton] = useState(false);
+  const [showBreakPage, setShowBreakPage] = useState(false);
+  const [wordAttempts, setWordAttempts] = useState(0);
+  const [showSkipButton, setShowSkipButton] = useState(false);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -69,6 +74,12 @@ const GameEngine = ({ pathId }) => {
       setShowContinueButton(false);
     }
   }, [currentWord]);
+
+  useEffect(() => {
+    if (currentPhase === 2 && wordAttempts >= 2) {
+      setShowSkipButton(true);
+    }
+  }, [wordAttempts, currentPhase]);
 
   const handleInputChange = (index, event) => {
     let value = event.target.value.toUpperCase();
@@ -153,6 +164,7 @@ const GameEngine = ({ pathId }) => {
   const handleContinueOnWrongAnswer = () => {
     if (currentPhase === 1) {
       setCurrentPhase(2);
+      setWordAttempts((prev) => prev + 1); // If phase 2 is visited we increase the attempts
       setShuffledWord(shuffleWord(currentWord.word));
       while (shuffledWord === currentWord.word) {
         setShuffledWord(shuffleWord(currentWord.word));
@@ -171,14 +183,27 @@ const GameEngine = ({ pathId }) => {
   // Handle moving to the next word
   const moveToNextWord = () => {
     setCurrentPhase(1);
+    setWordAttempts(0);
+    setShowSkipButton(false);
 
     if (wordIndex + 1 < words.length) {
-      setWordIndex(wordIndex + 1);
       setProgress((prevProgress) => prevProgress + 100 / words.length);
+
+      if (wordIndex + 1 === 5 && words.length === 10) {
+        setShowBreakPage(true);
+        return;
+      }
+      setWordIndex(wordIndex + 1);
     } else {
       setGameOver(true);
       setProgress(100);
     }
+  };
+
+  // Handle continuing game after break
+  const handleContinueAfterBreak = () => {
+    setShowBreakPage(false);
+    setWordIndex(wordIndex + 1);
   };
 
   // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
@@ -189,6 +214,10 @@ const GameEngine = ({ pathId }) => {
   const triggerSuccessIndicator = () => {
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
+  };
+
+  const handleSkip = () => {
+    moveToNextWord();
   };
 
   return (
@@ -204,10 +233,12 @@ const GameEngine = ({ pathId }) => {
           <p className="loading-msg"> Ladataan sanoja...</p>
         ) : error ? (
           <p className="error-msg">{error}</p>
+        ) : showBreakPage ? (
+          <GameBreakPage onContinue={handleContinueAfterBreak} />
         ) : gameOver ? (
-          <div>
-            <h2>Peli ohi!</h2>
-          </div>
+          <>
+            <GameEndingPage />
+          </>
         ) : currentWord ? (
           <>
             {showSuccess && <SuccessIndicator />}
@@ -224,6 +255,8 @@ const GameEngine = ({ pathId }) => {
               inputDisabled={inputDisabled}
               showContinueButton={showContinueButton}
               handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
+              showSkipButton={showSkipButton}
+              handleSkip={handleSkip}
             />
           </>
         ) : (

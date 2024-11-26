@@ -16,6 +16,8 @@ const PhaseController = ({
   inputDisabled,
   showContinueButton,
   handleContinueOnWrongAnswer,
+  showSkipButton,
+  handleSkip,
 }) => {
   switch (currentPhase) {
     case 1:
@@ -25,6 +27,8 @@ const PhaseController = ({
           playerInput={playerInput}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
+          showSkipButton={showSkipButton}
+          handleSkip={handleSkip}
           inputRefs={inputRefs}
           incorrectIndices={incorrectIndices}
           inputDisabled={inputDisabled}
@@ -44,6 +48,8 @@ const PhaseController = ({
           inputDisabled={inputDisabled}
           showContinueButton={showContinueButton}
           handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
+          showSkipButton={showSkipButton}
+          handleSkip={handleSkip}
         />
       );
     case 3:
@@ -58,6 +64,8 @@ const PhaseController = ({
           inputDisabled={inputDisabled}
           showContinueButton={showContinueButton}
           handleContinueOnWrongAnswer={handleContinueOnWrongAnswer}
+          showSkipButton={showSkipButton}
+          handleSkip={handleSkip}
         />
       );
     default:
@@ -81,6 +89,8 @@ PhaseController.propTypes = {
   inputDisabled: PropTypes.bool,
   showContinueButton: PropTypes.bool,
   handleContinueOnWrongAnswer: PropTypes.func,
+  showSkipButton: PropTypes.bool.isRequired,
+  handleSkip: PropTypes.func.isRequired,
 };
 
 export default PhaseController;
