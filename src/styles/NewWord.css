@@ -216,9 +216,4 @@ label {
   .image-preview {
     width: 100%;
   }
-
-  .image-preview img {
-    height: 150px;
-    width: 150px;
-  }
 }
