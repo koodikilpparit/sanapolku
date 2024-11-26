@@ -110,7 +110,7 @@ const Phase3 = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-between py-2 px-2">
+          <div className="flex items-end justify-center sm:justify-end py-2">
             {showSkipButton && (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
@@ -124,7 +124,7 @@ const Phase3 = ({
               </button>
             )}
             <button
-              className="btn-sp-secondary w-full sm:w-1/4 bg-sp-blue cursor-pointer"
+              className="btn-sp-secondary sm:w-1/4 bg-sp-blue cursor-pointer"
               style={{ marginRight: '3%', marginLeft: '3%' }}
               onClick={() => inputRefs.current[0]?.focus()}
             >
