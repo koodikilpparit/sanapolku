@@ -11,9 +11,11 @@ describe('StartPage', () => {
   // Rendering the start page
   it('checks if Start-page renders', () => {
     render(
-      <BrowserRouter>
-        <Start />
-      </BrowserRouter>
+      <SettingsProvider>
+        <BrowserRouter>
+          <Start />
+        </BrowserRouter>
+      </SettingsProvider>
     );
   });
 
@@ -41,8 +43,10 @@ describe('StartPage', () => {
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
-        <Start />
-        <Instructions />
+        <SettingsProvider>
+          <Start />
+          <Instructions />
+        </SettingsProvider>
       </BrowserRouter>
     );
 
@@ -59,8 +63,10 @@ describe('StartPage', () => {
     // Rendering the required pages
     const { container } = render(
       <BrowserRouter>
-        <Start />
-        <GameMenu />
+        <SettingsProvider>
+          <Start />
+          <GameMenu />
+        </SettingsProvider>
       </BrowserRouter>
     );
 
