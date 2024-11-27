@@ -24,13 +24,13 @@ function App() {
     window.addEventListener('beforeinstallprompt', handler);
 
     return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
+  }, [setInstallEvent]);
 
   useEffect(() => {
     window.addEventListener('appinstalled', () => {
       setInstallEvent(null);
     });
-  }, []);
+  }, [setInstallEvent]);
 
   return (
     <Router>
