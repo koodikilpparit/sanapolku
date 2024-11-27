@@ -64,22 +64,22 @@ const Phase3 = ({
             author={currentWord.imageData.author}
           />
         </div>
-        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
+        <div className="w-full sm:w-4/5 md:w-4/5 h-3/5 flex flex-col justify-between">
           <div className="flex flex-col gap-2 lg:gap-4">
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 items-center justify-center px-2">
               {currentWord.word
                 .toUpperCase()
                 .split('')
                 .map((letter, index) => (
                   <div
                     key={index}
-                    className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center"
+                    className="w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl"
                   >
                     {letter}
                   </div>
                 ))}
             </div>
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 items-center justify-center px-2">
               {currentWord.word.split('').map((_, index) => (
                 <input
                   key={index}
@@ -91,7 +91,7 @@ const Phase3 = ({
                   }
                   onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                   className={
-                    'w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1'
+                    'w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl'
                   }
                   style={
                     incorrectIndices.includes(index)

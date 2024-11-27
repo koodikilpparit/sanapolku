@@ -76,7 +76,7 @@ const Phase1 = ({
                 onChange={(event) => handleInputChange(index, event, inputRefs)}
                 onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                 className={
-                  'w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl'
+                  'w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl'
                 }
                 style={
                   incorrectIndices.includes(index)
