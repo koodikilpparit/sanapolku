@@ -23,6 +23,8 @@ export const SettingsProvider = ({ children }) => {
     return savedMusic !== null ? JSON.parse(savedMusic) : true;
   });
 
+  const [installEvent, setInstallEvent] = useState(null);
+
   useEffect(() => {
     localStorage.setItem('sounds', JSON.stringify(sounds));
   }, [sounds]);
@@ -32,7 +34,16 @@ export const SettingsProvider = ({ children }) => {
   }, [music]);
 
   return (
-    <SettingsContext.Provider value={{ sounds, setSounds, music, setMusic }}>
+    <SettingsContext.Provider
+      value={{
+        sounds,
+        setSounds,
+        music,
+        setMusic,
+        installEvent,
+        setInstallEvent,
+      }}
+    >
       {children}
     </SettingsContext.Provider>
   );

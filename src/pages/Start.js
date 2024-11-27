@@ -1,43 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import SettingsButton from '../components/start/SettingsButton';
 import InstallButton from '../components/start/InstallButton';
 import StartButton from '../components/start/StartButton';
 import HelpButton from '../components/start/HelpButton';
 import LetterTile from '../components/start/LetterTile';
 import './Start.css';
+import { SettingsContext } from '../contexts/SettingsContext';
 
 function Start() {
   const [showInstallButton, setShowInstallButton] = useState(false);
-  const installEventRef = useRef(null);
+
+  const { installEvent, setInstallEvent } = useContext(SettingsContext);
 
   useEffect(() => {
-    const handler = (e) => {
-      e.preventDefault();
-      installEventRef.current = e;
-      setShowInstallButton(true);
-    };
-    window.addEventListener('beforeinstallprompt', handler);
-
-    return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('appinstalled', () => {
-      setShowInstallButton(false);
-    });
-  }, []);
+    setShowInstallButton(!!installEvent);
+  }, [installEvent]);
 
   const handleInstallClick = async () => {
-    const deferredPrompt = installEventRef.current;
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+    if (installEvent) {
+      installEvent.prompt();
+      const { outcome } = await installEvent.userChoice;
       if (outcome === 'accepted') {
         console.log('User accepted the install prompt');
       } else {
         console.log('User dismissed the install prompt');
       }
-      installEventRef.current = null; // Reset the prompt
+      setInstallEvent(null);
     }
   };
 

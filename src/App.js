@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Start from './pages/Start';
@@ -11,8 +11,27 @@ import NewWord from './pages/NewWord';
 import GamePage from './pages/GamePage';
 import { PathProvider } from './components/pathSelection/PathContext';
 import BackgroundMusic from './components/sounds/BackgroundMusic';
+import { SettingsContext } from './contexts/SettingsContext';
 
 function App() {
+  const { setInstallEvent } = useContext(SettingsContext);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setInstallEvent(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('appinstalled', () => {
+      setInstallEvent(null);
+    });
+  }, []);
+
   return (
     <Router>
       <div className="App">
