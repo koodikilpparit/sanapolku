@@ -27,6 +27,7 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
   const applyFilters = () => {
     onFilterChange(tempFilters);
     setIsOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
