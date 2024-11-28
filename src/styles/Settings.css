@@ -228,7 +228,7 @@ body {
 /* Responsive styles */
 @media (max-width: 767px) {
   .settings-about-container {
-    width: 90%;
+    width: 95%;
   }
 
   .reset-button button {
@@ -240,8 +240,8 @@ body {
   }
 
   .soft-box {
-    width: 90%; /* Adjust width for mobile screens */
-    padding: 15px; /* Reduce padding on smaller screens */
+    width: 95%; /* Adjust width for mobile screens */
+    padding: 5px; /* Reduce padding on smaller screens */
   }
 }
 
