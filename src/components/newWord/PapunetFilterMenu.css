@@ -4,6 +4,9 @@
   border: 1px solid var(--sp-gray-sp);
   border-radius: 10px;
   width: 100%;
+  position: relative;
+  z-index: 2000;
+  background-color: var(--sp-white);
 }
 
 .filter-menu-header {
