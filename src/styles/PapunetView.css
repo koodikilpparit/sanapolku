@@ -35,7 +35,7 @@
 }
 
 .search-button:disabled {
-  background-color: #ccc;
+  background-color: var(--sp-disabled-gray);
 }
 
 .photo-container {
@@ -60,7 +60,7 @@
   box-sizing: border-box;
   padding: 10px;
   background-color: var(--sp-white);
-  border: 1px solid #ccc;
+  border: 1px solid var(--sp-gray-sp);
   border-radius: 4px;
   text-align: center;
   transition:
@@ -121,7 +121,7 @@
 }
 
 .save-btn:disabled {
-  background-color: #ccc;
+  background-color: var(--sp-disabled-gray);
 }
 
 .save-btn {
