@@ -42,10 +42,16 @@ body {
   overflow: visible; /* Change from auto to visible */
 }
 
+.settings-about-container h2 {
+  padding-bottom: 10px;
+  font-size: var(--sp-heading-5);
+  font-weight: bold;
+}
+
 .settings-about-container h4 {
   padding-top: 20px;
   padding-bottom: 10px;
-  font-size: var(--sp-heading-4);
+  font-size: var(--sp-heading-6);
   font-weight: bold;
 }
 
