@@ -55,6 +55,13 @@ const PapunetView = ({
     }
   }, [getPhotos, initialSearchTerm]);
 
+  // Fetch photos on filter change
+  useEffect(() => {
+    if (initialFetchDone.current) {
+      getPhotos();
+    }
+  }, [selectedFilters, getPhotos]);
+
   const handleFetchPhotos = () => {
     getPhotos();
     initialFetchDone.current = true;
