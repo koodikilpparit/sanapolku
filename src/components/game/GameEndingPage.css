@@ -16,7 +16,7 @@
   height: 90%;
 }
 
-h2 {
+.ending-content h2 {
   color: #fff;
   text-align: center;
   font-family: Verdana;
@@ -36,7 +36,7 @@ h2 {
   line-height: 28px;
 }
 
-img {
+.ending-content img {
   width: 200px;
   height: 200px;
 }
@@ -107,13 +107,13 @@ img {
     gap: 1vh;
   }
 
-  h2 {
+  .ending-content h2 {
     font-size: 6vh;
     margin-top: 0px;
     line-height: 6vh;
   }
 
-  p {
+  .ending-content p {
     font-size: 4vh;
     line-height: 4vh;
   }
@@ -147,7 +147,7 @@ img {
     width: 6vh;
   }
 
-  img {
+  .ending-content img {
     width: 28vh;
     height: 28vh;
   }
@@ -159,12 +159,12 @@ img {
     margin-bottom: 0px;
     height: 95%;
   }
-  h2 {
+  .ending-content h2 {
     font-size: 32px;
     line-height: 32px;
   }
 
-  p {
+  .ending-content p {
     font-size: 18px;
   }
 }
@@ -175,11 +175,11 @@ img {
     gap: 40px;
   }
 
-  h2 {
+  .ending-content h2 {
     font-size: 40px;
   }
 
-  p {
+  .ending-content p {
     font-size: 26px;
   }
 
@@ -205,7 +205,7 @@ img {
     max-width: 280px;
   }
 
-  img {
+  .ending-content img {
     width: 230px;
     height: 230px;
   }
