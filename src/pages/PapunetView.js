@@ -55,6 +55,13 @@ const PapunetView = ({
     }
   }, [getPhotos, initialSearchTerm]);
 
+  // Fetch photos on filter change
+  useEffect(() => {
+    if (initialFetchDone.current) {
+      getPhotos();
+    }
+  }, [selectedFilters, getPhotos]);
+
   const handleFetchPhotos = () => {
     getPhotos();
     initialFetchDone.current = true;
@@ -144,7 +151,11 @@ const PapunetView = ({
         <button className="btn-sp-primary return-btn" onClick={closeModal}>
           PERUUTA
         </button>
-        <button className="btn-sp-primary save-btn" onClick={handleSave}>
+        <button
+          className="btn-sp-primary save-btn"
+          onClick={handleSave}
+          disabled={!selectedImage}
+        >
           VALITSE
         </button>
       </div>

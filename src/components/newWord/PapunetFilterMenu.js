@@ -8,19 +8,26 @@ const public_url = process.env.PUBLIC_URL;
 
 const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [tempFilters, setTempFilters] = useState(selectedFilters);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleCheckboxChange = (filterKey) => {
-    if (selectedFilters.includes(filterKey)) {
-      onFilterChange(selectedFilters.filter((filter) => filter !== filterKey));
+    if (tempFilters.includes(filterKey)) {
+      setTempFilters(tempFilters.filter((filter) => filter !== filterKey));
     } else {
-      onFilterChange([...selectedFilters, filterKey]);
+      setTempFilters([...tempFilters, filterKey]);
     }
   };
 
   const handleUnselectAll = () => {
-    onFilterChange([]);
+    setTempFilters([]);
+  };
+
+  const applyFilters = () => {
+    onFilterChange(tempFilters);
+    setIsOpen(false);
+    window.scrollTo({ top: 0 });
   };
 
   return (
@@ -46,7 +53,7 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
                 <input
                   type="checkbox"
                   id={key}
-                  checked={selectedFilters.includes(key)}
+                  checked={tempFilters.includes(key)}
                   onChange={() => handleCheckboxChange(key)}
                 />
                 <span className="filter-label">{label}</span>
@@ -58,6 +65,14 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
               </label>
             ))}
           </div>
+
+          <button
+            className="apply-filters-btn"
+            onClick={applyFilters}
+            type="button"
+          >
+            KÄYTÄ VALINTOJA
+          </button>
         </div>
       )}
     </div>
