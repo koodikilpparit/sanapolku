@@ -144,7 +144,11 @@ const PapunetView = ({
         <button className="btn-sp-primary return-btn" onClick={closeModal}>
           PERUUTA
         </button>
-        <button className="btn-sp-primary save-btn" onClick={handleSave}>
+        <button
+          className="btn-sp-primary save-btn"
+          onClick={handleSave}
+          disabled={!selectedImage}
+        >
           VALITSE
         </button>
       </div>

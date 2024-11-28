@@ -120,6 +120,10 @@
   font-size: var(--sp-heading-5);
 }
 
+.save-btn:disabled {
+  background-color: #ccc;
+}
+
 .save-btn {
   padding: 15px 20px;
   width: 30%;
