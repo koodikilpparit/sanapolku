@@ -3,12 +3,15 @@ import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Start from './Start';
 import Instructions from './Instructions';
+import SettingsProvider from '../contexts/SettingsContext';
 
 describe('StartPage', () => {
   it('checks if Instructions-page renders', () => {
     const { getByText, getByAltText } = render(
       <BrowserRouter>
-        <Instructions />
+        <SettingsProvider>
+          <Instructions />
+        </SettingsProvider>
       </BrowserRouter>
     );
 
@@ -32,8 +35,10 @@ describe('StartPage', () => {
   it('checks if back-button brings you to the start page', () => {
     const { container } = render(
       <BrowserRouter>
-        <Instructions />
-        <Start />
+        <SettingsProvider>
+          <Instructions />
+          <Start />
+        </SettingsProvider>
       </BrowserRouter>
     );
 
