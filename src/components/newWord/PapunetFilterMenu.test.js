@@ -10,6 +10,7 @@ describe('PapunetFilterMenu', () => {
   };
   const selectedFilters = [];
   const onFilterChange = jest.fn();
+  window.scrollTo = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -50,7 +51,7 @@ describe('PapunetFilterMenu', () => {
     ).not.toBeInTheDocument();
   });
 
-  test('toggles a filter when clicked', () => {
+  test('selects a filter', () => {
     const filters = { filter1: 'Filter 1', filter2: 'Filter 2' };
     const selectedFilters = [];
     const onFilterChange = jest.fn();
@@ -70,11 +71,8 @@ describe('PapunetFilterMenu', () => {
       .closest('.filter-option');
     fireEvent.click(filterOption);
 
+    fireEvent.click(screen.getByText(/käytä valintoja/i));
     expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
-
-    fireEvent.click(filterOption);
-    expect(onFilterChange).toHaveBeenCalledTimes(2);
     expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
   });
 
@@ -91,6 +89,7 @@ describe('PapunetFilterMenu', () => {
     const unselectAllButton = screen.getByText(/poista kaikki valinnat/i);
 
     fireEvent.click(unselectAllButton);
+    fireEvent.click(screen.getByText(/käytä valintoja/i));
     expect(onFilterChange).toHaveBeenCalledWith([]);
   });
 
