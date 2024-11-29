@@ -54,13 +54,15 @@ const QrScannerComponent = ({ onSuccess }) => {
   }, []);
 
   return (
-    <div>
+    <div className="flex justify-center items-center w-full sm:w-2/3">
       {isCameraAvailable ? (
         <video
           ref={videoRef}
           playsInline
           autoPlay
           data-testid="video-element"
+          width="100%"
+          height="100%"
         />
       ) : (
         <p>Kameraa ei ole saatavilla QR koodin skannaamiseen</p>
