@@ -158,25 +158,43 @@
   .ending-content {
     margin-bottom: 0px;
     height: 95%;
+    gap: 3vh;
+    margin-right: 10px;
+    margin-left: 10px;
+    height: 100%;
   }
   .ending-content h2 {
-    font-size: 32px;
-    line-height: 32px;
+    font-size: 8vw;
+    line-height: 8.5vw;
   }
 
   .ending-page-paragraph {
-    font-size: 18px;
+    font-size: 5vw;
+    line-height: 6.5vw;
+  }
+
+  .ready-button {
+    height: 15vw;
+    font-size: 6.5vw;
+  }
+
+  .ending-content img {
+    height: 50vw;
+    width: 50vw;
+    max-width: 200px;
+    max-height: 200px;
   }
 }
 
-/* Style for tablets/large screens */
-@media (min-width: 750px) and (min-height: 750px) {
+/* Style for tablets in portrait mode */
+@media (min-width: 750px) and (min-height: 750px) and (orientation: portrait) {
   .ending-content {
-    gap: 40px;
+    gap: 25px;
   }
 
   .ending-content h2 {
-    font-size: 40px;
+    font-size: 44px;
+    margin-bottom: 4vh;
   }
 
   .ending-page-paragraph {
@@ -206,7 +224,52 @@
   }
 
   .ending-content img {
-    width: 230px;
-    height: 230px;
+    width: 35vw;
+    height: 35vw;
+    max-height: 300px;
+    max-width: 300px;
+    margin-top: 2vh;
+  }
+}
+
+/* Style for extra large screens */
+@media (min-width: 1024px) {
+  .ending-content h2 {
+    font-size: 6vh;
+    line-height: 8vh;
+  }
+
+  .ending-page-paragraph {
+    font-size: 3vh;
+    line-height: 4vh;;
+  }
+
+  .ending-content img {
+    width: 30vh;
+    height: 30vh;
+    max-height: none;
+    max-width: none;
+  }
+
+  .restart-button {
+    width: 10vh;
+    height: 10vh;
+    max-height: 200px;
+    max-width: none;
+  }
+
+  .home-button {
+    width: 10vh;
+    height: 10vh;
+    max-height: 200px;
+    max-width: none;
+  }
+
+  .ready-button {
+    height: 10vh;
+    width: 20vh;
+    font-size: 4vh;
+    max-height: 200px;
+    max-width: none;
   }
 }
