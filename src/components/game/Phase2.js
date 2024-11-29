@@ -136,7 +136,7 @@ const Phase2 = ({
       ref={containerRef}
     >
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
-        Järjestä kirjaimet
+      Klikkaa ja järjestä
       </h1>
       <div className="flex flex-col sm:flex-row md:flex-row md-minh-1000:flex-col md-minh-1000:items-center lg:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
