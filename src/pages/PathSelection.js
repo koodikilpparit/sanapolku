@@ -8,7 +8,6 @@ import ShareButton from '../components/universal/ShareButton';
 import { PathContext } from '../components/pathSelection/PathContext';
 import AddPathModal from '../components/pathSelection/AddPathModal';
 import DeletePathModal from '../components/pathSelection/DeletePathModal';
-import PathNoWordsModal from '../components/pathSelection/PathNoWordsModal';
 import SharePathModal from '../components/pathSelection/SharePathModal';
 import ReceivePathModal from '../components/pathSelection/ReceivePathModal';
 import SharePathErrorModal from '../components/pathSelection/SharePathErrorModal';
@@ -27,7 +26,6 @@ const PathSelection = () => {
 
   const [isNewPathModalOpen, setIsNewPathModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isNoWordsInPathOpen, setIsNoWordsInPathOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isReceivePathModalOpen, setIsReceivePathModalOpen] = useState(false);
 
@@ -51,8 +49,6 @@ const PathSelection = () => {
     // Navigate to the game only if the path has words
     if (words.length > 0) {
       navigate(`/peli/${path.id}`);
-    } else {
-      openNoWordsInPathModal(path);
     }
   };
 
@@ -69,12 +65,6 @@ const PathSelection = () => {
   // Function to open the modal for creating a new path
   const openNewPathModal = () => {
     setIsNewPathModalOpen(true);
-  };
-
-  // Function to open the modal for informing lack of words in path
-  const openNoWordsInPathModal = (path) => {
-    setCurrentPath(path);
-    setIsNoWordsInPathOpen(true);
   };
 
   // Function to open the modal for sharing a path
@@ -136,10 +126,6 @@ const PathSelection = () => {
       {/* Modal for confirming deletion */}
       {isDeleteModalOpen && (
         <DeletePathModal onClose={() => setIsDeleteModalOpen(false)} />
-      )}
-      {/* Modal for informing user of lack of words in path */}
-      {isNoWordsInPathOpen && (
-        <PathNoWordsModal onClose={() => setIsNoWordsInPathOpen(false)} />
       )}
       {/* Modal for sharing a path */}
       {isShareModalOpen && (
