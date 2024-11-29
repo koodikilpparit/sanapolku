@@ -219,7 +219,7 @@ const Phase2 = ({
               <button
                 className={`btn-sp-primary w-full sm:w-1/2 ${
                   isReadyButtonDisabled
-                    ? 'bg-sp-gray cursor-not-allowed'
+                    ? 'bg-sp-disabled-gray cursor-not-allowed'
                     : 'bg-sp-light-green cursor-pointer'
                 }`}
                 onClick={() => handleSubmit(playerInput.join(''))}
