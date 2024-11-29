@@ -17,7 +17,7 @@ const SharePathErrorModal = ({ onClose }) => {
           voi johtua laitteiden käyttämistä verkoista. Siirtykää käyttämään
           molemmilla laitteilla esimerkiksi samaa WIFI tai mobiilidata verkkoa.
           Kun molemmat laitteet ovat yhdistettynä samaan verkkoon, pitäisi polun
-          jakamisen onnistua varmasti.
+          jakamisen onnistua.
         </p>
         <button className="save-button" onClick={closeSharingFailedModal}>
           Sulje

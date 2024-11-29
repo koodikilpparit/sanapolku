@@ -73,9 +73,10 @@ const SharePathModal = ({ onClose }) => {
         ) : (
           <div>
             <p>
-              Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kamera ei
-              ole käytettävissä, polun jakaminen onnistuu QR-koodin alta
-              löytyvän tunnisteen avulla.
+              Näytä alla oleva QR-koodi polun vastaanottajalle. QR-koodi tulee
+              lukea Sanapolku-sovelluksen avulla. Jos kamera ei ole
+              käytettävissä, polun jakaminen onnistuu QR-koodin alta löytyvän
+              tunnisteen avulla.
             </p>
             <QRCode value={QRCODE_PREFIX + peerId} />
             <span>Lähettäjän tunniste:</span>
