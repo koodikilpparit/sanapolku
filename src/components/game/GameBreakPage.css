@@ -115,7 +115,8 @@
     line-height: 32px;
   }
 
-  .break-content p {
+  .break-page-paragraph-1,
+  .break-page-paragraph-2 {
     font-size: 18px;
     line-height: 3.5vh;
   }
@@ -131,7 +132,8 @@
     font-size: 40px;
   }
 
-  .break-content p {
+  .break-page-paragraph-1,
+  .break-page-paragraph-2 {
     font-size: 26px;
   }
 

@@ -113,7 +113,7 @@
     line-height: 6vh;
   }
 
-  .ending-content p {
+  .ending-page-paragraph {
     font-size: 4vh;
     line-height: 4vh;
   }
@@ -164,7 +164,7 @@
     line-height: 32px;
   }
 
-  .ending-content p {
+  .ending-page-paragraph {
     font-size: 18px;
   }
 }
@@ -179,7 +179,7 @@
     font-size: 40px;
   }
 
-  .ending-content p {
+  .ending-page-paragraph {
     font-size: 26px;
   }
 

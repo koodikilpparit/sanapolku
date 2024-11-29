@@ -16,7 +16,7 @@
 }
 
 .top-bar {
-    display: flex;
+    float: left;
     align-items: center;
     width: 100%;
     justify-content: space-between;
