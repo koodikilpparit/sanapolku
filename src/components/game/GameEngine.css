@@ -5,7 +5,7 @@
     grid-template-areas: 'back-button';
 }
 
-.loading-msg .error-msg{
+.loading-msg .error-msg {
     color: white;
     font-size: var(--sp-heading-1);
 }
@@ -16,7 +16,7 @@
 }
 
 .top-bar {
-    float: left;
+    display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
