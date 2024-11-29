@@ -47,12 +47,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 16px;
 }
 
 .continue-button {
   display: flex;
-  width: 252px;
+  width: 200px;
   height: 52px;
   border-radius: 8px;
   background: #72a895;
@@ -82,7 +81,8 @@
     line-height: 6vh;
   }
 
-  .break-content p {
+  .break-page-paragraph-1,
+  .break-page-paragraph-2 {
     font-size: 4vh;
     line-height: 4vh;
   }
@@ -99,7 +99,7 @@
   .continue-button {
     height: 8vh;
     font-size: 4vh;
-    width: 20vw;
+    width: 28vh;
   }
 }
 
@@ -108,28 +108,46 @@
   .break-content {
     margin-bottom: 0px;
     height: 95%;
+    gap: 3vh;
+    margin-right: 10px;
+    margin-left: 10px;
+    height: 100%;
   }
 
   .break-content h2 {
-    font-size: 32px;
-    line-height: 32px;
+    font-size: 8vw;
+    line-height: 8.5vw;
   }
 
   .break-page-paragraph-1,
   .break-page-paragraph-2 {
-    font-size: 18px;
-    line-height: 3.5vh;
+    font-size: 5vw;
+    line-height: 6.5vw;
+  }
+
+  .continue-button {
+    width: 60vw;
+    height: 15vw;
+    font-size: 6.5vwpx;
+  }
+
+  .break-content img {
+    height: 50vw;
+    width: 50vw;
+    max-width: 200px;
+    max-height: 200px;
   }
 }
 
-/* Style for tablets/large screens */
-@media (min-width: 750px) and (min-height: 750px) {
+/* Style for tablets in portrait mode */
+@media (min-width: 750px) and (min-height: 750px) and (orientation: portrait) {
   .break-content {
     gap: 25px;
   }
 
   .break-content h2 {
-    font-size: 40px;
+    font-size: 44px;
+    margin-bottom: 4vh;
   }
 
   .break-page-paragraph-1,
@@ -138,15 +156,48 @@
   }
 
   .continue-button {
-    width: 30vw;
+    width: 40vw;
     height: 10vw;
     font-size: 26px;
     max-height: 80px;
     max-width: 280px;
+    margin-top: 2vh;
   }
 
   .break-content img {
-    width: 230px;
-    height: 230px;
+    width: 35vw;
+    height: 35vw;
+    max-height: 300px;
+    max-width: 300px;
+    margin-top: 2vh;
+  }
+}
+
+/* Style for extra large screens */
+@media (min-width: 1024px) {
+  .break-content h2 {
+    font-size: 6vh;
+    line-height: 8vh;
+  }
+
+  .break-page-paragraph-1,
+  .break-page-paragraph-2 {
+    font-size: 3vh;
+    line-height: 4vh;;
+  }
+
+  .break-content img {
+    width: 30vh;
+    height: 30vh;
+    max-height: none;
+    max-width: none;
+  }
+
+  .continue-button {
+    height: 10vh;
+    width: 30vh;
+    font-size: 4vh;
+    max-height: 200px;
+    max-width: 600px;
   }
 }
