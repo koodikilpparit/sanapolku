@@ -24,7 +24,7 @@ const AddPathModal = ({ onClose, onOpenReceive }) => {
           setNewPath('');
           console.log('Path added:', newPath);
           onClose();
-          navigate(`/muokkaapolkua/${pathId}`);
+          navigate(`/uusisana/${pathId}`);
         })
         .catch((error) => {
           console.error(error.message);
