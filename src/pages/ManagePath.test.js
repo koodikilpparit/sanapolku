@@ -191,6 +191,34 @@ describe('ManagePath Component UI Tests', () => {
     });
   });
 
+  it('shows an error message when deleting a word fails', async () => {
+    await db.addWord('testing', pathId, { imageData: { src: '' } });
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    waitFor(() => {
+      // Open the edit path name modal
+      fireEvent.click(container.querySelector('.delete-button'));
+    });
+
+    // Mock error response for editPathName
+    const mockDeleteWord = jest.spyOn(db, 'deleteWord');
+    mockDeleteWord.mockRejectedValue(new Error());
+
+    // Confirm deletion
+    waitFor(() => {
+      fireEvent.click(container.querySelector('.save-button'));
+    });
+
+    // Wait for the error alert to appear
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith('Error deleting the word.');
+    });
+  });
+
   it('deletes the word when delete button is clicked', async () => {
     // Mock the getWordsForPath function to return the added word
     const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
@@ -244,7 +272,7 @@ describe('ManagePath Component UI Tests', () => {
     });
   });
 
-  it('navigates to "omatpolut" when last word is deleted', async () => {
+  it('navigates to "/omatpolut" when last word is deleted', async () => {
     // Mock the getWordsForPath function to return the added word
     const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
     mockGetWordsForPath.mockResolvedValue([
@@ -290,7 +318,7 @@ describe('ManagePath Component UI Tests', () => {
     });
   });
 
-  it('navigates to "uusisana" when add button is clicked', async () => {
+  it('navigates to "/uusisana" when add button is clicked', async () => {
     const { container } = render(
       <BrowserRouter>
         <ManagePath />
@@ -304,6 +332,36 @@ describe('ManagePath Component UI Tests', () => {
 
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith('/uusisana/' + pathId);
+    });
+  });
+
+  it('navigates to "/omatpolut" if path ID is not valid', async () => {
+    useParams.mockReturnValue({
+      pathId: NaN,
+    });
+    render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/omatpolut');
+    });
+  });
+
+  it('navigates to "/omatpolut" if path is not found', async () => {
+    useParams.mockReturnValue({
+      pathId: 9999999, // Some ID that is not found from DB
+    });
+    render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/omatpolut');
     });
   });
 });
