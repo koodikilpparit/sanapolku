@@ -82,9 +82,9 @@ const PathSelection = () => {
         backButtonUrl={'/polut'}
       />
       {/* List of paths */}
-      <div className="path-list">
-        {paths.length > 0 ? (
-          paths.map((path, index) => (
+      {paths.length > 0 && (
+        <div className="path-list">
+          {paths.map((path, index) => (
             <div
               key={index}
               className="path-item-container"
@@ -111,11 +111,9 @@ const PathSelection = () => {
                 }}
               ></ShareButton>
             </div>
-          ))
-        ) : (
-          <p className="no-paths">Ei polkuja.</p>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
       {/* Modal for adding a new path */}
       {isNewPathModalOpen && (
         <AddPathModal

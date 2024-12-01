@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getWordsForPath, getPathById, editPathName } from '../db/db';
+import {
+  getWordsForPath,
+  getPathById,
+  editPathName,
+  deleteWord,
+  deletePath,
+} from '../db/db';
 import WordRow from '../components/create/WordRow';
 import DeleteWordModal from '../components/DeleteWordModal'; // Import the DeleteWordModal component
 import '../styles/ManagePath.css';
@@ -11,6 +17,7 @@ const ManagePath = () => {
   const [pathName, setPathName] = useState(null);
   const navigate = useNavigate();
   const [words, setWords] = useState([]);
+  const [fetchedWords, setFecthedWords] = useState(false);
   const [error, setError] = useState(null);
   const [newPathName, setNewPathName] = useState('');
   const [isEditPathNameModalOpen, setIsEditPathNameModalOpen] = useState(false);
@@ -25,14 +32,28 @@ const ManagePath = () => {
           getPathById(pathId),
           getWordsForPath(pathId),
         ]);
+        if (!path) {
+          navigate('/omatpolut');
+        }
         setPathName(path.name);
         setWords(words);
+        setFecthedWords(true);
       } catch (error) {
         setError(`Path with the ID "${pathId}" was not found.`);
       }
     };
+    if (!pathId) {
+      navigate('/omatpolut');
+    }
     fetchData();
   }, [pathId]);
+
+  useEffect(() => {
+    if (fetchedWords && words.length === 0) {
+      deletePath(pathId);
+      navigate('/omatpolut');
+    }
+  }, [pathId, fetchedWords, words]);
 
   const handleEditPathNameClick = () => {
     if (newPathName.trim()) {
@@ -68,6 +89,16 @@ const ManagePath = () => {
   const closeDeleteWordModal = () => {
     setIsDeleteWordModalOpen(false);
     setWordToDelete(null);
+  };
+
+  const onDelete = async () => {
+    try {
+      await deleteWord(wordToDelete);
+      setWords((prevWords) => prevWords.filter((w) => w.id !== wordToDelete));
+    } catch (error) {
+      console.error('Error deleting word:', error);
+      alert('Error deleting the word.');
+    }
   };
 
   return (
@@ -124,11 +155,7 @@ const ManagePath = () => {
         </div>
       )}
       {isDeleteWordModalOpen && (
-        <DeleteWordModal
-          onClose={closeDeleteWordModal}
-          wordId={wordToDelete}
-          setWords={setWords} // Pass the setWords function as a prop
-        />
+        <DeleteWordModal onClose={closeDeleteWordModal} onDelete={onDelete} />
       )}
     </div>
   );
