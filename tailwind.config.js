@@ -12,6 +12,7 @@ module.exports = {
         'sp-black': '#232323',
         'sp-light-yellow': '#B38D2E',
         'sp-red': '#8A0A2A',
+        'sp-disabled-gray': '#9b9b9b',
       },
       fontFamily: {
         'sp-font': ["'Verdana'", 'sans-serif'],
