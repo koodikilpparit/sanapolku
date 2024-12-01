@@ -8,7 +8,7 @@ import {
   deletePath,
 } from '../db/db';
 import WordRow from '../components/create/WordRow';
-import DeleteWordModal from '../components/DeleteWordModal'; // Import the DeleteWordModal component
+import DeleteWordModal from '../components/DeleteWordModal';
 import '../styles/ManagePath.css';
 import Header from '../components/universal/Header';
 
@@ -21,8 +21,8 @@ const ManagePath = () => {
   const [error, setError] = useState(null);
   const [newPathName, setNewPathName] = useState('');
   const [isEditPathNameModalOpen, setIsEditPathNameModalOpen] = useState(false);
-  const [isDeleteWordModalOpen, setIsDeleteWordModalOpen] = useState(false); // State to control the DeleteWordModal
-  const [wordToDelete, setWordToDelete] = useState(null); // State to store the word to be deleted
+  const [isDeleteWordModalOpen, setIsDeleteWordModalOpen] = useState(false);
+  const [wordToDelete, setWordToDelete] = useState(null);
 
   // Function to fetch words for the path when the component loads
   useEffect(() => {
@@ -121,7 +121,7 @@ const ManagePath = () => {
                 key={index}
                 word={wordEntry.word}
                 imgSrc={wordEntry.imageData.src}
-                onDelete={() => openDeleteWordModal(wordEntry.id)} // Open the delete modal
+                onDelete={() => openDeleteWordModal(wordEntry.id)}
               />
             ))
           ) : (
