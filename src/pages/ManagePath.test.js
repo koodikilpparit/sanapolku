@@ -255,7 +255,7 @@ describe('ManagePath Component UI Tests', () => {
       },
     ]);
 
-    const { container } = render(
+    render(
       <BrowserRouter>
         <ManagePath />
       </BrowserRouter>
