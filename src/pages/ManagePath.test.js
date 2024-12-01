@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useNavigate, useParams } from 'react-router-dom';
 import ManagePath from './ManagePath';
 import PathSelection from './PathSelection';
 import * as db from '../db/db';
@@ -19,8 +19,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('ManagePath Component UI Tests', () => {
-  const mockNavigate = jest.fn();
   let pathId;
+  const mockNavigate = jest.fn();
 
   // Utility function to set up the test DB
   const initializeTestDB = async () => {
@@ -33,8 +33,8 @@ describe('ManagePath Component UI Tests', () => {
     pathId = await initializeTestDB();
 
     jest.clearAllMocks();
-    require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
-    require('react-router-dom').useParams.mockReturnValue({
+    useNavigate.mockReturnValue(mockNavigate);
+    useParams.mockReturnValue({
       pathId: pathId,
     });
     const mockInitializePeer = jest.spyOn(ShareUtils, 'initializePeer');
@@ -191,15 +191,60 @@ describe('ManagePath Component UI Tests', () => {
     });
   });
 
-  it('adds a word and then deletes it', async () => {
-    // Mock the addWord function
-    const mockAddWord = jest.spyOn(db, 'addWord');
-    mockAddWord.mockResolvedValue({
-      id: 1,
-      word: 'Test Word',
-      imageData: { src: 'test-image-src' },
+  it('deletes the word when delete button is clicked', async () => {
+    // Mock the getWordsForPath function to return the added word
+    const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
+    mockGetWordsForPath.mockResolvedValue([
+      {
+        id: 1,
+        word: 'Test Word1',
+        imageData: { src: 'test-image-src' },
+      },
+      {
+        id: 2,
+        word: 'Test Word2',
+        imageData: { src: 'test-image-src' },
+      },
+    ]);
+
+    render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Wait for the word to be displayed in the list
+    await waitFor(() => {
+      expect(screen.getByText('Test Word1')).toBeInTheDocument();
+      expect(screen.getByText('Test Word2')).toBeInTheDocument();
     });
 
+    // Simulate opening the delete word modal
+    const wordSpan = screen.getByText('Test Word1');
+    const deleteButton = wordSpan
+      .closest('.word-row-container')
+      .querySelector('.delete-button');
+    expect(deleteButton).toBeInTheDocument();
+    fireEvent.click(deleteButton);
+    expect(
+      screen.getByText(/Haluatko varmasti poistaa sanan?/i)
+    ).toBeInTheDocument();
+
+    // Mock the deleteWord function
+    const mockDeleteWord = jest.spyOn(db, 'deleteWord');
+    mockDeleteWord.mockResolvedValue();
+
+    // Simulate confirming the deletion
+    fireEvent.click(screen.getByRole('button', { name: /Poista/i }));
+
+    // Wait for the word to be removed from the list
+    await waitFor(() => {
+      expect(screen.queryByText('Test Word1')).not.toBeInTheDocument();
+      expect(screen.queryByText('Test Word2')).toBeInTheDocument();
+    });
+  });
+
+  it('navigates to "omatpolut" when last word is deleted', async () => {
     // Mock the getWordsForPath function to return the added word
     const mockGetWordsForPath = jest.spyOn(db, 'getWordsForPath');
     mockGetWordsForPath.mockResolvedValue([
@@ -216,27 +261,16 @@ describe('ManagePath Component UI Tests', () => {
       </BrowserRouter>
     );
 
-    // Simulate adding a word
-    const addButton = screen.getByTestId('add-word-icon');
-    fireEvent.click(addButton);
-    expect(mockNavigate).toHaveBeenCalledWith(`/uusisana/${pathId}`);
-
-    // Mock the navigate function to simulate returning to the ManagePath view
-    mockNavigate.mockImplementation(() => {
-      render(
-        <BrowserRouter>
-          <ManagePath />
-        </BrowserRouter>
-      );
-    });
-
     // Wait for the word to be displayed in the list
     await waitFor(() => {
       expect(screen.getByText('Test Word')).toBeInTheDocument();
     });
 
     // Simulate opening the delete word modal
-    const deleteButton = container.querySelector('.delete-button');
+    const wordSpan = screen.getByText('Test Word');
+    const deleteButton = wordSpan
+      .closest('.word-row-container')
+      .querySelector('.delete-button');
     expect(deleteButton).toBeInTheDocument();
     fireEvent.click(deleteButton);
     expect(
@@ -252,7 +286,24 @@ describe('ManagePath Component UI Tests', () => {
 
     // Wait for the word to be removed from the list
     await waitFor(() => {
-      expect(screen.queryByText('Test Word')).not.toBeInTheDocument();
+      expect(mockNavigate).toHaveBeenCalledWith('/omatpolut');
+    });
+  });
+
+  it('navigates to "uusisana" when add button is clicked', async () => {
+    const { container } = render(
+      <BrowserRouter>
+        <ManagePath />
+      </BrowserRouter>
+    );
+
+    // Simulate opening the delete word modal
+    const addButton = container.querySelector('.add-button');
+
+    fireEvent.click(addButton);
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/uusisana/' + pathId);
     });
   });
 });
