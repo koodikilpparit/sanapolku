@@ -46,14 +46,14 @@ const ManagePath = () => {
       navigate('/omatpolut');
     }
     fetchData();
-  }, [pathId]);
+  }, [pathId, navigate]);
 
   useEffect(() => {
     if (fetchedWords && words.length === 0) {
       deletePath(pathId);
       navigate('/omatpolut');
     }
-  }, [pathId, fetchedWords, words]);
+  }, [pathId, fetchedWords, words, navigate]);
 
   const handleEditPathNameClick = () => {
     if (newPathName.trim()) {
