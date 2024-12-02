@@ -150,7 +150,7 @@ describe('SharePathModal', () => {
   });
 
   it('should not call sendDataOnConnection if peer or exportedPath are not available', async () => {
-    const settingsContextWithoutPeer = { peer: null, peerId: 'fijfoifjo' };
+    const settingsContextWithoutPeer = { ...settingsContextValue, peer: null };
     const mockPath = { name: 'Test Path' };
     const mockWords = [{ word: 'word1' }, { word: 'word2' }];
     sendDataOnConnection.mockRejectedValueOnce(new Error('Connection failed'));
