@@ -101,14 +101,18 @@ const Settings = () => {
           </div>
           <div className="soft-box">
             <h2>Sovelluksen idean kehittäjät:</h2>
-            <p>Nita Sorsa, Karri Kauppila</p>
+            <p>Nita Sorsa</p>
+            <p>Karri Kauppila</p>
           </div>
           <div className="soft-box">
             <h2>Sovelluksen kehitystiimi:</h2>
-            <p>
-              Anni Nieminen, Eveliina Sundberg, Neera Kiviluoma, Tuuli Järvimaa,
-              Juho Rantala, Onni Salomaa, Risto &quot;Reine&quot; Majakangas
-            </p>
+            <p>Anni Nieminen</p>
+            <p>Eveliina Sundberg</p>
+            <p>Neera Kiviluoma</p>
+            <p>Tuuli Järvimaa</p>
+            <p>Juho Rantala</p>
+            <p>Onni Salomaa</p>
+            <p>Risto &quot;Reine&quot; Majakangas</p>
           </div>
           <div className="soft-box">
             <h2>Lisenssi:</h2>

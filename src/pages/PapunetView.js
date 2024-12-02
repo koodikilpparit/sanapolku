@@ -55,13 +55,6 @@ const PapunetView = ({
     }
   }, [getPhotos, initialSearchTerm]);
 
-  // Fetch photos on filter change
-  useEffect(() => {
-    if (initialFetchDone.current) {
-      getPhotos();
-    }
-  }, [selectedFilters, getPhotos]);
-
   const handleFetchPhotos = () => {
     getPhotos();
     initialFetchDone.current = true;
@@ -84,7 +77,8 @@ const PapunetView = ({
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={setSelectedFilters}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={getPhotos}
       />
 
       <div className="search-bar-container">

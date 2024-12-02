@@ -5,12 +5,12 @@
     grid-template-areas: 'back-button';
 }
 
-.loading-msg .error-msg{
+.loading-msg .error-msg {
     color: white;
     font-size: var(--sp-heading-1);
 }
 
-h2 {
+.game-engine h2 {
     color: white;
     font-size: var(--sp-heading-1);
 }

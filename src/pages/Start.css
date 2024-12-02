@@ -2,20 +2,19 @@
 
 /* Default style */
 .start-page {
-  display: grid;
-  grid-template-areas: 'top-bar';
   background-color: #06705b;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .str-top-bar {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  grid-area: top-bar;
-  position: absolute;
-  top: 24px;
-  left: 24px;
+  padding-left: 25px;
+  padding-top: 25px;
+  align-items: flex-start;
 }
 
 .settings-button {
@@ -35,6 +34,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 90%;
+  width: 100%;
+  margin-bottom: 25px;
 }
 
 .start-button,
@@ -79,7 +81,7 @@
 
 .logo-lower {
   display: flex;
-  margin-left: calc(2 * 85.714px + 2 * 5px + 4 * 0.857px);
+  margin-left: calc(2 * 85.714px + 2 * 5px);
   gap: 5px;
   margin-bottom: 35px;
 }
@@ -98,489 +100,81 @@
 
 /* Style for Phones in Portrait mode */
 @media (max-width: 650px) {
-  .start-page {
-    display: grid;
-    grid-template-areas: 'top-bar';
-    background-color: #06705b;
-    height: 100vh;
-  }
-
-  .str-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    grid-area: top-bar;
-    position: absolute;
-    top: 16px;
-    left: 8px;
-  }
-
-  .settings-button {
-    background: none;
-    border: none;
-  }
-
-  .settings-icon {
-    color: white;
-    width: 62px;
-    height: 62px;
-  }
-
   .str-center-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 50px;
+  }
+  .settings-icon {
+    width: 52px;
+    height: 52px;
   }
 
   .start-button,
   .help-button {
-    background-color: white;
-    color: var(--Dark-Blue, #293642);
-    border: none;
-    border-radius: 10px;
-    text-align: center;
     width: 90vw;
-    height: max(6vh, 40px);
-    max-height: 48px;
-    font-family: Verdana;
+    height: 6vh;
+    max-height: 60px;
     font-size: min(6vw, 24px);
-    font-weight: 700;
     margin-bottom: 10px;
   }
 
-  .start-icon {
-    margin-right: 16px;
-  }
-
-  .help-icon {
-    margin-right: 16px;
-  }
-
   .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: Verdana;
     font-size: 30.857px;
-    font-style: normal;
-    font-weight: 700;
   }
 
   .logo-upper {
-    display: flex;
     gap: 2px;
     margin-bottom: 5px;
   }
 
   .logo-lower {
-    display: flex;
-    margin-left: calc(2 * 12vw + 2 * 2px + 4 * 0.857px);
+    margin-left: calc(2 * 12vw + 2 * 2px);
     gap: 2px;
     margin-bottom: 35px;
   }
 
   .letter-tile {
-    border-radius: 8.571px;
-    border: 0.857px solid #000;
-    background-color: white;
     width: 12vw;
     height: 12vw;
-    color: var(--Black, #232323);
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 
 /* Style for Phones in Horizontal mode */
-@media (max-height: 420px) {
-  .start-page {
-    display: grid;
-    grid-template-areas: 'top-bar';
-    background-color: #06705b;
-    height: 100vh;
-  }
-
-  .str-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    grid-area: top-bar;
-    position: absolute;
-    top: 16px;
-    left: 8px;
-  }
-
-  .settings-button {
-    background: none;
-    border: none;
-  }
-
+@media (max-height: 450px) {
   .settings-icon {
-    color: white;
     width: 52px;
     height: 52px;
   }
 
   .str-center-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 4vh;
   }
 
   .start-button,
   .help-button {
-    background-color: white;
-    color: var(--Dark-Blue, #293642);
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    width: 540px;
-    height: 60px;
-    font-family: Verdana;
-    font-size: 28px;
-    font-weight: 700;
+    width: 50vw;
+    height: 15vh;
+    font-size: 7.5vh;
     line-height: 40px;
     margin-bottom: 10px;
   }
 
-  .start-icon {
-    margin-right: 16px;
-  }
-
-  .help-icon {
-    margin-right: 16px;
-  }
-
   .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: Verdana;
-    font-size: 36.286px;
-    font-style: normal;
-    font-weight: 700;
+    font-size: 10vh;
   }
 
   .logo-upper {
-    display: flex;
     gap: 5px;
     margin-bottom: 5px;
   }
 
   .logo-lower {
-    display: flex;
-    margin-left: calc(2 * 65.714px + 2 * 5px + 4 * 0.867px);
+    margin-left: calc(2 * 15vh + 2 * 5px);
     gap: 5px;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
   }
 
   .letter-tile {
-    border-radius: 8.571px;
-    border: 0.857px solid #000;
-    background-color: white;
-    width: 65.714px;
-    height: 65.714px;
-    color: var(--Black, #232323);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-/* Style for extremely narrow screens in portrait mode */
-@media (max-width: 360px) {
-  .start-page {
-    display: grid;
-    grid-template-areas: 'top-bar';
-    background-color: #06705b;
-    height: 100vh;
-  }
-
-  .str-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    grid-area: top-bar;
-    position: absolute;
-    top: 3vw;
-    left: 2vw;
-  }
-
-  .settings-button {
-    background: none;
-    border: none;
-  }
-
-  .settings-icon {
-    color: white;
-    width: 18vw;
-    height: 18vw;
-  }
-
-  .str-center-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .start-button,
-  .help-button {
-    background-color: white;
-    color: var(--Dark-Blue, #293642);
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    width: 95vw;
-    height: 12vw;
-    font-family: Verdana;
-    font-size: 6vw;
-    font-weight: 700;
-    margin-bottom: 2vw;
-    line-height: normal;
-  }
-
-  .start-icon {
-    margin-right: 4vw;
-  }
-
-  .help-icon {
-    margin-right: 4vw;
-  }
-
-  .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: Verdana;
-    font-size: 7vw;
-    font-style: normal;
-    font-weight: 700;
-  }
-
-  .logo-upper {
-    display: flex;
-    gap: 0.5vw;
-    margin-bottom: 1vw;
-  }
-
-  .logo-lower {
-    display: flex;
-    gap: 0.5vw;
-    margin-bottom: 10vw;
-    margin-left: calc(2 * 12vw + 2 * 0.5vw + 4 * min(0.5vw, 0.0085px));
-  }
-
-  .letter-tile {
-    border-radius: 2vw;
-    border: min(0.5vw, 0.0085px) solid #000;
-    background-color: white;
-    width: 12vw;
-    height: 12vw;
-    color: var(--Black, #232323);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-/* Style for the narrowest possible screens in portrait mode */
-@media (max-width: 200px) {
-  .start-page {
-    display: grid;
-    grid-template-areas: 'top-bar';
-    background-color: #06705b;
-    height: 100vh;
-  }
-
-  .str-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    grid-area: top-bar;
-    position: absolute;
-    top: 3vw;
-    left: 2vw;
-  }
-
-  .settings-button {
-    background: none;
-    border: none;
-  }
-
-  .settings-icon {
-    color: white;
-    width: 18vw;
-    height: 18vw;
-  }
-
-  .str-center-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .start-button,
-  .help-button {
-    background-color: white;
-    color: var(--Dark-Blue, #293642);
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    width: 95vw;
-    height: 15vw;
-    font-family: Verdana;
-    font-size: 6vw;
-    font-weight: 700;
-    margin-bottom: 5vw;
-    line-height: normal;
-  }
-
-  .start-icon {
-    margin-right: 4vw;
-  }
-
-  .help-icon {
-    margin-right: 4vw;
-  }
-
-  .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: Verdana;
-    font-size: 7vw;
-    font-style: normal;
-    font-weight: 700;
-  }
-
-  .logo-upper {
-    display: flex;
-    gap: 0.5vw;
-    margin-bottom: 1vw;
-  }
-
-  .logo-lower {
-    display: flex;
-    margin-left: max(
-      calc(2 * 12vw + 2 * 0.5vw + 4 * min(0.5vw, 0.0085px)),
-      0vw
-    );
-    gap: 0.5vw;
-    margin-bottom: 10vw;
-  }
-
-  .letter-tile {
-    border-radius: 2vw;
-    border: min(0.5vw, 0.0085px) solid #000;
-    background-color: white;
-    width: 10vw;
-    height: 10vw;
-    color: var(--Black, #232323);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-/* Style for extremely narrow screens in Horizontal mode */
-@media (max-height: 320px) {
-  .start-page {
-    display: grid;
-    grid-template-areas: 'top-bar';
-    background-color: #06705b;
-    height: 100vh;
-    overflow-y: hidden;
-  }
-
-  .str-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    grid-area: top-bar;
-    position: absolute;
-    top: 2vh;
-    left: 2vh;
-  }
-
-  .settings-button {
-    background: none;
-    border: none;
-  }
-
-  .settings-icon {
-    color: white;
-    width: 20vh;
-    height: 20vh;
-  }
-
-  .str-center-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .start-button,
-  .help-button {
-    background-color: white;
-    color: var(--Dark-Blue, #293642);
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    width: 60vw;
-    height: 20vh;
-    font-family: Verdana;
-    font-size: 10vh;
-    font-weight: 700;
-    margin-bottom: 2vh;
-    line-height: normal;
-  }
-
-  .start-icon {
-    margin-right: 2vw;
-  }
-
-  .help-icon {
-    margin-right: 2vw;
-  }
-
-  .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: Verdana;
-    font-size: 12vh;
-    font-style: normal;
-    font-weight: 700;
-  }
-
-  .logo-upper {
-    display: flex;
-    gap: 1vh;
-    margin-bottom: 1vh;
-  }
-
-  .logo-lower {
-    display: flex;
-    margin-left: calc(2 * 22vh + 2 * 1vh + 4 * 0.857px);
-    gap: 1vh;
-    margin-bottom: 5vh;
-  }
-
-  .letter-tile {
-    border-radius: 8.571px;
-    border: 0.857px solid #000;
-    background-color: white;
-    width: 22vh;
-    height: 22vh;
-    color: var(--Black, #232323);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 15vh;
+    height: 15vh;
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { addWord } from '../db/db';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { addWord, addPath } from '../db/db';
 import '../styles/NewWord.css';
 import BackButton from '../components/universal/BackButton';
 import ImageUploader from '../components/newWord/ImageUploader';
@@ -13,7 +13,10 @@ import ImagePreview from '../components/ImagePreview';
 
 const NewWord = () => {
   const navigate = useNavigate();
-  const pathId = Number(useParams().pathId);
+  const location = useLocation();
+  const temporaryPathId = Number(useParams().pathId);
+  const newPathName = location.state?.newPathName;
+
   const [newWord, setNewWord] = useState('');
   const [imageData, setImageData] = useState(null);
   const [previewImage, setPreviewImage] = useState(
@@ -34,7 +37,7 @@ const NewWord = () => {
   const maxWordLength = 15;
 
   // Save the word and placeholder image to the database
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!newWord.trim()) {
       alert('Syötä sana');
       return;
@@ -42,10 +45,18 @@ const NewWord = () => {
 
     const imageDataToSave = imageData || placeholderImage;
 
+    let pathId = temporaryPathId;
+    if (newPathName) {
+      pathId = await addPath(newPathName);
+    }
+
     if (pathId) {
-      addWord(newWord, pathId, imageDataToSave)
-        .then(() => navigate(-1))
-        .catch(() => alert('Error saving the word.'));
+      try {
+        await addWord(newWord, pathId, imageDataToSave);
+        navigate('/muokkaapolkua/' + pathId);
+      } catch (error) {
+        alert('Error saving the word.');
+      }
     } else {
       alert('Path ID not found.');
     }
@@ -85,7 +96,7 @@ const NewWord = () => {
     <div className="word-page">
       {/* Header */}
       <div className="new-word-header">
-        <BackButton url={'/muokkaapolkua/' + pathId} />
+        <BackButton url={'/muokkaapolkua/' + temporaryPathId} />
         <h2>Uusi sana</h2>
       </div>
 
@@ -142,7 +153,7 @@ const NewWord = () => {
         <div className="confirm-button-container">
           <button
             className="nw-cancel-button"
-            onClick={() => navigate('/muokkaapolkua/' + pathId)}
+            onClick={() => navigate('/muokkaapolkua/' + temporaryPathId)}
           >
             PERUUTA
           </button>

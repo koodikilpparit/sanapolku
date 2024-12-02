@@ -6,26 +6,32 @@ import './PapunetFilterMenu.css';
 
 const public_url = process.env.PUBLIC_URL;
 
-const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
+const PapunetFilterMenu = ({
+  filters,
+  selectedFilters,
+  setSelectedFilters,
+  doOnApply,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [tempFilters, setTempFilters] = useState(selectedFilters);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleCheckboxChange = (filterKey) => {
-    if (tempFilters.includes(filterKey)) {
-      setTempFilters(tempFilters.filter((filter) => filter !== filterKey));
+    if (selectedFilters.includes(filterKey)) {
+      setSelectedFilters((prev) =>
+        prev.filter((filter) => filter !== filterKey)
+      );
     } else {
-      setTempFilters([...tempFilters, filterKey]);
+      setSelectedFilters((prev) => [...prev, filterKey]);
     }
   };
 
   const handleUnselectAll = () => {
-    setTempFilters([]);
+    setSelectedFilters([]);
   };
 
   const applyFilters = () => {
-    onFilterChange(tempFilters);
+    doOnApply();
     setIsOpen(false);
     window.scrollTo({ top: 0 });
   };
@@ -53,7 +59,7 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
                 <input
                   type="checkbox"
                   id={key}
-                  checked={tempFilters.includes(key)}
+                  checked={selectedFilters.includes(key)}
                   onChange={() => handleCheckboxChange(key)}
                 />
                 <span className="filter-label">{label}</span>
@@ -82,7 +88,8 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
 PapunetFilterMenu.propTypes = {
   filters: PropTypes.objectOf(PropTypes.string).isRequired,
   selectedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onFilterChange: PropTypes.func.isRequired,
+  setSelectedFilters: PropTypes.func.isRequired,
+  doOnApply: PropTypes.func.isRequired,
 };
 
 export default PapunetFilterMenu;

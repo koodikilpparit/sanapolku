@@ -47,8 +47,8 @@ const ImageCropper = ({
               zoomable={true}
               movable={true}
               cropBoxResizable={false}
-              cropBoxMovable={true}
-              dragMode="none"
+              cropBoxMovable={false}
+              dragMode="move"
               viewMode={0}
               ref={cropperRef}
             />
