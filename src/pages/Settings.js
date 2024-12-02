@@ -106,12 +106,12 @@ const Settings = () => {
           </div>
           <div className="soft-box">
             <h2>Sovelluksen kehitystiimi:</h2>
-            <p>Anni Nieminen,</p>
-            <p>Eveliina Sundberg,</p>
-            <p>Neera Kiviluoma,</p>
-            <p>Tuuli Järvimaa,</p>
-            <p>Juho Rantala,</p>
-            <p>Onni Salomaa,</p>
+            <p>Anni Nieminen</p>
+            <p>Eveliina Sundberg</p>
+            <p>Neera Kiviluoma</p>
+            <p>Tuuli Järvimaa</p>
+            <p>Juho Rantala</p>
+            <p>Onni Salomaa</p>
             <p>Risto &quot;Reine&quot; Majakangas</p>
           </div>
           <div className="soft-box">
