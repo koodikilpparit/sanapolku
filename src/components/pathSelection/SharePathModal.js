@@ -68,23 +68,34 @@ const SharePathModal = ({ onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Polun jakaminen</h2>
+        <h2 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
+          Polun jakaminen
+        </h2>
         {sharingSucceeded ? (
-          <label>Polun jakaminen onnistui!</label>
+          <label className="text-sp-black">Polun jakaminen onnistui!</label>
         ) : (
-          <div>
-            <p>
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
               Näytä alla oleva QR-koodi polun vastaanottajalle. QR-koodi tulee
               lukea Sanapolku-sovelluksen avulla. Jos kamera ei ole
               käytettävissä, polun jakaminen onnistuu QR-koodin alta löytyvän
               tunnisteen avulla.
             </p>
-            <QRCode value={QRCODE_PREFIX + peerId} />
-            <span>Lähettäjän tunniste:</span>
-            <p>{peerId}</p>
+            <div className="py-2">
+              <QRCode value={QRCODE_PREFIX + peerId} />
+            </div>
+            <div className="py-2">
+              <span className="text-md md:text-lg lg:text-xl font-bold">
+                Lähettäjän tunniste:
+              </span>
+              <p className="text-md md:text-lg lg:text-xl">{peerId}</p>
+            </div>
           </div>
         )}
-        <button className="save-button" onClick={closeShareModal}>
+        <button
+          className="btn-sp-primary bg-sp-dark-green"
+          onClick={closeShareModal}
+        >
           Palaa takaisin
         </button>
       </div>

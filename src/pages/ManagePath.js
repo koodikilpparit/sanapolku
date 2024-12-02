@@ -91,6 +91,10 @@ const ManagePath = () => {
     setWordToDelete(null);
   };
 
+  const editWord = (wordEntry) => {
+    navigate(`/uusisana/${wordEntry.pathId}`, { state: { wordEntry } });
+  };
+
   const onDelete = async () => {
     try {
       await deleteWord(wordToDelete);
@@ -122,6 +126,7 @@ const ManagePath = () => {
                 word={wordEntry.word}
                 imgSrc={wordEntry.imageData.src}
                 onDelete={() => openDeleteWordModal(wordEntry.id)}
+                onEdit={() => editWord(wordEntry)}
               />
             ))
           ) : (

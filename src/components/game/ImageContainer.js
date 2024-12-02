@@ -11,7 +11,7 @@ const ImageContainer = ({ src, alt, author }) => {
   return (
     <div className="image-container flex items-center justify-center sm:items-start p-4">
       <img
-        className="h-full aspect-square"
+        className="h-full aspect-square bg-sp-white rounded-lg cursor-pointer"
         src={src}
         alt={alt}
         onClick={openPreview}
