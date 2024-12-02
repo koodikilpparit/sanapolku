@@ -5,9 +5,11 @@ import { connectToPeerAndReceive, QRCODE_PREFIX } from '../../utils/ShareUtils';
 import { importPath } from '../../utils/PathUtils';
 
 import PropTypes from 'prop-types';
+import { SettingsContext } from '../../contexts/SettingsContext';
 
 const ReceivePathModal = ({ onClose }) => {
-  const { peer, setPaths, openSharingFailedModal } = useContext(PathContext);
+  const { setPaths, openSharingFailedModal } = useContext(PathContext);
+  const { peer } = useContext(SettingsContext);
   const [isScanning, setIsScanning] = useState(false);
   const [isReceiveStarted, setIsReceiveStarted] = useState(false);
   const [receiveSucceeded, setReceiveSucceeded] = useState(false);
