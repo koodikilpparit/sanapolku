@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PathContext } from './PathContext';
-import { addPath } from '../../db/db';
 
 import PropTypes from 'prop-types';
 
@@ -9,27 +8,27 @@ const AddPathModal = ({ onClose, onOpenReceive }) => {
   const navigate = useNavigate();
   const [newPath, setNewPath] = useState('');
 
-  const { setPaths } = useContext(PathContext);
+  const { paths } = useContext(PathContext);
 
   // Function to add a new path to the database and navigate
   // to path management page
   const handleAddPath = () => {
-    if (newPath.trim()) {
-      addPath(newPath)
-        .then((pathId) => {
-          setPaths((prevPaths) => [
-            ...prevPaths,
-            { id: pathId, name: newPath },
-          ]);
-          setNewPath('');
-          console.log('Path added:', newPath);
-          onClose();
-          navigate(`/muokkaapolkua/${pathId}`);
+    const pathToAdd = newPath.trim();
+    if (pathToAdd) {
+      if (
+        paths.some((existingPath) => {
+          return existingPath.name === pathToAdd;
         })
-        .catch((error) => {
-          console.error(error.message);
-          alert(error.message);
-        });
+      ) {
+        alert('Polku samalla nimellä on jo olemassa');
+        return;
+      }
+      const pathId = crypto.randomUUID();
+      setNewPath('');
+      onClose();
+      navigate(`/uusisana/${pathId}`, {
+        state: { newPathName: pathToAdd },
+      });
     } else {
       alert('Anna polulle nimi');
     }

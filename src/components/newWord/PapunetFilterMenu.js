@@ -6,21 +6,34 @@ import './PapunetFilterMenu.css';
 
 const public_url = process.env.PUBLIC_URL;
 
-const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
+const PapunetFilterMenu = ({
+  filters,
+  selectedFilters,
+  setSelectedFilters,
+  doOnApply,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleCheckboxChange = (filterKey) => {
     if (selectedFilters.includes(filterKey)) {
-      onFilterChange(selectedFilters.filter((filter) => filter !== filterKey));
+      setSelectedFilters((prev) =>
+        prev.filter((filter) => filter !== filterKey)
+      );
     } else {
-      onFilterChange([...selectedFilters, filterKey]);
+      setSelectedFilters((prev) => [...prev, filterKey]);
     }
   };
 
   const handleUnselectAll = () => {
-    onFilterChange([]);
+    setSelectedFilters([]);
+  };
+
+  const applyFilters = () => {
+    doOnApply();
+    setIsOpen(false);
+    window.scrollTo({ top: 0 });
   };
 
   return (
@@ -58,6 +71,14 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
               </label>
             ))}
           </div>
+
+          <button
+            className="apply-filters-btn"
+            onClick={applyFilters}
+            type="button"
+          >
+            KÄYTÄ VALINTOJA
+          </button>
         </div>
       )}
     </div>
@@ -67,7 +88,8 @@ const PapunetFilterMenu = ({ filters, selectedFilters, onFilterChange }) => {
 PapunetFilterMenu.propTypes = {
   filters: PropTypes.objectOf(PropTypes.string).isRequired,
   selectedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onFilterChange: PropTypes.func.isRequired,
+  setSelectedFilters: PropTypes.func.isRequired,
+  doOnApply: PropTypes.func.isRequired,
 };
 
 export default PapunetFilterMenu;

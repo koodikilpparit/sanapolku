@@ -65,22 +65,6 @@
   width: 80%;
 }
 
-.home-button {
-  display: flex;
-  width: 52px;
-  height: 52px;
-  border-radius: 8px;
-  background: #b38d2e;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-icon {
-  color: #fff;
-  height: 80%;
-  width: 80%;
-}
-
 .ready-button {
   display: flex;
   width: 126px;
@@ -127,22 +111,12 @@
     width: 8vh;
   }
 
-  .home-button {
-    height: 8vh;
-    width: 8vh;
-  }
-
   .ready-button {
     height: 8vh;
     font-size: 4vh;
   }
 
   .restart-icon {
-    height: 6vh;
-    width: 6vh;
-  }
-
-  .home-icon {
     height: 6vh;
     width: 6vh;
   }
@@ -178,6 +152,11 @@
     font-size: 6.5vw;
   }
 
+  .restart-button {
+    height: 15vw;
+    width: 15vw;
+  }
+
   .ending-content img {
     height: 50vw;
     width: 50vw;
@@ -202,13 +181,6 @@
   }
 
   .restart-button {
-    width: 10vw;
-    height: 10vw;
-    max-height: 80px;
-    max-width: 80px;
-  }
-
-  .home-button {
     width: 10vw;
     height: 10vw;
     max-height: 80px;
@@ -252,13 +224,6 @@
   }
 
   .restart-button {
-    width: 10vh;
-    height: 10vh;
-    max-height: 200px;
-    max-width: none;
-  }
-
-  .home-button {
     width: 10vh;
     height: 10vh;
     max-height: 200px;
