@@ -4,9 +4,7 @@ import SharePathModal from './SharePathModal';
 import { sendDataOnConnection } from '../../utils/ShareUtils'; // Mocked function
 import React from 'react';
 import { exportPath } from '../../utils/PathUtils';
-import SettingsProvider, {
-  SettingsContext,
-} from '../../contexts/SettingsContext';
+import { SettingsContext } from '../../contexts/SettingsContext';
 
 // Mock the sendDataOnConnection function
 jest.mock('../../utils/ShareUtils', () => ({
