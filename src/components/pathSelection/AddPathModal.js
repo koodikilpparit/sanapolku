@@ -49,11 +49,18 @@ const AddPathModal = ({ onClose, onOpenReceive }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Vastaanota polku</h2>
-        <button className="receive-path-button" onClick={openReceivePathModal}>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
+          Vastaanota polku
+        </h2>
+        <button
+          className="receive-path-button p-2"
+          onClick={openReceivePathModal}
+        >
           Siirry vastaanottamaan polku
         </button>
-        <h2>Lisää uusi polku</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
+          Lisää uusi polku
+        </h2>
         <input
           type="text"
           value={newPath}
