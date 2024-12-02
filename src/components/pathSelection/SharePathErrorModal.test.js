@@ -18,11 +18,7 @@ describe('SharePathErrorModal', () => {
     ).toBeInTheDocument();
 
     // Check that the modal description is displayed
-    expect(
-      screen.getByText(
-        /Yritä jakamista uudestaan. Jos jakaminen ei vieläkään onnistu, ongelma voi johtua laitteiden käyttämistä verkoista./
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Yritä jakamista uudestaan./)).toBeInTheDocument();
 
     // Check that the button text is correct
     expect(screen.getByText('Sulje')).toBeInTheDocument();

@@ -4,6 +4,9 @@ import SharePathModal from './SharePathModal';
 import { sendDataOnConnection } from '../../utils/ShareUtils'; // Mocked function
 import React from 'react';
 import { exportPath } from '../../utils/PathUtils';
+import SettingsProvider, {
+  SettingsContext,
+} from '../../contexts/SettingsContext';
 
 // Mock the sendDataOnConnection function
 jest.mock('../../utils/ShareUtils', () => ({
@@ -22,11 +25,14 @@ jest.mock('../../utils/PathUtils', () => ({
 
 describe('SharePathModal', () => {
   const onCloseMock = jest.fn();
-  const contextValue = {
-    peer: { id: 'testPeerId' },
-    peerId: 'testPeerId',
+  const pathContextValue = {
     currentPath: { id: 'testPathId', name: 'Test Path' },
     openSharingFailedModal: jest.fn(),
+  };
+
+  const settingsContextValue = {
+    peer: { id: 'testPeerId' },
+    peerId: 'testPeerId',
   };
 
   beforeEach(() => {
@@ -39,9 +45,11 @@ describe('SharePathModal', () => {
     sendDataOnConnection.mockResolvedValueOnce();
     exportPath.mockResolvedValueOnce({ name: mockPath.name, words: mockWords });
     return render(
-      <PathContext.Provider value={contextValue}>
-        <SharePathModal onClose={onCloseMock} />
-      </PathContext.Provider>
+      <SettingsContext.Provider value={settingsContextValue}>
+        <PathContext.Provider value={pathContextValue}>
+          <SharePathModal onClose={onCloseMock} />
+        </PathContext.Provider>
+      </SettingsContext.Provider>
     );
   };
 
@@ -51,9 +59,11 @@ describe('SharePathModal', () => {
     sendDataOnConnection.mockRejectedValueOnce(new Error('Connection failed'));
     exportPath.mockResolvedValueOnce({ name: mockPath.name, words: mockWords });
     return render(
-      <PathContext.Provider value={contextValue}>
-        <SharePathModal onClose={onCloseMock} />
-      </PathContext.Provider>
+      <SettingsContext.Provider value={settingsContextValue}>
+        <PathContext.Provider value={pathContextValue}>
+          <SharePathModal onClose={onCloseMock} />
+        </PathContext.Provider>
+      </SettingsContext.Provider>
     );
   };
 
@@ -64,7 +74,7 @@ describe('SharePathModal', () => {
     expect(screen.getByText('Polun jakaminen')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kamera ei ole käytettävissä, polun jakaminen onnistuu QR-koodin alta löytyvän tunnisteen avulla.'
+        'Näytä alla oleva QR-koodi polun vastaanottajalle. QR-koodi tulee lukea Sanapolku-sovelluksen avulla. Jos kamera ei ole käytettävissä, polun jakaminen onnistuu QR-koodin alta löytyvän tunnisteen avulla.'
       )
     ).toBeInTheDocument();
     expect(screen.getByText('Lähettäjän tunniste:')).toBeInTheDocument();
@@ -106,7 +116,7 @@ describe('SharePathModal', () => {
 
     // Check that the failure modal is triggered
     await waitFor(() =>
-      expect(contextValue.openSharingFailedModal).toHaveBeenCalled()
+      expect(pathContextValue.openSharingFailedModal).toHaveBeenCalled()
     );
     expect(
       screen.queryByText('Polun jakaminen onnistui!')
@@ -131,23 +141,28 @@ describe('SharePathModal', () => {
     initSuccesfulShare();
 
     await waitFor(() =>
-      expect(sendDataOnConnection).toHaveBeenCalledWith(contextValue.peer, {
-        name: 'Test Path',
-        words: [{ word: 'word1' }, { word: 'word2' }],
-      })
+      expect(sendDataOnConnection).toHaveBeenCalledWith(
+        settingsContextValue.peer,
+        {
+          name: 'Test Path',
+          words: [{ word: 'word1' }, { word: 'word2' }],
+        }
+      )
     );
   });
 
   it('should not call sendDataOnConnection if peer or exportedPath are not available', async () => {
-    const contextWithoutPeer = { ...contextValue, peer: null };
+    const settingsContextWithoutPeer = { peer: null, peerId: 'fijfoifjo' };
     const mockPath = { name: 'Test Path' };
     const mockWords = [{ word: 'word1' }, { word: 'word2' }];
     sendDataOnConnection.mockRejectedValueOnce(new Error('Connection failed'));
     exportPath.mockResolvedValueOnce({ name: mockPath.name, words: mockWords });
     render(
-      <PathContext.Provider value={contextWithoutPeer}>
-        <SharePathModal onClose={onCloseMock} />
-      </PathContext.Provider>
+      <SettingsContext.Provider value={settingsContextWithoutPeer}>
+        <PathContext.Provider value={pathContextValue}>
+          <SharePathModal onClose={onCloseMock} />
+        </PathContext.Provider>
+      </SettingsContext.Provider>
     );
 
     await waitFor(() => expect(sendDataOnConnection).not.toHaveBeenCalled());
