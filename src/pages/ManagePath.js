@@ -125,7 +125,7 @@ const ManagePath = () => {
                 key={index}
                 word={wordEntry.word}
                 imgSrc={wordEntry.imageData.src}
-                onDelete={() => openDeleteWordModal(wordEntry.id)} // Open the delete modal
+                onDelete={() => openDeleteWordModal(wordEntry.id)}
                 onEdit={() => EditWord(wordEntry)}
               />
             ))
