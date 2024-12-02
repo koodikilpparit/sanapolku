@@ -115,7 +115,7 @@ const NewWord = () => {
       {/* Header */}
       <div className="new-word-header">
         <BackButton url={'/muokkaapolkua/' + pathId} />
-        <h2>{loadedWord ? `Muokkaat sanaa` : 'Uusi sana'}</h2>
+        <h2>{loadedWord ? `Muokkaa sanaa` : 'Uusi sana'}</h2>
       </div>
 
       {/* Container*/}
