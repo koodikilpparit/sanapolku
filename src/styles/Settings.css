@@ -42,10 +42,16 @@ body {
   overflow: visible; /* Change from auto to visible */
 }
 
+.settings-about-container h2 {
+  padding-bottom: 10px;
+  font-size: var(--sp-heading-5);
+  font-weight: bold;
+}
+
 .settings-about-container h4 {
   padding-top: 20px;
   padding-bottom: 10px;
-  font-size: var(--sp-heading-4);
+  font-size: var(--sp-heading-6);
   font-weight: bold;
 }
 
@@ -222,7 +228,7 @@ body {
 /* Responsive styles */
 @media (max-width: 767px) {
   .settings-about-container {
-    width: 90%;
+    width: 95%;
   }
 
   .reset-button button {
@@ -234,8 +240,8 @@ body {
   }
 
   .soft-box {
-    width: 90%; /* Adjust width for mobile screens */
-    padding: 15px; /* Reduce padding on smaller screens */
+    width: 95%; /* Adjust width for mobile screens */
+    padding: 5px; /* Reduce padding on smaller screens */
   }
 }
 
