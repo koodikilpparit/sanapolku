@@ -4,6 +4,9 @@
   border: 1px solid var(--sp-gray-sp);
   border-radius: 10px;
   width: 100%;
+  position: relative;
+  z-index: 2000;
+  background-color: var(--sp-white);
 }
 
 .filter-menu-header {
@@ -78,6 +81,21 @@ h3 {
   height: 50px;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+.apply-filters-btn {
+  background-color: var(--sp-dark-green);
+  color: var(--sp-white);
+  border: none;
+  font-size: var(--sp-heading-6);
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

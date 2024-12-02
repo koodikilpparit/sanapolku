@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ImageContainer from './ImageContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKeyboard } from '@fortawesome/free-solid-svg-icons';
 
 const Phase1 = ({
   currentWord,
@@ -76,7 +78,7 @@ const Phase1 = ({
                 onChange={(event) => handleInputChange(index, event, inputRefs)}
                 onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                 className={
-                  'w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl'
+                  'w-full aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl'
                 }
                 style={
                   incorrectIndices.includes(index)
@@ -98,13 +100,19 @@ const Phase1 = ({
                 style={{
                   backgroundColor: '#F0D784',
                   color: '#013326',
-                  marginRight: '20px',
                 }}
                 onClick={handleSkip}
               >
                 OHITA
               </button>
             )}
+            <button
+              className="btn-sp-secondary sm:w-1/4 bg-sp-blue cursor-pointer"
+              style={{ marginRight: '3%', marginLeft: '3%' }}
+              onClick={() => inputRefs.current[0]?.focus()}
+            >
+              <FontAwesomeIcon icon={faKeyboard} className="keyboard" />
+            </button>
             {showContinueButton ? (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
@@ -116,7 +124,7 @@ const Phase1 = ({
               <button
                 className={`btn-sp-primary w-full sm:w-1/2 ${
                   isReadyButtonDisabled
-                    ? 'bg-sp-gray cursor-not-allowed'
+                    ? 'bg-sp-disabled-gray cursor-not-allowed'
                     : 'bg-sp-light-green cursor-pointer'
                 }`}
                 onClick={handleSubmit}

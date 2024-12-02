@@ -77,7 +77,8 @@ const PapunetView = ({
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={setSelectedFilters}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={getPhotos}
       />
 
       <div className="search-bar-container">
@@ -144,7 +145,11 @@ const PapunetView = ({
         <button className="btn-sp-primary return-btn" onClick={closeModal}>
           PERUUTA
         </button>
-        <button className="btn-sp-primary save-btn" onClick={handleSave}>
+        <button
+          className="btn-sp-primary save-btn"
+          onClick={handleSave}
+          disabled={!selectedImage}
+        >
           VALITSE
         </button>
       </div>

@@ -7,8 +7,7 @@ jest.mock('../db/db');
 
 describe('DeleteWordModal', () => {
   const mockOnClose = jest.fn();
-  const mockSetWords = jest.fn();
-  const wordId = 1;
+  const mockOnDelete = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -16,11 +15,7 @@ describe('DeleteWordModal', () => {
 
   test('renders correctly', () => {
     const { getByText } = render(
-      <DeleteWordModal
-        onClose={mockOnClose}
-        wordId={wordId}
-        setWords={mockSetWords}
-      />
+      <DeleteWordModal onClose={mockOnClose} onDelete={mockOnDelete} />
     );
 
     expect(getByText('Vahvista poisto')).toBeInTheDocument();
@@ -31,56 +26,24 @@ describe('DeleteWordModal', () => {
 
   test('calls onClose when cancel button is clicked', () => {
     const { getByText } = render(
-      <DeleteWordModal
-        onClose={mockOnClose}
-        wordId={wordId}
-        setWords={mockSetWords}
-      />
+      <DeleteWordModal onClose={mockOnClose} onDelete={mockOnDelete} />
     );
 
     fireEvent.click(getByText('Peruuta'));
     expect(mockOnClose).toHaveBeenCalled();
   });
 
-  test('calls deleteWord and setWords when delete button is clicked', async () => {
+  test('calls onDelete when delete button is clicked', async () => {
     deleteWord.mockResolvedValueOnce();
 
     const { getByText } = render(
-      <DeleteWordModal
-        onClose={mockOnClose}
-        wordId={wordId}
-        setWords={mockSetWords}
-      />
+      <DeleteWordModal onClose={mockOnClose} onDelete={mockOnDelete} />
     );
 
     fireEvent.click(getByText('Poista'));
 
     await waitFor(() => {
-      expect(deleteWord).toHaveBeenCalledWith(wordId);
-      expect(mockSetWords).toHaveBeenCalled();
-      expect(mockOnClose).toHaveBeenCalled();
-    });
-  });
-
-  test('shows alert and logs error if deleteWord fails', async () => {
-    const errorMessage = 'Error deleting word';
-    deleteWord.mockRejectedValueOnce(new Error(errorMessage));
-    window.alert = jest.fn();
-
-    const { getByText } = render(
-      <DeleteWordModal
-        onClose={mockOnClose}
-        wordId={wordId}
-        setWords={mockSetWords}
-      />
-    );
-
-    fireEvent.click(getByText('Poista'));
-
-    await waitFor(() => {
-      expect(deleteWord).toHaveBeenCalledWith(wordId);
-      expect(window.alert).toHaveBeenCalledWith('Error deleting the word.');
-      expect(mockOnClose).toHaveBeenCalled();
+      expect(mockOnDelete).toHaveBeenCalled();
     });
   });
 });

@@ -32,7 +32,7 @@ describe('Phase2 Component', () => {
       />
     );
 
-    expect(screen.getByText(/järjestä kirjaimet/i)).toBeInTheDocument();
+    expect(screen.getByText(/klikkaa ja järjestä/i)).toBeInTheDocument();
     expect(screen.getByAltText(/kuva sanasta test/i)).toHaveAttribute(
       'src',
       'test-image-src'

@@ -11,7 +11,7 @@ const DeletePathModal = ({ onClose }) => {
     if (!currentPath) return;
 
     try {
-      const pathData = await getPathById(currentPath.id); // Wait for getPathByName to resolve
+      const pathData = await getPathById(currentPath.id);
       if (!pathData || !pathData.id) {
         console.error('Path not found:', currentPath.name);
         alert('Path not found.');

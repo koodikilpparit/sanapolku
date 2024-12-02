@@ -28,9 +28,6 @@ describe('GameEndingPage Component', () => {
       </BrowserRouter>
     );
 
-    const homeButton = container.querySelector('.home-button');
-    expect(homeButton).toBeInTheDocument;
-
     const readyButton = container.querySelector('.ready-button');
     expect(readyButton).toBeInTheDocument;
 
@@ -71,22 +68,6 @@ describe('GameEndingPage Component', () => {
       'Suoritit koko polun ja saavuit määränpäähäsi!'
     );
     expect(endingText).toBeInTheDocument;
-  });
-
-  it('checks that the home button brings you to the start page', () => {
-    const mockNavigate = jest.fn();
-    useNavigate.mockReturnValue(mockNavigate);
-
-    // Rendering the required pages
-    const { container } = render(
-      <BrowserRouter>
-        <GameEndingPage />
-      </BrowserRouter>
-    );
-
-    const homeButton = container.querySelector('.home-button');
-    fireEvent.click(homeButton);
-    expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 
   it('checks that the VALMIS button brings you to the game menu', () => {

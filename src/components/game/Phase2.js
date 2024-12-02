@@ -131,12 +131,12 @@ const Phase2 = ({
 
   return (
     <div
-      className="flex flex-col h-full"
+      className="flex flex-col"
       onClick={handleContainerClick}
       ref={containerRef}
     >
       <h1 className="text-sp-white text-4xl md:text-6xl lg:text-7xl font-bold py-2 md:py-4">
-        Järjestä kirjaimet
+        Klikkaa ja järjestä
       </h1>
       <div className="flex flex-col sm:flex-row md:flex-row md-minh-1000:flex-col md-minh-1000:items-center lg:flex-row h-full">
         <div className="w-full sm:w-2/5 md:w-1/2 h-2/5 sm:h-full">
@@ -147,27 +147,27 @@ const Phase2 = ({
             author={currentWord.imageData.author}
           />
         </div>
-        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 flex flex-col justify-between">
+        <div className="w-full sm:w-4/5 md:w-4/5 h-3/5 flex flex-col justify-between">
           <div className="flex flex-col gap-2 lg:gap-4">
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 items-center justify-center px-2">
               {playerInput.map((letter, index) => (
                 <div
                   key={index}
                   onClick={(event) => handleInputClick(event, index)}
-                  className={`w-full aspect-square rounded-lg font-bold text-center uppercase text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl ${
+                  className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl border-2 ${
                     incorrectIndices.includes(index)
                       ? 'bg-[#F28C8C] border-4 border-[#E31130]'
                       : letter !== ''
                         ? 'bg-sp-white text-sp-black'
-                        : 'bg-sp-gray text-sp-black opacity-50 border-2 border-sp-white'
-                  } p-1 flex items-center justify-center cursor-pointer`}
+                        : 'bg-sp-gray text-sp-black opacity-50 border-sp-white'
+                  } flex`}
                   data-testid="input-box"
                 >
                   {letter}
                 </div>
               ))}
             </div>
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 items-center justify-center px-2">
               {displayShuffledLetters().map((item, index) => (
                 <div
                   key={index}
@@ -177,13 +177,14 @@ const Phase2 = ({
                       : (event) =>
                           handleLetterClick(event, item.letter, item.id)
                   }
-                  className={`w-full aspect-square rounded-lg font-bold text-center uppercase text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-1 flex items-center justify-center ${
+                  className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl${
                     item.isBlank
                       ? 'bg-sp-dark-green cursor-default'
-                      : 'cursor-pointer bg-sp-white border-2 ' +
-                        (selectedLetter && selectedLetter.index === item.id
-                          ? 'bg-sp-light-yellow border-sp-light-yellow'
-                          : 'border-sp-white')
+                      : 'cursor-pointer bg-sp-white border-2'
+                  } ${
+                    selectedLetter && selectedLetter.index === item.id
+                      ? 'bg-sp-light-yellow border-sp-light-yellow'
+                      : 'border-sp-white'
                   }`}
                   data-testid="shuffled-letter"
                 >
@@ -193,7 +194,7 @@ const Phase2 = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-center sm:justify-end py-4">
+          <div className="flex items-end justify-center sm:justify-end py-2">
             {showSkipButton && (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
@@ -218,7 +219,7 @@ const Phase2 = ({
               <button
                 className={`btn-sp-primary w-full sm:w-1/2 ${
                   isReadyButtonDisabled
-                    ? 'bg-sp-gray cursor-not-allowed'
+                    ? 'bg-sp-disabled-gray cursor-not-allowed'
                     : 'bg-sp-light-green cursor-pointer'
                 }`}
                 onClick={() => handleSubmit(playerInput.join(''))}

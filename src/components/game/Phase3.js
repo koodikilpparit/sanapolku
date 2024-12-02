@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ImageContainer from './ImageContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKeyboard } from '@fortawesome/free-solid-svg-icons';
 
 const Phase3 = ({
   currentWord,
@@ -64,22 +66,22 @@ const Phase3 = ({
             author={currentWord.imageData.author}
           />
         </div>
-        <div className="w-full sm:w-3/5 md:w-1/2 h-3/5 sm:h-full flex flex-col justify-between">
+        <div className="w-full sm:w-4/5 md:w-4/5 h-3/5 flex flex-col justify-between">
           <div className="flex flex-col gap-2 lg:gap-4">
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 items-center justify-center px-2">
               {currentWord.word
                 .toUpperCase()
                 .split('')
                 .map((letter, index) => (
                   <div
                     key={index}
-                    className="w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1 flex items-center justify-center"
+                    className="w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center bg-sp-white text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl"
                   >
                     {letter}
                   </div>
                 ))}
             </div>
-            <div className="flex flex-row gap-1 md:gap-2 items-center justify-center px-2">
+            <div className="flex flex-row gap-1 items-center justify-center px-2">
               {currentWord.word.split('').map((_, index) => (
                 <input
                   key={index}
@@ -91,7 +93,7 @@ const Phase3 = ({
                   }
                   onKeyDown={(event) => handleBackspaceNavigation(index, event)}
                   className={
-                    'w-full aspect-square rounded-lg font-bold text-center text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl bg-sp-white text-sp-black p-1'
+                    'w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl'
                   }
                   style={
                     incorrectIndices.includes(index)
@@ -108,20 +110,26 @@ const Phase3 = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-center sm:justify-end py-5">
+          <div className="flex items-end justify-center sm:justify-end py-2">
             {showSkipButton && (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 text-sp-white cursor-pointer"
                 style={{
                   backgroundColor: '#F0D784',
                   color: '#013326',
-                  marginRight: '20px',
                 }}
                 onClick={handleSkip}
               >
                 OHITA
               </button>
             )}
+            <button
+              className="btn-sp-secondary sm:w-1/4 bg-sp-blue cursor-pointer"
+              style={{ marginRight: '3%', marginLeft: '3%' }}
+              onClick={() => inputRefs.current[0]?.focus()}
+            >
+              <FontAwesomeIcon icon={faKeyboard} className="keyboard" />
+            </button>
             {showContinueButton ? (
               <button
                 className="btn-sp-primary w-full sm:w-1/2 bg-sp-light-green cursor-pointer"
@@ -133,7 +141,7 @@ const Phase3 = ({
               <button
                 className={`btn-sp-primary w-full sm:w-1/2 ${
                   isReadyButtonDisabled
-                    ? 'bg-sp-gray cursor-not-allowed'
+                    ? 'bg-sp-disabled-gray cursor-not-allowed'
                     : 'bg-sp-light-green cursor-pointer'
                 }`}
                 onClick={handleSubmit}

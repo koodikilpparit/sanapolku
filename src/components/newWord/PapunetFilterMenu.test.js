@@ -9,7 +9,9 @@ describe('PapunetFilterMenu', () => {
     filter3: 'Filter 3',
   };
   const selectedFilters = [];
-  const onFilterChange = jest.fn();
+  const setSelectedFilters = jest.fn();
+  const doOnApply = jest.fn();
+  window.scrollTo = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -20,7 +22,8 @@ describe('PapunetFilterMenu', () => {
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={onFilterChange}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={doOnApply}
       />
     );
 
@@ -35,7 +38,8 @@ describe('PapunetFilterMenu', () => {
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={onFilterChange}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={doOnApply}
       />
     );
 
@@ -50,16 +54,16 @@ describe('PapunetFilterMenu', () => {
     ).not.toBeInTheDocument();
   });
 
-  test('toggles a filter when clicked', () => {
+  test('selects a filter', () => {
     const filters = { filter1: 'Filter 1', filter2: 'Filter 2' };
     const selectedFilters = [];
-    const onFilterChange = jest.fn();
 
     render(
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={onFilterChange}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={doOnApply}
       />
     );
 
@@ -70,20 +74,18 @@ describe('PapunetFilterMenu', () => {
       .closest('.filter-option');
     fireEvent.click(filterOption);
 
-    expect(onFilterChange).toHaveBeenCalledTimes(1);
-    expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
-
-    fireEvent.click(filterOption);
-    expect(onFilterChange).toHaveBeenCalledTimes(2);
-    expect(onFilterChange).toHaveBeenCalledWith(['filter1']);
+    fireEvent.click(screen.getByText(/käytä valintoja/i));
+    expect(doOnApply).toHaveBeenCalledTimes(1);
+    expect(setSelectedFilters).toHaveBeenCalled();
   });
 
   test('handles "Unselect All" functionality', () => {
     render(
       <PapunetFilterMenu
         filters={filters}
-        selectedFilters={['filter1', 'filter2']}
-        onFilterChange={onFilterChange}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={doOnApply}
       />
     );
 
@@ -91,7 +93,9 @@ describe('PapunetFilterMenu', () => {
     const unselectAllButton = screen.getByText(/poista kaikki valinnat/i);
 
     fireEvent.click(unselectAllButton);
-    expect(onFilterChange).toHaveBeenCalledWith([]);
+    fireEvent.click(screen.getByText(/käytä valintoja/i));
+    expect(setSelectedFilters).toHaveBeenCalledWith([]);
+    expect(doOnApply).toHaveBeenCalled();
   });
 
   test('renders the correct number of filters', () => {
@@ -99,7 +103,8 @@ describe('PapunetFilterMenu', () => {
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={onFilterChange}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={doOnApply}
       />
     );
 
@@ -113,7 +118,8 @@ describe('PapunetFilterMenu', () => {
       <PapunetFilterMenu
         filters={filters}
         selectedFilters={selectedFilters}
-        onFilterChange={onFilterChange}
+        setSelectedFilters={setSelectedFilters}
+        doOnApply={doOnApply}
       />
     );
 
