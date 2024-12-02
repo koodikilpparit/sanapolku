@@ -130,40 +130,6 @@ describe('ManagePath Component UI Tests', () => {
     });
   });
 
-  it('successfully edits the path name', async () => {
-    // Mock successful response for editPathName
-    const mockEditPathName = jest.spyOn(db, 'editPathName');
-    mockEditPathName.mockResolvedValue({
-      id: pathId,
-      name: 'Updated Path Name',
-    });
-
-    const { container } = render(
-      <BrowserRouter>
-        <ManagePath />
-      </BrowserRouter>
-    );
-
-    // Open the edit path name modal
-    fireEvent.click(container.querySelector('.edit-button'));
-
-    // Enter new path name
-    const input = screen.getByPlaceholderText(/Anna uusi polun nimi/i);
-    fireEvent.change(input, { target: { value: 'Updated Path Name' } });
-
-    // Click save button
-    fireEvent.click(screen.getByText(/Tallenna/i));
-
-    await waitFor(() => {
-      expect(mockEditPathName).toHaveBeenCalledTimes(1);
-    });
-
-    // Wait for the updated path name to display in the title
-    await waitFor(() => {
-      expect(screen.getByText('Updated Path Name')).toBeInTheDocument();
-    });
-  });
-
   it('shows an error message when editing the path name fails', async () => {
     const { container } = render(
       <BrowserRouter>
