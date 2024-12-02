@@ -30,8 +30,12 @@ export async function connectToPeerAndReceive(peer, targetPeerId, callback) {
     connection.off('data'); // Not sure if needed, but should not do any harm either
     connection.on('data', (data) => {
       const asyncCallBack = async (data) => {
-        const importedPath = await callback(data);
-        resolve(importedPath);
+        try {
+          const importedPath = await callback(data);
+          resolve(importedPath);
+        } catch (error) {
+          reject(error);
+        }
       };
       asyncCallBack(data);
     });
