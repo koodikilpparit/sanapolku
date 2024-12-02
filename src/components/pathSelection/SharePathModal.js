@@ -5,10 +5,11 @@ import { sendDataOnConnection, QRCODE_PREFIX } from '../../utils/ShareUtils';
 import { exportPath } from '../../utils/PathUtils';
 
 import PropTypes from 'prop-types';
+import { SettingsContext } from '../../contexts/SettingsContext';
 
 const SharePathModal = ({ onClose }) => {
-  const { peer, peerId, currentPath, openSharingFailedModal } =
-    useContext(PathContext);
+  const { currentPath, openSharingFailedModal } = useContext(PathContext);
+  const { peer, peerId } = useContext(SettingsContext);
 
   const [exportedPath, setExportedPath] = useState(null);
   const [sharingSucceeded, setSharingSucceeded] = useState(false);
@@ -75,9 +76,10 @@ const SharePathModal = ({ onClose }) => {
         ) : (
           <div className="flex flex-col items-center justify-center">
             <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
-              Näytä alla oleva QR-koodi polun vastaanottajalle. Jos kamera ei
-              ole käytettävissä, polun jakaminen onnistuu QR-koodin alta
-              löytyvän tunnisteen avulla.
+              Näytä alla oleva QR-koodi polun vastaanottajalle. QR-koodi tulee
+              lukea Sanapolku-sovelluksen avulla. Jos kamera ei ole
+              käytettävissä, polun jakaminen onnistuu QR-koodin alta löytyvän
+              tunnisteen avulla.
             </p>
             <div className="py-2">
               <QRCode value={QRCODE_PREFIX + peerId} />

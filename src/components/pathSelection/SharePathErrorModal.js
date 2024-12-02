@@ -15,11 +15,17 @@ const SharePathErrorModal = ({ onClose }) => {
           Polun jakaminen epäonnistui!
         </h2>
         <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
-          Yritä jakamista uudestaan. Jos jakaminen ei vieläkään onnistu, ongelma
-          voi johtua laitteiden käyttämistä verkoista. Siirtykää käyttämään
-          molemmilla laitteilla esimerkiksi samaa WIFI tai mobiilidata verkkoa.
-          Kun molemmat laitteet ovat yhdistettynä samaan verkkoon, pitäisi polun
-          jakamisen onnistua varmasti.
+          Yritä jakamista uudestaan.
+        </p>
+        <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
+          Jos virhe tulee vain vastaanottajalle, niin samanniminen polku on jo
+          todennäköisesti olemassa. Varmista, ettei samannimistä polkua ole jo.
+        </p>
+        <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
+          Jos jakaminen ei vieläkään onnistu, ongelma voi johtua laitteiden
+          käyttämistä verkoista. Siirtykää käyttämään molemmilla laitteilla
+          esimerkiksi samaa WIFI tai mobiilidata verkkoa. Kun molemmat laitteet
+          ovat yhdistettynä samaan verkkoon, pitäisi polun jakamisen onnistua.
         </p>
         <button
           className="btn-sp-primary bg-sp-red"

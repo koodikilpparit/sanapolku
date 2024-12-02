@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { initializePeer } from '../utils/ShareUtils';
 
 export const SettingsContext = createContext();
 
@@ -24,6 +25,8 @@ export const SettingsProvider = ({ children }) => {
   });
 
   const [installEvent, setInstallEvent] = useState(null);
+  const [peer, setPeer] = useState(null);
+  const [peerId, setPeerId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem('sounds', JSON.stringify(sounds));
@@ -32,6 +35,24 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('music', JSON.stringify(music));
   }, [music]);
+
+  useEffect(() => {
+    // Initialize WebRTC
+    const initPeer = async () => {
+      const { id: newId, peer: newPeer } = await initializePeer();
+      setPeerId(newId);
+      setPeer(newPeer);
+    };
+    if (!peer) {
+      initPeer();
+    }
+
+    return () => {
+      if (peer) {
+        peer.destroy();
+      }
+    };
+  }, [peer]);
 
   return (
     <SettingsContext.Provider
@@ -42,6 +63,10 @@ export const SettingsProvider = ({ children }) => {
         setMusic,
         installEvent,
         setInstallEvent,
+        peer,
+        setPeer,
+        peerId,
+        setPeerId,
       }}
     >
       {children}

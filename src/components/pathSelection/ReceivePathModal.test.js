@@ -4,6 +4,7 @@ import ReceivePathModal from './ReceivePathModal';
 import { connectToPeerAndReceive } from '../../utils/ShareUtils'; // Mocked function
 import React from 'react';
 import { importPath } from '../../utils/PathUtils';
+import { SettingsContext } from '../../contexts/SettingsContext';
 
 // Mock the sendDataOnConnection function
 jest.mock('../../utils/ShareUtils', () => ({
@@ -28,10 +29,12 @@ jest.mock('../QrScannerComponent', () => ({
 
 describe('ReceivePathModal', () => {
   const onCloseMock = jest.fn();
-  const contextValue = {
-    peer: { id: 'testPeerId' },
+  const pathContextValue = {
     setPaths: jest.fn(),
     openSharingFailedModal: jest.fn(),
+  };
+  const settingsContextValue = {
+    peer: { id: 'testPeerId' },
   };
 
   beforeEach(() => {
@@ -40,9 +43,11 @@ describe('ReceivePathModal', () => {
 
   const initTest = () => {
     render(
-      <PathContext.Provider value={contextValue}>
-        <ReceivePathModal onClose={onCloseMock} />
-      </PathContext.Provider>
+      <SettingsContext.Provider value={settingsContextValue}>
+        <PathContext.Provider value={pathContextValue}>
+          <ReceivePathModal onClose={onCloseMock} />
+        </PathContext.Provider>
+      </SettingsContext.Provider>
     );
   };
 
@@ -78,7 +83,7 @@ describe('ReceivePathModal', () => {
     // Wait for the successful path reception
     await waitFor(() => {
       expect(connectToPeerAndReceive).toHaveBeenCalledWith(
-        contextValue.peer,
+        settingsContextValue.peer,
         'testPeerId',
         importPath
       );
@@ -103,7 +108,7 @@ describe('ReceivePathModal', () => {
     // Wait for the failure handling
     await waitFor(() => {
       expect(connectToPeerAndReceive).toHaveBeenCalled();
-      expect(contextValue.openSharingFailedModal).toHaveBeenCalled();
+      expect(pathContextValue.openSharingFailedModal).toHaveBeenCalled();
       expect(
         screen.queryByText('Polun jakaminen onnistui!')
       ).not.toBeInTheDocument();
@@ -147,7 +152,7 @@ describe('ReceivePathModal', () => {
     // Check if state is updated and path reception starts
     await waitFor(() => {
       expect(connectToPeerAndReceive).toHaveBeenCalledWith(
-        contextValue.peer,
+        settingsContextValue.peer,
         'testPeerId',
         importPath
       );
