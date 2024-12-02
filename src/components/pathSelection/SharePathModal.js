@@ -5,10 +5,11 @@ import { sendDataOnConnection, QRCODE_PREFIX } from '../../utils/ShareUtils';
 import { exportPath } from '../../utils/PathUtils';
 
 import PropTypes from 'prop-types';
+import { SettingsContext } from '../../contexts/SettingsContext';
 
 const SharePathModal = ({ onClose }) => {
-  const { peer, peerId, currentPath, openSharingFailedModal } =
-    useContext(PathContext);
+  const { currentPath, openSharingFailedModal } = useContext(PathContext);
+  const { peer, peerId } = useContext(SettingsContext);
 
   const [exportedPath, setExportedPath] = useState(null);
   const [sharingSucceeded, setSharingSucceeded] = useState(false);
