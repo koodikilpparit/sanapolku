@@ -13,7 +13,6 @@ import ImagePreview from '../components/ImagePreview';
 
 const NewWord = () => {
   const navigate = useNavigate();
-  const pathId = Number(useParams().pathId);
   const location = useLocation();
   const temporaryPathId = Number(useParams().pathId);
   const loadedWord = location.state?.wordEntry;
@@ -114,7 +113,7 @@ const NewWord = () => {
     <div className="word-page">
       {/* Header */}
       <div className="new-word-header">
-        <BackButton url={'/muokkaapolkua/' + pathId} />
+        <BackButton url={'/muokkaapolkua/' + temporaryPathId} />
         <h2>{loadedWord ? `Muokkaa sanaa` : 'Uusi sana'}</h2>
       </div>
 
