@@ -212,7 +212,10 @@ const NewWord = () => {
             key={imageData.src}
             imageSrc={imageData.src}
             onCroppedImage={handleImageCrop}
-            onBack={() => setIsCropping(false)}
+            onBack={() => {
+              setIsCropping(false);
+              setImageData(null);
+            }}
             imageSource={imageSource}
             reopenFileSelector={reopenFileSelector}
           />

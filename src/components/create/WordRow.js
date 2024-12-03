@@ -11,7 +11,7 @@ const WordRow = ({ word, imgSrc, onDelete, onEdit }) => {
         src={imgSrc || '/mrBean.png'}
         alt={word}
         className="word-image"
-        style={{ paddingRight: '10px' }}
+        style={{ marginRight: '10px' }}
       />
       <EditButton onClick={onEdit} />
       <DeleteButton onClick={onDelete} />
