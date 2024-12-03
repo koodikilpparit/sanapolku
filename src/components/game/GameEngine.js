@@ -10,8 +10,10 @@ import BackButton from '../universal/BackButton';
 import ProgressBar from './ProgressBar';
 import GameEndingPage from './GameEndingPage';
 import GameBreakPage from './GameBreakPage';
+import { useNavigate } from 'react-router-dom';
 
 const GameEngine = ({ pathId }) => {
+  const navigate = useNavigate();
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -43,12 +45,12 @@ const GameEngine = ({ pathId }) => {
           fetchedWords = await getWordsForPath(Number(pathId));
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
-            return;
+            navigate('/polkuvirhe');
           }
           fetchedWords = shuffleArray(fetchedWords).slice(0, 10);
         } catch (error) {
           setError('Error fetching path or words');
-          setLoading(false);
+          navigate('/polkuvirhe');
         }
       }
       setWords(fetchedWords);
@@ -57,7 +59,7 @@ const GameEngine = ({ pathId }) => {
     };
 
     fetchData();
-  }, [pathId]);
+  }, [navigate, pathId]);
 
   useEffect(() => {
     if (words.length > 0 && wordIndex < words.length) {
