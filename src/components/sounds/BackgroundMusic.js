@@ -39,7 +39,6 @@ const BackgroundMusic = () => {
     return () => {
       document.removeEventListener('click', handleUserInteraction);
       audio.pause();
-      audio.src = '';
       audio.currentTime = 0;
       clearInterval(fadeIntervalRef.current);
     };
