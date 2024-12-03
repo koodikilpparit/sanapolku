@@ -33,7 +33,6 @@
 
 .modal-overlay[data-modal-type='image-cropper'] {
   inset: 0;
-
 }
 
 .modal-overlay[data-modal-type='image-cropper'] .modal-content {
@@ -41,7 +40,6 @@
   height: 80vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   max-width: none;
   max-height: none;
 }
@@ -54,7 +52,6 @@
 @media (max-width: 767px) {
   .modal-overlay {
     padding-top: 40px;
-    align-items: start;
   }
 }
 

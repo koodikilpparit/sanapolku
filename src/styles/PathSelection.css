@@ -5,8 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-image: 
-    url('../../public/app_background.png');
+  background-image: url('../../public/app_background.png');
   background-repeat: repeat;
   background-position: center;
 }
@@ -28,7 +27,7 @@
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #06705B;
+  background-color: #06705b;
 }
 
 .paths-page .header .edit-button {
@@ -174,19 +173,9 @@
   border-radius: 5px;
 }
 
-/* Style for phones in portrait mode */
-@media (max-width: 767px) {
-  .modal-content {
-    margin-bottom: 300px;
-  }
-
-}
-
 /* Style for phones in horizontal mode */
 @media (max-height: 450px) {
   .paths-page {
     background-image: none;
   }
-
 }
-
