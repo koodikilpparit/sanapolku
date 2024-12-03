@@ -180,11 +180,11 @@ const Phase2 = ({
                   className={`w-full flex items-center justify-center aspect-square rounded-lg font-bold text-center text-sp-black p-0 max-w-20 sm:max-w-24 md:max-w-28 lg:max-w-32 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl${
                     item.isBlank
                       ? 'bg-sp-dark-green cursor-default'
-                      : 'cursor-pointer bg-sp-white border-2'
+                      : 'cursor-pointer border-2'
                   } ${
                     selectedLetter && selectedLetter.index === item.id
                       ? 'bg-sp-light-yellow border-sp-light-yellow'
-                      : 'border-sp-white'
+                      : 'bg-sp-white'
                   }`}
                   data-testid="shuffled-letter"
                 >
