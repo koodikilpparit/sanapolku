@@ -45,7 +45,7 @@ const GameEngine = ({ pathId }) => {
           fetchedWords = await getWordsForPath(Number(pathId));
           if (!fetchedWords || fetchedWords.length === 0) {
             setError('No words found for this path');
-            return;
+            navigate('/polkuvirhe');
           }
           fetchedWords = shuffleArray(fetchedWords).slice(0, 10);
         } catch (error) {
