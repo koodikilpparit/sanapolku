@@ -235,10 +235,6 @@ body {
     font-size: var(--sp-body-medium);
   }
 
-  .modal-content {
-    margin-bottom: 300px;
-  }
-
   .soft-box {
     width: 95%; /* Adjust width for mobile screens */
     padding: 5px; /* Reduce padding on smaller screens */

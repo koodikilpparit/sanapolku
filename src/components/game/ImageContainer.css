@@ -6,7 +6,6 @@
 }
 
 .image-container img {
-  height: 35vw;
   width: 35vw;
 }
 
@@ -18,9 +17,8 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .image-container img {
-    height: 50vh;
-    width: 50vh;
+    width: 40vh;
   }
 }

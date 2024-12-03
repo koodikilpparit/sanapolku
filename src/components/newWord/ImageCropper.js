@@ -35,9 +35,9 @@ const ImageCropper = ({
     <div className="flex justify-center items-center h-full w-full">
       {imageSrc && (
         <div className="relative w-full h-full flex justify-center items-center bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="absolute top-4 sm:top-2 w-full text-center z-20 text-xl font-semibold text-black">
+          <h2 className="absolute top-2 sm:top-0 w-full text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
             Rajaa kuva
-          </h3>
+          </h2>
           <div className="relative w-11/12 h-full max-h-[80%] flex justify-center items-center cropper-container">
             <Cropper
               src={imageSrc}

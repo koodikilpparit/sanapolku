@@ -87,8 +87,7 @@ h1 {
   }
 
   .image-container img {
-    height: 50vw;
-    width: 50vw;
+    width: 40vw;
   }
 
   .interactive-components {
@@ -161,8 +160,7 @@ h1 {
   }
 
   .image-container img {
-    height: 50vh;
-    width: 50vh;
+    width: 40vh;
   }
 
   .interactive-components {
@@ -235,7 +233,6 @@ h1 {
   }
 
   .image-container img {
-    height: 28vw;
     width: 28vw;
   }
 

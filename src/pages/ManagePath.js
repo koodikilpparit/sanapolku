@@ -137,7 +137,9 @@ const ManagePath = () => {
       {isEditPathNameModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Vaihda polun nimi</h2>
+            <h2 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
+              Vaihda polun nimi
+            </h2>
             <input
               type="text"
               value={newPathName}
