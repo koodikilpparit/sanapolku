@@ -166,9 +166,6 @@ const GameEngine = ({ pathId }) => {
       setCurrentPhase(2);
       setWordAttempts((prev) => prev + 1); // If phase 2 is visited we increase the attempts
       setShuffledWord(shuffleWord(currentWord.word));
-      while (shuffledWord === currentWord.word) {
-        setShuffledWord(shuffleWord(currentWord.word));
-      }
     } else if (currentPhase === 2) {
       setCurrentPhase(3);
     } else {
@@ -208,7 +205,14 @@ const GameEngine = ({ pathId }) => {
 
   // Shuffle the word using the Durstenfeld algorithm (Fisher-Yates variant)
   const shuffleWord = (word) => {
-    return shuffleArray([...word]).join('');
+    if (word.length < 2) {
+      return word;
+    }
+    var shuffled = shuffleArray([...word]).join('');
+    while (shuffled === word) {
+      shuffled = shuffleArray([...word]).join('');
+    }
+    return shuffled;
   };
 
   const triggerSuccessIndicator = () => {
