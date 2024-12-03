@@ -9,6 +9,7 @@ import PathSelection from './pages/PathSelection';
 import ManagePath from './pages/ManagePath';
 import NewWord from './pages/NewWord';
 import GamePage from './pages/GamePage';
+import NotFoundPage from './pages/NotFoundPage';
 import { PathProvider } from './components/pathSelection/PathContext';
 import BackgroundMusic from './components/sounds/BackgroundMusic';
 import { SettingsContext } from './contexts/SettingsContext';
@@ -52,6 +53,7 @@ function App() {
           <Route path="/muokkaapolkua/:pathId" element={<ManagePath />} />
           <Route path="/uusisana/:pathId" element={<NewWord />} />
           <Route path="/peli/:pathId" element={<GamePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </Router>
