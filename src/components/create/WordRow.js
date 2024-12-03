@@ -7,7 +7,12 @@ const WordRow = ({ word, imgSrc, onDelete, onEdit }) => {
   return (
     <div className="word-row-container">
       <span className="word-text">{word}</span>
-      <img src={imgSrc || '/mrBean.png'} alt={word} className="word-image" />
+      <img
+        src={imgSrc || '/mrBean.png'}
+        alt={word}
+        className="word-image"
+        style={{ marginRight: '10px' }}
+      />
       <EditButton onClick={onEdit} />
       <DeleteButton onClick={onDelete} />
     </div>
