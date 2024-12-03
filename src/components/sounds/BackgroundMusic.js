@@ -8,7 +8,7 @@ const BackgroundMusic = () => {
   const location = useLocation();
   const audioRef = useRef(null);
   const [isAudioReady, setAudioReady] = useState(false);
-  const [currentVolume, setCurrentVolume] = useState(volume);
+  const [currentVolume, setCurrentVolume] = useState(0);
   const fadeIntervalRef = useRef(null);
 
   useEffect(() => {
