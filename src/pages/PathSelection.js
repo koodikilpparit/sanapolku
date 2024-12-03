@@ -127,7 +127,10 @@ const PathSelection = () => {
       )}
       {/* Modal for sharing a path */}
       {isShareModalOpen && (
-        <SharePathModal onClose={() => setIsShareModalOpen(false)} />
+        <SharePathModal
+          modalType="share-path"
+          onClose={() => setIsShareModalOpen(false)}
+        />
       )}
       {/* Modal for sharing a path */}
       {isReceivePathModalOpen && (

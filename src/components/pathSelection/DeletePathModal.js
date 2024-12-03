@@ -37,8 +37,10 @@ const DeletePathModal = ({ onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Vahvista poisto</h2>
-        <p>
+        <h2 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl py-2">
+          Vahvista poisto
+        </h2>
+        <p className="text-sm smd:text-md md:text-lg lg:text-xl pb-2">
           Haluatko varmasti poistaa polun <b>{currentPath.name}</b>?
         </p>
         <div className="modal-buttons">
