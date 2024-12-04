@@ -1,50 +1,38 @@
-.game-engine {
-    background-color: #06705b;
-    height: 100vh;
-    display: grid;
-    grid-template-areas: 'back-button';
-}
-
 .loading-msg .error-msg {
-    color: white;
-    font-size: var(--sp-heading-1);
-}
-
-.game-engine h2 {
-    color: white;
-    font-size: var(--sp-heading-1);
+  color: white;
+  font-size: var(--sp-heading-1);
 }
 
 .top-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 25px;
-    padding-top: 11px;
-    padding-left: 9px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  padding-top: 11px;
+  padding-left: 9px;
 }
 
 .progress-bar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .game-back-button {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    position: absolute;
-    grid-area: back-button;
-    width: 100px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  grid-area: back-button;
+  width: 100px;
 }
 
 .game-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
