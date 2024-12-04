@@ -176,10 +176,3 @@
   border: 2px solid;
   border-radius: 5px;
 }
-
-/* Style for phones in horizontal mode */
-@media (max-height: 450px) {
-  .paths-page {
-    background-image: none;
-  }
-}

@@ -111,10 +111,6 @@
 
 /* Style for phones in horizontal mode */
 @media (max-height: 450px) {
-  .manage-page {
-    background-image: none;
-  }
-
   .word-image {
     margin-right: 10px;
   }

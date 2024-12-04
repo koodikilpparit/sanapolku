@@ -110,10 +110,6 @@
 
 /* Style for phones in horizontal mode */
 @media (max-height: 450px) {
-  .game-menu-page {
-    background-image: none;
-  }
-
   .word-image {
     margin-right: 10px;
   }
