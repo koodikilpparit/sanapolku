@@ -70,6 +70,10 @@
   border-radius: var(--sp-button-border-radius) 0 0
     var(--sp-button-border-radius);
   cursor: pointer;
+  display: inline-block;
+  white-space: normal;
+  word-break: break-word; 
+  margin-right: 5px;
 }
 
 .path-item-container:hover {
