@@ -100,6 +100,17 @@ const Settings = () => {
             <p>Viittomakuva: Elina Vanninen, muokkaus Sari Kivimäki</p>
           </div>
           <div className="soft-box">
+            <h2>Tietojen tallennus</h2>
+            <p>
+              Sovellukseen luotujen omien polkujen data on tallennettu
+              selaimeen. Pelien dataa ei tallenneta millään tavalla.
+            </p>
+            <p>
+              Polkujen jakaminen toimii salatulla yhteydellä suoraan laitteelta
+              laitteelle, eikä dataa tallenneta palvelimille.
+            </p>
+          </div>
+          <div className="soft-box">
             <h2>Sovelluksen idean kehittäjät:</h2>
             <p>Nita Sorsa</p>
             <p>Karri Kauppila</p>
