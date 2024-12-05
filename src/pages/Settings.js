@@ -87,9 +87,9 @@ const Settings = () => {
         <h3>Tietoa sovelluksesta</h3>
         <div className="about-info">
           <div className="soft-box">
-            <h2>Kuvat:</h2>
+            <h2>Kuvat</h2>
             <p>Papunetin kuvapankki</p>
-            <h4>Papunet-kuvahaun kuvatyyppien ikonit:</h4>
+            <h4>Papunet-kuvahaun kuvatyyppien ikonit</h4>
             <p>Arasaac: Sergio Palao, muokkaus Papunet</p>
             <p>KUVAKO: Kuvako</p>
             <p>Mulberry: Paxtoncrafts Charitable Trust</p>
@@ -111,12 +111,12 @@ const Settings = () => {
             </p>
           </div>
           <div className="soft-box">
-            <h2>Sovelluksen idean kehittäjät:</h2>
+            <h2>Sovelluksen idean kehittäjät</h2>
             <p>Nita Sorsa</p>
             <p>Karri Kauppila</p>
           </div>
           <div className="soft-box">
-            <h2>Sovelluksen kehitystiimi:</h2>
+            <h2>Sovelluksen kehitystiimi</h2>
             <p>Anni Nieminen</p>
             <p>Eveliina Sundberg</p>
             <p>Neera Kiviluoma</p>
@@ -126,7 +126,7 @@ const Settings = () => {
             <p>Risto &quot;Reine&quot; Majakangas</p>
           </div>
           <div className="soft-box">
-            <h2>Lisenssi:</h2>
+            <h2>Lisenssi</h2>
             <p>
               Tämä sovellus on avoimen lähdekoodin ohjelmisto ja lisensoitu
               AGPL-3.0-lisenssillä. Voit käyttää, muokata ja jakaa ohjelmaa
