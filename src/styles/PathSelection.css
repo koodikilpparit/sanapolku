@@ -27,7 +27,6 @@
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #06705b;
 }
 
 .paths-page .header .edit-button {
@@ -70,6 +69,10 @@
   border-radius: var(--sp-button-border-radius) 0 0
     var(--sp-button-border-radius);
   cursor: pointer;
+  display: inline-block;
+  white-space: normal;
+  word-break: break-word;
+  margin-right: 5px;
 }
 
 .path-item-container:hover {
@@ -171,11 +174,4 @@
 .receive-path-button {
   border: 2px solid;
   border-radius: 5px;
-}
-
-/* Style for phones in horizontal mode */
-@media (max-height: 450px) {
-  .paths-page {
-    background-image: none;
-  }
 }

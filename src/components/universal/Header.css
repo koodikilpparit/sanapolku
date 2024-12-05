@@ -14,7 +14,11 @@
     font-family: var(--sp-global-font);
     font-size: var(--sp-heading-1);
     font-weight: 700;
-    line-height: 44px;
+    max-width: 60vw;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .header-center {

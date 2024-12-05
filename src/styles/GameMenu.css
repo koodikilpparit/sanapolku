@@ -5,8 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-image: 
-    url('../../public/app_background.png');
+  background-image: url('../../public/app_background.png');
   background-repeat: repeat;
   background-position: center;
 }
@@ -14,21 +13,6 @@
 .game-menu-page .header {
   padding: 25px 25px;
   margin-bottom: 0px;
-}
-
-.button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  max-width: 800px;
-  max-height: 60vh;
-  row-gap: 20px;
-  padding: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: #06705B;
 }
 
 .game-menu-page .header-right {
@@ -51,7 +35,6 @@
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #06705B;
 }
 
 .button-item-container {
@@ -105,17 +88,11 @@
   .word-image {
     margin-right: 0;
   }
-
 }
 
 /* Style for phones in horizontal mode */
 @media (max-height: 450px) {
-  .game-menu-page {
-    background-image: none;
-  }
-
   .word-image {
     margin-right: 10px;
   }
-
 }
